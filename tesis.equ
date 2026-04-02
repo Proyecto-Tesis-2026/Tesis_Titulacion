@@ -1,3 +1,8 @@
 \contentsline {myequations}{Ecuación \numberline {1}Fórmula de TF-IDF para ponderación de términos}{24}{section*.19}%
 \contentsline {myequations}{Ecuación \numberline {2}Fórmula del mecanismo de atención escalada por producto punto}{24}{section*.20}%
 \contentsline {myequations}{Ecuación \numberline {3}Índice de Sentimiento Neto para entidades políticas}{48}{section*.38}%
+\contentsline {myequations}{Ecuación \numberline {4}Fórmula para calcular la exactitud del módulo de sentimientos}{78}{section*.50}%
+\contentsline {myequations}{Ecuación \numberline {5}Fórmula para calcular la precisión del módulo de sentimientos}{78}{section*.51}%
+\contentsline {myequations}{Ecuación \numberline {6}Fórmula para calcular la sensibilidad del módulo de sentimientos}{78}{section*.52}%
+\contentsline {myequations}{Ecuación \numberline {7}Fórmula para calcular el puntaje F1 del módulo de sentimientos}{78}{section*.53}%
+\contentsline {myequations}{Ecuación \numberline {8}Fórmula para calcular la coherencia semántica $C_v$ de los temas detectados}{78}{section*.54}%
