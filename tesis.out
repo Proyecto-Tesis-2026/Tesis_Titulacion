@@ -1,78 +1,27 @@
-\BOOKMARK [0][-]{chapter*.6}{Resumen}{}% 1
-\BOOKMARK [0][-]{chapter*.8}{Introducci\363n}{}% 2
-\BOOKMARK [0][-]{chapter.1}{Planteamiento del Problema}{}% 3
-\BOOKMARK [1][-]{section.1.1}{Descripci\363n de la Realidad Problem\341tica}{chapter.1}% 4
-\BOOKMARK [1][-]{section.1.2}{Formulaci\363n del Problema}{chapter.1}% 5
-\BOOKMARK [2][-]{subsection.1.2.1}{Problema General}{section.1.2}% 6
-\BOOKMARK [2][-]{subsection.1.2.2}{Problemas Espec\355ficos}{section.1.2}% 7
-\BOOKMARK [1][-]{section.1.3}{Objetivos de la Investigaci\363n}{chapter.1}% 8
-\BOOKMARK [2][-]{subsection.1.3.1}{Objetivo General}{section.1.3}% 9
-\BOOKMARK [2][-]{subsection.1.3.2}{Objetivos Espec\355ficos}{section.1.3}% 10
-\BOOKMARK [1][-]{section.1.4}{Hip\363tesis}{chapter.1}% 11
-\BOOKMARK [2][-]{subsection.1.4.1}{Hip\363tesis General}{section.1.4}% 12
-\BOOKMARK [2][-]{subsection.1.4.2}{Hip\363tesis Espec\355ficas}{section.1.4}% 13
-\BOOKMARK [1][-]{section.1.5}{Justificaci\363n de la Investigaci\363n}{chapter.1}% 14
-\BOOKMARK [2][-]{subsection.1.5.1}{Te\363rica}{section.1.5}% 15
-\BOOKMARK [2][-]{subsection.1.5.2}{Pr\341ctica}{section.1.5}% 16
-\BOOKMARK [2][-]{subsection.1.5.3}{Metodol\363gica}{section.1.5}% 17
-\BOOKMARK [1][-]{section.1.6}{Delimitaci\363n del Estudio}{chapter.1}% 18
-\BOOKMARK [2][-]{subsection.1.6.1}{Espacial}{section.1.6}% 19
-\BOOKMARK [2][-]{subsection.1.6.2}{Temporal}{section.1.6}% 20
-\BOOKMARK [2][-]{subsection.1.6.3}{Conceptual}{section.1.6}% 21
-\BOOKMARK [0][-]{chapter.2}{Marco Te\363rico}{}% 22
-\BOOKMARK [1][-]{section.2.1}{Antecedentes de la investigaci\363n}{chapter.2}% 23
-\BOOKMARK [1][-]{section.2.2}{Bases Te\363ricas}{chapter.2}% 24
-\BOOKMARK [2][-]{subsection.2.2.1}{Inteligencia Artificial}{section.2.2}% 25
-\BOOKMARK [2][-]{subsection.2.2.2}{Aprendizaje Autom\341tico}{section.2.2}% 26
-\BOOKMARK [2][-]{subsection.2.2.3}{Aprendizaje Profundo}{section.2.2}% 27
-\BOOKMARK [2][-]{subsection.2.2.4}{Aprendizaje Profundo Multimodal}{section.2.2}% 28
-\BOOKMARK [2][-]{subsection.2.2.5}{Modelo Predictivo}{section.2.2}% 29
-\BOOKMARK [2][-]{subsection.2.2.6}{Miner\355a de Datos}{section.2.2}% 30
-\BOOKMARK [2][-]{subsection.2.2.7}{Metodolog\355as de Miner\355a de Datos}{section.2.2}% 31
-\BOOKMARK [2][-]{subsection.2.2.8}{T\351cnicas de Miner\355a de Datos}{section.2.2}% 32
-\BOOKMARK [2][-]{subsection.2.2.9}{Procesamiento del Lenguaje Natural}{section.2.2}% 33
-\BOOKMARK [1][-]{section.2.3}{Marco Conceptual}{chapter.2}% 34
-\BOOKMARK [2][-]{subsection.2.3.1}{Crowdfunding}{section.2.3}% 35
-\BOOKMARK [2][-]{subsection.2.3.2}{Kickstarter}{section.2.3}% 36
-\BOOKMARK [2][-]{subsection.2.3.3}{Proyecto}{section.2.3}% 37
-\BOOKMARK [2][-]{subsection.2.3.4}{Campa\361a}{section.2.3}% 38
-\BOOKMARK [0][-]{chapter.3}{Metodolog\355a de la Investigaci\363n}{}% 39
-\BOOKMARK [1][-]{section.3.1}{Dise\361o de la investigaci\363n}{chapter.3}% 40
-\BOOKMARK [2][-]{subsection.3.1.1}{Tipo de la investigaci\363n}{section.3.1}% 41
-\BOOKMARK [2][-]{subsection.3.1.2}{Enfoque de la investigaci\363n}{section.3.1}% 42
-\BOOKMARK [2][-]{subsection.3.1.3}{Poblaci\363n}{section.3.1}% 43
-\BOOKMARK [2][-]{subsection.3.1.4}{Muestra}{section.3.1}% 44
-\BOOKMARK [2][-]{subsection.3.1.5}{Operacionalizaci\363n de Variables}{section.3.1}% 45
-\BOOKMARK [1][-]{section.3.2}{T\351cnicas de recolecci\363n de datos}{chapter.3}% 46
-\BOOKMARK [1][-]{section.3.3}{T\351cnicas para el procesamiento y an\341lisis de la informaci\363n}{chapter.3}% 47
-\BOOKMARK [2][-]{subsection.3.3.1}{Metodolog\355a de implementaci\363n de la soluci\363n}{section.3.3}% 48
-\BOOKMARK [3][-]{subsubsection.3.3.1.1}{Comprensi\363n del negocio}{subsection.3.3.1}% 49
-\BOOKMARK [3][-]{subsubsection.3.3.1.2}{Comprensi\363n de los datos}{subsection.3.3.1}% 50
-\BOOKMARK [3][-]{subsubsection.3.3.1.3}{Preparaci\363n de los datos}{subsection.3.3.1}% 51
-\BOOKMARK [3][-]{subsubsection.3.3.1.4}{Modelamiento}{subsection.3.3.1}% 52
-\BOOKMARK [3][-]{subsubsection.3.3.1.5}{Evaluaci\363n}{subsection.3.3.1}% 53
-\BOOKMARK [3][-]{subsubsection.3.3.1.6}{Despliegue}{subsection.3.3.1}% 54
-\BOOKMARK [2][-]{subsection.3.3.2}{Metodolog\355a para la medici\363n de resultados}{section.3.3}% 55
-\BOOKMARK [1][-]{section.3.4}{Cronograma de actividades y presupuesto}{chapter.3}% 56
-\BOOKMARK [0][-]{chapter.4}{Desarrollo del Experimento}{}% 57
-\BOOKMARK [1][-]{section.4.1}{Comprensi\363n del negocio}{chapter.4}% 58
-\BOOKMARK [1][-]{section.4.2}{Comprensi\363n de los datos}{chapter.4}% 59
-\BOOKMARK [1][-]{section.4.3}{Preparaci\363n de los datos}{chapter.4}% 60
-\BOOKMARK [0][-]{chapter.5}{An\341lisis y Discusi\363n de Resultados}{}% 61
-\BOOKMARK [1][-]{section.5.1}{Modelamiento}{chapter.5}% 62
-\BOOKMARK [1][-]{section.5.2}{Evaluaci\363n}{chapter.5}% 63
-\BOOKMARK [1][-]{section.5.3}{Despliegue}{chapter.5}% 64
-\BOOKMARK [0][-]{chapter.6}{Conclusiones y Recomendaciones}{}% 65
-\BOOKMARK [1][-]{section.6.1}{Conclusiones}{chapter.6}% 66
-\BOOKMARK [1][-]{section.6.2}{Recomendaciones}{chapter.6}% 67
-\BOOKMARK [0][-]{chapter*.192}{Referencias}{}% 68
-\BOOKMARK [0][-]{section*.193}{Anexos}{}% 69
-\BOOKMARK [1][-]{section.Alph0.1}{\301rbol de Problemas}{section*.193}% 70
-\BOOKMARK [1][-]{section.Alph0.2}{\301rbol de Objetivos}{section*.193}% 71
-\BOOKMARK [1][-]{section.Alph0.3}{Matriz de Consistencia}{section*.193}% 72
-\BOOKMARK [1][-]{section.Alph0.4}{Comparaci\363n de metodolog\355as de antecedentes}{section*.193}% 73
-\BOOKMARK [1][-]{section.Alph0.5}{Comparaci\363n de objetivos espec\355ficos de antecedentes}{section*.193}% 74
-\BOOKMARK [1][-]{section.Alph0.6}{Par\341metros para modelo predictivo de Metainformaci\363n}{section*.193}% 75
-\BOOKMARK [1][-]{section.Alph0.7}{Par\341metros para modelo predictivo de Descripci\363n}{section*.193}% 76
-\BOOKMARK [1][-]{section.Alph0.8}{Par\341metros para modelo predictivo de Comentarios}{section*.193}% 77
-\BOOKMARK [1][-]{section.Alph0.9}{Par\341metros para modelo de Aprendizaje Profundo Multimodal}{section*.193}% 78
+\BOOKMARK [0][-]{chapter*.6}{\376\377\000R\000e\000s\000u\000m\000e\000n}{}% 1
+\BOOKMARK [0][-]{chapter*.8}{\376\377\000I\000n\000t\000r\000o\000d\000u\000c\000c\000i\000\363\000n}{}% 2
+\BOOKMARK [0][-]{chapter.1}{\376\377\000P\000l\000a\000n\000t\000e\000a\000m\000i\000e\000n\000t\000o\000\040\000d\000e\000l\000\040\000P\000r\000o\000b\000l\000e\000m\000a}{}% 3
+\BOOKMARK [1][-]{section.1.1}{\376\377\000D\000e\000s\000c\000r\000i\000p\000c\000i\000\363\000n\000\040\000d\000e\000\040\000l\000a\000\040\000R\000e\000a\000l\000i\000d\000a\000d\000\040\000P\000r\000o\000b\000l\000e\000m\000\341\000t\000i\000c\000a}{chapter.1}% 4
+\BOOKMARK [1][-]{section.1.2}{\376\377\000F\000o\000r\000m\000u\000l\000a\000c\000i\000\363\000n\000\040\000d\000e\000l\000\040\000P\000r\000o\000b\000l\000e\000m\000a}{chapter.1}% 5
+\BOOKMARK [2][-]{subsection.1.2.1}{\376\377\000P\000r\000o\000b\000l\000e\000m\000a\000\040\000G\000e\000n\000e\000r\000a\000l}{section.1.2}% 6
+\BOOKMARK [2][-]{subsection.1.2.2}{\376\377\000P\000r\000o\000b\000l\000e\000m\000a\000s\000\040\000E\000s\000p\000e\000c\000\355\000f\000i\000c\000o\000s}{section.1.2}% 7
+\BOOKMARK [1][-]{section.1.3}{\376\377\000O\000b\000j\000e\000t\000i\000v\000o\000s\000\040\000d\000e\000\040\000l\000a\000\040\000I\000n\000v\000e\000s\000t\000i\000g\000a\000c\000i\000\363\000n}{chapter.1}% 8
+\BOOKMARK [2][-]{subsection.1.3.1}{\376\377\000O\000b\000j\000e\000t\000i\000v\000o\000\040\000G\000e\000n\000e\000r\000a\000l}{section.1.3}% 9
+\BOOKMARK [2][-]{subsection.1.3.2}{\376\377\000O\000b\000j\000e\000t\000i\000v\000o\000s\000\040\000E\000s\000p\000e\000c\000\355\000f\000i\000c\000o\000s}{section.1.3}% 10
+\BOOKMARK [1][-]{section.1.4}{\376\377\000H\000i\000p\000\363\000t\000e\000s\000i\000s}{chapter.1}% 11
+\BOOKMARK [2][-]{subsection.1.4.1}{\376\377\000H\000i\000p\000\363\000t\000e\000s\000i\000s\000\040\000G\000e\000n\000e\000r\000a\000l}{section.1.4}% 12
+\BOOKMARK [2][-]{subsection.1.4.2}{\376\377\000H\000i\000p\000\363\000t\000e\000s\000i\000s\000\040\000E\000s\000p\000e\000c\000\355\000f\000i\000c\000a\000s}{section.1.4}% 13
+\BOOKMARK [1][-]{section.1.5}{\376\377\000J\000u\000s\000t\000i\000f\000i\000c\000a\000c\000i\000\363\000n\000\040\000d\000e\000\040\000l\000a\000\040\000I\000n\000v\000e\000s\000t\000i\000g\000a\000c\000i\000\363\000n}{chapter.1}% 14
+\BOOKMARK [2][-]{subsection.1.5.1}{\376\377\000T\000e\000\363\000r\000i\000c\000a}{section.1.5}% 15
+\BOOKMARK [2][-]{subsection.1.5.2}{\376\377\000P\000r\000\341\000c\000t\000i\000c\000a}{section.1.5}% 16
+\BOOKMARK [2][-]{subsection.1.5.3}{\376\377\000M\000e\000t\000o\000d\000o\000l\000\363\000g\000i\000c\000a}{section.1.5}% 17
+\BOOKMARK [1][-]{section.1.6}{\376\377\000D\000e\000l\000i\000m\000i\000t\000a\000c\000i\000\363\000n\000\040\000d\000e\000l\000\040\000E\000s\000t\000u\000d\000i\000o}{chapter.1}% 18
+\BOOKMARK [2][-]{subsection.1.6.1}{\376\377\000E\000s\000p\000a\000c\000i\000a\000l}{section.1.6}% 19
+\BOOKMARK [2][-]{subsection.1.6.2}{\376\377\000T\000e\000m\000p\000o\000r\000a\000l}{section.1.6}% 20
+\BOOKMARK [2][-]{subsection.1.6.3}{\376\377\000C\000o\000n\000c\000e\000p\000t\000u\000a\000l}{section.1.6}% 21
+\BOOKMARK [0][-]{chapter.2}{\376\377\000M\000a\000r\000c\000o\000\040\000T\000e\000\363\000r\000i\000c\000o}{}% 22
+\BOOKMARK [1][-]{section.2.1}{\376\377\000A\000n\000t\000e\000c\000e\000d\000e\000n\000t\000e\000s\000\040\000d\000e\000\040\000l\000a\000\040\000i\000n\000v\000e\000s\000t\000i\000g\000a\000c\000i\000\363\000n}{chapter.2}% 23
+\BOOKMARK [1][-]{section.2.2}{\376\377\000B\000a\000s\000e\000s\000\040\000T\000e\000\363\000r\000i\000c\000a\000s}{chapter.2}% 24
+\BOOKMARK [2][-]{subsection.2.2.1}{\376\377\000I\000n\000t\000e\000l\000i\000g\000e\000n\000c\000i\000a\000\040\000A\000r\000t\000i\000f\000i\000c\000i\000a\000l}{section.2.2}% 25
+\BOOKMARK [2][-]{subsection.2.2.2}{\376\377\000A\000p\000r\000e\000n\000d\000i\000z\000a\000j\000e\000\040\000A\000u\000t\000o\000m\000\341\000t\000i\000c\000o}{section.2.2}% 26
+\BOOKMARK [2][-]{subsection.2.2.3}{\376\377\000A\000p\000r\000e\000n\000d\000i\000z\000a\000j\000e\000\040\00
