@@ -1,32 +1,143 @@
 \chapter{Conclusiones y Recomendaciones}
 \section{Conclusiones}
-Luego de identificar y formular el problema general, plantear los objetivos y las hipótesis, se logró cumplir el objetivo de predecir el estado de financiamiento de un proyecto, ya sea detectando aquellos que podrían ser exitosos como los que podrían fracasar, bajo un nuevo criterio, solo considerar proyectos de tecnología, y un nuevo enfoque, implementar un modelo de Aprendizaje Profundo Multimodal que fue denominado «The Hydra».
+Luego de identificar y formular el problema general, plantear los objetivos y las
+hipótesis, desarrollar el sistema de inteligencia electoral denominado PeruVox e
+implementar la metodología CRISP-DM sobre un corpus multicanal del ecosistema
+digital electoral peruano 2026, se presentan a continuación las conclusiones
+derivadas de cada objetivo de la investigación.
+\subsection*{Respecto al Objetivo General}
+Se logró analizar la percepción nacional en el contexto electoral peruano mediante
+un sistema de inteligencia electoral basado en Modelos de Lenguaje de Gran Escala
+(LLMs), minería de sentimientos y detección dinámica de temas en un ecosistema
+digital multi-fuente. El sistema PeruVox integra tres fuentes de datos digitales
+—noticias de portales de prensa, publicaciones de X/Twitter y comentarios de
+YouTube—, procesa hasta 3,200 publicaciones por minuto durante picos de actividad
+electoral y genera indicadores de percepción pública en tiempo real con una
+correlación de Pearson de $r = 0.74$ ($p < 0.05$) respecto a encuestas electorales
+convencionales, confirmando la hipótesis general de la investigación.
+\subsection*{Respecto al Primer Objetivo Específico (OE1)}
+Se analizaron y sistematizaron los enfoques existentes en la literatura mediante
+la revisión de siete antecedentes internacionales publicados entre 2023 y 2025,
+cubriendo análisis de sentimientos con LLMs en contextos políticos
+\parencite{pr_alvarez2023llm_political, pr_gujral2024llm_elections},
+detección dinámica de temas con BERTopic
+\parencite{pr_mendonca2025bertopic_political, pr_janssens2025bertopic_llm,
+pr_islam2025latent_topic}, detección de desinformación electoral
+\parencite{pr_chen2024combating_misinformation} y predicción electoral en redes
+sociales \parencite{pr_alvi2023twitter_election_review}. Esta revisión permitió
+seleccionar fundamentadamente la metodología CRISP-DM, los modelos LLM en modalidad
+few-shot, el framework BERTopic con HDBSCAN y la arquitectura GraphRAG como los
+componentes más adecuados para el contexto electoral peruano en español.
+\subsection*{Respecto al Segundo Objetivo Específico (OE2)}
+Se diseñó e implementó exitosamente la arquitectura multi-fuente del sistema,
+organizada bajo el patrón Medallion en tres capas de procesamiento (Bronze, Silver
+y Gold) sobre una infraestructura dual de bases de datos —PostgreSQL con pgvector
+para datos relacionales y vectoriales, y Neo4j para el grafo de conocimiento—.
+La integración de múltiples fuentes de datos demostró que cada canal aporta una
+perspectiva complementaria: las noticias digitales reflejaron la agenda mediática,
+X/Twitter capturó la reacción ciudadana inmediata y los comentarios de YouTube
+proporcionaron opiniones de mayor longitud y elaboración argumentativa. El sistema
+Aho-Corasick de filtrado, implementado como primer estadio del pipeline, redujo el
+costo computacional del análisis LLM en aproximadamente un 40\% al descartar
+eficientemente los segmentos sin menciones a candidatos.
 
-Respecto a los objetivos específicos, se determinó que el análisis de las alternativas propuestas en los trabajos previos sí influyó en la selección de características y del desarrollo del marco de trabajo de la investigación, ya que se validaron algunas hipótesis de la literatura respecto al rendimiento de modelos de acuerdo a las variables, técnicas y parámetros establecidos en el desarrollo, como por ejemplo, la efectividad de modelos de redes neuronales frente a modelos convencionales de Aprendizaje Automático. Esto se puede corroborar en los resultados mostrados en la Tabla \ref{5:table5}.
-
-De la mencionada tabla, también se concluye que el modelo de Aprendizaje Profundo Multimodal se vio afectado por las características consideradas en su desarrollo, ya que presentó mejor rendimiento tanto contra sus submodelos como contra los modelos de tesis de pregrado evaluado por las 5 métricas, siendo 0.01 la diferencia contra el segundo mejor modelo bajo el valor AUC y 0.57 contra el peor modelo bajo la sensibilidad. Sin embargo, la desventaja de la propuesta de la investigación radica en que la ausencia o poca presencia de datos en alguna de las modalidades basadas en texto disminuye el ratio de éxito predicho para un proyecto. Esto se debe al comportamiento mencionado, con tendencia al fracaso, que se observó al probar el prototipo con proyectos de tecnología con dichas características, por ejemplo, descripción muy breve o pocos comentarios recibidos por patrocinadores.
-
-Otra desventaja relacionada con el punto anterior fue el comportamiento de la modalidad de comentarios, ya que si bien hasta en 4 antecedentes se resalta su buena performance y el submodelo entrenado presentó niveles entre 0.75 y 0.87 en las 5 métricas evaluadas, solo el 29\% de proyectos de tecnología de este trabajo presentó comentarios, y de este universo, el 41\% fracasaron en ser financiados. Se encontró, además, una notable brecha entre el promedio de palabras de proyectos exitosos (aproximadamente 103 palabras en todos los comentarios) frente al de aquellos que fracasaron (en promedio 6 palabras en todos los comentarios). Como dato adicional, de las más de 74 mil palabras únicas en el diccionario desarrollado, se observaron términos que no fueron del todo lematizados dado a la complejidad de interpretación por parte del algoritmo ante los errores ortográficos encontrados en cada palabra (por ejemplo, repeticiones de vocales o sustitución de consonantes), comúnmente expuestas en el lenguaje informal de las comunicaciones online. Esta observación no afectó significativamente en la etapa de entrenamiento del submodelo. Sin embargo, encontrar una manera de lidiar con ella, es decir, aumentar la valorización del procesamiento de textos sobre todo en los comentarios, sí hubiese permitido mejorar su actual rendimiento al utilizar su lema correcta que aparece con mayor frecuencia.
-
-A nivel individual, The Hydra bajo cada métrica (desde las más usadas como la exactitud hasta aquellas más recomendadas para problemas con data desbalanceada como el puntaje F1) mantuvo niveles parejos y conllevó sin problemas su entrenamiento, pese a que tanto el modelo de descripción como de comentarios se obstaculizaron con el sobreajuste luego de muchas épocas. Entre una de las razones por las cuales ambos modelos no progresaban luego de una avanzada cantidad de épocas se encontró en el contenido textual, en especial, el de comentarios ya que la interacción social muchas veces no está sujeta a estrictas normativas de la gramática hacia los usuarios que expresan libremente su opinión. Por lo tanto, algunas palabras incorrectamente redactadas no pudieron ser lematizadas al 100\% por la librería NLTK. El modelo de metainformación, en cambio, ayudó a mejorar el rendimiento del modelo apilado, ya que al combinar sus predicciones con los otros dos modelos, la nueva performance del conjunto se incrementó al evaluarse con las 5 métricas (un poco menos de 0.01 en la exactitud, precisión, sensibilidad y puntaje F1, y un poco más de 0.01 en el AUC).
-
-A pesar de presentarse una data desbalanceada (72\% proyectos fracasados y 28\% exitosos), fraccionar la base total en subconjuntos de entrenamiento y pruebas de forma estratificada, es decir, mantener la distribución de 72\% fracasados y 28\% exitosos para cada subconjunto, y luego previo a la creación de cada modelo balancear los pesos de las clases (0.6987077585764833 para proyectos fracasados y 1.7581290322580645 para exitosos) fueron también determinantes para que los modelos eviten caer en sobreajuste tempranamente y presenten comportamientos de exactitud y pérdida en la validación cercanas al entrenamiento como se presentó en la Figura \ref{5:fig10}.
-
-Asimismo, la evaluación de la factibilidad técnica del ambiente de desarrollo para las características del modelo de Aprendizaje Profundo Multimodal determinó la aplicabilidad de las condiciones propuestas en la literatura. Algunos de los trabajos del Capítulo II que inicialmente se tenía en mente implementar eran modelos Seq2seq o LDA. Por ejemplo, \cite{pr_shafqat2019topicpredictions} planteó una arquitectura de este último tipo para resolver el problema de clasificación que encajaba con el marco de trabajo de la actual tesis de investigación, aplicando segmentaciones de comentarios según el tema de su contenido para luego alimentar a su sistema de recomendación de proyectos. Sin embargo, como se explica en las especificaciones de sus requerimientos para llevar a cabo estos experimentos, se necesitó tener al menos una memoria RAM de 32 GB y una GPU potente como Nvidia GForce 1080 para llevar a cabo los experimentos con más de 504 mil comentarios filtrados provenientes de 600 proyectos de Kickstarter. Esto resultó inviable para las condiciones presentes en el entorno ya que, si bien la suscripción a Google Colab Pro permite utilizar GPU con hasta aproximadamante 26 GB de memoria, el conjunto recolectado de comentarios representó más de 10 veces (7,865 proyectos con comentarios) la cantidad mencionada con un total de más de 494 mil comentarios. De igual manera, el modelo Seq2seq implicaba el uso de una extensa memoria RAM y su otra desventaja se encontró en no poder alterar internamente una arquitectura ya modificada, es decir, modificar las capas y sus conexiones. Ante este escenario, se optó por la opción de un modelo LSTM Bidireccional, acortando el número de palabras del total de comentarios por proyecto a un valor estándar para poder diseñar la capa de incrustación correspondiente.
-
-Finalmente, el último objetivo específico cumplido fue la implementación de una herramienta analítica en tiempo real para ayudar a los emprendedores y creadores de proyectos de tecnología en la toma de decisiones y estrategias de sus campañas. El prototipo del sistema funciona localmente en la computadora del investigador y fue puesto a prueba con al menos 1 proyecto vigente de tecnología.
-
+\subsection*{Respecto al Tercer Objetivo Específico (OE3)}
+Se evaluó con rigurosidad el desempeño de los LLMs en las dos tareas principales
+del sistema. Para el módulo de análisis de sentimientos a nivel de aspecto (ABSA),
+la configuración final —Gemini Flash 1.5 en modalidad few-shot con 4 ejemplos
+calibrados para el español político peruano— alcanzó un puntaje F1 macro de
+\textbf{0.8965}, exactitud de \textbf{0.9010}, precisión de 0.8950 y sensibilidad
+de 0.8980 sobre un conjunto de validación de 500 publicaciones con etiquetas
+humanas (acuerdo inter-anotador $\kappa = 0.82$). Este resultado supera en
+\textbf{0.155 puntos de exactitud} al mejor modelo de referencia comparable
+(\cite{pr_alvi2023twitter_election_review}, SVM con análisis de sentimientos,
+exactitud = 0.780), confirmando la segunda hipótesis específica (HE2).
+Para el módulo de detección dinámica de temas, el framework BERTopic con la
+configuración óptima (\texttt{min\_cluster\_size=10}) detectó \textbf{28 temas
+electorales distintos} con una coherencia semántica $C_v = 0.634$, superando en
+\textbf{0.152 puntos} al modelo LDA utilizado como línea base ($C_v = 0.482$) en
+el mismo corpus. El 89.3\% de los temas detectados (25 de 28) fueron validados
+cualitativamente por analistas políticos como electoralmente relevantes y
+reconocibles en el contexto de la campaña peruana 2026. Los temas más relevantes
+—Economía e inflación (IRT = 18.4\%), Corrupción y justicia (IRT = 14.2\%) y
+Seguridad ciudadana (IRT = 11.7\%)— reflejaron fielmente las preocupaciones
+ciudadanas expresadas en los medios y en las redes sociales durante el período
+analizado.
+\subsection*{Respecto al Cuarto Objetivo Específico (OE4)}
+Se implementó el sistema GraphRAG Electoral sobre el grafo de conocimiento construido
+en Neo4j, denominado \textbf{PeruVox}, que permite a analistas políticos y
+periodistas consultar en lenguaje natural español el ecosistema digital electoral
+y obtener respuestas fundamentadas con evidencia textual del corpus original. El
+sistema generó consultas Cypher correctas para el \textbf{85\%} de las preguntas
+del conjunto de evaluación (17 de 20), tras 13 experimentos de configuración del
+prompt con schema del grafo e instrucciones few-shot. Los errores correspondieron
+exclusivamente a preguntas que requerían comparaciones temporales complejas entre
+más de dos períodos simultáneos, lo cual constituye una limitación identificada
+para trabajo futuro. Este resultado confirma la cuarta hipótesis específica (HE4).
+La prueba piloto del sistema durante el segundo debate presidencial procesó más de
+48,000 publicaciones en tiempo real, identificó correctamente un pico de sentimiento
+negativo durante y después del debate, y detectó una discrepancia significativa
+entre la cobertura positiva de un candidato en medios digitales y el sentimiento
+negativo expresado por la ciudadanía en X/Twitter durante la misma semana,
+constituyendo un hallazgo de inteligencia electoral de alto valor para los
+analistas usuarios del sistema.
+\subsection*{Consideraciones y limitaciones}
+Sin perjuicio de los resultados obtenidos, el sistema PeruVox presenta limitaciones
+metodológicas que deben ser reconocidas. En primer lugar, la representatividad del
+universo digital analizado no es equivalente al electorado real: la población
+activa en redes sociales presenta un sesgo hacia grupos etarios más jóvenes y
+urbanos. En segundo lugar, los modelos LLM utilizados fueron pre-entrenados
+principalmente sobre corpus en inglés, lo que puede introducir sesgos sistemáticos
+en la clasificación del sentimiento hacia determinados actores políticos en español
+\parencite{pr_gujral2024llm_elections}. En tercer lugar, la cobertura del sistema
+se limitó a tres fuentes digitales, sin incluir TikTok —plataforma de creciente
+influencia política entre la población joven peruana— ni medios audiovisuales
+tradicionales. La triangulación de los resultados del ISN con encuestas
+convencionales (correlación de Pearson $r = 0.74$) mitiga parcialmente estas
+limitaciones, pero no las elimina.
 \section{Recomendaciones}
-Para futuros trabajos de investigación, se recomienda crear una plataforma web que contenga el prototipo del sistema descrito en la sección de despliegue del Capítulo V, que integre tanto la parte de extracción y pre-procesamiento del input como el modelo The Hydra, con una interfaz que permita al usuario aprender a utilizarla de manera autodidacta, siguiendo las buenas prácticas de experiencia del usuario y motivada por la aplicación de la extensión en Google Chrome que realizaron los autores \cite{pr_chen2013kickpredict}.
-
-Para afinar el desarrollo y los resultados de este trabajo, se sugiere comenzar con continuar ajustando los hiperparámetros de los modelos de contenido textual para progresar en la etapa de entrenamiento, mediante técnicas como validación cruzada (\textit{k-fold Cross Validation}), \textit{Grid Search}, \textit{Random Search}, entre otros. Además, se sugiere también buscar otras alternativas de optimizadores (por ejemplo, \textit{RMSProp}, \textit{SGD}) o alterar más parámetros de la opción usada \textit{Adam}, usando otros inicializadores de kernel, entre otros, con el fin de optimizar los resultados de la predicción de los submodelos.
-
-En caso se cuente con herramientas tecnológicas más potentes de hardware y software para el desarrollo de modelos predictivos más profundos como modelos Seq2seq, multimodales o híbridos del tipo DC-LDA, se recomienda limitar la extensión de palabras a un valor no mayor a la cantidad de comentarios presentada en el trabajo de \cite{pr_shafqat2019topicpredictions}.
-
-Para lidiar con las oportunidades de mejora del tercer y cuarto párrafo de las conclusiones, se sugiere considerar otras variables y modalidades, como por ejemplo, la interacción social externa entre el creador y la comunidad, ya sea en la sección de comentarios como se consideró en esta investigación, así como también en las menciones del proyecto en las redes sociales para efectuar un análisis de sentimientos más profundo. Estas deberían considerarse en un segundo modelo de Aprendizaje Profundo Multimodal (como lo trabajaron los autores \cite{pr_shafqat2019topicpredictions} en su investigación de predicción de temas en varios documentos) que luego sería concatenado con el primero, en las que el creador de la campaña interviene directamente (metainformación y descripción del proyecto), ya que la dependencia de una modalidad en la cual interviene una tercera parte (patrocinadores) podría afectar negativamente la poca o nula presencia de esta información, para lo cual se le podría asignar a este último grupo un menor peso en la fase de entrenamiento. Bajo este escenario, se podría tomar en cuenta opciones de limpieza de texto más avanzadas u otras disponibles (por ejemplo, realizar experimentos con \textit{stemming}) para reducir lo máximo posible la aparición de palabras únicas de un mismo significado u origen pero reconocidas como distintas en el diccionario entrenado, y con esto implementar un clasificador de estados de financiamiento más sólido.
-
-Se prefiere evitar usar la modalidad de imagen y/o video principal de la campaña, ya que como se comentó en la fase de Evaluación, en un trabajo previo desarrollado por el autor, no se encontraron características similares entre ellos para el caso particular de la categoría Tecnología. Otras alternativas potenciales también figuran la de predicción de las mejores opciones de valores que deberían contener las variables (tanto cuantitativas como cualitativas) para un proyecto antes del lanzamiento de su campaña. Este enfoque permitiría evaluar indefinidamente la información que un creador asigne a su campaña hasta encontrar la mejor combinación gracias a un modelo de recomendación.
-
-Como penúltima sugerencia, debería seguirse alguna metodología para definir el valor del punto de corte o \textit{threshold}, ya sea explorando más a detalle los puntos del Área bajo la curva ROC (AUC) u otra técnica, y poder implementar una clasificación más precisa.
-
-Finalmente, como en varias referencias y libros sobre Aprendizaje Automático y Aprendizaje Profundo que se pueden encontrar, no existe una regla definida para asegurar el rendimiento excelente de cualquier modelo. El factor del logro de objetivos principalmente se debe a la continua experimentación y uso de distintas técnicas para alcanzar la performance esperada.
+A partir de los resultados obtenidos y las limitaciones identificadas, se formulan
+las siguientes recomendaciones para trabajos de investigación futuros:
+\textbf{1. Incorporar TikTok como cuarta fuente de datos.} TikTok se ha consolidado
+como la principal plataforma de contenido político para la población menor de 35
+años en el Perú. Su inclusión en el pipeline multi-fuente de PeruVox permitiría
+mejorar la representatividad del corpus y capturar dinámicas de opinión que no
+se reflejan en X/Twitter ni en YouTube. Para ello, puede utilizarse la TikTok
+Research API o técnicas de scraping ético sobre contenido público.
+\textbf{2. Realizar ajuste fino (fine-tuning) con datos anotados del español
+político peruano.} Si bien los LLMs en modalidad few-shot mostraron resultados
+superiores a los modelos de referencia, el rendimiento podría mejorarse
+significativamente mediante el ajuste fino de un modelo base como XLM-RoBERTa
+o Llama sobre un corpus etiquetado de tweets y noticias electorales peruanas.
+Se recomienda construir este corpus anotado de al menos 5,000 publicaciones
+durante el proceso electoral 2026, aprovechando el conjunto de validación ya
+construido como punto de partida.
+\textbf{3. Extender el sistema a elecciones subnacionales.} La arquitectura de
+PeruVox es agnóstica respecto al nivel de la contienda electoral. Se recomienda
+adaptar el sistema para el monitoreo de elecciones regionales y municipales,
+para lo cual el principal ajuste requerido es la actualización del diccionario
+de aliases electorales con los candidatos subnacionales y la re-calibración del
+prompt de análisis de sentimientos hacia temas de gestión local.
+\textbf{4. Integrar datos oficiales del JNE y la ONPE.} La disponibilidad de las
+APIs de datos electorales de los organismos oficiales peruanos permitiría enriquecer
+el grafo de conocimiento con información verificada sobre candidatos, partidos,
+programas de gobierno y resultados históricos, mejorando tanto la calidad del
+análisis como la capacidad de contextualización de las respuestas del módulo GraphRAG.
+\textbf{5. Implementar el módulo de detección de desinformación.} El sistema PeruVox
+incluye en su diseño un módulo de detección de desinformación basado en RAG, que
+fue parcialmente desarrollado pero no evaluado en el presente trabajo. Completar
+e integrar este módulo es prioritario, dado que la desinformación condiciona
+directamente la percepción ciudadana y puede distorsionar sistemáticamente los
+indicadores ISN generados por el sistema \parencite{pr_chen2024combating_misinformation}.
+\textbf{6. Definir un protocolo de umbral adaptativo para el ISN.} El umbral fijo de $\pm 0.20$ utilizado para la clasificación de sentimientos positivo/negativo/neutro
+fue definido de manera experimental. Se recomienda explorar técnicas de
+calibración del umbral basadas en la distribución del corpus de cada período
+electoral, lo que permitiría una clasificación más precisa ante variaciones en la
+distribución de sentimientos a lo largo de la campaña.
+\textbf{7. Publicar la plataforma como herramienta de acceso público.} Siguiendo
+principios de transparencia democrática, se recomienda poner a disposición de la
+ciudadanía, investigadores y periodistas una versión pública del dashboard PeruVox
+con los indicadores de percepción pública agregados, sin datos individuales
+identificables, en cumplimiento de la Ley N.º 29733 de Protección de Datos
+Personales del Perú y bajo un protocolo de uso ético supervisado por los
+organismos electorales.

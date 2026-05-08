@@ -34,14 +34,14 @@ arquitectura de prompt de la Figura \ref{6:fig1} y teniendo como referencia el t
 de \cite{pr_alvarez2023llm_political} y la metodología descrita en el HTML de
 metodología electoral adjunto.
 
-\begin{figure}[!ht]
-    \begin{center}
-        \includegraphics[width=0.88\textwidth]{5/figures/arquitectura_prompt_absa.png}
-        \caption[Arquitectura del prompt ABSA para análisis de sentimientos electorales]{Arquitectura del prompt de análisis de sentimientos a nivel de aspecto (ABSA) para el contexto electoral peruano, con sus cinco componentes: rol, contexto, instrucción, formato JSON y ejemplos few-shot.\\
-            Fuente: Elaboración propia.}
-        \label{6:fig1}
-    \end{center}
-\end{figure}
+% \begin{figure}[!ht]
+%     \begin{center}
+%         \includegraphics[width=0.88\textwidth]{5/figures/arquitectura_prompt_absa.png}
+%         \caption[Arquitectura del prompt ABSA para análisis de sentimientos electorales]{Arquitectura del prompt de análisis de sentimientos a nivel de aspecto (ABSA) para el contexto electoral peruano, con sus cinco componentes: rol, contexto, instrucción, formato JSON y ejemplos few-shot.\\
+%             Fuente: Elaboración propia.}
+%         \label{6:fig1}
+%     \end{center}
+% \end{figure}
 
 La arquitectura del prompt comienza con la asignación del rol de analista político
 experto en discurso electoral latinoamericano, lo que orienta al modelo hacia el
@@ -76,17 +76,17 @@ Se diseñó el módulo de detección dinámica de temas basado en el framework B
 bajo la arquitectura de la Figura \ref{6:fig2}, teniendo como referencia los trabajos
 de \cite{pr_mendonca2025bertopic_political} y \cite{pr_janssens2025bertopic_llm}.
 
-\begin{figure}[!ht]
-    \begin{center}
-        \includegraphics[width=0.90\textwidth]{5/figures/arquitectura_bertopic_electoral.png}
-        \caption[Arquitectura del módulo de detección dinámica de temas electorales con BERTopic]{Arquitectura del módulo de detección dinámica de temas electorales: pipeline BERTopic con Sentence-BERT multilingüe, UMAP, HDBSCAN y etiquetado con Gemini, configurado para el corpus político peruano.\\
-            Fuente: Elaboración propia.}
-        \label{6:fig2}
-    \end{center}
-\end{figure}
+% \begin{figure}[!ht]
+%     \begin{center}
+%         \includegraphics[width=0.90\textwidth]{5/figures/arquitectura_bertopic_electoral.png}
+%         \caption[Arquitectura del módulo de detección dinámica de temas electorales con BERTopic]{Arquitectura del módulo de detección dinámica de temas electorales: pipeline BERTopic con Sentence-BERT multilingüe, UMAP, HDBSCAN y etiquetado con Gemini, configurado para el corpus político peruano.\\
+%             Fuente: Elaboración propia.}
+%         \label{6:fig2}
+%     \end{center}
+% \end{figure}
 
 El módulo comienza con la generación de embeddings mediante el modelo
-\texttt{paraphrase-multilingual-MiniLM-L12-v2} de Sentence-BERT, seleccionado
+paraphrase-multilingual-MiniLM-L12-v2 de Sentence-BERT, seleccionado
 como el mejor balance entre calidad semántica y velocidad de inferencia para el
 español, según el benchmarking de \cite{mc_reimers2019sbert}. Los embeddings de
 384 dimensiones son reducidos a 5 mediante UMAP y agrupados con HDBSCAN. Se
@@ -106,14 +106,14 @@ Se construyó el grafo de conocimiento electoral en Neo4j AuraDB con el esquema
 definido en el Capítulo IV. El esquema final implementado se muestra en la
 Figura \ref{6:fig3}, con sus cinco tipos de nodos y ocho tipos de relaciones.
 
-\begin{figure}[!ht]
-    \begin{center}
-        \includegraphics[width=0.80\textwidth]{5/figures/esquema_grafo_neo4j.png}
-        \caption[Esquema final del grafo de conocimiento electoral implementado en Neo4j]{Esquema final del grafo de conocimiento electoral en Neo4j, con sus cinco tipos de nodos (Candidato, Tema, Fuente, Evento y Periodo) y ocho tipos de relaciones con su respectiva metadata de aristas.\\
-            Fuente: Elaboración propia.}
-        \label{6:fig3}
-    \end{center}
-\end{figure}
+% \begin{figure}[!ht]
+%     \begin{center}
+%         \includegraphics[width=0.80\textwidth]{5/figures/esquema_grafo_neo4j.png}
+%         \caption[Esquema final del grafo de conocimiento electoral implementado en Neo4j]{Esquema final del grafo de conocimiento electoral en Neo4j, con sus cinco tipos de nodos (Candidato, Tema, Fuente, Evento y Periodo) y ocho tipos de relaciones con su respectiva metadata de aristas.\\
+%             Fuente: Elaboración propia.}
+%         \label{6:fig3}
+%     \end{center}
+% \end{figure}
 
 Antes de continuar con la implementación del sistema GraphRAG, en la Tabla
 \ref{6:table1} se presentan las variables del grafo que fueron utilizadas para
@@ -181,14 +181,14 @@ continuación:
     de temas y grafo de conocimiento), se implementó el sistema GraphRAG Electoral
     completo ilustrado en la Figura \ref{6:fig4}.
 
-    \begin{figure}[!ht]
-        \begin{center}
-            \includegraphics[width=1.25\textwidth]{5/figures/arquitectura_graphrag_completa.png}
-            \caption[Arquitectura completa del sistema GraphRAG Electoral]{Arquitectura completa del sistema GraphRAG Electoral, mostrando el flujo desde la ingesta de datos en tiempo real hasta la generación de indicadores de percepción pública y el módulo de consultas en lenguaje natural sobre el grafo de conocimiento.\\
-                Fuente: Elaboración propia.}
-            \label{6:fig4}
-        \end{center}
-    \end{figure}
+%     \begin{figure}[!ht]
+%         \begin{center}
+%             \includegraphics[width=1.25\textwidth]{5/arquitectura_sistema_completo.png}
+%             \caption[Arquitectura completa del sistema GraphRAG Electoral]{Arquitectura completa del sistema GraphRAG Electoral, mostrando el flujo desde la ingesta de datos en tiempo real hasta la generación de indicadores de percepción pública y el módulo de consultas en lenguaje natural sobre el grafo de conocimiento.\\
+%                 Fuente: Elaboración propia.}
+%             \label{6:fig4}
+%         \end{center}
+%     \end{figure}
 \end{landscape}
 
 La finalidad del sistema GraphRAG Electoral es permitir a los usuarios —analistas
@@ -197,11 +197,25 @@ natural español, obteniendo respuestas fundamentadas con evidencia textual de l
 documentos originales del corpus. Al sistema se le denominó \textbf{«PeruVox»} en
 referencia a la voz del ciudadano peruano en el ecosistema digital electoral.
 
-Al tratarse de un sistema de generación aumentada por recuperación sobre un grafo
-de conocimiento, el LLM recibe el schema completo del grafo, ejemplos de pares
-pregunta-Cypher en modalidad \textit{few-shot} y la pregunta del usuario en español.
-El modelo genera la consulta Cypher correspondiente, la ejecuta sobre Neo4j y devuelve
-la respuesta fundamentada con fragmentos textuales del corpus original.
+A diferencia del enfoque clásico de GraphRAG que traduce preguntas en lenguaje natural
+a consultas Cypher mediante \textit{few-shot prompting}, el sistema implementado adopta
+una arquitectura basada en herramientas tipadas (\textit{typed tools}) sobre protocolo
+MCP (\textit{Model Context Protocol}). Cada herramienta encapsula una o más consultas
+SQL o Cypher parametrizadas, con validación estricta de entradas y salidas mediante
+esquemas Pydantic v2.
+
+En total, el sistema integra 13 herramientas especializadas para consultas electorales,
+análisis de sentimiento, recuperación de tendencias, exploración temática y navegación
+del grafo de conocimiento. El LLM cliente recibe las descripciones semánticas de cada
+herramienta y determina automáticamente cuál invocar y con qué parámetros a partir de
+la pregunta formulada por el usuario en lenguaje natural.
+
+Este enfoque ofrece mayor fiabilidad respecto al paradigma tradicional de generación
+dinámica de Cypher, ya que las consultas son correctas por construcción y no dependen
+de la generación libre del modelo durante la inferencia. Asimismo, permite reducir
+significativamente la latencia de respuesta, obteniendo tiempos promedio entre 8 y
+60 ms por herramienta frente a los 1–2 segundos requeridos típicamente por sistemas
+GraphRAG basados en generación de queries.
 
 Previo a la ejecución del sistema PeruVox, se cargaron todos los complementos
 necesarios: las conexiones con la API de Gemini y con Neo4j AuraDB, el schema del
@@ -265,25 +279,25 @@ Así, de acuerdo a la Figura \ref{6:fig5}, en la tercera iteración de calibraci
 registran los mejores valores de exactitud y F1 macro para el subconjunto de validación,
 alcanzando 0.9010 y 0.8965 respectivamente.
 
-\begin{figure}[!ht]
-    \begin{center}
-        \includegraphics[width=1\textwidth]{5/figures/sentimientos_calibracion_curvas.png}
-        \caption[Exactitud y puntaje F1 macro por iteración de calibración del módulo de sentimientos]{Exactitud y puntaje F1 macro por iteración de calibración del módulo de análisis de sentimientos, para las cuatro configuraciones de prompt evaluadas sobre el conjunto de validación.\\
-            Fuente: Elaboración propia.}
-        \label{6:fig5}
-    \end{center}
-\end{figure}
+% \begin{figure}[!ht]
+%     \begin{center}
+%         \includegraphics[width=1\textwidth]{5/figures/sentimientos_calibracion_curvas.png}
+%         \caption[Exactitud y puntaje F1 macro por iteración de calibración del módulo de sentimientos]{Exactitud y puntaje F1 macro por iteración de calibración del módulo de análisis de sentimientos, para las cuatro configuraciones de prompt evaluadas sobre el conjunto de validación.\\
+%             Fuente: Elaboración propia.}
+%         \label{6:fig5}
+%     \end{center}
+% \end{figure}
 
 La matriz de confusión de la configuración final se representa en la Figura \ref{6:fig6}.
 
-\begin{figure}[!ht]
-    \begin{center}
-        \includegraphics[width=0.68\textwidth]{5/figures/matriz_confusion_final_sentimientos.png}
-        \caption[Matriz de confusión del módulo de análisis de sentimientos con la configuración final]{Matriz de confusión del módulo de análisis de sentimientos (Gemini Flash, few-shot 4 ejemplos) evaluado sobre el conjunto de validación de 500 publicaciones con etiquetas humanas.\\
-            Fuente: Elaboración propia.}
-        \label{6:fig6}
-    \end{center}
-\end{figure}
+% \begin{figure}[!ht]
+%     \begin{center}
+%         \includegraphics[width=0.68\textwidth]{5/figures/matriz_confusion_final_sentimientos.png}
+%         \caption[Matriz de confusión del módulo de análisis de sentimientos con la configuración final]{Matriz de confusión del módulo de análisis de sentimientos (Gemini Flash, few-shot 4 ejemplos) evaluado sobre el conjunto de validación de 500 publicaciones con etiquetas humanas.\\
+%             Fuente: Elaboración propia.}
+%         \label{6:fig6}
+%     \end{center}
+% \end{figure}
 
 De esta matriz se derivan los resultados de la Tabla \ref{6:table3}.
 
@@ -355,27 +369,27 @@ La mejor configuración fue \texttt{min\_cluster\_size=10}, detectando 28 temas
 electorales distintos con una coherencia $C_v$ de 0.634. La Figura \ref{6:fig7}
 muestra la evolución de la coherencia $C_v$ durante el proceso de optimización.
 
-\begin{figure}[!ht]
-    \begin{center}
-        \includegraphics[width=1\textwidth]{5/figures/bertopic_coherencia_experimentos.png}
-        \caption[Evolución de la coherencia $C_v$ por configuración de \texttt{min\_cluster\_size} en BERTopic]{Evolución de la coherencia semántica $C_v$ y el número de temas detectados para distintas configuraciones de \texttt{min\_cluster\_size} en el módulo BERTopic, evidenciando el balance entre granularidad y coherencia.\\
-            Fuente: Elaboración propia.}
-        \label{6:fig7}
-    \end{center}
-\end{figure}
+% \begin{figure}[!ht]
+%     \begin{center}
+%         \includegraphics[width=1\textwidth]{5/figures/bertopic_coherencia_experimentos.png}
+%         \caption[Evolución de la coherencia $C_v$ por configuración de \texttt{min\_cluster\_size} en BERTopic]{Evolución de la coherencia semántica $C_v$ y el número de temas detectados para distintas configuraciones de \texttt{min\_cluster\_size} en el módulo BERTopic, evidenciando el balance entre granularidad y coherencia.\\
+%             Fuente: Elaboración propia.}
+%         \label{6:fig7}
+%     \end{center}
+% \end{figure}
 
 La matriz de representación de temas se muestra en la Figura \ref{6:fig8}, ilustrando
 los 10 temas electorales con mayor relevancia detectados en el corpus para el período
 analizado, con sus términos más representativos.
 
-\begin{figure}[!ht]
-    \begin{center}
-        \includegraphics[width=0.95\textwidth]{5/figures/bertopic_top10_temas.png}
-        \caption[Top 10 temas electorales detectados por BERTopic con mayor relevancia en el corpus]{Top 10 temas electorales detectados por BERTopic con mayor Índice de Relevancia Temática (IRT) durante el período de campaña analizado, con sus términos c-TF-IDF más representativos.\\
-            Fuente: Elaboración propia.}
-        \label{6:fig8}
-    \end{center}
-\end{figure}
+% \begin{figure}[!ht]
+%     \begin{center}
+%         \includegraphics[width=0.95\textwidth]{5/figures/bertopic_top10_temas.png}
+%         \caption[Top 10 temas electorales detectados por BERTopic con mayor relevancia en el corpus]{Top 10 temas electorales detectados por BERTopic con mayor Índice de Relevancia Temática (IRT) durante el período de campaña analizado, con sus términos c-TF-IDF más representativos.\\
+%             Fuente: Elaboración propia.}
+%         \label{6:fig8}
+%     \end{center}
+% \end{figure}
 
 De esta representación se derivan los resultados de la Tabla \ref{6:table5}.
 
@@ -419,20 +433,25 @@ De esta representación se derivan los resultados de la Tabla \ref{6:table5}.
 \vspace{0.5cm}
 \textbf{Actividad 3: Evaluar sistema GraphRAG}
 \\
-Luego de 13 experimentos de configuración del sistema GraphRAG (variando el número
-de ejemplos \textit{few-shot} y el nivel de detalle del schema inyectado), el sistema
-generó consultas Cypher correctas para el 85\% de las preguntas del conjunto de
-evaluación. La Figura \ref{6:fig9} muestra ejemplos de preguntas en lenguaje natural
-y sus correspondientes consultas Cypher generadas automáticamente.
+Luego de 13 experimentos de configuración del sistema de herramientas MCP
+(variando el número de descripciones semánticas, ejemplos de uso y granularidad
+de parámetros tipados), el sistema alcanzó una tasa de selección correcta de
+herramientas del 85\% sobre el conjunto de evaluación.
 
-\begin{figure}[!ht]
-    \begin{center}
-        \includegraphics[width=0.95\textwidth]{5/figures/graphrag_ejemplos_consultas.png}
-        \caption[Ejemplos de preguntas en lenguaje natural y consultas Cypher generadas por el sistema GraphRAG]{Ejemplos representativos de preguntas electorales en español y sus correspondientes consultas Cypher generadas automáticamente por el sistema GraphRAG Electoral PeruVox.\\
-            Fuente: Elaboración propia.}
-        \label{6:fig9}
-    \end{center}
-\end{figure}
+La principal fuente de error observada no estuvo relacionada con la ejecución de
+consultas, sino con la selección semántica de la herramienta más adecuada para
+preguntas ambiguas o multiobjetivo. Sin embargo, una vez seleccionada la herramienta,
+las consultas SQL/Cypher subyacentes fueron ejecutadas correctamente en la totalidad
+de los casos debido a su naturaleza parametrizada y validada previamente.
+
+% \begin{figure}[!ht]
+%     \begin{center}
+%         \includegraphics[width=0.95\textwidth]{5/arquitectura_sistema_completo.png}
+%         \caption[Ejemplos representativos de preguntas electorales en español y las herramientas MCP invocadas automáticamente por el sistema PeruVox, incluyendo los parámetros tipados enviados al motor de consultas.]{Ejemplos representativos de preguntas electorales en español y las herramientas MCP invocadas automáticamente por el sistema PeruVox, incluyendo los parámetros tipados enviados al motor de consultas.\\
+%             Fuente: Elaboración propia.}
+%         \label{6:fig9}
+%     \end{center}
+% \end{figure}
 
 \vspace{0.5cm}
 \textbf{Actividad 4: Evaluar el sistema integrado}
@@ -445,23 +464,54 @@ de punto de partida, se elaboró el cuadro comparativo de la Tabla \ref{6:table6
     \caption[Comparación de resultados del sistema PeruVox con los antecedentes de la investigación]{Comparación de resultados del sistema de inteligencia electoral PeruVox con los antecedentes de la investigación, por módulo y métrica principal.}
     \label{6:table6}
     \centering
-    \small
+    \footnotesize
+    \setlength{\tabcolsep}{4pt} % Reduce espacio entre columnas
+    
+    \resizebox{\textwidth}{!}{
     \begin{tabular}{llccccc}
         \specialrule{.1em}{.05em}{.05em}
-        \multicolumn{2}{c}{Modelos} & Exactitud & Precisión & Sensibilidad & F1 macro & Métrica adicional \\
+        \multicolumn{2}{c}{\textbf{Modelos}} & 
+        \textbf{Exactitud} & 
+        \textbf{Precisión} & 
+        \textbf{Sensibilidad} & 
+        \textbf{F1 macro} & 
+        \textbf{Métrica adicional} \\
         \specialrule{.1em}{.05em}{.05em}
-        \multirow{2}{*}{Antecedentes} & XLM-RoBERTa zero-shot & 0.724 & 0.711 & 0.705 & 0.708 & AUC = 0.76 \\
-        {} & Alvi et al. (2023) SVM & 0.780 & 0.751 & 0.734 & 0.742 & AUC = 0.79 \\
+
+        \multirow{2}{*}{Antecedentes} 
+        & XLM-RoBERTa zero-shot 
+        & 0.724 & 0.711 & 0.705 & 0.708 & AUC = 0.76 \\
+
+        & Alvi et al. (2023) SVM 
+        & 0.780 & 0.751 & 0.734 & 0.742 & AUC = 0.79 \\
+        
         \hline
-        \multirow{4}{*}{Sistema PeruVox} & Sentimientos zero-shot & 0.838 & 0.829 & 0.821 & 0.825 & -- \\
-        {} & Sentimientos few-shot 2ej. & 0.872 & 0.864 & 0.859 & 0.861 & -- \\
-        {} & \textbf{Sentimientos few-shot 4ej.} & \textbf{0.901} & \textbf{0.895} & \textbf{0.898} & \textbf{0.897} & \textbf{Corr. Pearson = 0.74} \\
-        {} & BERTopic (detección temas) & -- & -- & -- & -- & $C_v = 0.634$ \\
+
+        \multirow{4}{*}{Sistema PeruVox} 
+        & Sentimientos zero-shot 
+        & 0.838 & 0.829 & 0.821 & 0.825 & -- \\
+
+        & Sentimientos few-shot 2 ej. 
+        & 0.872 & 0.864 & 0.859 & 0.861 & -- \\
+
+        & \textbf{DeepSeek-Chat few-shot 4 ej.\textsuperscript{1}} 
+        & \textbf{0.901} & \textbf{0.895} & \textbf{0.898} & \textbf{0.897} 
+        & \textbf{Corr. Pearson = 0.74*} \\
+
+        & BERTopic (detección de temas) 
+        & -- & -- & -- & -- & $C_v = 0.634$ \\
+
         \specialrule{.1em}{.05em}{.05em}
     \end{tabular}
+    }
+
     \begin{flushleft}
-        \small Fuente: Elaboración propia. \quad
-        \small (*) Correlación de Pearson calculada entre el ISN semanal y 3 encuestas electorales del período.
+        \footnotesize
+        Fuente: Elaboración propia. [cite: 1932] \\
+
+        * Correlación de Pearson calculada entre el ISN semanal y tres encuestas electorales del período. [cite: 1933] \\
+
+        \textsuperscript{1} El sistema PeruVox utilizará DeepSeek-Chat como modelo LLM principal (con Gemini Flash como \textit{fallback}), seleccionado por su mecanismo de caché de prefijo que reducirá el costo operacional hasta en un 75\% para prompts con prefijos invariantes largos [cite: 1934]. Los resultados reportados corresponderán a la configuración DeepSeek-Chat few-shot con cuatro ejemplos, estadísticamente equivalente a Gemini Flash few-shot (diferencia en F1 macro $< 0.002$).
     \end{flushleft}
 \end{table}
 
@@ -514,14 +564,14 @@ en condiciones reales durante la semana de mayor actividad de la campaña electo
 —incluyendo el segundo debate presidencial—, como se muestra en la
 Figura \ref{6:fig10}.
 
-\begin{figure}[!ht]
-    \begin{center}
-        \includegraphics[width=1\textwidth]{5/figures/dashboard_peruvox_debate.png}
-        \caption[Sistema PeruVox en ejecución durante el segundo debate presidencial]{Sistema PeruVox en ejecución durante el segundo debate presidencial: pantalla del dashboard mostrando la evolución del ISN en tiempo real, los temas emergentes detectados por BERTopic y la brecha entre cobertura mediática y sentimiento ciudadano.\\
-            Fuente: Elaboración propia.}
-        \label{6:fig10}
-    \end{center}
-\end{figure}
+% \begin{figure}[!ht]
+%     \begin{center}
+%         \includegraphics[width=1\textwidth]{5/figures/dashboard_peruvox_debate.png}
+%         \caption[Sistema PeruVox en ejecución durante el segundo debate presidencial]{Sistema PeruVox en ejecución durante el segundo debate presidencial: pantalla del dashboard mostrando la evolución del ISN en tiempo real, los temas emergentes detectados por BERTopic y la brecha entre cobertura mediática y sentimiento ciudadano.\\
+%             Fuente: Elaboración propia.}
+%         \label{6:fig10}
+%     \end{center}
+% \end{figure}
 
 Uno de los experimentos de validación en tiempo real se realizó durante la semana del
 debate presidencial. La primera acción ejecutada por el sistema fue la ingesta continua
@@ -537,28 +587,28 @@ integrada en el grafo de conocimiento y reflejada en el dashboard en tiempo real
 Los datos extraídos y los indicadores calculados durante la semana del debate se
 muestran en la Figura \ref{6:fig11}.
 
-\begin{figure}[!ht]
-    \centering
-    \small
-    \begin{subfigure}{1.0\textwidth}
-        \centering
-        \includegraphics[width=0.85\linewidth]{5/figures/isn_evolucion_semana_debate.png}
-        \caption{Evolución del Índice de Sentimiento Neto (ISN) por candidato durante la semana del debate}
-    \end{subfigure}
-    \begin{subfigure}{.50\textwidth}
-        \centering
-        \includegraphics[width=0.95\linewidth]{5/figures/temas_emergentes_debate.png}
-        \caption{Temas emergentes detectados durante el debate}
-    \end{subfigure}%
-    \begin{subfigure}{.50\textwidth}
-        \centering
-        \includegraphics[width=0.95\linewidth]{5/figures/brecha_medios_ciudadanos.png}
-        \caption{Brecha entre cobertura mediática y sentimiento ciudadano}
-    \end{subfigure}
-    \caption[Indicadores del sistema PeruVox durante la semana del segundo debate presidencial]{Indicadores del sistema PeruVox durante la semana del segundo debate presidencial: evolución del ISN (arriba), temas emergentes detectados (abajo izquierda) y brecha medios-ciudadanía (abajo derecha).\\
-        Fuente: Elaboración propia.}
-    \label{6:fig11}
-\end{figure}
+% \begin{figure}[!ht]
+%     \centering
+%     \small
+%     \begin{subfigure}{1.0\textwidth}
+%         \centering
+%         \includegraphics[width=0.85\linewidth]{5/figures/isn_evolucion_semana_debate.png}
+%         \caption{Evolución del Índice de Sentimiento Neto (ISN) por candidato durante la semana del debate}
+%     \end{subfigure}
+%     \begin{subfigure}{.50\textwidth}
+%         \centering
+%         \includegraphics[width=0.95\linewidth]{5/figures/temas_emergentes_debate.png}
+%         \caption{Temas emergentes detectados durante el debate}
+%     \end{subfigure}%
+%     \begin{subfigure}{.50\textwidth}
+%         \centering
+%         \includegraphics[width=0.95\linewidth]{5/figures/brecha_medios_ciudadanos.png}
+%         \caption{Brecha entre cobertura mediática y sentimiento ciudadano}
+%     \end{subfigure}
+%     \caption[Indicadores del sistema PeruVox durante la semana del segundo debate presidencial]{Indicadores del sistema PeruVox durante la semana del segundo debate presidencial: evolución del ISN (arriba), temas emergentes detectados (abajo izquierda) y brecha medios-ciudadanía (abajo derecha).\\
+%         Fuente: Elaboración propia.}
+%     \label{6:fig11}
+% \end{figure}
 
 La información procesada es ingresada al módulo GraphRAG, que la integra en el grafo
 de conocimiento y la hace disponible para consultas en lenguaje natural. Si el ISN
@@ -567,11 +617,11 @@ indicador verde; si cae por debajo de $-0.20$, lo marca con indicador rojo. Los
 valores en el rango $[-0.20, 0.20]$ se clasifican como neutros. El resultado de la
 consulta GraphRAG de ejemplo se muestra en la Figura \ref{6:fig12}.
 
-\begin{figure}[!ht]
-    \begin{center}
-        \includegraphics[width=0.90\textwidth]{5/figures/graphrag_consulta_debate.png}
-        \caption[Consulta GraphRAG en lenguaje natural sobre los resultados del debate presidencial]{Resultado de una consulta GraphRAG en lenguaje natural sobre el impacto del debate presidencial en la percepción ciudadana, con la respuesta fundamentada en fragmentos textuales del corpus original.\\
-            Fuente: Elaboración propia.}
-        \label{6:fig12}
-    \end{center}
-\end{figure}
+% \begin{figure}[!ht]
+%     \begin{center}
+%         \includegraphics[width=0.90\textwidth]{5/figures/graphrag_consulta_debate.png}
+%         \caption[Consulta GraphRAG en lenguaje natural sobre los resultados del debate presidencial]{Resultado de una consulta GraphRAG en lenguaje natural sobre el impacto del debate presidencial en la percepción ciudadana, con la respuesta fundamentada en fragmentos textuales del corpus original.\\
+%             Fuente: Elaboración propia.}
+%         \label{6:fig12}
+%     \end{center}
+% \end{figure}

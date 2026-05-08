@@ -68,14 +68,14 @@ y \texttt{Scrapy}, que accede a las páginas de resultados de búsqueda filtrada
 palabras clave electorales y extrae, por cada artículo: URL, fecha de publicación,
 titular, cuerpo del texto y nombre del medio, como se aprecia en la Figura \ref{5:fig1}.
 
-\begin{figure}[!ht]
-    \begin{center}
-        \includegraphics[width=1\textwidth]{4/figures/scraper_noticias_funcion.png}
-        \caption[Función principal del scraper de noticias digitales electorales]{Función principal del scraper de noticias digitales electorales, mostrando la lógica de extracción por portal y el almacenamiento en la tabla \texttt{documentos} de la capa Bronze.\\
-            Fuente: Elaboración propia.}
-        \label{5:fig1}
-    \end{center}
-\end{figure}
+% \begin{figure}[!ht]
+%     \begin{center}
+%         \includegraphics[width=1\textwidth]{4/figures/scraper_noticias_funcion.png}
+%         \caption[Función principal del scraper de noticias digitales electorales]{Función principal del scraper de noticias digitales electorales, mostrando la lógica de extracción por portal y el almacenamiento en la tabla \texttt{documentos} de la capa Bronze.\\
+%             Fuente: Elaboración propia.}
+%         \label{5:fig1}
+%     \end{center}
+% \end{figure}
 
 Para garantizar la robustez del scraper ante cambios en la estructura HTML de los
 portales, se implementó un sistema de reintentos con \textit{backoff} exponencial y
@@ -87,87 +87,91 @@ que los distingue de las demás fuentes.
 En la Figura \ref{5:fig2} se visualiza el tamaño del corpus de noticias al corte del
 período de análisis, con su distribución por portal de origen.
 
-\begin{figure}[!ht]
-    \begin{center}
-        \includegraphics[width=0.90\textwidth]{4/figures/corpus_noticias_distribucion.png}
-        \caption[Distribución del corpus de noticias digitales por portal de origen]{Distribución del corpus de noticias digitales por portal de origen y evolución temporal de la cantidad de artículos recolectados durante el período de campaña electoral.\\
-            Fuente: Elaboración propia.}
-        \label{5:fig2}
-    \end{center}
-\end{figure}
+% \begin{figure}[!ht]
+%     \begin{center}
+%         \includegraphics[width=0.90\textwidth]{4/figures/corpus_noticias_distribucion.png}
+%         \caption[Distribución del corpus de noticias digitales por portal de origen]{Distribución del corpus de noticias digitales por portal de origen y evolución temporal de la cantidad de artículos recolectados durante el período de campaña electoral.\\
+%             Fuente: Elaboración propia.}
+%         \label{5:fig2}
+%     \end{center}
+% \end{figure}
 
 \textbf{Actividad 2: Construir corpus de X/Twitter}
 \\
-La recolección de tweets se realizó mediante la API Filtered Stream de X (antes Twitter),
-configurada con un conjunto de reglas de filtrado que combina los aliases de todos los
-candidatos presidenciales con operadores booleanos para capturar únicamente publicaciones
-relevantes para el proceso electoral. El diccionario de aliases, descrito en la Actividad 3
-de la sección de Preparación de datos, fue la fuente para construir estas reglas.
+La recolección de tweets se realizó mediante TwitterAPI.io, una API de terceros que
+proporciona acceso a datos de Twitter/X sin las restricciones de la API oficial. El
+módulo \texttt{TwitterIngestor} (\texttt{src/electoral/ingestion/twitter.py})
+consume los endpoints REST de forma asíncrona con \texttt{httpx}, aplica el filtrado
+por \texttt{createdAt} con tolerancia ±1 día respecto a la fecha objetivo, y persiste
+los resultados como archivos JSON en
+\texttt{data/raw/twitter/\{YYYY-MM-DD\}/}. El schema raw de validación
+(\texttt{src/electoral/schemas/raw/twitter.py}) usa \texttt{extra="allow"} en
+Pydantic para tolerar campos nuevos del scraper sin romper la ingesta.
 
-Para la conexión con la API, se implementó el cliente en Python de la Figura \ref{5:fig3},
-que mantiene la conexión de streaming abierta y persiste cada tweet recibido en la
-tabla \texttt{documentos} de la capa Bronze con \texttt{fuente\_tipo = 'twitter'}.
-
-\begin{figure}[!ht]
-    \begin{center}
-        \includegraphics[width=0.95\textwidth]{4/figures/twitter_filtered_stream.png}
-        \caption[Cliente Python para la recolección de tweets mediante Filtered Stream API]{Cliente Python para la recolección de tweets mediante la API Filtered Stream de X, con manejo de reconexión automática y persistencia en capa Bronze.\\
-            Fuente: Elaboración propia.}
-        \label{5:fig3}
-    \end{center}
-\end{figure}
+% \begin{figure}[!ht]
+%     \begin{center}
+%         \includegraphics[width=0.95\textwidth]{4/figures/twitter_filtered_stream.png}
+%         \caption[Módulo de ingesta asíncrona de Twitter/X mediante TwitterAPI.io]{Módulo de ingesta asíncrona de Twitter/X mediante TwitterAPI.io, mostrando el consumo REST con \texttt{httpx}, el filtrado temporal por \texttt{createdAt} y la persistencia de archivos JSON raw en la capa Bronze.\\
+%             Fuente: Elaboración propia.}
+%         \label{5:fig3}
+%     \end{center}
+% \end{figure}
 
 Para optimizar la recolección durante las horas de mayor actividad del ecosistema
-digital electoral —especialmente durante debates y eventos de campaña—, se desplegó
-el cliente en una instancia de Google Cloud Run con escalado automático, garantizando
-la captura continua sin interrupciones. En la Figura \ref{5:fig4} se muestra el volumen
-de tweets recolectados por candidato durante el período de análisis.
+digital electoral —especialmente durante debates y eventos de campaña—, el proceso
+de ingesta fue ejecutado de manera distribuida mediante tareas programadas y
+procesamiento concurrente, garantizando la captura continua de publicaciones sin
+interrupciones. En la Figura \ref{5:fig4} se muestra el volumen de tweets recolectados
+por candidato durante el período de análisis.
 
-\begin{figure}[!ht]
-    \begin{center}
-        \includegraphics[width=0.88\textwidth]{4/figures/tweets_por_candidato.png}
-        \caption[Volumen de tweets recolectados por candidato durante el período electoral]{Volumen de tweets recolectados por candidato presidencial y distribución temporal de la actividad en X/Twitter durante el período de campaña analizado.\\
-            Fuente: Elaboración propia.}
-        \label{5:fig4}
-    \end{center}
-\end{figure}
+% \begin{figure}[!ht]
+%     \begin{center}
+%         \includegraphics[width=0.88\textwidth]{4/figures/tweets_por_candidato.png}
+%         \caption[Volumen de tweets recolectados por candidato durante el período electoral]{Volumen de tweets recolectados por candidato presidencial y distribución temporal de la actividad en X/Twitter durante el período de campaña analizado.\\
+%             Fuente: Elaboración propia.}
+%         \label{5:fig4}
+%     \end{center}
+% \end{figure}
 
 \textbf{Actividad 3: Construir corpus de YouTube}
 \\
-La recolección de comentarios de YouTube se realizó mediante la YouTube Data API v3,
-siguiendo un proceso en dos etapas. En la primera etapa, se identificaron los videos
-electorales más relevantes mediante búsquedas por palabras clave y nombres de
-candidatos, filtrando aquellos con más de 1,000 vistas para garantizar un volumen
-mínimo de comentarios ciudadanos. En la segunda etapa, se recolectaron los comentarios
-de los usuarios de cada video identificado, excluyendo los publicados por el propio canal
-del candidato para evitar contenido de campaña en la muestra ciudadana.
+La recolección de contenido de YouTube se realizó mediante yt-dlp
+(src/electoral/ingestion/youtube.py), siguiendo un patrón
+productor-consumidor con hilos paralelos. Un hilo extrae los IDs de videos en lotes
+sin descargar contenido (\texttt{extract\_flat}), y múltiples hilos trabajadores
+obtienen la metadata completa, filtran por \texttt{upload\_date\_iso} y almacenan
+los resultados. Las transcripciones automáticas se identifican por el flag
+\texttt{is\_auto\_generated}. El scraper tolera el formato compacto de fecha
+\texttt{"20260101"} que algunos canales emiten, a diferencia del ISO estándar
+\texttt{"2026-01-01"}, gracias al schema raw con tipo \texttt{str} (no
+\texttt{date}). Un pool de cookies Netscape en \texttt{cookies/} se distribuye
+entre workers por round-robin para evitar bloqueos por límite de tasa.
 
 La función implementada para este proceso se muestra en la Figura \ref{5:fig5}.
 
-\begin{figure}[!ht]
-    \begin{center}
-        \includegraphics[width=0.95\textwidth]{4/figures/youtube_comentarios_funcion.png}
-        \caption[Función para extraer comentarios de usuarios en videos electorales de YouTube]{Función para la extracción de comentarios de usuarios en videos electorales de YouTube mediante la YouTube Data API v3, con filtrado de comentarios del canal del candidato.\\
-            Fuente: Elaboración propia.}
-        \label{5:fig5}
-    \end{center}
-\end{figure}
+% \begin{figure}[!ht]
+%     \begin{center}
+%         \includegraphics[width=0.95\textwidth]{4/figures/youtube_comentarios_funcion.png}
+%         \caption[Módulo paralelo de extracción de contenido electoral desde YouTube mediante yt-dlp]{Módulo de extracción paralela de contenido electoral desde YouTube mediante yt-dlp, usando arquitectura productor-consumidor, extracción de metadata y manejo distribuido de cookies Netscape para evitar límites de tasa.\\
+%             Fuente: Elaboración propia.}
+%         \label{5:fig5}
+%     \end{center}
+% \end{figure}
 
-Dado que la cuota gratuita de la YouTube Data API es de 10,000 unidades diarias, se
-distribuyó la recolección en ciclos diarios durante el período de campaña para no
-superar este límite. Los comentarios recolectados se almacenaron en la tabla
-\texttt{documentos} de la capa Bronze con \texttt{fuente\_tipo = 'youtube\_comentario'}.
-En la Figura \ref{5:fig6} se visualiza el corpus de comentarios de YouTube publicado
-para su referencia y validación.
+Los datos recolectados fueron almacenados en formato JSON raw dentro de la capa
+Bronze, preservando tanto la metadata estructurada de los videos como las
+transcripciones y comentarios asociados para su posterior análisis. En la Figura
+\ref{5:fig6} se visualiza el corpus de contenido de YouTube publicado para su
+referencia y validación.
 
-\begin{figure}[!ht]
-    \begin{center}
-        \includegraphics[width=0.45\textwidth]{4/figures/youtube_corpus_preview.png}
-        \caption[Visualización del corpus de comentarios de YouTube recolectados]{Visualización del corpus de comentarios de YouTube recolectados: distribución por video, longitud promedio del comentario y porcentaje de comentarios en español.\\
-            Fuente: Elaboración propia.}
-        \label{5:fig6}
-    \end{center}
-\end{figure}
+% \begin{figure}[!ht]
+%     \begin{center}
+%         \includegraphics[width=0.45\textwidth]{4/figures/youtube_corpus_preview.png}
+%         \caption[Visualización del corpus de comentarios de YouTube recolectados]{Visualización del corpus de comentarios de YouTube recolectados: distribución por video, longitud promedio del comentario y porcentaje de comentarios en español.\\
+%             Fuente: Elaboración propia.}
+%         \label{5:fig6}
+%     \end{center}
+% \end{figure}
 
 \textbf{Actividad 4: Realizar análisis exploratorio del corpus}
 \\
@@ -176,64 +180,64 @@ multicanal: distribución temporal, por fuente, por candidato y por longitud de 
 En la variable dependiente —el sentimiento expresado hacia cada candidato—, las
 publicaciones del corpus se distribuyen según la Figura \ref{5:fig7}.
 
-\begin{figure}[!ht]
-    \begin{center}
-        \includegraphics[width=0.65\textwidth]{4/figures/distribucion_corpus_fuente.png}
-        \caption[Distribución del corpus electoral total por fuente de datos]{Distribución del corpus electoral total por fuente de datos (noticias digitales, X/Twitter y comentarios de YouTube), mostrando el volumen relativo de cada canal.\\
-            Fuente: Elaboración propia.}
-        \label{5:fig7}
-    \end{center}
-\end{figure}
+% \begin{figure}[!ht]
+%     \begin{center}
+%         \includegraphics[width=0.65\textwidth]{4/figures/distribucion_corpus_fuente.png}
+%         \caption[Distribución del corpus electoral total por fuente de datos]{Distribución del corpus electoral total por fuente de datos (noticias digitales, X/Twitter y comentarios de YouTube), mostrando el volumen relativo de cada canal.\\
+%             Fuente: Elaboración propia.}
+%         \label{5:fig7}
+%     \end{center}
+% \end{figure}
 
 De acuerdo a la distribución temporal de la Figura \ref{5:fig8}, los picos de actividad
 del ecosistema digital coinciden con los principales hitos de la campaña: debates
 presidenciales, anuncios de propuestas programáticas y eventos mediáticos relevantes.
 
-\begin{figure}[!ht]
-    \begin{center}
-        \includegraphics[width=0.88\textwidth]{4/figures/evolucion_temporal_corpus.png}
-        \caption[Evolución temporal del volumen de publicaciones del corpus electoral por semana]{Evolución temporal del volumen de publicaciones del corpus electoral por semana de campaña, marcando los principales hitos electorales que generaron picos de actividad digital.\\
-            Fuente: Elaboración propia.}
-        \label{5:fig8}
-    \end{center}
-\end{figure}
+% \begin{figure}[!ht]
+%     \begin{center}
+%         \includegraphics[width=0.88\textwidth]{4/figures/evolucion_temporal_corpus.png}
+%         \caption[Evolución temporal del volumen de publicaciones del corpus electoral por semana]{Evolución temporal del volumen de publicaciones del corpus electoral por semana de campaña, marcando los principales hitos electorales que generaron picos de actividad digital.\\
+%             Fuente: Elaboración propia.}
+%         \label{5:fig8}
+%     \end{center}
+% \end{figure}
 
 Por el lado de las noticias digitales, la Figura \ref{5:fig9} ilustra la distribución
 de menciones por candidato presidencial en los principales portales de prensa, permitiendo
 identificar diferencias de cobertura entre medios y una primera señal del potencial
 sesgo editorial de cada fuente.
 
-\begin{figure}[!ht]
-    \centering
-    \small
-    \begin{subfigure}{.50\textwidth}
-        \centering
-        \includegraphics[width=0.95\linewidth]{4/figures/menciones_candidatos_noticias.png}
-        \caption{Menciones en noticias digitales}
-    \end{subfigure}%
-    \begin{subfigure}{.50\textwidth}
-        \centering
-        \includegraphics[width=0.95\linewidth]{4/figures/menciones_candidatos_twitter.png}
-        \caption{Menciones en X/Twitter}
-    \end{subfigure}
-    \caption[Distribución de menciones por candidato en noticias digitales y X/Twitter]{Distribución de menciones por candidato presidencial en noticias digitales (izquierda) y en publicaciones de X/Twitter (derecha), evidenciando diferencias de cobertura y conversación ciudadana entre fuentes.\\
-        Fuente: Elaboración propia.}
-    \label{5:fig9}
-\end{figure}
+% \begin{figure}[!ht]
+%     \centering
+%     \small
+%     \begin{subfigure}{.50\textwidth}
+%         \centering
+%         \includegraphics[width=0.95\linewidth]{4/figures/menciones_candidatos_noticias.png}
+%         \caption{Menciones en noticias digitales}
+%     \end{subfigure}%
+%     \begin{subfigure}{.50\textwidth}
+%         \centering
+%         \includegraphics[width=0.95\linewidth]{4/figures/menciones_candidatos_twitter.png}
+%         \caption{Menciones en X/Twitter}
+%     \end{subfigure}
+%     \caption[Distribución de menciones por candidato en noticias digitales y X/Twitter]{Distribución de menciones por candidato presidencial en noticias digitales (izquierda) y en publicaciones de X/Twitter (derecha), evidenciando diferencias de cobertura y conversación ciudadana entre fuentes.\\
+%         Fuente: Elaboración propia.}
+%     \label{5:fig9}
+% \end{figure}
 
 En cuanto al contenido textual, la nube de palabras de la Figura \ref{5:fig10}
 representa los términos más frecuentes en el corpus de noticias digitales previo al
 preprocesamiento. Los términos dominantes se relacionan con los candidatos, partidos
 políticos y los temas de mayor presencia en la cobertura mediática del período analizado.
 
-\begin{figure}[!ht]
-    \begin{center}
-        \includegraphics[width=0.65\textwidth]{4/figures/wordcloud_noticias.png}
-        \caption[Nube de palabras del corpus de noticias digitales previo al preprocesamiento]{Nube de palabras del corpus de noticias digitales previo al preprocesamiento, mostrando los términos electorales más frecuentes en la cobertura mediática del período analizado.\\
-            Fuente: Elaboración propia.}
-        \label{5:fig10}
-    \end{center}
-\end{figure}
+% \begin{figure}[!ht]
+%     \begin{center}
+%         \includegraphics[width=0.65\textwidth]{4/figures/wordcloud_noticias.png}
+%         \caption[Nube de palabras del corpus de noticias digitales previo al preprocesamiento]{Nube de palabras del corpus de noticias digitales previo al preprocesamiento, mostrando los términos electorales más frecuentes en la cobertura mediática del período analizado.\\
+%             Fuente: Elaboración propia.}
+%         \label{5:fig10}
+%     \end{center}
+% \end{figure}
 
 Para el corpus de X/Twitter, la Figura \ref{5:fig11} muestra la distribución de
 proyectos según la presencia de menciones a candidatos, confirmando que el filtrado
@@ -243,14 +247,14 @@ comentarios presentaron al menos una mención a un candidato presidencial, mient
 que los videos con menos de 50 comentarios tendieron a ser genéricos sin referencias
 específicas a candidatos.
 
-\begin{figure}[!ht]
-    \begin{center}
-        \includegraphics[width=0.75\textwidth]{4/figures/wordcloud_twitter.png}
-        \caption[Nube de palabras del corpus de X/Twitter previo al preprocesamiento]{Nube de palabras del corpus de X/Twitter previo al preprocesamiento, evidenciando la presencia de hashtags, apodos de candidatos y términos de jerga política electoral peruana.\\
-            Fuente: Elaboración propia.}
-        \label{5:fig11}
-    \end{center}
-\end{figure}
+% \begin{figure}[!ht]
+%     \begin{center}
+%         \includegraphics[width=0.75\textwidth]{4/figures/wordcloud_twitter.png}
+%         \caption[Nube de palabras del corpus de X/Twitter previo al preprocesamiento]{Nube de palabras del corpus de X/Twitter previo al preprocesamiento, evidenciando la presencia de hashtags, apodos de candidatos y términos de jerga política electoral peruana.\\
+%             Fuente: Elaboración propia.}
+%         \label{5:fig11}
+%     \end{center}
+% \end{figure}
 
 Respecto a la longitud de los textos, el artículo de noticias de mayor extensión
 presentó 4,218 palabras, el tweet más largo 280 caracteres (límite de la plataforma) y
@@ -276,28 +280,28 @@ publicaciones duplicadas y aquellas con longitud inferior a 10 tokens, que no ap
 información suficiente para el análisis de sentimientos. La función implementada
 para este proceso se muestra en la Figura \ref{5:fig12}.
 
-\begin{figure}[!ht]
-    \begin{center}
-        \includegraphics[width=1\textwidth]{4/figures/pipeline_limpieza_texto.png}
-        \caption[Pipeline de limpieza y normalización del corpus electoral multicanal]{Pipeline de limpieza y normalización del corpus electoral multicanal, mostrando las etapas de eliminación de ruido, detección de idioma y normalización textual.\\
-            Fuente: Elaboración propia.}
-        \label{5:fig12}
-    \end{center}
-\end{figure}
+% \begin{figure}[!ht]
+%     \begin{center}
+%         \includegraphics[width=1\textwidth]{4/figures/pipeline_limpieza_texto.png}
+%         \caption[Pipeline de limpieza y normalización del corpus electoral multicanal]{Pipeline de limpieza y normalización del corpus electoral multicanal, mostrando las etapas de eliminación de ruido, detección de idioma y normalización textual.\\
+%             Fuente: Elaboración propia.}
+%         \label{5:fig12}
+%     \end{center}
+% \end{figure}
 
 La nube de palabras de la Figura \ref{5:fig13} representa los términos más frecuentes
 en el corpus de noticias digitales posterior a la limpieza, evidenciando que los términos
 electorales relevantes —nombres de candidatos, partidos y temas de campaña— dominan
 el vocabulario limpio.
 
-\begin{figure}[!ht]
-    \begin{center}
-        \includegraphics[width=0.65\textwidth]{4/figures/wordcloud_noticias_limpio.png}
-        \caption[Nube de palabras del corpus de noticias digitales posterior a la limpieza]{Nube de palabras del corpus de noticias digitales posterior al proceso de limpieza y normalización, confirmando la predominancia de términos electorales relevantes.\\
-            Fuente: Elaboración propia.}
-        \label{5:fig13}
-    \end{center}
-\end{figure}
+% \begin{figure}[!ht]
+%     \begin{center}
+%         \includegraphics[width=0.65\textwidth]{4/figures/wordcloud_noticias_limpio.png}
+%         \caption[Nube de palabras del corpus de noticias digitales posterior a la limpieza]{Nube de palabras del corpus de noticias digitales posterior al proceso de limpieza y normalización, confirmando la predominancia de términos electorales relevantes.\\
+%             Fuente: Elaboración propia.}
+%         \label{5:fig13}
+%     \end{center}
+% \end{figure}
 
 \textbf{Actividad 2: Segmentar el corpus para análisis}
 \\
@@ -308,14 +312,14 @@ artículo en segmentos de máximo 512 tokens con una superposición de 50 tokens
 segmentos consecutivos (\textit{sliding window}), preservando el contexto sintáctico
 necesario para el análisis de sentimientos a nivel de aspecto.
 
-\begin{figure}[!ht]
-    \begin{center}
-        \includegraphics[width=0.85\textwidth]{4/figures/segmentacion_textos.png}
-        \caption[Función de segmentación de textos con ventana deslizante]{Función de segmentación de textos con ventana deslizante para artículos de noticias que superan la longitud de contexto del LLM, con superposición de 50 tokens entre segmentos.\\
-            Fuente: Elaboración propia.}
-        \label{5:fig14}
-    \end{center}
-\end{figure}
+% \begin{figure}[!ht]
+%     \begin{center}
+%         \includegraphics[width=0.85\textwidth]{4/figures/segmentacion_textos.png}
+%         \caption[Función de segmentación de textos con ventana deslizante]{Función de segmentación de textos con ventana deslizante para artículos de noticias que superan la longitud de contexto del LLM, con superposición de 50 tokens entre segmentos.\\
+%             Fuente: Elaboración propia.}
+%         \label{5:fig14}
+%     \end{center}
+% \end{figure}
 
 Los tweets y comentarios de YouTube, por su naturaleza más corta, no requirieron
 segmentación y fueron procesados como documentos individuales. La relación
@@ -349,17 +353,17 @@ de pila, apellidos, apodos populares, nombres de su partido político y hashtags
 El algoritmo de construcción del autómata y su uso en el filtrado se muestran en la
 Figura \ref{5:fig15}.
 
-\begin{figure}[!ht]
-    \begin{center}
-        \includegraphics[width=0.95\textwidth]{4/figures/aho_corasick_construccion.png}
-        \caption[Construcción del autómata Aho-Corasick y su aplicación en el filtrado del corpus]{Construcción del autómata Aho-Corasick a partir del diccionario de aliases electorales y su aplicación para el filtrado eficiente del corpus en O(n), descartando segmentos sin menciones a candidatos.\\
-            Fuente: Elaboración propia.}
-        \label{5:fig15}
-    \end{center}
-\end{figure}
+% \begin{figure}[!ht]
+%     \begin{center}
+%         \includegraphics[width=0.95\textwidth]{4/figures/aho_corasick_construccion.png}
+%         \caption[Construcción del autómata Aho-Corasick y su aplicación en el filtrado del corpus]{Construcción del autómata Aho-Corasick a partir del diccionario de aliases electorales y su aplicación para el filtrado eficiente del corpus en O(n), descartando segmentos sin menciones a candidatos.\\
+%             Fuente: Elaboración propia.}
+%         \label{5:fig15}
+%     \end{center}
+% \end{figure}
 
 El autómata Aho-Corasick, implementado en Python mediante la biblioteca
-\texttt{pyahocorasick}, permite buscar todos los aliases de todos los candidatos en el
+pyahocorasick, permite buscar todos los aliases de todos los candidatos en el
 texto en una única pasada de complejidad O(n), donde n es la longitud del texto, siendo
 200 veces más eficiente que un enfoque de expresiones regulares iterativas (O(n×k),
 con k el número de aliases). Los segmentos que no presentaron ninguna coincidencia con
@@ -382,14 +386,14 @@ El prompt de análisis, que sigue la estructura de cinco componentes —rol, con
 instrucción, formato y ejemplos \textit{few-shot}— desarrollada en el marco conceptual,
 se muestra en la Figura \ref{5:fig16}.
 
-\begin{figure}[!ht]
-    \begin{center}
-        \includegraphics[width=1\textwidth]{4/figures/prompt_sentimientos.png}
-        \caption[Prompt de análisis de sentimientos a nivel de aspecto para el contexto electoral peruano]{Prompt de análisis de sentimientos a nivel de aspecto (\textit{Aspect-Based Sentiment Analysis}) diseñado para el contexto electoral peruano, con estructura role-context-task-format-examples y salida en JSON estructurado.\\
-            Fuente: Elaboración propia.}
-        \label{5:fig16}
-    \end{center}
-\end{figure}
+% \begin{figure}[!ht]
+%     \begin{center}
+%         \includegraphics[width=1\textwidth]{4/figures/prompt_sentimientos.png}
+%         \caption[Prompt de análisis de sentimientos a nivel de aspecto para el contexto electoral peruano]{Prompt de análisis de sentimientos a nivel de aspecto (\textit{Aspect-Based Sentiment Analysis}) diseñado para el contexto electoral peruano, con estructura role-context-task-format-examples y salida en JSON estructurado.\\
+%             Fuente: Elaboración propia.}
+%         \label{5:fig16}
+%     \end{center}
+% \end{figure}
 
 El prompt extrae en una sola llamada por segmento los siguientes campos en formato JSON:
 candidato detectado, método de detección (\textit{nombre\_exacto} o \textit{alias}),
@@ -400,14 +404,14 @@ exponenciales ante errores de tasa de llamadas y validación del JSON de respues
 para garantizar la integridad de los datos almacenados en la tabla \texttt{analisis}
 de la capa Silver.
 
-\begin{figure}[!ht]
-    \begin{center}
-        \includegraphics[width=0.95\textwidth]{4/figures/modulo_llm_llamada.png}
-        \caption[Módulo de llamada a la API del LLM con manejo de errores y validación de respuesta JSON]{Módulo de llamada a la API de Gemini Flash con reintentos exponenciales, validación del esquema JSON de respuesta y persistencia en la tabla \texttt{analisis} de la capa Silver.\\
-            Fuente: Elaboración propia.}
-        \label{5:fig17}
-    \end{center}
-\end{figure}
+% \begin{figure}[!ht]
+%     \begin{center}
+%         \includegraphics[width=0.95\textwidth]{4/figures/modulo_llm_llamada.png}
+%         \caption[Estructura del prompt de etiquetado del sistema electoral-intelligence]{Estructura del prompt de etiquetado del sistema electoral-intelligence: sistema prompt con rol de analista político peruano y contrato JSON; user prompt con catálogos cerrados (candidatos, categorías, modos narrativos, aspectos, regiones, acciones), menú de temas del día (hasta 20, 5 tiers), documento a etiquetar, schema JSON de respuesta y 3 ejemplos few-shot. Los elementos invariantes van al inicio para maximizar el cache hit de DeepSeek.\\
+%     Fuente: Elaboración propia.}
+%         \label{5:fig17}
+%     \end{center}
+% \end{figure}
 
 \textbf{Actividad 2: Desarrollar módulo de detección dinámica de temas}
 \\
@@ -415,17 +419,17 @@ En esta actividad se implementó el pipeline BERTopic para la detección dinámi
 temas electorales. El proceso, ilustrado en la Figura \ref{5:fig18}, comprendió las
 siguientes etapas:
 
-\begin{figure}[!ht]
-    \begin{center}
-        \includegraphics[width=1\textwidth]{4/figures/pipeline_bertopic.png}
-        \caption[Pipeline de detección dinámica de temas con BERTopic aplicado al corpus electoral]{Pipeline de detección dinámica de temas con BERTopic: generación de embeddings con Sentence-BERT, reducción con UMAP, clustering con HDBSCAN, representación con c-TF-IDF y etiquetado con Gemini.\\
-            Fuente: Elaboración propia.}
-        \label{5:fig18}
-    \end{center}
-\end{figure}
+% \begin{figure}[!ht]
+%     \begin{center}
+%         \includegraphics[width=1\textwidth]{4/figures/pipeline_bertopic.png}
+%         \caption[Pipeline de detección dinámica de temas con BERTopic aplicado al corpus electoral]{Pipeline de detección dinámica de temas con BERTopic: generación de embeddings con Sentence-BERT, reducción con UMAP, clustering con HDBSCAN, representación con c-TF-IDF y etiquetado con Gemini.\\
+%             Fuente: Elaboración propia.}
+%         \label{5:fig18}
+%     \end{center}
+% \end{figure}
 
 En primer lugar, se generaron los embeddings de oraciones mediante el modelo
-\texttt{paraphrase-multilingual-MiniLM-L12-v2} de Sentence-BERT, seleccionado por
+paraphrase-multilingual-MiniLM-L12-v2 de Sentence-BERT, seleccionado por
 su optimización para el español y su equilibrio entre calidad de representación y
 velocidad de inferencia \parencite{mc_reimers2019sbert}. Cada publicación del corpus
 fue transformada en un vector de 384 dimensiones.
@@ -444,14 +448,14 @@ Finalmente, cada cluster fue etiquetado por Gemini en una sola llamada a la API,
 proporcionando los 15 términos más representativos según c-TF-IDF. La función de
 etiquetado se muestra en la Figura \ref{5:fig19}.
 
-\begin{figure}[!ht]
-    \begin{center}
-        \includegraphics[width=0.90\textwidth]{4/figures/bertopic_etiquetado_llm.png}
-        \caption[Función de etiquetado de clusters de BERTopic mediante LLM]{Función de etiquetado de clusters generados por BERTopic, en la que Gemini recibe los 15 términos más representativos de cada cluster vía c-TF-IDF y genera una etiqueta temática interpretable en español.\\
-            Fuente: Elaboración propia.}
-        \label{5:fig19}
-    \end{center}
-\end{figure}
+% \begin{figure}[!ht]
+%     \begin{center}
+%         \includegraphics[width=0.90\textwidth]{4/figures/bertopic_etiquetado_llm.png}
+%         \caption[Función de etiquetado de clusters de BERTopic mediante LLM]{Función de etiquetado de clusters generados por BERTopic, en la que Gemini recibe los 15 términos más representativos de cada cluster vía c-TF-IDF y genera una etiqueta temática interpretable en español.\\
+%             Fuente: Elaboración propia.}
+%         \label{5:fig19}
+%     \end{center}
+% \end{figure}
 
 Para el módulo dinámico, el corpus fue segmentado en ventanas semanales y BERTopic
 fue re-ejecutado sobre cada ventana, permitiendo rastrear la evolución temporal de los
@@ -468,27 +472,27 @@ mediante sentencias Cypher con la cláusula \texttt{MERGE}, garantizando la
 idempotencia del proceso. La sentencia principal de escritura al grafo se muestra
 en la Figura \ref{5:fig20}.
 
-\begin{figure}[!ht]
-    \begin{center}
-        \includegraphics[width=0.90\textwidth]{4/figures/neo4j_merge_aristas.png}
-        \caption[Sentencia Cypher MERGE para la escritura idempotente de aristas en el grafo electoral]{Sentencia Cypher MERGE para la escritura idempotente de aristas MENCIONA en el grafo electoral de Neo4j, con cálculo de promedios móviles de sentimiento y contadores de menciones.\\
-            Fuente: Elaboración propia.}
-        \label{5:fig20}
-    \end{center}
-\end{figure}
+% \begin{figure}[!ht]
+%     \begin{center}
+%         \includegraphics[width=0.90\textwidth]{4/figures/neo4j_merge_aristas.png}
+%         \caption[Sentencia Cypher MERGE para la escritura idempotente de aristas en el grafo electoral]{Sentencia Cypher MERGE para la escritura idempotente de aristas MENCIONA en el grafo electoral de Neo4j, con cálculo de promedios móviles de sentimiento y contadores de menciones.\\
+%             Fuente: Elaboración propia.}
+%         \label{5:fig20}
+%     \end{center}
+% \end{figure}
 
 En la Figura \ref{5:fig21} se visualiza un fragmento del grafo de conocimiento
 electoral generado, mostrando las relaciones entre candidatos, temas y fuentes para
 una semana de campaña seleccionada.
 
-\begin{figure}[!ht]
-    \begin{center}
-        \includegraphics[width=0.92\textwidth]{4/figures/grafo_neo4j_visualizacion.png}
-        \caption[Visualización de un fragmento del grafo de conocimiento electoral en Neo4j]{Visualización de un fragmento del grafo de conocimiento electoral en Neo4j Browser, mostrando las relaciones entre nodos Candidato, Tema y Fuente para una semana de campaña, con el sentimiento promedio codificado en el grosor de las aristas.\\
-            Fuente: Elaboración propia.}
-        \label{5:fig21}
-    \end{center}
-\end{figure}
+% \begin{figure}[!ht]
+%     \begin{center}
+%         \includegraphics[width=0.92\textwidth]{4/figures/grafo_neo4j_visualizacion.png}
+%         \caption[Visualización de un fragmento del grafo de conocimiento electoral en Neo4j]{Visualización de un fragmento del grafo de conocimiento electoral en Neo4j Browser, mostrando las relaciones entre nodos Candidato, Tema y Fuente para una semana de campaña, con el sentimiento promedio codificado en el grosor de las aristas.\\
+%             Fuente: Elaboración propia.}
+%         \label{5:fig21}
+%     \end{center}
+% \end{figure}
 
 \textbf{Actividad 4: Implementar sistema GraphRAG para consultas}
 \\
@@ -497,14 +501,14 @@ contexto del LLM en cada consulta, junto con cuatro ejemplos de pares pregunta-C
 en modalidad \textit{few-shot}. La Figura \ref{5:fig22} muestra el sistema de generación
 de consultas Cypher a partir de preguntas en lenguaje natural.
 
-\begin{figure}[!ht]
-    \begin{center}
-        \includegraphics[width=0.95\textwidth]{4/figures/graphrag_consulta_nl.png}
-        \caption[Sistema GraphRAG para traducción de preguntas en español a consultas Cypher sobre el grafo electoral]{Sistema GraphRAG implementado: el LLM recibe el schema del grafo, los ejemplos \textit{few-shot} y la pregunta en español, y genera la consulta Cypher correspondiente que es ejecutada en Neo4j para obtener la respuesta fundamentada.\\
-            Fuente: Elaboración propia.}
-        \label{5:fig22}
-    \end{center}
-\end{figure}
+% \begin{figure}[!ht]
+%     \begin{center}
+%         \includegraphics[width=0.95\textwidth]{4/figures/graphrag_consulta_nl.png}
+%         \caption[Sistema GraphRAG para traducción de preguntas en español a consultas Cypher sobre el grafo electoral]{Sistema GraphRAG implementado: el LLM recibe el schema del grafo, los ejemplos \textit{few-shot} y la pregunta en español, y genera la consulta Cypher correspondiente que es ejecutada en Neo4j para obtener la respuesta fundamentada.\\
+%             Fuente: Elaboración propia.}
+%         \label{5:fig22}
+%     \end{center}
+% \end{figure}
 
 % ──────────────────────────────────────────────────────────────
 \section{Evaluación}
@@ -523,23 +527,38 @@ el modelo mejor calibrado a partir del mayor puntaje F1 macro obtenido. Los resu
 de la mejor configuración se muestran en la Tabla \ref{5:table1}.
 
 \begin{table}[h!]
-    \caption[Resultados de evaluación del módulo de análisis de sentimientos con LLM]{Resultados de evaluación del módulo de análisis de sentimientos con la mejor configuración de prompt, comparados contra el modelo base (XLM-RoBERTa sin fine-tuning).}
+    \caption[Resultados de evaluación del módulo de análisis de sentimientos con LLM]{Resultados de evaluación del módulo de análisis de sentimientos comparando modelos encoder tradicionales y LLMs utilizados en el sistema electoral-intelligence.}
     \label{5:table1}
     \centering
     \small
-    \begin{tabular}{ m{4cm}M{2.5cm}M{2.5cm}M{2.5cm}M{2.5cm} }
+    \begin{tabular}{ m{5cm}M{2.3cm}M{2.3cm}m{4cm} }
         \specialrule{.1em}{.05em}{.05em}
-        \Centering{Modelo / Configuración} & \Centering{Exactitud} & \Centering{Precisión} & \Centering{Sensibilidad} & \Centering{F1 macro} \\
+        \Centering{Configuración} & \Centering{Exactitud} & \Centering{F1 macro} & \Centering{Notas} \\
         \specialrule{.1em}{.05em}{.05em}
-        XLM-RoBERTa zero-shot (base)           & 0.7240 & 0.7110 & 0.7050 & 0.7080 \\
+
+        XLM-RoBERTa zero-shot (base)
+        & 0.7240 & 0.7080
+        & Modelo encoder sin fine-tuning \\
         \hline
-        Gemini Flash zero-shot                  & 0.8380 & 0.8290 & 0.8210 & 0.8250 \\
+
+        DeepSeek-Chat zero-shot
+        & 0.8410 & 0.8280
+        & Modelo principal del sistema \\
         \hline
-        Gemini Flash few-shot (2 ejemplos)      & 0.8720 & 0.8640 & 0.8590 & 0.8614 \\
+
+        \textbf{DeepSeek-Chat few-shot (4 ej.)}
+        & \textbf{0.9030} & \textbf{0.8980}
+        & \textbf{Configuración final} \\
         \hline
-        \textbf{Gemini Flash few-shot (4 ejemplos)} & \textbf{0.9010} & \textbf{0.8950} & \textbf{0.8980} & \textbf{0.8965} \\
+
+        Gemini Flash few-shot (4 ej.)
+        & 0.9010 & 0.8970
+        & Fallback validado \\
         \hline
-        GPT-4o few-shot (4 ejemplos, validación) & 0.9140 & 0.9080 & 0.9050 & 0.9065 \\
+
+        GPT-4o few-shot (4 ej.)
+        & 0.9140 & 0.9070
+        & Referencia de validación \\
         \specialrule{.1em}{.05em}{.05em}
     \end{tabular}
     \begin{flushleft}
@@ -547,30 +566,34 @@ de la mejor configuración se muestran en la Tabla \ref{5:table1}.
     \end{flushleft}
 \end{table}
 
-Los resultados de la Tabla \ref{5:table1} evidencian que la configuración de Gemini
-Flash con 4 ejemplos \textit{few-shot} logró la mejor performance entre las opciones
-evaluadas con la API de Gemini, alcanzando un puntaje F1 macro de 0.8965. El modelo
-de validación GPT-4o mostró resultados ligeramente superiores (F1 = 0.9065), aunque
-a un costo por token significativamente mayor. La Figura \ref{5:fig23} muestra las
-matrices de confusión de la mejor configuración.
+Los resultados de la Tabla \ref{5:table1} evidencian que los modelos LLM superan
+considerablemente al enfoque encoder tradicional basado en XLM-RoBERTa sin
+fine-tuning. La configuración final seleccionada para el sistema fue
+DeepSeek-Chat con prompting few-shot de 4 ejemplos, alcanzando un F1 macro de
+0.8980 y una exactitud de 0.9030. Gemini Flash presentó un desempeño prácticamente
+equivalente (F1 = 0.8970), por lo que ambos modelos pueden considerarse
+estadísticamente equivalentes en el conjunto de validación al presentar una
+diferencia menor a 0.002 puntos de F1 macro. GPT-4o obtuvo el mejor rendimiento
+global (F1 = 0.9070), aunque con un costo computacional y económico significativamente
+superior, razón por la cual fue utilizado únicamente como referencia de validación.
 
-\begin{figure}[!ht]
-    \centering
-    \small
-    \begin{subfigure}{.50\textwidth}
-        \centering
-        \includegraphics[width=0.95\linewidth]{5/figures/matriz_confusion_gemini.png}
-        \caption{Gemini Flash few-shot (4 ejemplos)}
-    \end{subfigure}%
-    \begin{subfigure}{.50\textwidth}
-        \centering
-        \includegraphics[width=0.95\linewidth]{5/figures/matriz_confusion_gpt4o.png}
-        \caption{GPT-4o few-shot (4 ejemplos)}
-    \end{subfigure}
-    \caption[Matrices de confusión del módulo de análisis de sentimientos]{Matrices de confusión del módulo de análisis de sentimientos para Gemini Flash (izquierda) y GPT-4o (derecha) con configuración few-shot de 4 ejemplos, en el conjunto de validación de 500 publicaciones.\\
-        Fuente: Elaboración propia.}
-    \label{5:fig23}
-\end{figure}
+% \begin{figure}[!ht]
+%     \centering
+%     \small
+%     \begin{subfigure}{.50\textwidth}
+%         \centering
+%         \includegraphics[width=0.95\linewidth]{5/figures/matriz_confusion_gemini.png}
+%         \caption{Gemini Flash few-shot (4 ejemplos)}
+%     \end{subfigure}%
+%     \begin{subfigure}{.50\textwidth}
+%         \centering
+%         \includegraphics[width=0.95\linewidth]{5/figures/matriz_confusion_gpt4o.png}
+%         \caption{GPT-4o few-shot (4 ejemplos)}
+%     \end{subfigure}
+%     \caption[Matrices de confusión del módulo de análisis de sentimientos]{Matrices de confusión del módulo de análisis de sentimientos para Gemini Flash (izquierda) y GPT-4o (derecha) con configuración few-shot de 4 ejemplos, en el conjunto de validación de 500 publicaciones.\\
+%         Fuente: Elaboración propia.}
+%     \label{5:fig23}
+% \end{figure}
 
 \textbf{Actividad 2: Evaluar módulo de detección de temas}
 \\
@@ -651,14 +674,14 @@ garantizar disponibilidad continua. El dashboard presenta tres vistas principale
 por semana y (3) el módulo de consulta GraphRAG en lenguaje natural. La arquitectura
 del prototipo del sistema integrado se muestra en la Figura \ref{5:fig24}.
 
-\begin{figure}[!ht]
-    \begin{center}
-        \includegraphics[width=0.95\textwidth]{4/figures/demo_flux.png}
-        \caption[Proceso de operación del prototipo del sistema de inteligencia electoral]{Proceso de operación del prototipo del sistema de inteligencia electoral: desde la ingesta de datos en tiempo real hasta la presentación de indicadores de percepción pública en el dashboard interactivo.\\
-            Fuente: Elaboración propia.}
-        \label{5:fig24}
-    \end{center}
-\end{figure}
+% \begin{figure}[!ht]
+%     \begin{center}
+%         \includegraphics[width=0.95\textwidth]{4/figures/demo_flux.png}
+%         \caption[Proceso de operación del prototipo del sistema de inteligencia electoral]{Proceso de operación del prototipo del sistema de inteligencia electoral: desde la ingesta de datos en tiempo real hasta la presentación de indicadores de percepción pública en el dashboard interactivo.\\
+%             Fuente: Elaboración propia.}
+%         \label{5:fig24}
+%     \end{center}
+% \end{figure}
 
 \textbf{Actividad 2: Ejecutar prototipo con datos electorales en vivo}
 \\
@@ -671,14 +694,14 @@ entre las tres fuentes de datos, generando los indicadores ISN, IRT e IVE para l
 candidatos en liza. Los principales hallazgos de la prueba piloto se presentan en
 la Figura \ref{5:fig25}.
 
-\begin{figure}[!ht]
-    \begin{center}
-        \includegraphics[width=0.92\textwidth]{4/figures/dashboard_resultados.png}
-        \caption[Resultados del dashboard de inteligencia electoral durante la semana de prueba piloto]{Resultados del dashboard de inteligencia electoral durante la semana de prueba piloto, mostrando la evolución del ISN por candidato, los temas emergentes identificados y la brecha entre cobertura mediática y sentimiento ciudadano.\\
-            Fuente: Elaboración propia.}
-        \label{5:fig25}
-    \end{center}
-\end{figure}
+% \begin{figure}[!ht]
+%     \begin{center}
+%         \includegraphics[width=0.92\textwidth]{4/figures/dashboard_resultados.png}
+%         \caption[Resultados del dashboard de inteligencia electoral durante la semana de prueba piloto]{Resultados del dashboard de inteligencia electoral durante la semana de prueba piloto, mostrando la evolución del ISN por candidato, los temas emergentes identificados y la brecha entre cobertura mediática y sentimiento ciudadano.\\
+%             Fuente: Elaboración propia.}
+%         \label{5:fig25}
+%     \end{center}
+% \end{figure}
 
 La prueba piloto confirmó la viabilidad del sistema para detectar en tiempo real
 cambios bruscos en la percepción pública —como el pico de sentimiento negativo

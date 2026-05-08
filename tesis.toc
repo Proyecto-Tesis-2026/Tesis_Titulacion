@@ -1,0 +1,133 @@
+\babel@toc {spanish}{}\relax 
+\contentsline {chapter}{Resumen}{1}{chapter*.6}%
+\contentsline {chapter}{Introducción}{3}{chapter*.8}%
+\contentsline {chapter}{\numberline {I}Planteamiento del Problema}{5}{chapter.1}%
+\contentsline {section}{\numberline {1.1}Descripción de la Realidad Problemática}{5}{section.1.1}%
+\contentsline {section}{\numberline {1.2}Formulación del Problema}{7}{section.1.2}%
+\contentsline {subsection}{\numberline {1.2.1}Problema General}{7}{subsection.1.2.1}%
+\contentsline {subsection}{\numberline {1.2.2}Problemas Específicos}{7}{subsection.1.2.2}%
+\contentsline {section}{\numberline {1.3}Objetivos de la Investigación}{8}{section.1.3}%
+\contentsline {subsection}{\numberline {1.3.1}Objetivo General}{8}{subsection.1.3.1}%
+\contentsline {subsection}{\numberline {1.3.2}Objetivos Específicos}{8}{subsection.1.3.2}%
+\contentsline {section}{\numberline {1.4}Hipótesis}{8}{section.1.4}%
+\contentsline {subsection}{\numberline {1.4.1}Hipótesis General}{8}{subsection.1.4.1}%
+\contentsline {subsection}{\numberline {1.4.2}Hipótesis Específicas}{8}{subsection.1.4.2}%
+\contentsline {section}{\numberline {1.5}Justificación de la Investigación}{9}{section.1.5}%
+\contentsline {subsection}{\numberline {1.5.1}Teórica}{9}{subsection.1.5.1}%
+\contentsline {subsection}{\numberline {1.5.2}Práctica}{9}{subsection.1.5.2}%
+\contentsline {subsection}{\numberline {1.5.3}Metodológica}{10}{subsection.1.5.3}%
+\contentsline {section}{\numberline {1.6}Delimitación del Estudio}{11}{section.1.6}%
+\contentsline {subsection}{\numberline {1.6.1}Espacial}{11}{subsection.1.6.1}%
+\contentsline {subsection}{\numberline {1.6.2}Temporal}{11}{subsection.1.6.2}%
+\contentsline {subsection}{\numberline {1.6.3}Conceptual}{11}{subsection.1.6.3}%
+\contentsline {chapter}{\numberline {II}Marco Teórico}{12}{chapter.2}%
+\contentsline {section}{\numberline {2.1}Antecedentes de la investigación}{12}{section.2.1}%
+\contentsline {section}{\numberline {2.2}Bases Teóricas}{20}{section.2.2}%
+\contentsline {subsection}{\numberline {2.2.1}Inteligencia Artificial}{20}{subsection.2.2.1}%
+\contentsline {subsection}{\numberline {2.2.2}Aprendizaje Automático}{22}{subsection.2.2.2}%
+\contentsline {subsection}{\numberline {2.2.3}Aprendizaje Profundo}{22}{subsection.2.2.3}%
+\contentsline {subsection}{\numberline {2.2.4}Procesamiento del Lenguaje Natural}{23}{subsection.2.2.4}%
+\contentsline {subsubsection}{\numberline {2.2.4.1}Representación Vectorial del Texto}{23}{subsubsection.2.2.4.1}%
+\contentsline {subsection}{\numberline {2.2.5}La Arquitectura Transformer}{24}{subsection.2.2.5}%
+\contentsline {subsubsection}{\numberline {2.2.5.1}Mecanismo de Atención}{24}{subsubsection.2.2.5.1}%
+\contentsline {subsubsection}{\numberline {2.2.5.2}Arquitectura Encoder-Decoder}{25}{subsubsection.2.2.5.2}%
+\contentsline {subsection}{\numberline {2.2.6}Modelos de Lenguaje de Gran Escala (LLMs)}{25}{subsection.2.2.6}%
+\contentsline {subsubsection}{\numberline {2.2.6.1}Pre-entrenamiento y Ajuste Fino}{26}{subsubsection.2.2.6.1}%
+\contentsline {subsubsection}{\numberline {2.2.6.2}Aprendizaje por Contexto: Zero-shot y Few-shot}{27}{subsubsection.2.2.6.2}%
+\contentsline {subsubsection}{\numberline {2.2.6.3}Modelos LLM Relevantes para la Investigación}{27}{subsubsection.2.2.6.3}%
+\contentsline {subsection}{\numberline {2.2.7}Análisis de Sentimientos}{29}{subsection.2.2.7}%
+\contentsline {subsubsection}{\numberline {2.2.7.1}Niveles de Análisis}{30}{subsubsection.2.2.7.1}%
+\contentsline {subsubsection}{\numberline {2.2.7.2}Enfoques Metodológicos}{30}{subsubsection.2.2.7.2}%
+\contentsline {subsubsection}{\numberline {2.2.7.3}Desafíos en el Análisis de Sentimientos Político}{32}{subsubsection.2.2.7.3}%
+\contentsline {subsection}{\numberline {2.2.8}Detección Dinámica de Temas}{32}{subsection.2.2.8}%
+\contentsline {subsubsection}{\numberline {2.2.8.1}Modelos Probabilísticos: LDA}{32}{subsubsection.2.2.8.1}%
+\contentsline {subsubsection}{\numberline {2.2.8.2}BERTopic: Modelado de Temas Neural}{32}{subsubsection.2.2.8.2}%
+\contentsline {subsubsection}{\numberline {2.2.8.3}Detección Dinámica de Temas}{34}{subsubsection.2.2.8.3}%
+\contentsline {subsection}{\numberline {2.2.9}Ingeniería de Prompts}{34}{subsection.2.2.9}%
+\contentsline {subsubsection}{\numberline {2.2.9.1}Principales Técnicas}{35}{subsubsection.2.2.9.1}%
+\contentsline {subsubsection}{\numberline {2.2.9.2}Salida Estructurada mediante JSON}{36}{subsubsection.2.2.9.2}%
+\contentsline {subsection}{\numberline {2.2.10}Ecosistemas Digitales y Redes Sociales como Fuente de Datos}{37}{subsection.2.2.10}%
+\contentsline {subsubsection}{\numberline {2.2.10.1}Recolección y Procesamiento de Datos de Redes Sociales}{37}{subsubsection.2.2.10.1}%
+\contentsline {subsubsection}{\numberline {2.2.10.2}Detección de Desinformación en Ecosistemas Digitales}{38}{subsubsection.2.2.10.2}%
+\contentsline {subsection}{\numberline {2.2.11}Inteligencia Electoral}{38}{subsection.2.2.11}%
+\contentsline {subsubsection}{\numberline {2.2.11.1}Medición de la Percepción Pública Nacional}{39}{subsubsection.2.2.11.1}%
+\contentsline {subsection}{\numberline {2.2.12}Arquitectura Medallion para Pipelines de Datos}{40}{subsection.2.2.12}%
+\contentsline {subsection}{\numberline {2.2.13}Bases de Datos Vectoriales y pgvector}{41}{subsection.2.2.13}%
+\contentsline {subsection}{\numberline {2.2.14}Model Context Protocol (MCP)}{42}{subsection.2.2.14}%
+\contentsline {subsection}{\numberline {2.2.15}Deduplicación Semántica de Entidades}{42}{subsection.2.2.15}%
+\contentsline {section}{\numberline {2.3}Marco Conceptual}{43}{section.2.3}%
+\contentsline {subsection}{\numberline {2.3.1}Ecosistema Digital Electoral}{43}{subsection.2.3.1}%
+\contentsline {subsection}{\numberline {2.3.2}Percepción Pública}{43}{subsection.2.3.2}%
+\contentsline {subsection}{\numberline {2.3.3}Minería de Sentimientos}{44}{subsection.2.3.3}%
+\contentsline {subsection}{\numberline {2.3.4}Tema Relevante}{44}{subsection.2.3.4}%
+\contentsline {subsection}{\numberline {2.3.5}Detección Dinámica de Temas}{45}{subsection.2.3.5}%
+\contentsline {subsection}{\numberline {2.3.6}Corpus}{46}{subsection.2.3.6}%
+\contentsline {subsection}{\numberline {2.3.7}Token y Tokenización}{47}{subsection.2.3.7}%
+\contentsline {subsection}{\numberline {2.3.8}Embedding o Incrustación Semántica}{47}{subsection.2.3.8}%
+\contentsline {subsection}{\numberline {2.3.9}Prompt}{48}{subsection.2.3.9}%
+\contentsline {subsection}{\numberline {2.3.10}Polaridad}{49}{subsection.2.3.10}%
+\contentsline {subsection}{\numberline {2.3.11}Desinformación Electoral}{50}{subsection.2.3.11}%
+\contentsline {subsection}{\numberline {2.3.12}Polarización Política Digital}{50}{subsection.2.3.12}%
+\contentsline {subsection}{\numberline {2.3.13}Monitoreo en Tiempo Real}{51}{subsection.2.3.13}%
+\contentsline {subsection}{\numberline {2.3.14}Indicadores de Percepción Electoral}{52}{subsection.2.3.14}%
+\contentsline {chapter}{\numberline {III}Entorno Empresarial}{53}{chapter.3}%
+\contentsline {section}{\numberline {3.1}Descripción del contexto de aplicación}{53}{section.3.1}%
+\contentsline {subsection}{\numberline {3.1.1}Reseña histórica y actividad}{53}{subsection.3.1.1}%
+\contentsline {subsection}{\numberline {3.1.2}Descripción de la organización}{53}{subsection.3.1.2}%
+\contentsline {subsubsection}{\numberline {3.1.2.1}Organigrama del equipo de investigación aplicada}{53}{subsubsection.3.1.2.1}%
+\contentsline {subsubsection}{\numberline {3.1.2.2}Ecosistema de datos y fuentes de información}{55}{subsubsection.3.1.2.2}%
+\contentsline {section}{\numberline {3.2}Datos generales estratégicos}{55}{section.3.2}%
+\contentsline {subsection}{\numberline {3.2.1}Visión, misión y objetivos del sistema}{55}{subsection.3.2.1}%
+\contentsline {subsubsection}{\numberline {3.2.1.1}Visión del sistema}{55}{subsubsection.3.2.1.1}%
+\contentsline {subsubsection}{\numberline {3.2.1.2}Misión del sistema}{55}{subsubsection.3.2.1.2}%
+\contentsline {subsubsection}{\numberline {3.2.1.3}Valores y principios de diseño}{56}{subsubsection.3.2.1.3}%
+\contentsline {subsection}{\numberline {3.2.2}Objetivos estratégicos del sistema}{56}{subsection.3.2.2}%
+\contentsline {subsection}{\numberline {3.2.3}Evaluación interna y externa. FODA}{57}{subsection.3.2.3}%
+\contentsline {section}{\numberline {3.3}Modelo de negocio actual (CANVAS)}{58}{section.3.3}%
+\contentsline {section}{\numberline {3.4}Mapa de procesos actual}{59}{section.3.4}%
+\contentsline {subsection}{\numberline {3.4.1}Descripción de los procesos}{59}{subsection.3.4.1}%
+\contentsline {chapter}{\numberline {IV}Metodología de la Investigación}{62}{chapter.4}%
+\contentsline {section}{\numberline {4.1}Diseño de la investigación}{62}{section.4.1}%
+\contentsline {subsection}{\numberline {4.1.1}Tipo de la investigación}{62}{subsection.4.1.1}%
+\contentsline {subsection}{\numberline {4.1.2}Enfoque de la investigación}{62}{subsection.4.1.2}%
+\contentsline {subsection}{\numberline {4.1.3}Población}{62}{subsection.4.1.3}%
+\contentsline {subsection}{\numberline {4.1.4}Muestra}{62}{subsection.4.1.4}%
+\contentsline {subsection}{\numberline {4.1.5}Operacionalización de variables}{63}{subsection.4.1.5}%
+\contentsline {section}{\numberline {4.2}Técnicas de recolección de datos}{64}{section.4.2}%
+\contentsline {section}{\numberline {4.3}Técnicas para el procesamiento y análisis de la información}{65}{section.4.3}%
+\contentsline {subsection}{\numberline {4.3.1}Metodología de implementación de la solución}{65}{subsection.4.3.1}%
+\contentsline {subsubsection}{\numberline {4.3.1.1}Entendimiento del negocio}{68}{subsubsection.4.3.1.1}%
+\contentsline {subsubsection}{\numberline {4.3.1.2}Análisis de los datos}{70}{subsubsection.4.3.1.2}%
+\contentsline {subsubsection}{\numberline {4.3.1.3}Preparación de la información}{74}{subsubsection.4.3.1.3}%
+\contentsline {subsubsection}{\numberline {4.3.1.4}Construcción del modelo}{76}{subsubsection.4.3.1.4}%
+\contentsline {subsubsection}{\numberline {4.3.1.5}Validación}{80}{subsubsection.4.3.1.5}%
+\contentsline {subsubsection}{\numberline {4.3.1.6}Implementación}{81}{subsubsection.4.3.1.6}%
+\contentsline {subsection}{\numberline {4.3.2}Metodología para la medición de resultados}{82}{subsection.4.3.2}%
+\contentsline {section}{\numberline {4.4}Cronograma de actividades y presupuesto}{85}{section.4.4}%
+\contentsline {chapter}{\numberline {V}Desarrollo del Experimento}{87}{chapter.5}%
+\contentsline {section}{\numberline {5.1}Comprensión del negocio}{87}{section.5.1}%
+\contentsline {section}{\numberline {5.2}Comprensión de los datos}{88}{section.5.2}%
+\contentsline {section}{\numberline {5.3}Preparación de los datos}{90}{section.5.3}%
+\contentsline {section}{\numberline {5.4}Modelamiento}{91}{section.5.4}%
+\contentsline {section}{\numberline {5.5}Evaluación}{93}{section.5.5}%
+\contentsline {section}{\numberline {5.6}Despliegue}{95}{section.5.6}%
+\contentsline {chapter}{\numberline {VI}Análisis y Discusión de Resultados}{96}{chapter.6}%
+\contentsline {section}{\numberline {6.1}Modelamiento}{96}{section.6.1}%
+\contentsline {section}{\numberline {6.2}Evaluación}{100}{section.6.2}%
+\contentsline {section}{\numberline {6.3}Despliegue}{105}{section.6.3}%
+\contentsline {chapter}{\numberline {VII}Conclusiones y Recomendaciones}{107}{chapter.7}%
+\contentsline {section}{\numberline {7.1}Conclusiones}{107}{section.7.1}%
+\contentsline {section}{\numberline {7.2}Recomendaciones}{109}{section.7.2}%
+\contentsline {chapter}{Referencias}{111}{chapter*.69}%
+\contentsline {chapter}{Anexos}{115}{section*.70}%
+\contentsline {section}{\numberline {A}Árbol de Problemas}{116}{section.Alph0.1}%
+\contentsline {section}{\numberline {B}Árbol de Objetivos}{117}{section.Alph0.2}%
+\contentsline {section}{\numberline {C}Matriz de Consistencia}{118}{section.Alph0.3}%
+\contentsline {section}{\numberline {D}Configuración de Parámetros del Módulo ABSA con LLM}{120}{section.Alph0.4}%
+\contentsline {section}{\numberline {E}Configuración de Parámetros del Módulo BERTopic}{121}{section.Alph0.5}%
+\contentsline {section}{\numberline {F}Esquema del Grafo de Conocimiento Electoral en Neo4j}{122}{section.Alph0.6}%
+\contentsline {section}{\numberline {G}Diccionario de Palabras Clave Electorales}{123}{section.Alph0.7}%
+\contentsline {section}{\numberline {H}Métodos Estadísticos para Validación de Modelos}{124}{section.Alph0.8}%
+\contentsline {subsection}{\numberline {0.8.1}Métricas de Desempeño para ABSA}{124}{subsection.Alph0.8.1}%
+\contentsline {subsection}{\numberline {0.8.2}Métricas de Coherencia Temática para BERTopic}{124}{subsection.Alph0.8.2}%
+\contentsline {section}{\numberline {I}Timeline Experimental de CRISP-DM}{125}{section.Alph0.9}%
