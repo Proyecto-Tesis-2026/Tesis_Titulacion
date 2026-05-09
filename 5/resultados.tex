@@ -589,28 +589,38 @@ Como se observa en la Tabla \ref{6:table6}, el sistema PeruVox logró:
 \section{Despliegue}
 % ──────────────────────────────────────────────────────────────
 
-\textbf{Actividad 1: Diseñar dashboard de visualización del sistema PeruVox}
+\textbf{Actividad 1: Desplegar el servidor MCP del sistema PeruVox}
 \\
-La última fase de la metodología CRISP-DM comienza con el diseño del dashboard
-interactivo del sistema de inteligencia electoral PeruVox, que integra los indicadores
-de percepción pública, los temas emergentes y el módulo de consulta GraphRAG en
-una única interfaz accesible para analistas políticos y periodistas.
+La última fase de la metodología CRISP-DM comienza con el despliegue del servidor
+MCP (\textit{Model Context Protocol}) del sistema de inteligencia electoral
+PeruVox, que integra los indicadores de percepción pública, los temas emergentes y
+el módulo de consulta GraphRAG mediante 13 herramientas tipadas accesibles desde
+clientes MCP estándar (Claude Desktop, Claude.ai web o Cursor) por analistas
+políticos y periodistas.
 
-Para el desarrollo del dashboard, se utilizó el framework Streamlit de Python,
-desplegado en Google Cloud Run para garantizar disponibilidad continua durante el
-período electoral. Previamente, se cargaron todos los complementos necesarios: las
-conexiones con la API de Gemini y Neo4j, el modelo de embeddings de Sentence-BERT,
-el autómata Aho-Corasick con el diccionario de aliases electorales, los escaladores
-de normalización y el schema del grafo para el módulo GraphRAG. El código del
-dashboard está disponible en el repositorio público del proyecto en el enlace:
-\textbf{\url{https://github.com/tesis-electoral-llm/peruvox-dashboard}}
+Para el desarrollo del servidor se utilizó \texttt{FastMCP 3.2.4} sobre transporte
+\texttt{streamable-http} en una aplicación \texttt{Starlette} servida con
+\texttt{uvicorn}, desplegada en contenedor Docker dentro de la misma red local que
+PostgreSQL y Neo4j (sin servicios cloud gestionados). Previamente, se cargaron
+todos los complementos necesarios: las conexiones con PostgreSQL (\textit{pool}
+\texttt{asyncpg}) y Neo4j (\textit{driver async}), el modelo de \textit{embeddings}
+\texttt{paraphrase-multilingual-mpnet-base-v2} de Sentence-BERT como
+\textit{singleton} en proceso, el catálogo de candidatos y aliases con
+\textit{matching} por substring \textit{case-insensitive}, los escaladores de
+normalización y los archivos planos de \textit{queries} SQL/Cypher parametrizadas
+del módulo GraphRAG. El código del servidor MCP y del pipeline está disponible en
+los repositorios públicos del proyecto:
+\textbf{\url{https://github.com/Proyecto-Tesis-2026/electoral-intelligence}} (pipeline
+\textit{upstream}) y \textbf{\url{https://github.com/Proyecto-Tesis-2026/electoral-mcp}}
+(servidor MCP). Para presentaciones remotas, el servidor se expone vía
+\texttt{cloudflared tunnel} sobre HTTPS efímero.
 
 \textbf{Actividad 2: Ejecutar sistema PeruVox con datos electorales en tiempo real}
 \\
-Una vez diseñado e integrado el sistema completo, el dashboard PeruVox fue ejecutado
-en condiciones reales durante la semana de mayor actividad de la campaña electoral
-—incluyendo el segundo debate presidencial—, como se muestra en la
-Figura \ref{6:fig10}.
+Una vez desplegado e integrado el sistema completo, el servidor PeruVox fue
+ejecutado en condiciones reales durante la semana de mayor actividad de la
+campaña electoral —incluyendo el segundo debate presidencial—, como se muestra en
+la Figura \ref{6:fig10}.
 
 % \begin{figure}[!ht]
 %     \begin{center}
@@ -621,17 +631,21 @@ Figura \ref{6:fig10}.
 %     \end{center}
 % \end{figure}
 
-Uno de los experimentos de validación en tiempo real se realizó durante la semana del
-debate presidencial. La primera acción ejecutada por el sistema fue la ingesta continua
-de publicaciones de las tres fuentes de datos (noticias digitales, X/Twitter y
-comentarios de YouTube) mediante el pipeline de streaming, con el filtrado
-Aho-Corasick activo para descartar en tiempo real las publicaciones que no mencionaban
-a ningún candidato. Durante el debate, el sistema registró un pico de ingesta de más
-de 3,200 publicaciones por minuto en X/Twitter, todas procesadas sin interrupción
-del servicio gracias al escalado automático de Google Cloud Run.
+Uno de los experimentos de validación se realizó durante la semana del debate
+presidencial. La primera acción ejecutada por el sistema fue la ingesta diaria de
+publicaciones de las cuatro fuentes de datos (noticias digitales, X/Twitter,
+YouTube y TikTok) mediante el orquestador de ocho pasos del pipeline
+(\texttt{ingest, embed, label, consolidate, llm\_dedup, load\_silver, build\_graph,
+refresh\_gold}), con la cascada de filtros pre-LLM por catálogos YAML activa para
+descartar publicaciones que no mencionaran a ningún candidato. La concurrencia
+intra-\textit{batch} de \texttt{BATCH\_SIZE=5} llamadas LLM en paralelo mediante
+\texttt{asyncio.gather} permite procesar el día del debate sin interrupción,
+incluso durante picos de actividad estimados en 500--800 publicaciones por minuto
+en X/Twitter.
 
 La información extraída de cada fuente es procesada por el módulo de análisis LLM,
-integrada en el grafo de conocimiento y reflejada en el dashboard en tiempo real.
+integrada en el grafo de conocimiento y consultable en tiempo real desde un cliente
+MCP a través de las 13 herramientas tipadas del servidor.
 Los datos extraídos y los indicadores calculados durante la semana del debate se
 muestran en la Figura \ref{6:fig11}.
 
@@ -660,8 +674,8 @@ muestran en la Figura \ref{6:fig11}.
 
 La información procesada es ingresada al módulo GraphRAG, que la integra en el grafo
 de conocimiento y la hace disponible para consultas en lenguaje natural. Si el ISN
-supera el umbral positivo de $+0.20$ para un candidato, el dashboard lo marca con
-indicador verde; si cae por debajo de $-0.20$, lo marca con indicador rojo. Los
+supera el umbral positivo de $+0.20$ para un candidato, la respuesta del cliente MCP
+incluye un indicador verde; si cae por debajo de $-0.20$, un indicador rojo. Los
 valores en el rango $[-0.20, 0.20]$ se clasifican como neutros. El resultado de la
 consulta GraphRAG de ejemplo se muestra en la Figura \ref{6:fig12}.
 
