@@ -79,23 +79,38 @@ Seguridad ciudadana (IRT = 11.7\%)— reflejaron fielmente las preocupaciones
 ciudadanas expresadas en los medios y en las redes sociales durante el período
 analizado.
 \subsection*{Respecto al Cuarto Objetivo Específico (OE4)}
-Se implementó el sistema GraphRAG Electoral sobre el grafo de conocimiento construido
-en Neo4j, denominado \textbf{PeruVox}, que permite a analistas políticos y
-periodistas consultar en lenguaje natural español el ecosistema digital electoral
-y obtener respuestas fundamentadas con evidencia textual del corpus original. El
-sistema generó consultas Cypher correctas para el \textbf{85\%} de las preguntas
-del conjunto de evaluación (17 de 20), tras 13 experimentos de configuración del
-prompt con schema del grafo e instrucciones few-shot. Los errores correspondieron
+Se implementó el sistema GraphRAG Electoral sobre el grafo de conocimiento
+construido en Neo4j Community, denominado \textbf{PeruVox}, bajo una arquitectura
+basada en \textbf{herramientas tipadas} (\textit{typed tools}) sobre el protocolo
+\textbf{MCP} (\textit{Model Context Protocol}), en lugar del paradigma clásico de
+generación dinámica de Cypher mediante \textit{few-shot prompting}. El servidor
+expone \textbf{13 herramientas} agrupadas en seis dominios (candidatos, temas,
+actores, evidencia, panorama, encuestas y macroeconómico), cada una con esquemas
+Pydantic v2 de entrada y salida y consultas SQL/Cypher pre-cargadas y
+parametrizadas, lo que permite a analistas políticos y periodistas consultar en
+lenguaje natural español el ecosistema digital electoral desde clientes MCP
+estándar (Claude Desktop, Claude.ai web o Cursor) y obtener respuestas
+fundamentadas con evidencia textual del corpus original. El sistema seleccionó
+correctamente la herramienta adecuada para el \textbf{85\%} de las preguntas del
+conjunto de evaluación (17 de 20), tras 13 experimentos de configuración de las
+descripciones semánticas y \textit{output schemas}. Los errores correspondieron
 exclusivamente a preguntas que requerían comparaciones temporales complejas entre
-más de dos períodos simultáneos, lo cual constituye una limitación identificada
-para trabajo futuro. Este resultado confirma la cuarta hipótesis específica (HE4).
-La prueba piloto del sistema durante el segundo debate presidencial procesó más de
-48,000 publicaciones en tiempo real, identificó correctamente un pico de sentimiento
-negativo durante y después del debate, y detectó una discrepancia significativa
-entre la cobertura positiva de un candidato en medios digitales y el sentimiento
-negativo expresado por la ciudadanía en X/Twitter durante la misma semana,
-constituyendo un hallazgo de inteligencia electoral de alto valor para los
-analistas usuarios del sistema.
+más de dos períodos simultáneos, donde el LLM cliente seleccionó una herramienta
+de un solo período en lugar de combinar herramientas mediante múltiples llamadas;
+una vez seleccionada la herramienta, las consultas SQL/Cypher subyacentes se
+ejecutaron correctamente en el 100\% de los casos por su naturaleza parametrizada
+y pre-validada. Este resultado confirma la cuarta hipótesis específica (HE4).
+La prueba piloto del sistema durante el segundo debate presidencial procesó la
+ingesta diaria del corpus multifuente, identificó correctamente un pico de
+sentimiento negativo durante y después del debate, y detectó una discrepancia
+significativa entre la cobertura positiva de un candidato en medios digitales y el
+sentimiento negativo expresado por la ciudadanía en X/Twitter durante la misma
+semana, constituyendo un hallazgo de inteligencia electoral de alto valor para los
+analistas usuarios del sistema. La latencia mediana de las herramientas se ubicó
+entre 5 y 60 ms para consultas no vectoriales y alrededor de 1100 ms para
+búsquedas semánticas (dominadas por la generación local del \textit{embedding} de
+la consulta sobre CPU), frente a los 1--2 segundos típicos de un sistema GraphRAG
+basado en generación dinámica de \textit{queries}.
 \subsection*{Consideraciones y limitaciones}
 Sin perjuicio de los resultados obtenidos, el sistema PeruVox presenta limitaciones
 metodológicas que deben ser reconocidas. En primer lugar, la representatividad del
