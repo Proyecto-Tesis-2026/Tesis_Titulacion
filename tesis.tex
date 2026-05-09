@@ -61,8 +61,11 @@
 %% Convertir comando cita por textcite para que tenga formato APA
 \let\cite\textcite
 
-%% Para que texto de figuras y tablas tenga formato APA
-\usepackage{multirow,booktabs,setspace,caption}
+%% Para que texto de figuras y tablas tenga formato APA.
+%% Caption se carga aqui con sus opciones (margin/font/labelfont) en una sola
+%% invocacion, para evitar "Option clash" si se intentara recargar mas abajo.
+\usepackage{multirow,booktabs,setspace}
+\usepackage[margin=10pt,font=small,labelfont=bf]{caption}
 \DeclareCaptionLabelSeparator*{spaced}{\\[2ex]}
 \captionsetup[table]{labelfont=normalfont,textfont=it,format=plain,justification=justified,singlelinecheck=false,labelsep=newline,skip=2pt}
 \captionsetup[figure]{labelsep=period,labelfont={it,bf},justification=justified,singlelinecheck=false,font=doublespacing}
@@ -98,7 +101,7 @@ pdfauthor={autor nombres}]{hyperref}
 \usetikzlibrary{shapes.geometric, shapes.symbols, arrows.meta, positioning, calc, fit, backgrounds, chains, decorations.pathreplacing}
 \usepackage{graphicx} % for improved inclusion of graphics
 %\usepackage{wrapfig} % to include figure with text wrapping around it
-\usepackage[margin=10pt,font=small,labelfont=bf]{caption} % for improved layout of figure captions with extra margin, smaller font than text
+% caption ya cargado mas arriba con sus opciones; subcaption va aparte
 \usepackage{subcaption}
 \usepackage{eucal}
 \usepackage[usenames, dvipsnames]{color}
@@ -148,7 +151,7 @@ pdfauthor={autor nombres}]{hyperref}
 %%%% nuevo parrafo
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%5
 %%%% Centrar valores de una tabla
-\usepackage{array}
+% array ya cargado al inicio del preambulo (linea 5)
 %%CENTRADO HORIZONTAL
 \newcolumntype{P}[1]{>{\centering\arraybackslash}p{#1}}
 %%CENTRADO VERTICAL
@@ -157,12 +160,13 @@ pdfauthor={autor nombres}]{hyperref}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%5
 %%%%Paquete para alinear texto
 \usepackage{ragged2e}
-\usepackage{multirow}
+% multirow ya cargado mas arriba (linea 67)
 \usepackage{makecell}
 \usepackage{rotating}
 \usepackage{siunitx} % To align the numbers later on
 \usepackage[table,xcdraw]{xcolor}
-\usepackage{color, colortbl}
+% color ya cargado mas arriba (linea 107); solo agregamos colortbl
+\usepackage{colortbl}
 \definecolor{Gray}{gray}{0.9}
 \definecolor{orange}{rgb}{1,0.647,0}
 \definecolor{turq3}{rgb}{0.54, 0.81, 0.94}
@@ -233,7 +237,7 @@ pdfauthor={autor nombres}]{hyperref}
 \addtolength\cftchapnumwidth{\mynewlength}
 
 \usepackage{xpatch}
-\usepackage{caption}
+% caption ya cargado al inicio del preambulo
 \DeclareCaptionType{equcaption}[Ecuación][Índice de Ecuaciones]
 
 \newenvironment{conditions}

@@ -5,7 +5,7 @@
     sys/.style={draw, rounded corners=2pt, fill=blue!10, minimum width=12cm, minimum height=0.7cm},
     inv/.style={draw, rounded corners=2pt, fill=green!12, minimum width=12cm, minimum height=0.55cm},
     var/.style={draw, rounded corners=2pt, fill=orange!12, minimum width=12cm, minimum height=0.55cm},
-    label/.style={font=\scriptsize\itshape, align=left}
+    note/.style={font=\scriptsize\itshape, align=left}
 ]
     \node[sys] (sys) {\textbf{SYSTEM} -- rol ``analista politico del Peru'' + contrato JSON estricto};
     \node[inv, below=of sys] (b1) {\textbf{USER (prefijo invariante -- cacheado)}};
@@ -20,6 +20,6 @@
     \node[var, below=of v1] (v2) {Menu de temas del dia (5 tiers, hasta 20)};
     \node[var, below=of v2] (v3) {Documento a etiquetar (1 por llamada)};
 
-    \node[label, right=0.2cm of b4] {prompt cache hit 85.5\%};
-    \node[label, right=0.2cm of v2] {cambia por documento};
+    \node[note, right=0.2cm of b4] {prompt cache hit 85.5\%};
+    \node[note, right=0.2cm of v2] {cambia por documento};
 \end{tikzpicture}
