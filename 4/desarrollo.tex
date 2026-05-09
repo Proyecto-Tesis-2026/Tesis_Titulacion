@@ -340,29 +340,34 @@ el vocabulario limpio.
 %     \end{center}
 % \end{figure}
 
-\textbf{Actividad 2: Segmentar el corpus para análisis}
+\textbf{Actividad 2: Generar embeddings y representación vectorial}
 \\
-La variable textual de los artículos de noticias, al superar en longitud la ventana de
-contexto del LLM utilizado (8,192 tokens para Gemini Flash), fue segmentada en bloques
-procesables. Se implementó la función de la Figura \ref{5:fig14} para dividir cada
-artículo en segmentos de máximo 512 tokens con una superposición de 50 tokens entre
-segmentos consecutivos (\textit{sliding window}), preservando el contexto sintáctico
-necesario para el análisis de sentimientos a nivel de aspecto.
+Cada documento del corpus se transformó en un vector denso mediante el modelo
+\texttt{paraphrase-multilingual-mpnet-base-v2} de \texttt{sentence-transformers},
+elegido por su soporte multilingüe robusto en español y por el balance entre
+calidad semántica y velocidad de inferencia en CPU. El texto codificado por
+documento es \texttt{f"\{titulo\} | \{cuerpo\}"} truncado a la ventana interna del
+\textit{transformer} (512 tokens), produciendo un vector de 768 dimensiones que se
+persiste en la columna \texttt{embedding} de la tabla \texttt{segmentos} de la capa
+Silver. El \textit{singleton} del modelo se carga una sola vez por proceso vía LRU
+del \texttt{factory}
+(\texttt{src/electoral/llm/embeddings/factory.py}), evitando recargas repetidas. La
+función implementada para este proceso se muestra en la Figura \ref{5:fig14}.
 
 % \begin{figure}[!ht]
 %     \begin{center}
-%         \includegraphics[width=0.85\textwidth]{4/figures/segmentacion_textos.png}
-%         \caption[Función de segmentación de textos con ventana deslizante]{Función de segmentación de textos con ventana deslizante para artículos de noticias que superan la longitud de contexto del LLM, con superposición de 50 tokens entre segmentos.\\
+%         \includegraphics[width=0.85\textwidth]{4/figures/embeddings_pipeline.png}
+%         \caption[Generación de embeddings multilingües con sentence-transformers]{Generación de \textit{embeddings} multilingües por documento mediante el modelo \texttt{paraphrase-multilingual-mpnet-base-v2} (768 dimensiones), con \textit{singleton} cacheado en memoria y persistencia en la tabla \texttt{segmentos} de la capa Silver.\\
 %             Fuente: Elaboración propia.}
 %         \label{5:fig14}
 %     \end{center}
 % \end{figure}
 
-Los tweets y posts de TikTok, por su naturaleza más corta, no requirieron
-segmentación y fueron procesados como documentos individuales. La relación
-documento-segmento fue registrada en la tabla \texttt{segmentos} de la capa Silver
-de la base de datos, que relaciona cada segmento con su documento original mediante
-la clave foránea \texttt{documento\_id}.
+Cada \textit{embedding} se vincula al documento original mediante la clave
+foránea \texttt{documento\_id} de la tabla \texttt{segmentos}. Esta representación
+vectorial alimenta luego el \textit{retrieval} multinivel del módulo de detección
+de temas (\textit{tier semántico}, \textit{cosine}) y la búsqueda semántica del
+sistema GraphRAG.
 
 Una vez normalizado el corpus, se procedió a construir los catálogos de filtrado
 pre-LLM que descartan documentos sin valor analítico antes de gastar tokens en la
