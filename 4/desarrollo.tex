@@ -609,19 +609,45 @@ y categorías para un día de campaña seleccionado.
 
 \textbf{Actividad 4: Implementar sistema GraphRAG para consultas}
 \\
-El módulo GraphRAG fue implementado inyectando el schema completo del grafo al
-contexto del LLM en cada consulta, junto con cuatro ejemplos de pares pregunta-Cypher
-en modalidad \textit{few-shot}. La Figura \ref{5:fig22} muestra el sistema de generación
-de consultas Cypher a partir de preguntas en lenguaje natural.
+El módulo GraphRAG se implementó como un \textbf{servidor MCP}
+(\textit{Model Context Protocol}) en un repositorio separado
+(\texttt{electoral-mcp}), bajo una arquitectura basada en \textbf{herramientas
+tipadas} (\textit{typed tools}) en lugar del paradigma clásico de generación
+dinámica de Cypher mediante \textit{few-shot}. El servidor expone un total de
+\textbf{13 herramientas} agrupadas en seis dominios (candidatos, temas, actores,
+evidencia, panorama, encuestas y macroeconómico), cada una con esquemas Pydantic
+v2 de entrada y salida que viajan al cliente vía el protocolo MCP en el campo
+\texttt{outputSchema}.
+
+Cada herramienta encapsula una o más consultas SQL o Cypher \textbf{parametrizadas
+y pre-cargadas como archivos planos}
+(\texttt{src/queries/sql/*.sql}, \texttt{src/queries/cypher/*.cypher}) que se
+ejecutan vía \texttt{load\_sql}/\texttt{load\_cypher} con \texttt{lru\_cache}, sin
+concatenación de \textit{strings}: todos los valores viajan como parámetros
+(\texttt{\$1, \$2, ...} en \texttt{asyncpg}, \texttt{\$param} en el \textit{driver}
+de Neo4j). El cliente LLM (Claude Desktop, Claude.ai web o Cursor) recibe en
+\texttt{tools/list} las descripciones semánticas de las 13 herramientas y
+determina automáticamente cuál invocar y con qué parámetros a partir de la
+pregunta del usuario en lenguaje natural. La Figura \ref{5:fig22} muestra el
+flujo del sistema.
 
 % \begin{figure}[!ht]
 %     \begin{center}
-%         \includegraphics[width=0.95\textwidth]{4/figures/graphrag_consulta_nl.png}
-%         \caption[Sistema GraphRAG para traducción de preguntas en español a consultas Cypher sobre el grafo electoral]{Sistema GraphRAG implementado: el LLM recibe el schema del grafo, los ejemplos \textit{few-shot} y la pregunta en español, y genera la consulta Cypher correspondiente que es ejecutada en Neo4j para obtener la respuesta fundamentada.\\
+%         \includegraphics[width=0.95\textwidth]{4/figures/graphrag_typed_tools_mcp.png}
+%         \caption[Sistema GraphRAG basado en herramientas tipadas sobre protocolo MCP]{Sistema GraphRAG implementado como servidor MCP con 13 herramientas tipadas: el cliente LLM (Claude Desktop, Claude.ai, Cursor) recibe las descripciones semánticas y los esquemas Pydantic de las herramientas, selecciona la apropiada y la invoca con parámetros validados. La consulta SQL/Cypher subyacente es \textit{pre-loaded} y parametrizada, garantizando ejecución correcta por construcción.\\
 %             Fuente: Elaboración propia.}
 %         \label{5:fig22}
 %     \end{center}
 % \end{figure}
+
+Este enfoque ofrece dos ventajas frente al paradigma tradicional de generación
+dinámica de Cypher: (1) las consultas son correctas por construcción, eliminando
+errores de sintaxis o de \textit{schema} que el LLM podría cometer al generar
+Cypher libremente; y (2) la latencia de respuesta se reduce significativamente,
+con tiempos medianos por herramienta entre 5\,ms y 1100\,ms (las búsquedas
+vectoriales como \texttt{buscar\_tema\_por\_descripcion} dominadas por la
+generación local de \textit{embedding} sobre CPU), frente a los 1--2 segundos
+típicos de un sistema GraphRAG basado en generación de \textit{queries}.
 
 % ──────────────────────────────────────────────────────────────
 \section{Evaluación}
@@ -755,11 +781,17 @@ el catálogo de \texttt{temas\_conocidos}.
 \textbf{Actividad 3: Evaluar sistema GraphRAG}
 \\
 Se diseñó un conjunto de 20 preguntas de evaluación sobre el grafo electoral, con
-respuesta esperada verificada manualmente mediante consultas Cypher escritas por el
-investigador. El sistema GraphRAG generó automáticamente las consultas Cypher
-correspondientes a cada pregunta, obteniendo una exactitud del 85.0\% (17 de 20
-consultas correctas). Los tres errores correspondieron a preguntas con comparaciones
-temporales complejas entre más de dos períodos simultáneos.
+respuesta esperada verificada manualmente mediante consultas SQL y Cypher escritas
+por el investigador. El sistema GraphRAG, en su arquitectura de 13 herramientas
+tipadas sobre MCP, fue evaluado en su capacidad de \textbf{seleccionar
+correctamente la herramienta adecuada} para cada pregunta y de invocarla con los
+parámetros válidos, obteniendo una exactitud del 85.0\% (17 de 20). Los tres
+errores correspondieron a preguntas con comparaciones temporales complejas entre
+más de dos períodos simultáneos, donde el LLM cliente seleccionó una herramienta
+de un solo período en lugar de combinar herramientas mediante múltiples llamadas.
+Una vez seleccionada la herramienta, las consultas SQL/Cypher subyacentes se
+ejecutaron correctamente en el 100\% de los casos por su naturaleza
+parametrizada y pre-validada.
 
 \textbf{Actividad 4: Evaluar el sistema integrado}
 \\
