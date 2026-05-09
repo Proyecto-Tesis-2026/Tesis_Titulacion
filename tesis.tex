@@ -95,6 +95,20 @@ bookmarks=true,
 linkcolor=black,
 pdftitle={Tesis-nombre-alumno},
 pdfauthor={autor nombres}]{hyperref}
+% xurl permite que las URLs largas se partan en cualquier caracter
+% (carga DESPUES de hyperref para que parchee \url y \href).
+\usepackage{xurl}
+% Permitir saltos en cualquier punto de la URL (no solo en /-?#&)
+\renewcommand\UrlBreaks{\do\/\do\-\do\.\do\=\do\_\do\?\do\#\do\&\do\:\do\@\do\+\do\%}
+
+% Sloppy global: permite a LaTeX usar mas espacio entre palabras antes que
+% empujar texto al margen derecho. Resuelve overflows en parrafos con
+% \texttt{paths/largos.py}, URLs y comandos no separables.
+\sloppy
+
+% \codepath{path/file.py} = \texttt-like pero permitiendo breaks en /, _, .
+% Usa la maquinaria de \url (de hyperref) que respeta \UrlBreaks.
+\DeclareUrlCommand\codepath{\urlstyle{tt}}
 
 \usepackage{amssymb}
 \usepackage{tikz}

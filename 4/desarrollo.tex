@@ -91,7 +91,7 @@ consume los endpoints REST de forma asíncrona con \texttt{httpx}, aplica el fil
 por \texttt{createdAt} con tolerancia ±1 día respecto a la fecha objetivo, y persiste
 los resultados como archivos JSON en
 \texttt{data/raw/twitter/\{YYYY-MM-DD\}/}. El schema raw de validación
-(\texttt{src/electoral/schemas/raw/twitter.py}) usa \texttt{extra="allow"} en
+(\codepath{src/electoral/schemas/raw/twitter.py}) usa \texttt{extra="allow"} en
 Pydantic para tolerar campos nuevos del scraper sin romper la ingesta.
 
 \figpendiente{5:fig3}{Módulo de ingesta asíncrona de Twitter/X mediante TwitterAPI.io}{Módulo de ingesta asíncrona de Twitter/X mediante TwitterAPI.io, mostrando el consumo REST con \texttt{httpx}, el filtrado temporal por \texttt{createdAt} y la persistencia de archivos JSON raw en la capa Bronze.}
@@ -154,7 +154,7 @@ fuentes (\texttt{TipoFuente.TIKTOK}).
 
 \begin{figure}[!ht]
     \begin{center}
-        \input{4/figures/fig6b_scraper_tiktok}
+        \resizebox{\textwidth}{!}{\input{4/figures/fig6b_scraper_tiktok}}
         \caption[Arquitectura hexagonal del scraper de TikTok con Playwright]{Arquitectura hexagonal del scraper de TikTok con Playwright sobre Chromium, mostrando los puertos y adaptadores (\texttt{ProfileScraperPort}, \texttt{VideoScraperPort}, \texttt{StoragePort}) y la generación de archivos JSON raw que alimentan la capa Bronze.\\
             Fuente: Elaboración propia.}
         \label{5:fig6b}
@@ -251,12 +251,12 @@ documento es \texttt{f"\{titulo\} | \{cuerpo\}"} truncado a la ventana interna d
 persiste en la columna \texttt{embedding} de la tabla \texttt{segmentos} de la capa
 Silver. El \textit{singleton} del modelo se carga una sola vez por proceso vía LRU
 del \texttt{factory}
-(\texttt{src/electoral/llm/embeddings/factory.py}), evitando recargas repetidas. La
+(\codepath{src/electoral/llm/embeddings/factory.py}), evitando recargas repetidas. La
 función implementada para este proceso se muestra en la Figura \ref{5:fig14}.
 
 \begin{figure}[!ht]
     \begin{center}
-        \input{4/figures/fig14_embeddings_pipeline}
+        \resizebox{\textwidth}{!}{\input{4/figures/fig14_embeddings_pipeline}}
         \caption[Generación de embeddings multilingües con sentence-transformers]{Generación de \textit{embeddings} multilingües por documento mediante el modelo \texttt{paraphrase-multilingual-mpnet-base-v2} (768 dimensiones), con \textit{singleton} cacheado en memoria y persistencia en la tabla \texttt{segmentos} de la capa Silver.\\
             Fuente: Elaboración propia.}
         \label{5:fig14}
@@ -298,7 +298,7 @@ implementada para este proceso se muestra en la Figura \ref{5:fig15}.
 
 \begin{figure}[!ht]
     \begin{center}
-        \input{4/figures/fig15_filtros_pre_llm}
+        \resizebox{\textwidth}{!}{\input{4/figures/fig15_filtros_pre_llm}}
         \caption[Cascada de filtros pre-LLM por catálogos YAML]{Cascada de filtros pre-LLM aplicada a cada documento del corpus electoral: descarte por cuenta o canal en \textit{blacklist}, por hashtag de descarte y por palabra clave en el título. Los catálogos viven en \texttt{catalogs/filtros\_descarte.yaml} y se aplican en \texttt{src/electoral/filters/pre\_llm.py}.\\
             Fuente: Elaboración propia.}
         \label{5:fig15}
@@ -362,7 +362,7 @@ completo del modelo).
 
 \begin{figure}[!ht]
     \begin{center}
-        \input{4/figures/fig17_prompt_structure}
+        \resizebox{\textwidth}{!}{\input{4/figures/fig17_prompt_structure}}
         \caption[Estructura del prompt de etiquetado del sistema electoral-intelligence]{Estructura del \textit{prompt} de etiquetado del sistema \texttt{electoral-intelligence}: \textit{system prompt} con rol de analista político peruano y contrato JSON; \textit{user prompt} con catálogos cerrados (candidatos, categorías, modos narrativos, aspectos, regiones, acciones), \textit{schema} JSON de respuesta y ejemplos \textit{few-shot}, seguidos del menú de temas del día y el documento a etiquetar. Los elementos invariantes van al inicio para maximizar el \textit{cache hit} de DeepSeek (85.5\% medido).\\
             Fuente: Elaboración propia.}
         \label{5:fig17}
@@ -381,7 +381,7 @@ semántico post-LLM y consolidación intra-batch.
 
 \begin{figure}[!ht]
     \begin{center}
-        \input{4/figures/fig18_pipeline_temas_llm}
+        \resizebox{\textwidth}{!}{\input{4/figures/fig18_pipeline_temas_llm}}
         \caption[Pipeline de detección dinámica de temas con LLM y retrieval multinivel]{Pipeline de detección dinámica de temas electorales: construcción del menú de cinco \textit{tiers} (\textit{trending}, semántico, léxico, actor y evento), llamada concurrente al LLM, \textit{override} semántico contra el catálogo y \textit{dedup} intra-\textit{batch} previo al \textit{upsert}.\\
             Fuente: Elaboración propia.}
         \label{5:fig18}
@@ -391,7 +391,7 @@ semántico post-LLM y consolidación intra-batch.
 En primer lugar, para cada documento se construye un menú de hasta 20 temas
 candidatos mediante cinco \textit{tiers} de \textit{retrieval} sobre la tabla
 \texttt{temas\_conocidos} de Postgres
-(\texttt{src/electoral/retrieval/menu\_builder.py}): (1) \textit{trending} (top
+(\codepath{src/electoral/retrieval/menu_builder.py}): (1) \textit{trending} (top
 temas por \texttt{n\_noticias} y \texttt{ultima\_aparicion}); (2) semántico
 (\textit{cosine} sobre el \textit{embedding} del documento con \texttt{threshold=0.5});
 (3) léxico (\textit{match} sobre título y cuerpo); (4) actor (temas cuyos
@@ -430,7 +430,7 @@ Figura \ref{5:fig19}.
 
 \begin{figure}[!ht]
     \begin{center}
-        \input{4/figures/fig19_consolidate_dedup}
+        \resizebox{\textwidth}{!}{\input{4/figures/fig19_consolidate_dedup}}
         \caption[Etapa de consolidación y deduplicación de temas]{Etapas de \texttt{consolidate\_day} (triple \textit{match} por nombre, \textit{embedding} y actores con umbrales de confianza) y \texttt{llm\_dedup} (LLM \textit{judge} sobre pares sospechosos), que fusionan temas semánticamente equivalentes detectados durante el día.\\
             Fuente: Elaboración propia.}
         \label{5:fig19}
@@ -466,7 +466,7 @@ nodos con \textit{embedding} (Actor, Tema, Candidato, Fragmento) llevan
 
 La sincronización Postgres $\rightarrow$ Neo4j se implementa en el paso
 \texttt{build\_graph} del orquestador
-(\texttt{src/electoral/pipelines/build\_graph/processor.py}), que se ejecuta
+(\codepath{src/electoral/pipelines/build_graph/processor.py}), que se ejecuta
 \textbf{por día} (no semanalmente) como parte de la secuencia de ocho pasos
 diarios (\texttt{ingest, embed, label, consolidate, llm\_dedup, load\_silver,
 build\_graph, refresh\_gold}) gestionada por el \texttt{day\_runner}. La
@@ -519,7 +519,7 @@ flujo del sistema.
 
 \begin{figure}[!ht]
     \begin{center}
-        \input{4/figures/fig22_graphrag_mcp}
+        \resizebox{\textwidth}{!}{\input{4/figures/fig22_graphrag_mcp}}
         \caption[Sistema GraphRAG basado en herramientas tipadas sobre protocolo MCP]{Sistema GraphRAG implementado como servidor MCP con 13 herramientas tipadas: el cliente LLM (Claude Desktop, Claude.ai, Cursor) recibe las descripciones semánticas y los esquemas Pydantic de las herramientas, selecciona la apropiada y la invoca con parámetros validados. La consulta SQL/Cypher subyacente es \textit{pre-loaded} y parametrizada, garantizando ejecución correcta por construcción.\\
             Fuente: Elaboración propia.}
         \label{5:fig22}
@@ -708,7 +708,7 @@ muestra en la Figura \ref{5:fig24}.
 
 \begin{figure}[!ht]
     \begin{center}
-        \input{4/figures/fig24_demo_flux}
+        \resizebox{\textwidth}{!}{\input{4/figures/fig24_demo_flux}}
         \caption[Proceso de operación del prototipo del sistema de inteligencia electoral]{Proceso de operación del prototipo: ingesta diaria del corpus multifuente, etiquetado LLM, sincronización del grafo y consultas en lenguaje natural desde un cliente MCP que invoca las 13 herramientas tipadas del servidor \texttt{electoral\_mcp}.\\
             Fuente: Elaboración propia.}
         \label{5:fig24}
