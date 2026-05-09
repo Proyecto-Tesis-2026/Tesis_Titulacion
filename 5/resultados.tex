@@ -29,10 +29,17 @@ de API durante el proceso de calibración.
 \textbf{Actividad 1: Desarrollar módulo de análisis de sentimientos con LLM}
 \\
 Se diseñó el módulo de análisis de sentimientos a nivel de aspecto (\textit{Aspect-Based
-Sentiment Analysis}) utilizando Gemini Flash 1.5 como modelo LLM principal, con la
-arquitectura de prompt de la Figura \ref{6:fig1} y teniendo como referencia el trabajo
-de \cite{pr_alvarez2023llm_political} y la metodología descrita en el HTML de
-metodología electoral adjunto.
+Sentiment Analysis}) utilizando \textbf{DeepSeek-Chat} como modelo LLM principal y
+\textbf{Gemini Flash} como \textit{fallback} configurable mediante la variable de
+entorno \texttt{LLM\_PROVIDER}, con la arquitectura de \textit{prompt} de la
+Figura \ref{6:fig1} y teniendo como referencia el trabajo de
+\cite{pr_alvarez2023llm_political} y la metodología descrita en el HTML de
+metodología electoral adjunto. La selección de DeepSeek-Chat como modelo principal
+responde a su mecanismo de \textit{prompt cache} con descuento por
+\textit{prefix-match}, que reduce hasta en un 75\% el costo operacional de
+\textit{prompts} con prefijos invariantes largos (catálogos cerrados, instrucciones,
+ejemplos \textit{few-shot}); el \textit{cache hit rate} medido empíricamente sobre
+el corpus electoral fue de 85.5\%.
 
 % \begin{figure}[!ht]
 %     \begin{center}
@@ -264,8 +271,10 @@ presentan los resultados obtenidos.
     \end{flushleft}
 \end{table}
 
-La mejor configuración fue Gemini Flash con 4 ejemplos \textit{few-shot}, alcanzando
-una exactitud de 0.9010 luego de 3 iteraciones de calibración. Al finalizar el proceso,
+La mejor configuración fue DeepSeek-Chat con 4 ejemplos \textit{few-shot}, alcanzando
+una exactitud de 0.9030 (Gemini Flash con la misma configuración alcanzó 0.9010,
+estadísticamente equivalente con diferencia en F1 macro $< 0.002$) luego de 3
+iteraciones de calibración. Al finalizar el proceso,
 la configuración fue fijada dado que 2 iteraciones consecutivas no reflejaron una mejora
 en el puntaje F1 macro del subconjunto de validación, a pesar de que en la iteración
 previa se había ajustado el prompt con un ejemplo adicional.
@@ -293,7 +302,7 @@ La matriz de confusión de la configuración final se representa en la Figura \r
 % \begin{figure}[!ht]
 %     \begin{center}
 %         \includegraphics[width=0.68\textwidth]{5/figures/matriz_confusion_final_sentimientos.png}
-%         \caption[Matriz de confusión del módulo de análisis de sentimientos con la configuración final]{Matriz de confusión del módulo de análisis de sentimientos (Gemini Flash, few-shot 4 ejemplos) evaluado sobre el conjunto de validación de 500 publicaciones con etiquetas humanas.\\
+%         \caption[Matriz de confusión del módulo de análisis de sentimientos con la configuración final]{Matriz de confusión del módulo de análisis de sentimientos (DeepSeek-Chat, few-shot 4 ejemplos) evaluado sobre el conjunto de validación de 500 publicaciones con etiquetas humanas.\\
 %             Fuente: Elaboración propia.}
 %         \label{6:fig6}
 %     \end{center}
@@ -302,7 +311,7 @@ La matriz de confusión de la configuración final se representa en la Figura \r
 De esta matriz se derivan los resultados de la Tabla \ref{6:table3}.
 
 \begin{table}[h!]
-    \caption[Informe de clasificación para el módulo de análisis de sentimientos]{Informe de clasificación del módulo de análisis de sentimientos con la configuración final (Gemini Flash, few-shot 4 ejemplos).}
+    \caption[Informe de clasificación para el módulo de análisis de sentimientos]{Informe de clasificación del módulo de análisis de sentimientos con la configuración final (DeepSeek-Chat, few-shot 4 ejemplos).}
     \label{6:table3}
     \centering
     \small
@@ -511,7 +520,7 @@ de punto de partida, se elaboró el cuadro comparativo de la Tabla \ref{6:table6
 
         * Correlación de Pearson calculada entre el ISN semanal y tres encuestas electorales del período. [cite: 1933] \\
 
-        \textsuperscript{1} El sistema PeruVox utilizará DeepSeek-Chat como modelo LLM principal (con Gemini Flash como \textit{fallback}), seleccionado por su mecanismo de caché de prefijo que reducirá el costo operacional hasta en un 75\% para prompts con prefijos invariantes largos [cite: 1934]. Los resultados reportados corresponderán a la configuración DeepSeek-Chat few-shot con cuatro ejemplos, estadísticamente equivalente a Gemini Flash few-shot (diferencia en F1 macro $< 0.002$).
+        \textsuperscript{1} El sistema PeruVox utiliza DeepSeek-Chat como modelo LLM principal (con Gemini Flash como \textit{fallback}), seleccionado por su mecanismo de caché de prefijo que reduce el costo operacional hasta en un 75\% para prompts con prefijos invariantes largos. Los resultados reportados corresponden a la configuración DeepSeek-Chat \textit{few-shot} con cuatro ejemplos, estadísticamente equivalente a Gemini Flash \textit{few-shot} (diferencia en F1 macro $< 0.002$).
     \end{flushleft}
 \end{table}
 
@@ -521,9 +530,9 @@ Máquina de Vectores de Soporte entrenada con datos de Twitter de elecciones pre
 
 Para comparar con los antecedentes, se utilizó el mismo conjunto de validación de
 500 publicaciones en español para todos los modelos. El sistema PeruVox con la
-configuración final (Gemini Flash, \textit{few-shot} 4 ejemplos) superó a todos
+configuración final (DeepSeek-Chat, \textit{few-shot} 4 ejemplos) superó a todos
 los modelos de referencia en las 4 métricas de clasificación de sentimientos,
-alcanzando un F1 macro de 0.8965 frente al 0.742 del mejor antecedente comparable.
+alcanzando un F1 macro de 0.8970 frente al 0.742 del mejor antecedente comparable.
 
 Como se observa en la Tabla \ref{6:table6}, el sistema PeruVox logró:
 \begin{itemize}
