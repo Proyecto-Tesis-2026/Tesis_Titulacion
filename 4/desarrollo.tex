@@ -173,7 +173,37 @@ referencia y validación.
 %     \end{center}
 % \end{figure}
 
-\textbf{Actividad 4: Realizar análisis exploratorio del corpus}
+\textbf{Actividad 4: Construir corpus de TikTok}
+\\
+La recolección de contenido de TikTok se realizó mediante un scraper independiente
+(\texttt{scraper-tiktok}) implementado con \texttt{Playwright} sobre Chromium, bajo una
+arquitectura hexagonal (puertos y adaptadores). El scraper opera por cuenta y rango de
+fechas (\texttt{DATE\_FROM}/\texttt{DATE\_TO}), aprovechando que las playlists de TikTok
+están ordenadas de más reciente a más antiguo para aplicar dos capas de filtrado: una
+parada temprana basada en \texttt{match\_filter} y un post-filtro estricto sobre el
+rango de fechas que garantiza que solo posts dentro del período objetivo lleguen al
+almacenamiento. El módulo \texttt{TiktokIngestor}
+(\texttt{src/electoral/ingestion/tiktok.py}) consume los archivos JSON producidos por
+el scraper y los persiste como documentos en la capa Bronze del pipeline en
+\texttt{data/raw/tiktok/\{YYYY-MM-DD\}/}, con el mismo schema canónico que las demás
+fuentes (\texttt{TipoFuente.TIKTOK}).
+
+% \begin{figure}[!ht]
+%     \begin{center}
+%         \includegraphics[width=0.95\textwidth]{4/figures/tiktok_scraper_arquitectura.png}
+%         \caption[Arquitectura hexagonal del scraper de TikTok con Playwright]{Arquitectura hexagonal del scraper de TikTok con Playwright sobre Chromium, mostrando los puertos y adaptadores (\texttt{ProfileScraperPort}, \texttt{VideoScraperPort}, \texttt{StoragePort}) y la generación de archivos JSON raw que alimentan la capa Bronze.\\
+%             Fuente: Elaboración propia.}
+%         \label{5:fig6b}
+%     \end{center}
+% \end{figure}
+
+Por la naturaleza de TikTok como plataforma de creciente influencia política entre la
+población joven peruana, la inclusión de esta fuente complementa las perspectivas de
+las noticias digitales (agenda mediática), X/Twitter (reacción ciudadana inmediata) y
+YouTube (opiniones argumentativas extensas), capturando dinámicas de opinión propias
+del formato audiovisual corto.
+
+\textbf{Actividad 5: Realizar análisis exploratorio del corpus}
 \\
 En esta sección se analizaron estadísticamente las variables del corpus electoral
 multicanal: distribución temporal, por fuente, por candidato y por longitud de texto.
@@ -183,7 +213,7 @@ publicaciones del corpus se distribuyen según la Figura \ref{5:fig7}.
 % \begin{figure}[!ht]
 %     \begin{center}
 %         \includegraphics[width=0.65\textwidth]{4/figures/distribucion_corpus_fuente.png}
-%         \caption[Distribución del corpus electoral total por fuente de datos]{Distribución del corpus electoral total por fuente de datos (noticias digitales, X/Twitter y comentarios de YouTube), mostrando el volumen relativo de cada canal.\\
+%         \caption[Distribución del corpus electoral total por fuente de datos]{Distribución del corpus electoral total por las cuatro fuentes de datos (noticias digitales, X/Twitter, YouTube y TikTok), mostrando el volumen relativo de cada canal.\\
 %             Fuente: Elaboración propia.}
 %         \label{5:fig7}
 %     \end{center}
@@ -518,7 +548,7 @@ de consultas Cypher a partir de preguntas en lenguaje natural.
 \\
 Para la evaluación del módulo de análisis de sentimientos, se construyó un conjunto
 de validación de 500 publicaciones del corpus (distribuidas proporcionalmente entre
-las tres fuentes), etiquetadas manualmente por dos anotadores expertos en comunicación
+las cuatro fuentes), etiquetadas manualmente por dos anotadores expertos en comunicación
 política peruana con un acuerdo inter-anotador de Kappa de Cohen de 0.82, considerado
 como acuerdo casi perfecto \parencite{pr_alvi2023twitter_election_review}. Se ejecutaron
 entre 3 y 5 experimentos alternando las configuraciones de prompt (con y sin ejemplos
@@ -690,7 +720,7 @@ descritas en la figura anterior. La prueba piloto consistió en operar el sistem
 durante una semana de campaña electoral activa, incluyendo un debate presidencial
 que generó un pico de 3,200 tweets por minuto en el ecosistema digital. Durante esta
 semana, el sistema procesó en tiempo real más de 48,000 publicaciones distribuidas
-entre las tres fuentes de datos, generando los indicadores ISN, IRT e IVE para los
+entre las cuatro fuentes de datos, generando los indicadores ISN, IRT e IVE para los
 candidatos en liza. Los principales hallazgos de la prueba piloto se presentan en
 la Figura \ref{5:fig25}.
 
