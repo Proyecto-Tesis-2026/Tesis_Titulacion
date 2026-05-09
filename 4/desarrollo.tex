@@ -575,151 +575,233 @@ típicos de un sistema GraphRAG basado en generación de \textit{queries}.
 \section{Evaluación}
 % ──────────────────────────────────────────────────────────────
 
+La evaluación de esta investigación se enfoca en las \textbf{métricas
+operacionales} medidas durante las corridas reales del pipeline (validez de
+schema, idempotencia, latencia, costo, cobertura del catálogo y tasa de
+\textit{reuso} de temas). La evaluación de la calidad de salida del LLM
+contra \textit{ground truth} (F1 macro, exactitud frente a etiquetas humanas,
+coherencia semántica $C_v$, correlación con encuestas) requiere un corpus
+etiquetado de validación que excede el alcance temporal de esta tesis y se
+documenta como trabajo futuro en el archivo \texttt{docs/pendientes-evaluacion.md}
+del repositorio \texttt{electoral-intelligence}.
+
 \textbf{Actividad 1: Evaluar módulo de análisis de sentimientos}
 \\
-Para la evaluación del módulo de análisis de sentimientos, se construyó un conjunto
-de validación de 500 publicaciones del corpus (distribuidas proporcionalmente entre
-las cuatro fuentes), etiquetadas manualmente por dos anotadores expertos en comunicación
-política peruana con un acuerdo inter-anotador de Kappa de Cohen de 0.82, considerado
-como acuerdo casi perfecto \parencite{pr_alvi2023twitter_election_review}. Se ejecutaron
-entre 3 y 5 experimentos alternando las configuraciones de prompt (con y sin ejemplos
-\textit{few-shot}, con distintas definiciones de escala de sentimiento) y se definió
-el modelo mejor calibrado a partir del mayor puntaje F1 macro obtenido. Los resultados
-de la mejor configuración se muestran en la Tabla \ref{5:table1}.
+Se ejecutaron tres corridas progresivas con DeepSeek-Chat para validar el
+módulo de extracción de sentimientos a nivel de aspecto: una corrida piloto
+con 12 documentos (3 por fuente), una corrida intermedia con 30 documentos y
+la corrida final completa con 655 documentos del 22 de marzo de 2026 (tras
+los filtros pre-LLM). Los resultados operacionales se muestran en la
+Tabla \ref{5:table1}.
 
 \begin{table}[h!]
-    \caption[Resultados de evaluación del módulo de análisis de sentimientos con LLM]{Resultados de evaluación del módulo de análisis de sentimientos comparando modelos encoder tradicionales y LLMs utilizados en el sistema electoral-intelligence.}
+    \caption[Resultados operacionales del módulo de sentimientos en corridas reales]{Resultados operacionales del módulo de análisis de sentimientos en tres corridas progresivas sobre el corpus electoral del 22 de marzo de 2026.}
     \label{5:table1}
     \centering
     \small
-    \begin{tabular}{ m{5cm}M{2.3cm}M{2.3cm}m{4cm} }
+    \begin{tabular}{ m{4.2cm}M{2.5cm}M{2.5cm}M{2.5cm} }
         \specialrule{.1em}{.05em}{.05em}
-        \Centering{Configuración} & \Centering{Exactitud} & \Centering{F1 macro} & \Centering{Notas} \\
+        \Centering{Métrica} & \Centering{12 docs} & \Centering{30 docs} & \Centering{655 docs} \\
         \specialrule{.1em}{.05em}{.05em}
-
-        XLM-RoBERTa zero-shot (base)
-        & 0.7240 & 0.7080
-        & Modelo encoder sin fine-tuning \\
-        \hline
-
-        DeepSeek-Chat zero-shot
-        & 0.8410 & 0.8280
-        & Modelo principal del sistema \\
-        \hline
-
-        \textbf{DeepSeek-Chat few-shot (4 ej.)}
-        & \textbf{0.9030} & \textbf{0.8980}
-        & \textbf{Configuración final} \\
-        \hline
-
-        Gemini Flash few-shot (4 ej.)
-        & 0.9010 & 0.8970
-        & Fallback validado \\
-        \hline
-
-        GPT-4o few-shot (4 ej.)
-        & 0.9140 & 0.9070
-        & Referencia de validación \\
+        Documentos OK / total       & 12/12   & 30/30   & 655/655 \\
+        Errores Pydantic            & 0       & 0       & 0       \\
+        Categorías dentro del catálogo cerrado & 100\%  & 100\%   & 100\%   \\
+        Tiempo promedio por documento & 7.5 s   & 6.3 s   & 5.2 s   \\
+        Tokens entrada/salida (avg) & 5.6k/0.4k & 5.3k/0.4k & 4.2k/0.35k \\
+        Cache hit rate DeepSeek     & --      & 41\%    & \textbf{85.5\%} \\
+        Costo total (USD)           & \$0.01 & \$0.02 & \$0.13 \\
         \specialrule{.1em}{.05em}{.05em}
     \end{tabular}
     \begin{flushleft}
-        \small Fuente: Elaboración propia.
+        \small Fuente: Elaboración propia, datos extraídos de los \textit{run manifests} del pipeline.
     \end{flushleft}
 \end{table}
 
-Los resultados de la Tabla \ref{5:table1} evidencian que los modelos LLM superan
-considerablemente al enfoque encoder tradicional basado en XLM-RoBERTa sin
-fine-tuning. La configuración final seleccionada para el sistema fue
-DeepSeek-Chat con prompting few-shot de 4 ejemplos, alcanzando un F1 macro de
-0.8980 y una exactitud de 0.9030. Gemini Flash presentó un desempeño prácticamente
-equivalente (F1 = 0.8970), por lo que ambos modelos pueden considerarse
-estadísticamente equivalentes en el conjunto de validación al presentar una
-diferencia menor a 0.002 puntos de F1 macro. GPT-4o obtuvo el mejor rendimiento
-global (F1 = 0.9070), aunque con un costo computacional y económico significativamente
-superior, razón por la cual fue utilizado únicamente como referencia de validación.
+La validez del schema fue del 100\% en las tres corridas: cada respuesta del
+LLM parseó correctamente contra el modelo Pydantic \texttt{AnalisisLLM} en el
+primer intento, sin disparar la lógica de \texttt{retry\_until\_valid}. Las
+categorías predichas estuvieron siempre dentro del catálogo cerrado de 17
+valores (12 políticas + 5 no-políticas), sin alucinaciones de etiqueta. El
+\textit{cache hit rate} ascendió de un 41\% inicial al 85.5\% tras reordenar
+el \textit{prompt} para situar los componentes invariantes (catálogos,
+\textit{schema}, ejemplos \textit{few-shot}, instrucciones) al inicio,
+reduciendo el costo operacional efectivo en aproximadamente 75\% por
+\textit{prefix-match} con el caché de DeepSeek.
 
-\figpendiente{5:fig23}{Matrices de confusión del módulo de análisis de sentimientos}{Matrices de confusión del módulo de análisis de sentimientos para Gemini Flash (izquierda) y GPT-4o (derecha) con configuración few-shot de 4 ejemplos, en el conjunto de validación de 500 publicaciones.}
+Como validación cualitativa puntual, tras corregir el \textit{bug} de
+ambigüedad del campo \texttt{es\_relevante\_peru} (originalmente confundido
+con ``relevante a la política peruana''), se verificó manualmente que 10/10
+documentos de la corrida piloto recibieron el valor geográficamente correcto
+(antes del fix: 9/10).
 
 \textbf{Actividad 2: Evaluar módulo de detección de temas}
 \\
-El módulo de detección dinámica de temas fue evaluado mediante la coherencia
-semántica $C_v$, la diversidad temática del corpus y la tasa de \textit{reuso} de
-temas previamente catalogados (\texttt{tema\_match\_type=exact} o
-\texttt{alias} sobre el total). Se ejecutaron experimentos con distintos umbrales
-del \textit{override} semántico post-LLM (\textit{cosine threshold} entre 0.75 y
-0.90) para determinar el balance óptimo entre granularidad y coherencia. Los
-resultados se muestran en la Tabla \ref{5:table2}.
+El módulo de detección dinámica de temas se evaluó mediante la \textbf{tasa
+de reuso} —porcentaje de documentos cuyo \texttt{tema\_match\_type} resulta
+\texttt{exact} o \texttt{alias}, es decir, no generan tema nuevo— y la
+distribución de los temas detectados por categoría sobre el corpus diario
+real. La Tabla \ref{5:table2} muestra la evolución del reuso a lo largo de
+las corridas progresivas.
 
 \begin{table}[h!]
-    \caption[Coherencia semántica $C_v$ y reuso por umbral del override semántico post-LLM]{Coherencia semántica $C_v$, número de temas detectados y tasa de \textit{reuso} para distintos umbrales \textit{cosine} del \textit{override} semántico post-LLM aplicado tras la extracción del modelo.}
+    \caption[Tasa de reuso del catálogo de temas por corrida]{Evolución de la tasa de \textit{reuso} de temas (\texttt{exact} + \texttt{alias} sobre el total) y conteos del catálogo \texttt{temas\_conocidos} en tres corridas progresivas, mostrando la maduración del catálogo conforme acumula días procesados.}
     \label{5:table2}
     \centering
     \small
-    \begin{tabular}{ M{3cm}M{3cm}M{3cm}M{3cm} }
+    \begin{tabular}{ m{3.6cm}M{2.4cm}M{2.4cm}M{2.4cm} }
         \specialrule{.1em}{.05em}{.05em}
-        Umbral \textit{cosine} & N.° de temas & Coherencia $C_v$ & Reuso (\%) \\
+        \Centering{Métrica} & \Centering{30 docs (día 1)} & \Centering{655 docs (día 1)} & \Centering{Acumulado} \\
         \specialrule{.1em}{.05em}{.05em}
-        0.75 & 47 & 0.4820 & 81.2 \\
-        \hline
-        \textbf{0.85} & \textbf{28} & \textbf{0.6340} & \textbf{70.0} \\
-        \hline
-        0.88 & 21 & 0.6810 & 62.4 \\
-        \hline
-        0.90 & 16 & 0.7120 & 54.7 \\
+        Tasa de reuso (\%)        & 13\%  & \textbf{70.5\%} & --      \\
+        Temas \texttt{exact}      & 3     & --     & --      \\
+        Temas \texttt{alias}      & 1     & --     & --      \\
+        Temas \texttt{new}        & 26    & --     & --      \\
+        Override semántico ($\geq 0.85$) & 0  & 88     & --      \\
+        Catálogo \texttt{temas\_conocidos} final & 27 & 27 & 27 \\
         \specialrule{.1em}{.05em}{.05em}
     \end{tabular}
     \begin{flushleft}
-        \small Fuente: Elaboración propia.
+        \small Fuente: Elaboración propia. La tasa del 13\% en la corrida inicial es esperable porque el catálogo arranca vacío; tras una corrida completa el sistema reusa el 70.5\% del catálogo construido.
     \end{flushleft}
 \end{table}
 
-El umbral \textit{cosine} $= 0.85$ fue seleccionado como el óptimo por ofrecer el
-mejor equilibrio entre coherencia semántica ($C_v = 0.6340$) y \textit{reuso} de
-temas previos (70.0\%), detectando 28 temas electorales distintos que cubren los
-principales ejes del debate político durante el período analizado. La validación
-cualitativa de las etiquetas por dos analistas políticos confirmó que 25 de los 28
-temas detectados (89.3\%) corresponden a temas electoralmente relevantes y
-reconocibles en el contexto de la campaña peruana 2026. Adicionalmente, las
-pasadas de \texttt{consolidate\_day} y \texttt{llm\_dedup} fusionaron en promedio
-3.2 pares de temas por día, evitando la proliferación de duplicados semánticos en
-el catálogo de \texttt{temas\_conocidos}.
+El sistema detectó \textbf{27 temas únicos} en el corpus de 744 documentos
+del 22 de marzo de 2026. El \textit{override} semántico post-LLM (\textit{cosine}
+$\geq 0.85$ + misma categoría) capturó 88 \textit{near-duplicates} que el
+menú de cinco \textit{tiers} no había incluido, evitando inflar
+artificialmente el catálogo. Las pasadas de \texttt{consolidate\_day} y
+\texttt{llm\_dedup} se ejecutaron sobre los 27 temas y 6 eventos del día sin
+producir merges en este corpus específico —los thresholds de doble criterio
+(2 de 3: nombre, \textit{embedding}, actores) están calibrados para evitar
+falsos positivos a costa de tolerar duplicados marginales que se pueden
+fusionar en pasadas posteriores—. La distribución de los cinco temas con
+mayor cobertura en el día se reporta en la Tabla \ref{5:table5}.
+
+\begin{table}[h!]
+    \caption[Top cinco temas detectados el 22 de marzo de 2026]{Cinco temas con mayor número de noticias detectadas el 22 de marzo de 2026 por el módulo de detección dinámica, extraídos de la vista materializada \texttt{gold\_temas\_diarios}.}
+    \label{5:table5}
+    \centering
+    \footnotesize
+    \begin{tabular}{ m{6.5cm}m{2.6cm}M{1.4cm}M{2cm} }
+        \specialrule{.1em}{.05em}{.05em}
+        \Centering{Tema} & \Centering{Categoría} & \Centering{N} & \Centering{Sentimiento} \\
+        \specialrule{.1em}{.05em}{.05em}
+        accidente\_patrullero\_pnp\_lima\_marzo2026          & seguridad       & 2 & $-0.30$ \\
+        tension\_iran\_eeuu\_medio\_oriente\_marzo2026       & internacional   & 2 & $-0.80$ \\
+        captura\_banda\_mexicanos\_el\_agustino\_marzo2026   & seguridad       & 2 & $-0.50$ \\
+        majes\_siguas\_ii\_arequipa\_marzo2026               & infraestructura & 1 & $-0.30$ \\
+        propuesta\_educacion\_ppp\_marzo2026                 & educacion       & 1 & $+0.20$ \\
+        \specialrule{.1em}{.05em}{.05em}
+    \end{tabular}
+    \begin{flushleft}
+        \small Fuente: Elaboración propia, vista \texttt{gold\_temas\_diarios} de Postgres tras corrida del 22-mar-2026.
+    \end{flushleft}
+\end{table}
 
 \textbf{Actividad 3: Evaluar sistema GraphRAG}
 \\
-Se diseñó un conjunto de 20 preguntas de evaluación sobre el grafo electoral, con
-respuesta esperada verificada manualmente mediante consultas SQL y Cypher escritas
-por el investigador. El sistema GraphRAG, en su arquitectura de 13 herramientas
-tipadas sobre MCP, fue evaluado en su capacidad de \textbf{seleccionar
-correctamente la herramienta adecuada} para cada pregunta y de invocarla con los
-parámetros válidos, obteniendo una exactitud del 85.0\% (17 de 20). Los tres
-errores correspondieron a preguntas con comparaciones temporales complejas entre
-más de dos períodos simultáneos, donde el LLM cliente seleccionó una herramienta
-de un solo período en lugar de combinar herramientas mediante múltiples llamadas.
-Una vez seleccionada la herramienta, las consultas SQL/Cypher subyacentes se
-ejecutaron correctamente en el 100\% de los casos por su naturaleza
-parametrizada y pre-validada.
+El sistema GraphRAG, implementado como servidor MCP con 13 herramientas
+tipadas, se evaluó por su \textbf{integridad operacional}: latencia mediana
+por herramienta, validez del \textit{structuredContent} retornado al cliente
+y comportamiento del caché TTL en herramientas de baja varianza. Los
+resultados se muestran en la Tabla \ref{5:table6}.
+
+\begin{table}[h!]
+    \caption[Latencia y comportamiento de cada herramienta MCP]{Latencia mediana medida en la BD real y comportamiento de caché TTL para las trece herramientas registradas en el servidor \texttt{electoral\_mcp}.}
+    \label{5:table6}
+    \centering
+    \footnotesize
+    \begin{tabular}{ m{5.4cm}m{2.4cm}M{1.6cm}M{1.5cm} }
+        \specialrule{.1em}{.05em}{.05em}
+        \Centering{Herramienta} & \Centering{Dominio} & \Centering{Lat. (ms)} & \Centering{Cache} \\
+        \specialrule{.1em}{.05em}{.05em}
+        contexto\_candidato                  & candidatos & 35   & no \\
+        evolucion\_sentimiento\_candidato    & candidatos & 8    & no \\
+        comparar\_candidatos\_sentimiento    & candidatos & 12   & no \\
+        temas\_top\_periodo                  & temas      & 11   & sí \\
+        buscar\_tema\_por\_descripcion       & temas      & 1100 & no \\
+        buscar\_actor\_por\_descripcion      & actores    & 1100 & no \\
+        noticias\_por\_actor                 & actores    & 10   & no \\
+        citar\_evidencia                     & evidencia  & 60   & no \\
+        panorama\_diario                     & panorama   & 48   & sí \\
+        intencion\_voto\_candidato           & encuestas  & 8    & no \\
+        encuestas\_disponibles               & encuestas  & 12   & no \\
+        tipo\_cambio\_periodo                & macro      & 5    & sí \\
+        indicador\_macro\_periodo            & macro      & 6    & sí \\
+        \specialrule{.1em}{.05em}{.05em}
+    \end{tabular}
+    \begin{flushleft}
+        \small Fuente: Elaboración propia, mediciones del repositorio \texttt{electoral-mcp} (\texttt{docs/04-catalogo-de-tools.md}). Las dos herramientas con latencia $\sim 1100$ ms están dominadas por la generación local del \textit{embedding} de la consulta sobre CPU; el \texttt{pgvector} HNSW resuelve la búsqueda en $\sim 5$ ms.
+    \end{flushleft}
+\end{table}
+
+Las trece herramientas retornaron \texttt{structuredContent} válido contra
+sus esquemas Pydantic v2 en el 100\% de las llamadas de validación
+\textit{end-to-end} reportadas en la bitácora de construcción del repositorio
+\texttt{electoral-mcp}. Las cuatro herramientas con caché TTL de 300\,s
+(\texttt{temas\_top\_periodo}, \texttt{panorama\_diario},
+\texttt{tipo\_cambio\_periodo}, \texttt{indicador\_macro\_periodo}) presentan
+latencia de \textit{cache hit} de 0.1--0.2\,ms, frente a 5--48\,ms en
+\textit{cache miss}.
+
+La evaluación de la \textbf{tasa de selección correcta} de la herramienta
+adecuada por parte del LLM cliente —para una batería diseñada de preguntas
+en lenguaje natural— queda como trabajo futuro, dado que requiere un set de
+preguntas anotadas con su \textit{ground truth} de tool esperada (ver
+\texttt{docs/pendientes-evaluacion.md}, sección 3).
 
 \textbf{Actividad 4: Evaluar el sistema integrado}
 \\
-La evaluación final del sistema integrado comprendió la medición de la latencia
-extremo a extremo del pipeline y la correlación de los indicadores ISN con encuestas
-electorales disponibles. Se midió el tiempo total de procesamiento de 1,000
-documentos del corpus en condiciones de carga media, obteniendo una latencia
-promedio de 5.2 segundos por documento con la API de DeepSeek-Chat y un 70\% de
-reuso de temas existentes en el catálogo (es decir, el 70\% de los documentos
-reciben \texttt{tema\_match\_type=exact} o \texttt{alias} y no crean tema nuevo).
-Esto permite al sistema procesar en tiempo real los picos de actividad del
-ecosistema digital electoral (estimados en 500--800 publicaciones por minuto
-durante los debates presidenciales) con una arquitectura de procesamiento
-concurrente intra-día (\texttt{BATCH\_SIZE=5} llamadas LLM en paralelo por
-\textit{batch} con \texttt{asyncio.gather}).
+La evaluación del sistema integrado se centra en la medición \textit{end-to-end}
+del pipeline de ocho pasos diarios y de su comportamiento bajo
+re-ejecuciones (idempotencia). La Tabla \ref{5:table7} resume las
+mediciones obtenidas en el corpus del 22 de marzo de 2026.
 
-Para la validación de los indicadores ISN, se calculó la correlación de Pearson entre
-los valores semanales del ISN por candidato generados por el sistema y los resultados
-de tres encuestas electorales publicadas durante el mismo período, obteniendo un
-coeficiente de $r = 0.74$ ($p < 0.05$), lo que indica una correlación fuerte y
-estadísticamente significativa entre la percepción digital medida por el sistema y
-la intención de voto declarada en las encuestas convencionales.
+\begin{table}[h!]
+    \caption[Métricas operacionales del sistema PeruVox integrado]{Métricas operacionales medidas en la corrida \textit{end-to-end} del pipeline sobre el corpus electoral del 22 de marzo de 2026.}
+    \label{5:table7}
+    \centering
+    \small
+    \begin{tabular}{ m{6.5cm}m{6cm} }
+        \specialrule{.1em}{.05em}{.05em}
+        \Centering{Métrica} & \Centering{Valor medido} \\
+        \specialrule{.1em}{.05em}{.05em}
+        Documentos crudos ingestados                & 818 \\
+        Documentos pasados los filtros pre-LLM      & 655 (reducción 20\%) \\
+        Latencia promedio del LLM por documento     & 5.2 s (DeepSeek-Chat) \\
+        Cache hit rate del \textit{prompt}          & 85.5\% \\
+        Tasa de \textit{reuso} de temas             & 70.5\% \\
+        Costo operacional del día                   & \$0.13 USD (655 docs) \\
+        Costo proyectado mensual ($\sim$10k docs)   & \$8 USD \\
+        Tiempo de \texttt{embed-day} (744 docs, CPU) & 2.0 s ($\sim$368 docs/s) \\
+        Tiempo de \texttt{load-silver} (2da corrida) & 0.2 s \\
+        Tiempo de \texttt{build-graph} (2da corrida) & 0.7 s \\
+        \textit{Refresh} de las cuatro vistas Gold  & $<$0.05 s c/u \\
+        Idempotencia (3 corridas consecutivas)      & Counts Postgres y Neo4j constantes \\
+        Cobertura de tests automatizados            & 94/94 pasando \\
+        \specialrule{.1em}{.05em}{.05em}
+    \end{tabular}
+    \begin{flushleft}
+        \small Fuente: Elaboración propia, datos extraídos de \texttt{docs/fase-7-hallazgos.md}, \texttt{docs/fase-8-hallazgos.md} y \texttt{docs/notas-tecnicas.md} del repositorio \texttt{electoral-intelligence}.
+    \end{flushleft}
+\end{table}
+
+La idempotencia del pipeline se validó ejecutando \texttt{load-silver} +
+\texttt{build-graph} tres veces consecutivas sobre el mismo día: los conteos
+en Postgres (\texttt{documentos=744, segmentos=744, analisis\_llm=30}) y en
+Neo4j (\texttt{Documento=723, Fragmento=723, Tema=27}) se mantuvieron
+constantes, confirmando el correcto funcionamiento de los \texttt{ON
+CONFLICT} y \texttt{MERGE} sobre las propiedades \texttt{UNIQUE} de cada
+entidad. La diferencia entre 744 documentos en Postgres y 723 en Neo4j
+corresponde a 21 documentos cuya fecha de publicación cae fuera del día UTC
+del \textit{query} del subgrafo (algunos del 21-mar, otros del 23-mar) y
+quedan filtrados, comportamiento esperado por el diseño.
+
+La validación cuantitativa de los \textbf{indicadores ISN frente a las
+encuestas Datum disponibles} (9 encuestas Ene-Abr 2026 ya cargadas en el
+sistema) requiere un cálculo de correlación de Pearson sobre series alineadas
+candidato-fecha que excede el alcance temporal de esta tesis y queda como
+trabajo futuro (ver \texttt{docs/pendientes-evaluacion.md}, sección 4).
 
 % ──────────────────────────────────────────────────────────────
 \section{Despliegue}

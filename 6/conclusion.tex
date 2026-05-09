@@ -6,17 +6,22 @@ implementar la metodología CRISP-DM sobre un corpus multicanal del ecosistema
 digital electoral peruano 2026, se presentan a continuación las conclusiones
 derivadas de cada objetivo de la investigación.
 \subsection*{Respecto al Objetivo General}
-Se logró analizar la percepción nacional en el contexto electoral peruano mediante
-un sistema de inteligencia electoral basado en Modelos de Lenguaje de Gran Escala
-(LLMs), minería de sentimientos y detección dinámica de temas en un ecosistema
-digital multi-fuente. El sistema PeruVox integra cuatro fuentes de datos digitales
-—noticias de portales de prensa, publicaciones de X/Twitter, transcripciones de
-YouTube y posts de TikTok—, procesa picos estimados de 500--800 publicaciones por
-minuto durante períodos de alta actividad electoral mediante concurrencia
-intra-\textit{batch} (\texttt{BATCH\_SIZE=5} con \texttt{asyncio.gather}) y genera
-indicadores de percepción pública con una correlación de Pearson de $r = 0.74$
-($p < 0.05$) respecto a encuestas electorales convencionales, confirmando la
-hipótesis general de la investigación.
+Se logró diseñar e implementar un sistema de inteligencia electoral basado en
+Modelos de Lenguaje de Gran Escala (LLMs), minería de sentimientos y detección
+dinámica de temas en un ecosistema digital multi-fuente para el caso peruano. El
+sistema PeruVox integra cuatro fuentes de datos digitales —noticias de portales
+de prensa, publicaciones de X/Twitter, transcripciones de YouTube y posts de
+TikTok—, procesa el corpus diario completo (655 documentos válidos del 22 de
+marzo de 2026) en aproximadamente 57 minutos secuenciales con un costo de
+US\$0{,}13 y un \textit{cache hit rate} de 85{,}5\% sobre el \textit{prompt} de
+extracción, y genera indicadores de percepción pública (sentimiento por candidato,
+temas dominantes, brecha medios-ciudadanía) consultables en lenguaje natural
+español a través de un servidor MCP de 13 herramientas tipadas. El sistema queda
+construido y operativo; la validación cuantitativa de los indicadores frente a
+encuestas convencionales (correlación de Pearson sobre el ISN semanal vs. las 9
+encuestas Datum cargadas) y la evaluación de calidad de salida con corpus
+etiquetado quedan documentadas como trabajo futuro en el archivo
+\texttt{docs/pendientes-evaluacion.md}.
 \subsection*{Respecto al Primer Objetivo Específico (OE1)}
 Se analizaron y sistematizaron los enfoques existentes en la literatura mediante
 la revisión de siete antecedentes internacionales publicados entre 2023 y 2025,
@@ -48,36 +53,36 @@ en aproximadamente un 40\% al descartar eficientemente las publicaciones sin
 menciones a candidatos.
 
 \subsection*{Respecto al Tercer Objetivo Específico (OE3)}
-Se evaluó con rigurosidad el desempeño de los LLMs en las dos tareas principales
-del sistema. Para el módulo de análisis de sentimientos a nivel de aspecto (ABSA),
-la configuración final —\textbf{DeepSeek-Chat} en modalidad \textit{few-shot} con 4
-ejemplos calibrados para el español político peruano— alcanzó un puntaje F1 macro
-de \textbf{0.8970}, exactitud de \textbf{0.9030}, precisión de 0.8950 y
-sensibilidad de 0.8980 sobre un conjunto de validación de 500 publicaciones con
-etiquetas humanas (acuerdo inter-anotador $\kappa = 0.82$). Gemini Flash con la
-misma configuración alcanzó un desempeño estadísticamente equivalente
-(F1 macro $= 0.8970$, diferencia $< 0.002$), por lo que se mantiene como
+Se construyó y midió operacionalmente el desempeño de los LLMs en las dos tareas
+principales del sistema. Para el módulo de análisis de sentimientos a nivel de
+aspecto (ABSA), la configuración final —\textbf{DeepSeek-Chat} en modalidad
+\textit{few-shot} con 4 ejemplos calibrados para el español político peruano—
+mostró \textbf{validez del schema del 100\%} (655/655 documentos con respuesta
+parseable contra el modelo Pydantic \texttt{AnalisisLLM} en el primer intento,
+sin reintentos), \textbf{cobertura del 100\%} sobre el catálogo cerrado de 17
+categorías (sin alucinación de etiquetas) y un \textbf{cache hit rate} medido
+del 85{,}5\% que reduce el costo operacional efectivo en aproximadamente 75\%
+por \textit{prefix-match} con el caché del proveedor. Gemini Flash queda como
 \textit{fallback} configurable mediante la variable de entorno
-\texttt{LLM\_PROVIDER}. La selección de DeepSeek-Chat como modelo principal
-respondió a su mecanismo de \textit{prompt cache} con descuento por
-\textit{prefix-match}, que reduce hasta en un 75\% el costo operacional para
-\textit{prompts} con prefijos invariantes largos —medido empíricamente en un
-\textit{cache hit rate} de 85.5\%—. Este resultado supera en \textbf{0.155 puntos
-de exactitud} al mejor modelo de referencia comparable
-(\cite{pr_alvi2023twitter_election_review}, SVM con análisis de sentimientos,
-exactitud = 0.780), confirmando la segunda hipótesis específica (HE2).
+\texttt{LLM\_PROVIDER}. La evaluación cuantitativa de la calidad de salida
+(F1 macro, exactitud, sensibilidad) contra etiquetas humanas requiere un corpus
+de validación de 500 publicaciones que se documenta como trabajo futuro en
+\texttt{docs/pendientes-evaluacion.md}, sección 1.
+
 Para el módulo de detección dinámica de temas, el enfoque híbrido LLM +
-\textit{retrieval} multinivel con la configuración óptima (umbral \textit{cosine}
-$= 0.85$ del \textit{override} semántico post-LLM) detectó \textbf{28 temas
-electorales distintos} con una coherencia semántica $C_v = 0.634$ y una tasa de
-\textit{reuso} de temas previos del 70\%, superando en \textbf{0.152 puntos} al
-modelo LDA utilizado como línea base ($C_v = 0.482$) en el mismo corpus. El 89.3\% de los temas detectados (25 de 28) fueron validados
-cualitativamente por analistas políticos como electoralmente relevantes y
-reconocibles en el contexto de la campaña peruana 2026. Los temas más relevantes
-—Economía e inflación (IRT = 18.4\%), Corrupción y justicia (IRT = 14.2\%) y
-Seguridad ciudadana (IRT = 11.7\%)— reflejaron fielmente las preocupaciones
-ciudadanas expresadas en los medios y en las redes sociales durante el período
-analizado.
+\textit{retrieval} multinivel con la configuración \textit{cosine} $\geq 0.85$
+del \textit{override} semántico post-LLM detectó \textbf{27 temas únicos} en el
+corpus de 744 documentos del 22 de marzo de 2026 (vista
+\texttt{gold\_temas\_diarios} de Postgres). La \textbf{tasa de reuso} del catálogo
+ascendió del 13\% en la corrida inicial (catálogo vacío) al 70{,}5\% en la
+corrida completa, evidenciando la curva de maduración esperable. El
+\textit{override} semántico post-LLM disparó 88 veces, atrapando duplicados que
+escapaban del menú de cinco \textit{tiers}. Los cinco temas con mayor cobertura
+en el día (accidente policial, tensión Irán-EE.UU., captura de banda en El
+Agustino, Majes-Siguas II, propuestas educativas) reflejaron correctamente la
+agenda informativa de la fecha. La medición de coherencia semántica $C_v$ con
+metodología estándar y comparación contra \textit{baselines} LDA y BERTopic
+queda como trabajo futuro (\texttt{docs/pendientes-evaluacion.md}, sección 2).
 \subsection*{Respecto al Cuarto Objetivo Específico (OE4)}
 Se implementó el sistema GraphRAG Electoral sobre el grafo de conocimiento
 construido en Neo4j Community, denominado \textbf{PeruVox}, bajo una arquitectura
@@ -90,27 +95,23 @@ Pydantic v2 de entrada y salida y consultas SQL/Cypher pre-cargadas y
 parametrizadas, lo que permite a analistas políticos y periodistas consultar en
 lenguaje natural español el ecosistema digital electoral desde clientes MCP
 estándar (Claude Desktop, Claude.ai web o Cursor) y obtener respuestas
-fundamentadas con evidencia textual del corpus original. El sistema seleccionó
-correctamente la herramienta adecuada para el \textbf{85\%} de las preguntas del
-conjunto de evaluación (17 de 20), tras 13 experimentos de configuración de las
-descripciones semánticas y \textit{output schemas}. Los errores correspondieron
-exclusivamente a preguntas que requerían comparaciones temporales complejas entre
-más de dos períodos simultáneos, donde el LLM cliente seleccionó una herramienta
-de un solo período en lugar de combinar herramientas mediante múltiples llamadas;
-una vez seleccionada la herramienta, las consultas SQL/Cypher subyacentes se
-ejecutaron correctamente en el 100\% de los casos por su naturaleza parametrizada
-y pre-validada. Este resultado confirma la cuarta hipótesis específica (HE4).
-La prueba piloto del sistema durante el segundo debate presidencial procesó la
-ingesta diaria del corpus multifuente, identificó correctamente un pico de
-sentimiento negativo durante y después del debate, y detectó una discrepancia
-significativa entre la cobertura positiva de un candidato en medios digitales y el
-sentimiento negativo expresado por la ciudadanía en X/Twitter durante la misma
-semana, constituyendo un hallazgo de inteligencia electoral de alto valor para los
-analistas usuarios del sistema. La latencia mediana de las herramientas se ubicó
-entre 5 y 60 ms para consultas no vectoriales y alrededor de 1100 ms para
+fundamentadas con evidencia textual del corpus original. La validación operacional
+\textit{end-to-end} mostró que las 13 herramientas retornan \texttt{structuredContent}
+válido contra sus esquemas Pydantic v2 en el 100\% de las llamadas, y que las
+consultas SQL/Cypher subyacentes —pre-cargadas y parametrizadas— se ejecutan
+correctamente por construcción. La latencia mediana de las herramientas se ubicó
+entre 5 y 60\,ms para consultas no vectoriales y alrededor de 1100\,ms para
 búsquedas semánticas (dominadas por la generación local del \textit{embedding} de
-la consulta sobre CPU), frente a los 1--2 segundos típicos de un sistema GraphRAG
-basado en generación dinámica de \textit{queries}.
+la consulta sobre CPU), frente a los 1--2\,segundos típicos de un sistema GraphRAG
+basado en generación dinámica de \textit{queries}, lo que confirma la ventaja
+operacional del enfoque \textit{typed tools}.
+
+La medición de la \textbf{tasa de selección correcta} de la herramienta adecuada
+por parte del LLM cliente para una batería diseñada de preguntas en lenguaje
+natural —que sería la métrica directa de cumplimiento de HE4— requiere un
+conjunto de preguntas anotadas con su \textit{ground truth} de tool esperada y se
+documenta como trabajo futuro en \texttt{docs/pendientes-evaluacion.md},
+sección 3.
 \subsection*{Consideraciones y limitaciones}
 Sin perjuicio de los resultados obtenidos, el sistema PeruVox presenta limitaciones
 metodológicas que deben ser reconocidas. En primer lugar, la representatividad del
@@ -123,9 +124,15 @@ en la clasificación del sentimiento hacia determinados actores políticos en es
 se limitó a las cuatro fuentes digitales mencionadas, sin incluir medios
 audiovisuales tradicionales (radio y televisión) ni plataformas de mensajería
 privada como WhatsApp o Telegram, donde circula información que no es accesible
-mediante \textit{scraping} público. La triangulación de los resultados del ISN con encuestas
-convencionales (correlación de Pearson $r = 0.74$) mitiga parcialmente estas
-limitaciones, pero no las elimina.
+mediante \textit{scraping} público. En cuarto lugar, la presente investigación
+reporta únicamente \textbf{métricas operacionales} medidas (validez del schema,
+cobertura del catálogo, latencia, costo, idempotencia, tasa de \textit{reuso});
+la evaluación de calidad de salida contra \textit{ground truth} (F1 macro,
+exactitud frente a etiquetas humanas, coherencia semántica $C_v$, correlación de
+Pearson con encuestas Datum) requiere un corpus de validación etiquetado por
+anotadores expertos que excede el alcance temporal del trabajo y se dimensiona
+detalladamente en \texttt{docs/pendientes-evaluacion.md}, donde se estiman
+aproximadamente tres semanas de trabajo adicional para completarla.
 \section{Recomendaciones}
 A partir de los resultados obtenidos y las limitaciones identificadas, se formulan
 las siguientes recomendaciones para trabajos de investigación futuros:
