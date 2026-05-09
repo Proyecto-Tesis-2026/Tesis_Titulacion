@@ -6,9 +6,29 @@
 *.log
 *.out
 *.toc
+*.lof
+*.lot
 *.synctex.gz
 *.fdb_latexmk
 *.fls
 
+# Bibliografia (biber/biblatex)
+*.bbl
+*.bbl-SAVE-ERROR
+*.bcf
+*.blg
+*.run.xml
+
+# Listas custom de la tesis (paquetes cool/mathtools/pythontex)
+*.eqflts
+*.equ
+*.loeqfloat
+*.loequcaption
+*.lomycapequ
+*.pytxcode
+
 # Archivos de VSCode
 .vscode/
+
+# macOS
+.DS_Store

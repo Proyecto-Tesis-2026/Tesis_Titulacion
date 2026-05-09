@@ -1,0 +1,16 @@
+% Fig 5:fig6b -- Arquitectura hexagonal del scraper-tiktok
+\begin{tikzpicture}[
+    node distance=0.45cm,
+    every node/.style={font=\footnotesize, align=center, inner sep=4pt},
+    layer/.style={draw, rounded corners=2pt, minimum width=12cm, minimum height=1.1cm},
+    arrow/.style={-{Stealth[length=2mm]}, thick, gray!70}
+]
+    \node[layer, fill=green!10] (dom) {\textbf{domain/} \\ \scriptsize entities.py (Profile, Video, StageRecord, RunAudit) -- ports.py -- utils.py};
+    \node[layer, fill=yellow!12, below=of dom] (app) {\textbf{application/} \\ \scriptsize ScrapeService -- conecta puertos, audita stages, escribe run\_audit.json};
+    \node[layer, fill=orange!12, below=of app] (adapt) {\textbf{adapters/} \\ \scriptsize profile\_playwright.py -- video\_ytdlp.py -- storage\_filesystem.py};
+    \node[layer, fill=red!10, minimum width=4cm, minimum height=0.7cm, below=of adapt] (main) {\textbf{main.py} (CLI)};
+
+    \draw[arrow] (main) -- (adapt);
+    \draw[arrow] (adapt) -- (app);
+    \draw[arrow] (app) -- (dom);
+\end{tikzpicture}

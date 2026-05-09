@@ -61,8 +61,11 @@
 %% Convertir comando cita por textcite para que tenga formato APA
 \let\cite\textcite
 
-%% Para que texto de figuras y tablas tenga formato APA
-\usepackage{multirow,booktabs,setspace,caption}
+%% Para que texto de figuras y tablas tenga formato APA.
+%% Caption se carga aqui con sus opciones (margin/font/labelfont) en una sola
+%% invocacion, para evitar "Option clash" si se intentara recargar mas abajo.
+\usepackage{multirow,booktabs,setspace}
+\usepackage[margin=10pt,font=small,labelfont=bf]{caption}
 \DeclareCaptionLabelSeparator*{spaced}{\\[2ex]}
 \captionsetup[table]{labelfont=normalfont,textfont=it,format=plain,justification=justified,singlelinecheck=false,labelsep=newline,skip=2pt}
 \captionsetup[figure]{labelsep=period,labelfont={it,bf},justification=justified,singlelinecheck=false,font=doublespacing}
@@ -94,12 +97,15 @@ pdftitle={Tesis-nombre-alumno},
 pdfauthor={autor nombres}]{hyperref}
 
 \usepackage{amssymb}
+\usepackage{tikz}
+\usetikzlibrary{shapes.geometric, shapes.symbols, arrows.meta, positioning, calc, fit, backgrounds, chains, decorations.pathreplacing}
 \usepackage{graphicx} % for improved inclusion of graphics
 %\usepackage{wrapfig} % to include figure with text wrapping around it
-\usepackage[margin=10pt,font=small,labelfont=bf]{caption} % for improved layout of figure captions with extra margin, smaller font than text
+% caption ya cargado mas arriba con sus opciones; subcaption va aparte
 \usepackage{subcaption}
 \usepackage{eucal}
-\usepackage[usenames, dvipsnames]{color}
+% color NO se carga aqui: lo carga xcolor (linea ~167) con [usenames,dvipsnames]
+% combinado en sus opciones para evitar "Option clash for package color"
 \usepackage[perpage]{footmisc}
 %\usepackage[round, sort]{natbib}
 \usepackage{ifthen}
@@ -146,7 +152,7 @@ pdfauthor={autor nombres}]{hyperref}
 %%%% nuevo parrafo
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%5
 %%%% Centrar valores de una tabla
-\usepackage{array}
+% array ya cargado al inicio del preambulo (linea 5)
 %%CENTRADO HORIZONTAL
 \newcolumntype{P}[1]{>{\centering\arraybackslash}p{#1}}
 %%CENTRADO VERTICAL
@@ -155,21 +161,63 @@ pdfauthor={autor nombres}]{hyperref}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%5
 %%%%Paquete para alinear texto
 \usepackage{ragged2e}
-\usepackage{multirow}
+% multirow ya cargado mas arriba (linea 67)
 \usepackage{makecell}
 \usepackage{rotating}
 \usepackage{siunitx} % To align the numbers later on
-\usepackage[table,xcdraw]{xcolor}
-\usepackage{color, colortbl}
+% xcolor carga internamente color con las mismas opciones (usenames, dvipsnames),
+% evitando el "Option clash for package color"
+\usepackage[usenames, dvipsnames, table, xcdraw]{xcolor}
+\usepackage{colortbl}
 \definecolor{Gray}{gray}{0.9}
 \definecolor{orange}{rgb}{1,0.647,0}
 \definecolor{turq3}{rgb}{0.54, 0.81, 0.94}
 \definecolor{turq}{rgb}{0.63, 0.79, 0.95}
 \definecolor{bluejean}{rgb}{0.03, 0.27, 0.49}
 
+%% Estilo cypher para \lstinputlisting. Definido aqui (despues de cargar
+%% listings, xcolor y los colores) para evitar el error
+%% "File ended while scanning use of \lst@Delim@delim" que ocurre cuando
+%% se pasan opciones complejas (con \color) en linea via archivos \input{}.
+\lstdefinestyle{cypher}{%
+    basicstyle=\ttfamily\footnotesize,%
+    backgroundcolor=\color{gray!8},%
+    frame=single,%
+    framesep=4pt,%
+    keywordstyle=\color{blue!70!black}\bfseries,%
+    morekeywords={MATCH,MERGE,SET,ON,CREATE,WHERE,RETURN,WITH,UNWIND,AS,datetime},%
+    commentstyle=\color{green!50!black}\itshape,%
+    morecomment=[l]{//},%
+    showstringspaces=false,%
+    columns=fullflexible,%
+    breaklines=true,%
+    upquote=true%
+}
+
 %%%%%%%%%%%%%%%%%%%%%%%%%
 \usepackage{xparse}
 \usepackage{expl3}
+
+%%%% Comando para figuras pendientes (placeholder vectorial).
+%%%% Uso: \figpendiente{label}{caption corto LOF}{caption largo}
+%%%% Renderiza un cuadro con texto "[FIGURA PENDIENTE]" + descripcion,
+%%%% con su \caption y \label, para que las refs del texto resuelvan
+%%%% mientras se prepara la imagen final. Reemplazar por
+%%%% \includegraphics{...} cuando se tenga la imagen real.
+\newcommand{\figpendiente}[3]{%
+    \begin{figure}[!ht]
+        \begin{center}
+            \fbox{\parbox[c][3.2cm][c]{0.9\textwidth}{%
+                \centering\bfseries\color{red!70!black}\large
+                [FIGURA PENDIENTE]\\[6pt]
+                \normalfont\normalsize\itshape\color{black} #2
+            }}
+            \caption[#2]{#3\\Fuente: Elaboración propia.}
+            \label{#1}
+        \end{center}
+    \end{figure}%
+}
+
 %%%%funcion de reemplazar regex
 \ExplSyntaxOn
 \NewDocumentCommand{\replace}{mmm}
@@ -231,7 +279,7 @@ pdfauthor={autor nombres}]{hyperref}
 \addtolength\cftchapnumwidth{\mynewlength}
 
 \usepackage{xpatch}
-\usepackage{caption}
+% caption ya cargado al inicio del preambulo
 \DeclareCaptionType{equcaption}[Ecuación][Índice de Ecuaciones]
 
 \newenvironment{conditions}
