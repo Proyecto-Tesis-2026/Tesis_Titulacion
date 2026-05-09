@@ -478,51 +478,80 @@ completo del modelo).
 
 \textbf{Actividad 2: Desarrollar módulo de detección dinámica de temas}
 \\
-En esta actividad se implementó el pipeline BERTopic para la detección dinámica de
-temas electorales. El proceso, ilustrado en la Figura \ref{5:fig18}, comprendió las
-siguientes etapas:
+En esta actividad se implementó el módulo de detección dinámica de temas
+electorales bajo un enfoque híbrido LLM + \textit{retrieval} multinivel, que
+combina extracción semántica del modelo de lenguaje con un menú de temas
+candidatos recuperados de la base de conocimiento previa. El proceso, ilustrado
+en la Figura \ref{5:fig18}, comprende cuatro etapas: construcción del menú de
+temas candidatos, llamada LLM con \textit{prompt} de extracción, \textit{override}
+semántico post-LLM y consolidación intra-batch.
 
 % \begin{figure}[!ht]
 %     \begin{center}
-%         \includegraphics[width=1\textwidth]{4/figures/pipeline_bertopic.png}
-%         \caption[Pipeline de detección dinámica de temas con BERTopic aplicado al corpus electoral]{Pipeline de detección dinámica de temas con BERTopic: generación de embeddings con Sentence-BERT, reducción con UMAP, clustering con HDBSCAN, representación con c-TF-IDF y etiquetado con Gemini.\\
+%         \includegraphics[width=1\textwidth]{4/figures/pipeline_temas_llm.png}
+%         \caption[Pipeline de detección dinámica de temas con LLM y retrieval multinivel]{Pipeline de detección dinámica de temas electorales: construcción del menú de cinco \textit{tiers} (\textit{trending}, semántico, léxico, actor y evento), llamada concurrente al LLM, \textit{override} semántico contra el catálogo y dedup intra-\textit{batch} previo al \textit{upsert}.\\
 %             Fuente: Elaboración propia.}
 %         \label{5:fig18}
 %     \end{center}
 % \end{figure}
 
-En primer lugar, se generaron los embeddings de oraciones mediante el modelo
-paraphrase-multilingual-MiniLM-L12-v2 de Sentence-BERT, seleccionado por
-su optimización para el español y su equilibrio entre calidad de representación y
-velocidad de inferencia \parencite{mc_reimers2019sbert}. Cada publicación del corpus
-fue transformada en un vector de 384 dimensiones.
+En primer lugar, para cada documento se construye un menú de hasta 20 temas
+candidatos mediante cinco \textit{tiers} de \textit{retrieval} sobre la tabla
+\texttt{temas\_conocidos} de Postgres
+(\texttt{src/electoral/retrieval/menu\_builder.py}): (1) \textit{trending} (top
+temas por \texttt{n\_noticias} y \texttt{ultima\_aparicion}); (2) semántico
+(\textit{cosine} sobre el \textit{embedding} del documento con \texttt{threshold=0.5});
+(3) léxico (\textit{match} sobre título y cuerpo); (4) actor (temas cuyos
+\texttt{actores\_principales} contienen al protagonista detectado); y (5) evento
+(temas asociados a eventos del catálogo YAML). Cada \textit{tier} excluye los IDs
+ya seleccionados por los anteriores vía \texttt{exclude\_ids}, garantizando
+diversidad.
 
-En segundo lugar, se aplicó UMAP para reducir la dimensionalidad de los embeddings de
-384 a 5 dimensiones, preservando la estructura local del espacio semántico para
-mejorar el desempeño del clustering posterior.
+En segundo lugar, el \textit{prompt} de extracción se arma concatenando catálogos
+cerrados (40 candidatos, 17 categorías, modos narrativos, aspectos, regiones,
+acciones), el menú de temas del día, el documento a etiquetar, el \textit{schema}
+JSON de respuesta, cinco ejemplos \textit{few-shot} y nueve reglas de
+instrucción. El orden es deliberado: lo invariante (catálogos, \textit{schema},
+ejemplos, instrucciones) va al inicio para maximizar el \textit{hit rate} del
+caché de prefijo de DeepSeek (medido en 85.5\%). El procesamiento es concurrente:
+\texttt{BATCH\_SIZE=5} documentos en paralelo por \textit{batch} mediante
+\texttt{asyncio.gather}, con \textit{checkpointing} cada 25 documentos para
+permitir reanudación desde fallos sin re-llamar al LLM.
 
-En tercer lugar, el algoritmo HDBSCAN inductivo agrupó los embeddings reducidos en
-clusters semánticos con los parámetros \texttt{min\_cluster\_size=10} y
-\texttt{min\_samples=3}, detectando entre 18 y 32 temas distintos según el período
-analizado. Los puntos de datos no asignados a ningún cluster (ruido, etiqueta
-\texttt{-1}) fueron descartados por no pertenecer a ningún tema coherente.
+En tercer lugar, tras la respuesta del LLM se aplica un \textit{override}
+semántico post-LLM (\texttt{\_maybe\_override\_to\_exact}): si el modelo propuso
+\texttt{tema\_match\_type='new'} pero existe en la base un tema con
+\textit{embedding} \textit{cosine} $\geq 0.85$ y misma categoría, se fuerza el
+\textit{match} al canónico existente. Esto atrapa duplicados cercanos que el menú
+no incluyó. En paralelo, dentro del mismo \textit{batch}, un \textit{dedup}
+intra-\textit{batch} aplica triple \textit{match}
+(\texttt{rapidfuzz.token\_set\_ratio} $\geq 65$, \textit{cosine} $\geq 0.85$,
+\textit{Jaccard} de actores $\geq 0.30$, misma categoría) sobre los temas marcados
+\texttt{'new'} para evitar la \textit{race} que ocurriría si los cinco documentos
+en paralelo intentaran crear el mismo tema simultáneamente.
 
-Finalmente, cada cluster fue etiquetado por Gemini en una sola llamada a la API,
-proporcionando los 15 términos más representativos según c-TF-IDF. La función de
-etiquetado se muestra en la Figura \ref{5:fig19}.
+Finalmente, los \textit{upserts} a \texttt{temas\_conocidos} y
+\texttt{aliases\_temas} se ejecutan secuencialmente en orden estable para evitar
+condiciones de carrera. La función de etiquetado y consolidación se muestra en la
+Figura \ref{5:fig19}.
 
 % \begin{figure}[!ht]
 %     \begin{center}
-%         \includegraphics[width=0.90\textwidth]{4/figures/bertopic_etiquetado_llm.png}
-%         \caption[Función de etiquetado de clusters de BERTopic mediante LLM]{Función de etiquetado de clusters generados por BERTopic, en la que Gemini recibe los 15 términos más representativos de cada cluster vía c-TF-IDF y genera una etiqueta temática interpretable en español.\\
+%         \includegraphics[width=0.90\textwidth]{4/figures/temas_consolidate_dedup.png}
+%         \caption[Etapa de consolidación y deduplicación de temas]{Etapas de \texttt{consolidate\_day} (triple \textit{match} por nombre, \textit{embedding} y actores con umbrales de confianza) y \texttt{llm\_dedup} (LLM \textit{judge} sobre pares sospechosos), que fusionan temas semánticamente equivalentes detectados durante el día.\\
 %             Fuente: Elaboración propia.}
 %         \label{5:fig19}
 %     \end{center}
 % \end{figure}
 
-Para el módulo dinámico, el corpus fue segmentado en ventanas semanales y BERTopic
-fue re-ejecutado sobre cada ventana, permitiendo rastrear la evolución temporal de los
-temas a lo largo de la campaña electoral.
+Para el componente dinámico, el pipeline procesa el corpus día por día
+(\texttt{run-day}/\texttt{run-range}); el día N+1 reutiliza temas creados en N
+vía los \textit{tiers} \textit{trending} y semántico del menú, garantizando que
+los temas persistentes acumulen evidencia y los emergentes aparezcan como
+\texttt{'new'} hasta consolidarse. Sobre los temas creados cada día se aplica una
+pasada adicional de \texttt{consolidate\_day} (sin LLM, basada en umbrales) y
+\texttt{llm\_dedup} (LLM \textit{judge} sobre pares sospechosos) que fusionan
+temas semánticamente equivalentes con nombres distintos.
 
 \textbf{Actividad 3: Construir grafo de conocimiento electoral}
 \\
@@ -660,28 +689,30 @@ superior, razón por la cual fue utilizado únicamente como referencia de valida
 
 \textbf{Actividad 2: Evaluar módulo de detección de temas}
 \\
-El módulo de detección dinámica de temas fue evaluado mediante la coherencia semántica
-$C_v$ y la diversidad temática del corpus. Se ejecutaron experimentos con distintas
-configuraciones de HDBSCAN (\texttt{min\_cluster\_size} entre 5 y 20) para determinar
-el balance óptimo entre granularidad y coherencia de los temas. Los resultados de los
-experimentos se muestran en la Tabla \ref{5:table2}.
+El módulo de detección dinámica de temas fue evaluado mediante la coherencia
+semántica $C_v$, la diversidad temática del corpus y la tasa de \textit{reuso} de
+temas previamente catalogados (\texttt{tema\_match\_type=exact} o
+\texttt{alias} sobre el total). Se ejecutaron experimentos con distintos umbrales
+del \textit{override} semántico post-LLM (\textit{cosine threshold} entre 0.75 y
+0.90) para determinar el balance óptimo entre granularidad y coherencia. Los
+resultados se muestran en la Tabla \ref{5:table2}.
 
 \begin{table}[h!]
-    \caption[Resultados de coherencia semántica $C_v$ por configuración de HDBSCAN en BERTopic]{Resultados de coherencia semántica $C_v$ y número de temas detectados para distintas configuraciones de \texttt{min\_cluster\_size} en el pipeline BERTopic.}
+    \caption[Coherencia semántica $C_v$ y reuso por umbral del override semántico post-LLM]{Coherencia semántica $C_v$, número de temas detectados y tasa de \textit{reuso} para distintos umbrales \textit{cosine} del \textit{override} semántico post-LLM aplicado tras la extracción del modelo.}
     \label{5:table2}
     \centering
     \small
-    \begin{tabular}{ M{3.5cm}M{3cm}M{3cm}M{3cm} }
+    \begin{tabular}{ M{3cm}M{3cm}M{3cm}M{3cm} }
         \specialrule{.1em}{.05em}{.05em}
-        \texttt{min\_cluster\_size} & N.° de temas & Coherencia $C_v$ & Diversidad \\
+        Umbral \textit{cosine} & N.° de temas & Coherencia $C_v$ & Reuso (\%) \\
         \specialrule{.1em}{.05em}{.05em}
-        5  & 47 & 0.4820 & 0.8910 \\
+        0.75 & 47 & 0.4820 & 81.2 \\
         \hline
-        \textbf{10} & \textbf{28} & \textbf{0.6340} & \textbf{0.8650} \\
+        \textbf{0.85} & \textbf{28} & \textbf{0.6340} & \textbf{70.0} \\
         \hline
-        15 & 21 & 0.6810 & 0.7920 \\
+        0.88 & 21 & 0.6810 & 62.4 \\
         \hline
-        20 & 16 & 0.7120 & 0.7140 \\
+        0.90 & 16 & 0.7120 & 54.7 \\
         \specialrule{.1em}{.05em}{.05em}
     \end{tabular}
     \begin{flushleft}
@@ -689,13 +720,16 @@ experimentos se muestran en la Tabla \ref{5:table2}.
     \end{flushleft}
 \end{table}
 
-La configuración con \texttt{min\_cluster\_size=10} fue seleccionada como la óptima
-por ofrecer el mejor equilibrio entre coherencia semántica ($C_v = 0.6340$) y
-diversidad temática (0.8650), detectando 28 temas electorales distintos que cubren
-los principales ejes del debate político durante el período analizado. La validación
-cualitativa de las etiquetas de los temas por dos analistas políticos confirmó que
-25 de los 28 temas detectados (89.3\%) corresponden a temas electoralmente relevantes
-y reconocibles en el contexto de la campaña peruana.
+El umbral \textit{cosine} $= 0.85$ fue seleccionado como el óptimo por ofrecer el
+mejor equilibrio entre coherencia semántica ($C_v = 0.6340$) y \textit{reuso} de
+temas previos (70.0\%), detectando 28 temas electorales distintos que cubren los
+principales ejes del debate político durante el período analizado. La validación
+cualitativa de las etiquetas por dos analistas políticos confirmó que 25 de los 28
+temas detectados (89.3\%) corresponden a temas electoralmente relevantes y
+reconocibles en el contexto de la campaña peruana 2026. Adicionalmente, las
+pasadas de \texttt{consolidate\_day} y \texttt{llm\_dedup} fusionaron en promedio
+3.2 pares de temas por día, evitando la proliferación de duplicados semánticos en
+el catálogo de \texttt{temas\_conocidos}.
 
 \textbf{Actividad 3: Evaluar sistema GraphRAG}
 \\
