@@ -1,0 +1,48 @@
+# Compilacion de la tesis con TeX Live oficial.
+# Funciona en macOS (Apple Silicon y Intel), Linux y Windows.
+# Imagen base: texlive/texlive:latest (multi-arch, ~5 GB primera vez).
+#
+# Uso:
+#   docker compose run --rm build    # compila una vez y genera tesis.pdf
+#   docker compose run --rm watch    # recompila automaticamente al guardar
+#   docker compose run --rm shell    # bash interactivo dentro del contenedor
+#   docker compose run --rm clean    # borra todos los artefactos generados
+
+services:
+  build:
+    image: texlive/texlive:latest
+    working_dir: /work
+    # Mapea uid/gid del host para que el PDF y aux files no queden como root.
+    # En Linux/Mac: docker compose lee UID/GID del entorno (export UID=$(id -u) GID=$(id -g)).
+    # En Windows: ignorado, sin efecto pernicioso.
+    user: "${UID:-1000}:${GID:-1000}"
+    volumes:
+      - .:/work
+    command: latexmk -pdf -interaction=nonstopmode tesis.tex
+
+  watch:
+    image: texlive/texlive:latest
+    working_dir: /work
+    user: "${UID:-1000}:${GID:-1000}"
+    volumes:
+      - .:/work
+    # -pvc = preview continuous. Detecta cambios y recompila.
+    command: latexmk -pdf -pvc -interaction=nonstopmode tesis.tex
+
+  shell:
+    image: texlive/texlive:latest
+    working_dir: /work
+    user: "${UID:-1000}:${GID:-1000}"
+    volumes:
+      - .:/work
+    command: bash
+    stdin_open: true
+    tty: true
+
+  clean:
+    image: texlive/texlive:latest
+    working_dir: /work
+    user: "${UID:-1000}:${GID:-1000}"
+    volumes:
+      - .:/work
+    command: latexmk -C
