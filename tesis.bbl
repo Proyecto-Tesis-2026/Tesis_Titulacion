@@ -165,6 +165,32 @@
       \verb https://pmc.ncbi.nlm.nih.gov/articles/PMC10495957/
       \endverb
     \endentry
+    \entry{tec_anthropic2024mcp}{misc}{}{}
+      \name{author}{1}{}{%
+        {{un=0,uniquepart=base,hash=f431db65cea024a5f19eab835afefee2}{%
+           family={{Anthropic}},
+           familyi={A\bibinitperiod}}}%
+      }
+      \strng{namehash}{f431db65cea024a5f19eab835afefee2}
+      \strng{fullhash}{f431db65cea024a5f19eab835afefee2}
+      \strng{fullhashraw}{f431db65cea024a5f19eab835afefee2}
+      \strng{bibnamehash}{f431db65cea024a5f19eab835afefee2}
+      \strng{authorbibnamehash}{f431db65cea024a5f19eab835afefee2}
+      \strng{authornamehash}{f431db65cea024a5f19eab835afefee2}
+      \strng{authorfullhash}{f431db65cea024a5f19eab835afefee2}
+      \strng{authorfullhashraw}{f431db65cea024a5f19eab835afefee2}
+      \field{sortinit}{A}
+      \field{sortinithash}{2f401846e2029bad6b3ecc16d50031e2}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \true{uniqueprimaryauthor}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{howpublished}{\url{https://modelcontextprotocol.io}}
+      \field{note}{Accessed: 2025}
+      \field{title}{Model Context Protocol: Open standard for connecting AI models to data sources}
+      \field{year}{2024}
+    \endentry
     \entry{bk_blei2012lda}{book}{}{}
       \name{author}{1}{}{%
         {{un=0,uniquepart=base,hash=108998f0d44d4dce8ccb93e4d78cd5c6}{%
@@ -700,6 +726,58 @@
       \verb https://doi.org/10.1002/aaai.12188
       \endverb
     \endentry
+    \entry{bk_databricks2023medallion}{misc}{}{}
+      \name{author}{1}{}{%
+        {{un=0,uniquepart=base,hash=4e3f864ba9cf3c62d471e1c62414d098}{%
+           family={{Databricks}},
+           familyi={D\bibinitperiod}}}%
+      }
+      \strng{namehash}{4e3f864ba9cf3c62d471e1c62414d098}
+      \strng{fullhash}{4e3f864ba9cf3c62d471e1c62414d098}
+      \strng{fullhashraw}{4e3f864ba9cf3c62d471e1c62414d098}
+      \strng{bibnamehash}{4e3f864ba9cf3c62d471e1c62414d098}
+      \strng{authorbibnamehash}{4e3f864ba9cf3c62d471e1c62414d098}
+      \strng{authornamehash}{4e3f864ba9cf3c62d471e1c62414d098}
+      \strng{authorfullhash}{4e3f864ba9cf3c62d471e1c62414d098}
+      \strng{authorfullhashraw}{4e3f864ba9cf3c62d471e1c62414d098}
+      \field{sortinit}{D}
+      \field{sortinithash}{6f385f66841fb5e82009dc833c761848}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \true{uniqueprimaryauthor}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{howpublished}{\url{https://www.databricks.com/glossary/medallion-architecture}}
+      \field{note}{Accessed: 2025}
+      \field{title}{What is the Medallion Lakehouse Architecture?}
+      \field{year}{2023}
+    \endentry
+    \entry{tec_deepseek2024}{misc}{}{}
+      \name{author}{1}{}{%
+        {{un=0,uniquepart=base,hash=1e509a4c4d751f91db5a73aed19a3491}{%
+           family={{DeepSeek AI}},
+           familyi={D\bibinitperiod}}}%
+      }
+      \strng{namehash}{1e509a4c4d751f91db5a73aed19a3491}
+      \strng{fullhash}{1e509a4c4d751f91db5a73aed19a3491}
+      \strng{fullhashraw}{1e509a4c4d751f91db5a73aed19a3491}
+      \strng{bibnamehash}{1e509a4c4d751f91db5a73aed19a3491}
+      \strng{authorbibnamehash}{1e509a4c4d751f91db5a73aed19a3491}
+      \strng{authornamehash}{1e509a4c4d751f91db5a73aed19a3491}
+      \strng{authorfullhash}{1e509a4c4d751f91db5a73aed19a3491}
+      \strng{authorfullhashraw}{1e509a4c4d751f91db5a73aed19a3491}
+      \field{sortinit}{D}
+      \field{sortinithash}{6f385f66841fb5e82009dc833c761848}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \true{uniqueprimaryauthor}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{howpublished}{\url{https://api-docs.deepseek.com}}
+      \field{note}{Accessed: 2025}
+      \field{title}{DeepSeek Technical Report}
+      \field{year}{2024}
+    \endentry
     \entry{cr_inei2024}{report}{}{}
       \name{author}{1}{}{%
         {{un=0,uniquepart=base,hash=b618580da5590d875a1e9f355e3d0de7}{%
@@ -1193,6 +1271,35 @@
       \field{edition}{6}
       \field{title}{Metodología de la Investigación}
       \field{year}{2014}
+    \endentry
+    \entry{tec_pgvector2024}{misc}{}{}
+      \name{author}{1}{}{%
+        {{un=0,uniquepart=base,hash=501473571e295ea24cf65b86763bbccb}{%
+           family={Hollis},
+           familyi={H\bibinitperiod},
+           given={Andrew},
+           giveni={A\bibinitperiod},
+           givenun=0}}%
+      }
+      \strng{namehash}{501473571e295ea24cf65b86763bbccb}
+      \strng{fullhash}{501473571e295ea24cf65b86763bbccb}
+      \strng{fullhashraw}{501473571e295ea24cf65b86763bbccb}
+      \strng{bibnamehash}{501473571e295ea24cf65b86763bbccb}
+      \strng{authorbibnamehash}{501473571e295ea24cf65b86763bbccb}
+      \strng{authornamehash}{501473571e295ea24cf65b86763bbccb}
+      \strng{authorfullhash}{501473571e295ea24cf65b86763bbccb}
+      \strng{authorfullhashraw}{501473571e295ea24cf65b86763bbccb}
+      \field{sortinit}{H}
+      \field{sortinithash}{23a3aa7c24e56cfa16945d55545109b5}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \true{uniqueprimaryauthor}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{howpublished}{\url{https://github.com/pgvector/pgvector}}
+      \field{note}{Accessed: 2025}
+      \field{title}{pgvector: Open-source vector similarity search for Postgres}
+      \field{year}{2024}
     \endentry
     \entry{cr_reuters2024}{report}{}{}
       \name{author}{1}{}{%
@@ -1919,6 +2026,84 @@
       \verb https://arxiv.org/abs/1301.3781
       \endverb
     \endentry
+    \entry{tec_mudgal2018deepmatcher}{article}{}{}
+      \name{author}{9}{}{%
+        {{un=0,uniquepart=base,hash=821e3a9702558b8e4c426072b969c7b6}{%
+           family={Mudgal},
+           familyi={M\bibinitperiod},
+           given={Sidharth},
+           giveni={S\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=d125500d3d36d4686ff68be4348fbb12}{%
+           family={Li},
+           familyi={L\bibinitperiod},
+           given={Han},
+           giveni={H\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=1832f93b955f795af801e5354c196b17}{%
+           family={Rekatsinas},
+           familyi={R\bibinitperiod},
+           given={Theodoros},
+           giveni={T\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=3cb74070ad8c4823a51144b32f91830d}{%
+           family={Doan},
+           familyi={D\bibinitperiod},
+           given={AnHai},
+           giveni={A\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=0e02872a8067f655e8ecc86828668687}{%
+           family={Park},
+           familyi={P\bibinitperiod},
+           given={Youngchoon},
+           giveni={Y\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=d8a599da7b8d2d876d138140a01891d9}{%
+           family={Krishnan},
+           familyi={K\bibinitperiod},
+           given={Ganesh},
+           giveni={G\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=3c9f1e2f032623bd12733b3d76251383}{%
+           family={Deep},
+           familyi={D\bibinitperiod},
+           given={Rohit},
+           giveni={R\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=2201729bd61693bd36df860408450550}{%
+           family={Arcaute},
+           familyi={A\bibinitperiod},
+           given={Esteban},
+           giveni={E\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=7eab57cba26962694497c7f387d32b04}{%
+           family={Raghavendra},
+           familyi={R\bibinitperiod},
+           given={Vijay},
+           giveni={V\bibinitperiod},
+           givenun=0}}%
+      }
+      \strng{namehash}{24743b7ce3399af8ac8a137fa19fab36}
+      \strng{fullhash}{f7ec6f7e4ba31a4dea9c5d36fc7f35d4}
+      \strng{fullhashraw}{f7ec6f7e4ba31a4dea9c5d36fc7f35d4}
+      \strng{bibnamehash}{f7ec6f7e4ba31a4dea9c5d36fc7f35d4}
+      \strng{authorbibnamehash}{f7ec6f7e4ba31a4dea9c5d36fc7f35d4}
+      \strng{authornamehash}{24743b7ce3399af8ac8a137fa19fab36}
+      \strng{authorfullhash}{f7ec6f7e4ba31a4dea9c5d36fc7f35d4}
+      \strng{authorfullhashraw}{f7ec6f7e4ba31a4dea9c5d36fc7f35d4}
+      \field{sortinit}{M}
+      \field{sortinithash}{4625c616857f13d17ce56f7d4f97d451}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \true{uniqueprimaryauthor}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Proceedings of the 2018 International Conference on Management of Data}
+      \field{title}{Deep Learning for Entity Matching: A Design Space Exploration}
+      \field{year}{2018}
+      \field{pages}{19\bibrangedash 34}
+      \range{pages}{16}
+    \endentry
     \entry{tec_ouyang2022instructgpt}{misc}{}{}
       \true{moreauthor}
       \true{morelabelname}
@@ -2012,6 +2197,46 @@
       \verb{url}
       \verb https://arxiv.org/abs/2203.02155
       \endverb
+    \endentry
+    \entry{tec_pan2024vectordb}{article}{}{}
+      \name{author}{3}{}{%
+        {{un=0,uniquepart=base,hash=31ce5d4195f279a212f7c7601435fd48}{%
+           family={Pan},
+           familyi={P\bibinitperiod},
+           given={James},
+           giveni={J\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=59c4c01dba80dcb248d013b928f7dccb}{%
+           family={Ikponmwosa},
+           familyi={I\bibinitperiod},
+           given={Omonigho},
+           giveni={O\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=455724dd74e89c92e4fb22307733f96d}{%
+           family={Kherlopian},
+           familyi={K\bibinitperiod},
+           given={Armen},
+           giveni={A\bibinitperiod},
+           givenun=0}}%
+      }
+      \strng{namehash}{599365c4118d6d0da1fde9c7ef135577}
+      \strng{fullhash}{764a245b603deebb12b102a9481f42cc}
+      \strng{fullhashraw}{764a245b603deebb12b102a9481f42cc}
+      \strng{bibnamehash}{764a245b603deebb12b102a9481f42cc}
+      \strng{authorbibnamehash}{764a245b603deebb12b102a9481f42cc}
+      \strng{authornamehash}{599365c4118d6d0da1fde9c7ef135577}
+      \strng{authorfullhash}{764a245b603deebb12b102a9481f42cc}
+      \strng{authorfullhashraw}{764a245b603deebb12b102a9481f42cc}
+      \field{sortinit}{P}
+      \field{sortinithash}{ff3bcf24f47321b42cb156c2cc8a8422}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \true{uniqueprimaryauthor}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{arXiv preprint arXiv:2310.14021}
+      \field{title}{Survey of Vector Database Management Systems}
+      \field{year}{2024}
     \endentry
     \entry{pr_pang2008opinion}{article}{}{}
       \name{author}{2}{}{%
@@ -3019,6 +3244,32 @@
       \verb https://pmc.ncbi.nlm.nih.gov/articles/PMC10495957/
       \endverb
     \endentry
+    \entry{tec_anthropic2024mcp}{misc}{}{}
+      \name{author}{1}{}{%
+        {{un=0,uniquepart=base,hash=f431db65cea024a5f19eab835afefee2}{%
+           family={{Anthropic}},
+           familyi={A\bibinitperiod}}}%
+      }
+      \strng{namehash}{f431db65cea024a5f19eab835afefee2}
+      \strng{fullhash}{f431db65cea024a5f19eab835afefee2}
+      \strng{fullhashraw}{f431db65cea024a5f19eab835afefee2}
+      \strng{bibnamehash}{f431db65cea024a5f19eab835afefee2}
+      \strng{authorbibnamehash}{f431db65cea024a5f19eab835afefee2}
+      \strng{authornamehash}{f431db65cea024a5f19eab835afefee2}
+      \strng{authorfullhash}{f431db65cea024a5f19eab835afefee2}
+      \strng{authorfullhashraw}{f431db65cea024a5f19eab835afefee2}
+      \field{sortinit}{A}
+      \field{sortinithash}{2f401846e2029bad6b3ecc16d50031e2}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \true{uniqueprimaryauthor}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{howpublished}{\url{https://modelcontextprotocol.io}}
+      \field{note}{Accessed: 2025}
+      \field{title}{Model Context Protocol: Open standard for connecting AI models to data sources}
+      \field{year}{2024}
+    \endentry
     \entry{bk_blei2012lda}{book}{}{}
       \name{author}{1}{}{%
         {{un=0,uniquepart=base,hash=108998f0d44d4dce8ccb93e4d78cd5c6}{%
@@ -3554,6 +3805,58 @@
       \verb https://doi.org/10.1002/aaai.12188
       \endverb
     \endentry
+    \entry{bk_databricks2023medallion}{misc}{}{}
+      \name{author}{1}{}{%
+        {{un=0,uniquepart=base,hash=4e3f864ba9cf3c62d471e1c62414d098}{%
+           family={{Databricks}},
+           familyi={D\bibinitperiod}}}%
+      }
+      \strng{namehash}{4e3f864ba9cf3c62d471e1c62414d098}
+      \strng{fullhash}{4e3f864ba9cf3c62d471e1c62414d098}
+      \strng{fullhashraw}{4e3f864ba9cf3c62d471e1c62414d098}
+      \strng{bibnamehash}{4e3f864ba9cf3c62d471e1c62414d098}
+      \strng{authorbibnamehash}{4e3f864ba9cf3c62d471e1c62414d098}
+      \strng{authornamehash}{4e3f864ba9cf3c62d471e1c62414d098}
+      \strng{authorfullhash}{4e3f864ba9cf3c62d471e1c62414d098}
+      \strng{authorfullhashraw}{4e3f864ba9cf3c62d471e1c62414d098}
+      \field{sortinit}{D}
+      \field{sortinithash}{6f385f66841fb5e82009dc833c761848}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \true{uniqueprimaryauthor}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{howpublished}{\url{https://www.databricks.com/glossary/medallion-architecture}}
+      \field{note}{Accessed: 2025}
+      \field{title}{What is the Medallion Lakehouse Architecture?}
+      \field{year}{2023}
+    \endentry
+    \entry{tec_deepseek2024}{misc}{}{}
+      \name{author}{1}{}{%
+        {{un=0,uniquepart=base,hash=1e509a4c4d751f91db5a73aed19a3491}{%
+           family={{DeepSeek AI}},
+           familyi={D\bibinitperiod}}}%
+      }
+      \strng{namehash}{1e509a4c4d751f91db5a73aed19a3491}
+      \strng{fullhash}{1e509a4c4d751f91db5a73aed19a3491}
+      \strng{fullhashraw}{1e509a4c4d751f91db5a73aed19a3491}
+      \strng{bibnamehash}{1e509a4c4d751f91db5a73aed19a3491}
+      \strng{authorbibnamehash}{1e509a4c4d751f91db5a73aed19a3491}
+      \strng{authornamehash}{1e509a4c4d751f91db5a73aed19a3491}
+      \strng{authorfullhash}{1e509a4c4d751f91db5a73aed19a3491}
+      \strng{authorfullhashraw}{1e509a4c4d751f91db5a73aed19a3491}
+      \field{sortinit}{D}
+      \field{sortinithash}{6f385f66841fb5e82009dc833c761848}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \true{uniqueprimaryauthor}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{howpublished}{\url{https://api-docs.deepseek.com}}
+      \field{note}{Accessed: 2025}
+      \field{title}{DeepSeek Technical Report}
+      \field{year}{2024}
+    \endentry
     \entry{cr_inei2024}{report}{}{}
       \name{author}{1}{}{%
         {{un=0,uniquepart=base,hash=b618580da5590d875a1e9f355e3d0de7}{%
@@ -4047,6 +4350,35 @@
       \field{edition}{6}
       \field{title}{Metodología de la Investigación}
       \field{year}{2014}
+    \endentry
+    \entry{tec_pgvector2024}{misc}{}{}
+      \name{author}{1}{}{%
+        {{un=0,uniquepart=base,hash=501473571e295ea24cf65b86763bbccb}{%
+           family={Hollis},
+           familyi={H\bibinitperiod},
+           given={Andrew},
+           giveni={A\bibinitperiod},
+           givenun=0}}%
+      }
+      \strng{namehash}{501473571e295ea24cf65b86763bbccb}
+      \strng{fullhash}{501473571e295ea24cf65b86763bbccb}
+      \strng{fullhashraw}{501473571e295ea24cf65b86763bbccb}
+      \strng{bibnamehash}{501473571e295ea24cf65b86763bbccb}
+      \strng{authorbibnamehash}{501473571e295ea24cf65b86763bbccb}
+      \strng{authornamehash}{501473571e295ea24cf65b86763bbccb}
+      \strng{authorfullhash}{501473571e295ea24cf65b86763bbccb}
+      \strng{authorfullhashraw}{501473571e295ea24cf65b86763bbccb}
+      \field{sortinit}{H}
+      \field{sortinithash}{23a3aa7c24e56cfa16945d55545109b5}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \true{uniqueprimaryauthor}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{howpublished}{\url{https://github.com/pgvector/pgvector}}
+      \field{note}{Accessed: 2025}
+      \field{title}{pgvector: Open-source vector similarity search for Postgres}
+      \field{year}{2024}
     \endentry
     \entry{cr_reuters2024}{report}{}{}
       \name{author}{1}{}{%
@@ -4773,6 +5105,84 @@
       \verb https://arxiv.org/abs/1301.3781
       \endverb
     \endentry
+    \entry{tec_mudgal2018deepmatcher}{article}{}{}
+      \name{author}{9}{}{%
+        {{un=0,uniquepart=base,hash=821e3a9702558b8e4c426072b969c7b6}{%
+           family={Mudgal},
+           familyi={M\bibinitperiod},
+           given={Sidharth},
+           giveni={S\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=d125500d3d36d4686ff68be4348fbb12}{%
+           family={Li},
+           familyi={L\bibinitperiod},
+           given={Han},
+           giveni={H\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=1832f93b955f795af801e5354c196b17}{%
+           family={Rekatsinas},
+           familyi={R\bibinitperiod},
+           given={Theodoros},
+           giveni={T\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=3cb74070ad8c4823a51144b32f91830d}{%
+           family={Doan},
+           familyi={D\bibinitperiod},
+           given={AnHai},
+           giveni={A\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=0e02872a8067f655e8ecc86828668687}{%
+           family={Park},
+           familyi={P\bibinitperiod},
+           given={Youngchoon},
+           giveni={Y\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=d8a599da7b8d2d876d138140a01891d9}{%
+           family={Krishnan},
+           familyi={K\bibinitperiod},
+           given={Ganesh},
+           giveni={G\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=3c9f1e2f032623bd12733b3d76251383}{%
+           family={Deep},
+           familyi={D\bibinitperiod},
+           given={Rohit},
+           giveni={R\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=2201729bd61693bd36df860408450550}{%
+           family={Arcaute},
+           familyi={A\bibinitperiod},
+           given={Esteban},
+           giveni={E\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=7eab57cba26962694497c7f387d32b04}{%
+           family={Raghavendra},
+           familyi={R\bibinitperiod},
+           given={Vijay},
+           giveni={V\bibinitperiod},
+           givenun=0}}%
+      }
+      \strng{namehash}{24743b7ce3399af8ac8a137fa19fab36}
+      \strng{fullhash}{f7ec6f7e4ba31a4dea9c5d36fc7f35d4}
+      \strng{fullhashraw}{f7ec6f7e4ba31a4dea9c5d36fc7f35d4}
+      \strng{bibnamehash}{f7ec6f7e4ba31a4dea9c5d36fc7f35d4}
+      \strng{authorbibnamehash}{f7ec6f7e4ba31a4dea9c5d36fc7f35d4}
+      \strng{authornamehash}{24743b7ce3399af8ac8a137fa19fab36}
+      \strng{authorfullhash}{f7ec6f7e4ba31a4dea9c5d36fc7f35d4}
+      \strng{authorfullhashraw}{f7ec6f7e4ba31a4dea9c5d36fc7f35d4}
+      \field{sortinit}{M}
+      \field{sortinithash}{4625c616857f13d17ce56f7d4f97d451}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \true{uniqueprimaryauthor}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Proceedings of the 2018 International Conference on Management of Data}
+      \field{title}{Deep Learning for Entity Matching: A Design Space Exploration}
+      \field{year}{2018}
+      \field{pages}{19\bibrangedash 34}
+      \range{pages}{16}
+    \endentry
     \entry{tec_ouyang2022instructgpt}{misc}{}{}
       \true{moreauthor}
       \true{morelabelname}
@@ -4866,6 +5276,46 @@
       \verb{url}
       \verb https://arxiv.org/abs/2203.02155
       \endverb
+    \endentry
+    \entry{tec_pan2024vectordb}{article}{}{}
+      \name{author}{3}{}{%
+        {{un=0,uniquepart=base,hash=31ce5d4195f279a212f7c7601435fd48}{%
+           family={Pan},
+           familyi={P\bibinitperiod},
+           given={James},
+           giveni={J\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=59c4c01dba80dcb248d013b928f7dccb}{%
+           family={Ikponmwosa},
+           familyi={I\bibinitperiod},
+           given={Omonigho},
+           giveni={O\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=455724dd74e89c92e4fb22307733f96d}{%
+           family={Kherlopian},
+           familyi={K\bibinitperiod},
+           given={Armen},
+           giveni={A\bibinitperiod},
+           givenun=0}}%
+      }
+      \strng{namehash}{599365c4118d6d0da1fde9c7ef135577}
+      \strng{fullhash}{764a245b603deebb12b102a9481f42cc}
+      \strng{fullhashraw}{764a245b603deebb12b102a9481f42cc}
+      \strng{bibnamehash}{764a245b603deebb12b102a9481f42cc}
+      \strng{authorbibnamehash}{764a245b603deebb12b102a9481f42cc}
+      \strng{authornamehash}{599365c4118d6d0da1fde9c7ef135577}
+      \strng{authorfullhash}{764a245b603deebb12b102a9481f42cc}
+      \strng{authorfullhashraw}{764a245b603deebb12b102a9481f42cc}
+      \field{sortinit}{P}
+      \field{sortinithash}{ff3bcf24f47321b42cb156c2cc8a8422}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \true{uniqueprimaryauthor}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{arXiv preprint arXiv:2310.14021}
+      \field{title}{Survey of Vector Database Management Systems}
+      \field{year}{2024}
     \endentry
     \entry{pr_pang2008opinion}{article}{}{}
       \name{author}{2}{}{%

@@ -1,0 +1,14 @@
+# PDFs
+*.pdf
+
+# Archivos temporales de LaTeX
+*.aux
+*.log
+*.out
+*.toc
+*.synctex.gz
+*.fdb_latexmk
+*.fls
+
+# Archivos de VSCode
+.vscode/

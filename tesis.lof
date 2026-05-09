@@ -1,0 +1,42 @@
+\babel@toc {spanish}{}\relax 
+\contentsline {figure}{\numberline {1}{\ignorespaces Uso global de redes sociales}}{5}{figure.caption.9}%
+\contentsline {figure}{\numberline {2}{\ignorespaces Consumo de noticias en redes sociales}}{6}{figure.caption.10}%
+\contentsline {figure}{\numberline {3}{\ignorespaces Usuarios de internet en Perú}}{6}{figure.caption.11}%
+\contentsline {figure}{\numberline {4}{\ignorespaces Flujo de trabajo para generación y análisis de contenido político con LLMs}}{13}{figure.caption.12}%
+\contentsline {figure}{\numberline {5}{\ignorespaces Comparación entre predicciones del modelo LLM y resultados electorales reales en estados de India}}{14}{figure.caption.13}%
+\contentsline {figure}{\numberline {6}{\ignorespaces Marco de trabajo para detección dinámica de temas y análisis de fundamentos morales en Twitter político}}{15}{figure.caption.14}%
+\contentsline {figure}{\numberline {7}{\ignorespaces Pipeline de reducción de temas asistida por LLMs combinada con BERTopic para datos de redes sociales}}{17}{figure.caption.15}%
+\contentsline {figure}{\numberline {8}{\ignorespaces Marco conceptual de oportunidades y desafíos de los LLMs en la detección de desinformación electoral}}{18}{figure.caption.16}%
+\contentsline {figure}{\numberline {9}{\ignorespaces Evolución cronológica de los enfoques de análisis de sentimientos para predicción electoral en Twitter}}{19}{figure.caption.17}%
+\contentsline {figure}{\numberline {10}{\ignorespaces Arquitectura del framework de síntesis temática iterativa con LLMs para análisis de publicidad política}}{21}{figure.caption.18}%
+\contentsline {figure}{\numberline {11}{\ignorespaces Arquitectura original del Transformer con codificador y decodificador}}{26}{figure.caption.21}%
+\contentsline {figure}{\numberline {12}{\ignorespaces Comparación entre los enfoques zero-shot, one-shot y few-shot en LLMs}}{28}{figure.caption.22}%
+\contentsline {figure}{\numberline {13}{\ignorespaces Evolución cronológica de los principales modelos de lenguaje de gran escala}}{29}{figure.caption.23}%
+\contentsline {figure}{\numberline {14}{\ignorespaces Niveles de granularidad del análisis de sentimientos}}{30}{figure.caption.24}%
+\contentsline {figure}{\numberline {15}{\ignorespaces Comparación de rendimiento entre enfoques de análisis de sentimientos en texto político}}{31}{figure.caption.25}%
+\contentsline {figure}{\numberline {16}{\ignorespaces Notación de plato del modelo LDA}}{33}{figure.caption.26}%
+\contentsline {figure}{\numberline {17}{\ignorespaces Pipeline completo del framework BERTopic para detección de temas neurales}}{33}{figure.caption.27}%
+\contentsline {figure}{\numberline {18}{\ignorespaces Evolución temporal de temas políticos detectados mediante BERTopic dinámico}}{35}{figure.caption.28}%
+\contentsline {figure}{\numberline {19}{\ignorespaces Arquitectura de un sistema de Generación Aumentada por Recuperación (RAG)}}{36}{figure.caption.29}%
+\contentsline {figure}{\numberline {20}{\ignorespaces Pipeline de recolección y preprocesamiento de datos de redes sociales para análisis electoral}}{38}{figure.caption.30}%
+\contentsline {figure}{\numberline {21}{\ignorespaces Arquitectura de un sistema integrado de inteligencia electoral basado en LLMs}}{39}{figure.caption.31}%
+\contentsline {figure}{\numberline {22}{\ignorespaces Pipeline completo del sistema de inteligencia electoral}}{40}{figure.caption.32}%
+\contentsline {figure}{\numberline {23}{\ignorespaces Arquitectura Medallion del pipeline electoral}}{41}{figure.caption.33}%
+\contentsline {figure}{\numberline {24}{\ignorespaces Proceso general de la minería de sentimientos aplicada al análisis electoral}}{45}{figure.caption.34}%
+\contentsline {figure}{\numberline {25}{\ignorespaces Concepto de detección dinámica de temas en un proceso electoral}}{46}{figure.caption.35}%
+\contentsline {figure}{\numberline {26}{\ignorespaces Ejemplo de tokenización de un texto político con tokenizadores de subpalabras}}{47}{figure.caption.36}%
+\contentsline {figure}{\numberline {27}{\ignorespaces Espacio vectorial de embeddings de oraciones sobre discurso político electoral}}{48}{figure.caption.37}%
+\contentsline {figure}{\numberline {28}{\ignorespaces Estructura de un prompt optimizado para análisis de sentimientos electorales}}{49}{figure.caption.38}%
+\contentsline {figure}{\numberline {29}{\ignorespaces Arquitectura de procesamiento en tiempo real para monitoreo de percepción electoral}}{51}{figure.caption.39}%
+\contentsline {figure}{\numberline {30}{\ignorespaces Organigrama del equipo de investigación del sistema de inteligencia electoral}}{54}{figure.caption.41}%
+\contentsline {figure}{\numberline {31}{\ignorespaces Modelo CANVAS del sistema de inteligencia electoral basado en LLMs}}{60}{figure.caption.44}%
+\contentsline {figure}{\numberline {32}{\ignorespaces Mapa de procesos del sistema de inteligencia electoral}}{61}{figure.caption.45}%
+\contentsline {figure}{\numberline {33}{\ignorespaces Flujograma de recolección de los conjuntos de datos del corpus electoral}}{65}{figure.caption.46}%
+\contentsline {figure}{\numberline {34}{\ignorespaces Metodología CRISP-DM adaptada al sistema de inteligencia electoral con LLMs}}{68}{figure.caption.47}%
+\contentsline {figure}{\numberline {35}{\ignorespaces Marco de trabajo del Pipeline GraphRAG Electoral propuesto}}{69}{figure.caption.48}%
+\contentsline {figure}{\numberline {36}{\ignorespaces Proceso de recolección del corpus de noticias digitales}}{72}{figure.caption.49}%
+\contentsline {figure}{\numberline {37}{\ignorespaces Proceso de recolección del corpus de X/Twitter mediante API Filtered Stream}}{73}{figure.caption.50}%
+\contentsline {figure}{\numberline {38}{\ignorespaces Proceso de recolección del corpus de comentarios de YouTube}}{74}{figure.caption.51}%
+\contentsline {figure}{\numberline {39}{\ignorespaces Cronograma de actividades de la investigación}}{85}{figure.caption.57}%
+\contentsline {figure}{\numberline {40}{\ignorespaces Árbol de problemas de la investigación}}{116}{figure.caption.71}%
+\contentsline {figure}{\numberline {41}{\ignorespaces Árbol de objetivos de la investigación}}{117}{figure.caption.72}%
