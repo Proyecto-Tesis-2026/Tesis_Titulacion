@@ -92,11 +92,14 @@ de \cite{pr_mendonca2025bertopic_political} y \cite{pr_janssens2025bertopic_llm}
 %     \end{center}
 % \end{figure}
 
-El módulo comienza con la generación de embeddings mediante el modelo
-paraphrase-multilingual-MiniLM-L12-v2 de Sentence-BERT, seleccionado
-como el mejor balance entre calidad semántica y velocidad de inferencia para el
-español, según el benchmarking de \cite{mc_reimers2019sbert}. Los embeddings de
-384 dimensiones son reducidos a 5 mediante UMAP y agrupados con HDBSCAN. Se
+El módulo comienza con la generación de \textit{embeddings} mediante el modelo
+\texttt{paraphrase-multilingual-mpnet-base-v2} de Sentence-BERT, seleccionado por
+su soporte multilingüe robusto en español y por el balance entre calidad semántica
+y velocidad de inferencia en CPU, según el \textit{benchmarking} de
+\cite{mc_reimers2019sbert}. Cada documento del corpus es transformado en un vector
+de \textbf{768 dimensiones} que se persiste en la columna \texttt{embedding} de la
+tabla \texttt{segmentos} de la capa Silver y alimenta los \textit{vector indexes}
+de Postgres (HNSW) y de Neo4j (\textit{cosine}). Se
 utilizó HDBSCAN inductivo en lugar de K-Means dado que, como señalan
 \cite{pr_janssens2025bertopic_llm}, no requiere especificar el número de temas a
 priori y descarta automáticamente publicaciones ruidosas sin tema coherente
