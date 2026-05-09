@@ -9,12 +9,14 @@ derivadas de cada objetivo de la investigación.
 Se logró analizar la percepción nacional en el contexto electoral peruano mediante
 un sistema de inteligencia electoral basado en Modelos de Lenguaje de Gran Escala
 (LLMs), minería de sentimientos y detección dinámica de temas en un ecosistema
-digital multi-fuente. El sistema PeruVox integra tres fuentes de datos digitales
-—noticias de portales de prensa, publicaciones de X/Twitter y comentarios de
-YouTube—, procesa hasta 3,200 publicaciones por minuto durante picos de actividad
-electoral y genera indicadores de percepción pública en tiempo real con una
-correlación de Pearson de $r = 0.74$ ($p < 0.05$) respecto a encuestas electorales
-convencionales, confirmando la hipótesis general de la investigación.
+digital multi-fuente. El sistema PeruVox integra cuatro fuentes de datos digitales
+—noticias de portales de prensa, publicaciones de X/Twitter, transcripciones de
+YouTube y posts de TikTok—, procesa picos estimados de 500--800 publicaciones por
+minuto durante períodos de alta actividad electoral mediante concurrencia
+intra-\textit{batch} (\texttt{BATCH\_SIZE=5} con \texttt{asyncio.gather}) y genera
+indicadores de percepción pública con una correlación de Pearson de $r = 0.74$
+($p < 0.05$) respecto a encuestas electorales convencionales, confirmando la
+hipótesis general de la investigación.
 \subsection*{Respecto al Primer Objetivo Específico (OE1)}
 Se analizaron y sistematizaron los enfoques existentes en la literatura mediante
 la revisión de siete antecedentes internacionales publicados entre 2023 y 2025,
@@ -31,15 +33,19 @@ componentes más adecuados para el contexto electoral peruano en español.
 \subsection*{Respecto al Segundo Objetivo Específico (OE2)}
 Se diseñó e implementó exitosamente la arquitectura multi-fuente del sistema,
 organizada bajo el patrón Medallion en tres capas de procesamiento (Bronze, Silver
-y Gold) sobre una infraestructura dual de bases de datos —PostgreSQL con pgvector
-para datos relacionales y vectoriales, y Neo4j para el grafo de conocimiento—.
-La integración de múltiples fuentes de datos demostró que cada canal aporta una
-perspectiva complementaria: las noticias digitales reflejaron la agenda mediática,
-X/Twitter capturó la reacción ciudadana inmediata y los comentarios de YouTube
-proporcionaron opiniones de mayor longitud y elaboración argumentativa. El sistema
-Aho-Corasick de filtrado, implementado como primer estadio del pipeline, redujo el
-costo computacional del análisis LLM en aproximadamente un 40\% al descartar
-eficientemente los segmentos sin menciones a candidatos.
+y Gold) sobre una infraestructura dual de bases de datos —PostgreSQL con
+\texttt{pgvector} para datos relacionales y vectoriales, y Neo4j 5.20 Community
+Edition para el grafo de conocimiento—. La integración de las cuatro fuentes de
+datos demostró que cada canal aporta una perspectiva complementaria: las noticias
+digitales reflejaron la agenda mediática, X/Twitter capturó la reacción ciudadana
+inmediata, las transcripciones de YouTube proporcionaron opiniones argumentativas
+extensas y TikTok aportó dinámicas de opinión propias del formato audiovisual
+corto, particularmente entre la población joven. La cascada de filtros pre-LLM
+parametrizados desde catálogos YAML versionados (\texttt{filter\_by\_account},
+\texttt{filter\_by\_hashtag} y \texttt{filter\_by\_title\_keywords}), implementada
+como primer estadio del pipeline, redujo el costo computacional del análisis LLM
+en aproximadamente un 40\% al descartar eficientemente las publicaciones sin
+menciones a candidatos.
 
 \subsection*{Respecto al Tercer Objetivo Específico (OE3)}
 Se evaluó con rigurosidad el desempeño de los LLMs en las dos tareas principales
@@ -90,9 +96,10 @@ urbanos. En segundo lugar, los modelos LLM utilizados fueron pre-entrenados
 principalmente sobre corpus en inglés, lo que puede introducir sesgos sistemáticos
 en la clasificación del sentimiento hacia determinados actores políticos en español
 \parencite{pr_gujral2024llm_elections}. En tercer lugar, la cobertura del sistema
-se limitó a tres fuentes digitales, sin incluir TikTok —plataforma de creciente
-influencia política entre la población joven peruana— ni medios audiovisuales
-tradicionales. La triangulación de los resultados del ISN con encuestas
+se limitó a las cuatro fuentes digitales mencionadas, sin incluir medios
+audiovisuales tradicionales (radio y televisión) ni plataformas de mensajería
+privada como WhatsApp o Telegram, donde circula información que no es accesible
+mediante \textit{scraping} público. La triangulación de los resultados del ISN con encuestas
 convencionales (correlación de Pearson $r = 0.74$) mitiga parcialmente estas
 limitaciones, pero no las elimina.
 \section{Recomendaciones}
