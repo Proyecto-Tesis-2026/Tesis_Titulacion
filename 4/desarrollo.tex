@@ -555,32 +555,53 @@ temas semánticamente equivalentes con nombres distintos.
 
 \textbf{Actividad 3: Construir grafo de conocimiento electoral}
 \\
-En esta actividad se implementó el grafo de conocimiento electoral en Neo4j AuraDB.
-El esquema del grafo, con sus cinco tipos de nodos y ocho tipos de relaciones, fue
-definido en el Capítulo IV. Los jobs de agregación semanal, implementados como
-funciones Python programadas con \texttt{APScheduler}, leen los datos de la capa
-Silver (tablas \texttt{analisis} y \texttt{temas\_analisis}) y los vuelcan al grafo
-mediante sentencias Cypher con la cláusula \texttt{MERGE}, garantizando la
-idempotencia del proceso. La sentencia principal de escritura al grafo se muestra
-en la Figura \ref{5:fig20}.
+En esta actividad se implementó el grafo de conocimiento electoral sobre
+\textbf{Neo4j 5.20 Community Edition} (con los \textit{plugins} GDS y APOC
+preinstalados), desplegado en contenedor Docker dentro de la misma red local que
+PostgreSQL. El esquema implementado comprende los nodos
+\texttt{Documento}, \texttt{Fragmento}, \texttt{Tema}, \texttt{Actor},
+\texttt{Candidato}, \texttt{Categoria}, \texttt{Encuesta}, \texttt{TipoCambio},
+\texttt{IndicadorMacro} y \texttt{SentimientoDiario}, y las relaciones
+\texttt{CONTIENE} (Documento $\rightarrow$ Fragmento), \texttt{SOBRE\_TEMA}
+(Fragmento $\rightarrow$ Tema, con \texttt{sentimiento} y \texttt{confianza}),
+\texttt{MENCIONA} (Fragmento $\rightarrow$ Candidato), \texttt{MENCIONA\_ACTOR}
+(Fragmento $\rightarrow$ Actor), \texttt{DE\_CATEGORIA} (Tema $\rightarrow$
+Categoría), \texttt{MIDE} (Encuesta $\rightarrow$ Candidato) y
+\texttt{TIENE\_SENTIMIENTO\_EN} (Candidato $\rightarrow$ SentimientoDiario). Los
+nodos con \textit{embedding} (Actor, Tema, Candidato, Fragmento) llevan
+\textit{vector index} de 768 dimensiones con métrica \textit{cosine}.
+
+La sincronización Postgres $\rightarrow$ Neo4j se implementa en el paso
+\texttt{build\_graph} del orquestador
+(\texttt{src/electoral/pipelines/build\_graph/processor.py}), que se ejecuta
+\textbf{por día} (no semanalmente) como parte de la secuencia de ocho pasos
+diarios (\texttt{ingest, embed, label, consolidate, llm\_dedup, load\_silver,
+build\_graph, refresh\_gold}) gestionada por el \texttt{day\_runner}. La
+invocación se realiza vía \textit{Make targets} (\texttt{make run-day DATE=...},
+\texttt{make run-range FROM=... TO=...}), sin necesidad de un \textit{scheduler}
+externo: la ejecución la dispara el operador o un \textit{cron} del sistema
+huésped si se desea automatización. Cada \textit{upsert} a Neo4j se realiza con
+\texttt{MERGE} sobre la propiedad \texttt{UNIQUE} del nodo, garantizando
+idempotencia ante re-ejecuciones del mismo día. La sentencia principal de
+escritura al grafo se muestra en la Figura \ref{5:fig20}.
 
 % \begin{figure}[!ht]
 %     \begin{center}
 %         \includegraphics[width=0.90\textwidth]{4/figures/neo4j_merge_aristas.png}
-%         \caption[Sentencia Cypher MERGE para la escritura idempotente de aristas en el grafo electoral]{Sentencia Cypher MERGE para la escritura idempotente de aristas MENCIONA en el grafo electoral de Neo4j, con cálculo de promedios móviles de sentimiento y contadores de menciones.\\
+%         \caption[Sentencia Cypher MERGE para la escritura idempotente de aristas en el grafo electoral]{Sentencia Cypher \texttt{MERGE} para la escritura idempotente de relaciones \texttt{MENCIONA} y \texttt{SOBRE\_TEMA} en el grafo electoral de Neo4j Community, leyendo desde las tablas \texttt{documentos}, \texttt{analisis\_llm} y \texttt{temas\_conocidos} de la capa Silver de Postgres.\\
 %             Fuente: Elaboración propia.}
 %         \label{5:fig20}
 %     \end{center}
 % \end{figure}
 
 En la Figura \ref{5:fig21} se visualiza un fragmento del grafo de conocimiento
-electoral generado, mostrando las relaciones entre candidatos, temas y fuentes para
-una semana de campaña seleccionada.
+electoral generado, mostrando las relaciones entre fragmentos, candidatos, temas
+y categorías para un día de campaña seleccionado.
 
 % \begin{figure}[!ht]
 %     \begin{center}
 %         \includegraphics[width=0.92\textwidth]{4/figures/grafo_neo4j_visualizacion.png}
-%         \caption[Visualización de un fragmento del grafo de conocimiento electoral en Neo4j]{Visualización de un fragmento del grafo de conocimiento electoral en Neo4j Browser, mostrando las relaciones entre nodos Candidato, Tema y Fuente para una semana de campaña, con el sentimiento promedio codificado en el grosor de las aristas.\\
+%         \caption[Visualización de un fragmento del grafo de conocimiento electoral en Neo4j]{Visualización de un fragmento del grafo de conocimiento electoral en Neo4j Browser, mostrando las relaciones entre nodos \texttt{Fragmento}, \texttt{Candidato}, \texttt{Tema} y \texttt{Categoria} para un día de campaña, con el sentimiento por candidato codificado en propiedades de las aristas \texttt{MENCIONA}.\\
 %             Fuente: Elaboración propia.}
 %         \label{5:fig21}
 %     \end{center}
