@@ -68,7 +68,13 @@ y \texttt{Scrapy}, que accede a las páginas de resultados de búsqueda filtrada
 palabras clave electorales y extrae, por cada artículo: URL, fecha de publicación,
 titular, cuerpo del texto y nombre del medio, como se aprecia en la Figura \ref{5:fig1}.
 
-\figpendiente{5:fig1}{Función principal del scraper de noticias digitales electorales}{Función principal del scraper de noticias digitales electorales, mostrando la lógica de extracción por portal y el almacenamiento en la tabla \texttt{documentos} de la capa Bronze.}
+\begin{figure}[!ht]
+    \begin{center}
+        \input{4/figures/fig1_scraper_noticias}
+        \caption[Función principal del scraper de noticias digitales electorales]{Función principal del scraper de noticias digitales electorales, mostrando la lógica de extracción por portal y el almacenamiento en la tabla \texttt{documentos\\Fuente: Elaboración propia.}
+        \label{5:fig1}
+    \end{center}
+\end{figure} de la capa Bronze.}
 
 Para garantizar la robustez del scraper ante cambios en la estructura HTML de los
 portales, se implementó un sistema de reintentos con \textit{backoff} exponencial y
@@ -94,7 +100,13 @@ los resultados como archivos JSON en
 (\codepath{src/electoral/schemas/raw/twitter.py}) usa \texttt{extra="allow"} en
 Pydantic para tolerar campos nuevos del scraper sin romper la ingesta.
 
-\figpendiente{5:fig3}{Módulo de ingesta asíncrona de Twitter/X mediante TwitterAPI.io}{Módulo de ingesta asíncrona de Twitter/X mediante TwitterAPI.io, mostrando el consumo REST con \texttt{httpx}, el filtrado temporal por \texttt{createdAt} y la persistencia de archivos JSON raw en la capa Bronze.}
+\begin{figure}[!ht]
+    \begin{center}
+        \input{4/figures/fig3_twitter_ingestor}
+        \caption[Módulo de ingesta asíncrona de Twitter/X mediante TwitterAPI.io]{Módulo de ingesta asíncrona de Twitter/X mediante TwitterAPI.io, mostrando el consumo REST con \texttt{httpx\\Fuente: Elaboración propia.}
+        \label{5:fig3}
+    \end{center}
+\end{figure}, el filtrado temporal por \texttt{createdAt} y la persistencia de archivos JSON raw en la capa Bronze.}
 
 Para optimizar la recolección durante las horas de mayor actividad del ecosistema
 digital electoral —especialmente durante debates y eventos de campaña—, el proceso
@@ -127,7 +139,13 @@ entre workers por \textit{round-robin} para evitar bloqueos por límite de tasa.
 
 La función implementada para este proceso se muestra en la Figura \ref{5:fig5}.
 
-\figpendiente{5:fig5}{Módulo paralelo de extracción de contenido electoral desde YouTube mediante yt-dlp}{Módulo de extracción paralela de contenido electoral desde YouTube mediante yt-dlp, usando arquitectura productor-consumidor, extracción de metadata y manejo distribuido de cookies Netscape para evitar límites de tasa.}
+\begin{figure}[!ht]
+    \begin{center}
+        \input{4/figures/fig5_youtube_ingestor}
+        \caption[Módulo paralelo de extracción de contenido electoral desde YouTube mediante yt-dlp]{Módulo de extracción paralela de contenido electoral desde YouTube mediante yt-dlp, usando arquitectura productor-consumidor, extracción de metadata y manejo distribuido de cookies Netscape para evitar límites de tasa.\\Fuente: Elaboración propia.}
+        \label{5:fig5}
+    \end{center}
+\end{figure}
 
 Los datos recolectados fueron almacenados en formato JSON raw dentro de la capa
 Bronze, preservando tanto la metadata estructurada de los videos como las
@@ -174,7 +192,13 @@ multicanal: distribución temporal, por fuente, por candidato y por longitud de 
 En la variable dependiente —el sentimiento expresado hacia cada candidato—, las
 publicaciones del corpus se distribuyen según la Figura \ref{5:fig7}.
 
-\figpendiente{5:fig7}{Distribución del corpus electoral total por fuente de datos}{Distribución del corpus electoral total por las cuatro fuentes de datos (noticias digitales, X/Twitter, YouTube y TikTok), mostrando el volumen relativo de cada canal.}
+\begin{figure}[!ht]
+    \begin{center}
+        \resizebox{\textwidth}{!}{\input{4/figures/fig7_distribucion_fuentes}}
+        \caption[Distribución del corpus electoral total por fuente de datos]{Distribución del corpus electoral total por las cuatro fuentes de datos (noticias digitales, X/Twitter, YouTube y TikTok), mostrando el volumen relativo de cada canal.\\Fuente: Elaboración propia.}
+        \label{5:fig7}
+    \end{center}
+\end{figure}
 
 De acuerdo a la distribución temporal de la Figura \ref{5:fig8}, los picos de actividad
 del ecosistema digital coinciden con los principales hitos de la campaña: debates
@@ -231,7 +255,13 @@ publicaciones duplicadas y aquellas con longitud inferior a 10 tokens, que no ap
 información suficiente para el análisis de sentimientos. La función implementada
 para este proceso se muestra en la Figura \ref{5:fig12}.
 
-\figpendiente{5:fig12}{Pipeline de limpieza y normalización del corpus electoral multicanal}{Pipeline de limpieza y normalización del corpus electoral multicanal, mostrando las etapas de eliminación de ruido, detección de idioma y normalización textual.}
+\begin{figure}[!ht]
+    \begin{center}
+        \resizebox{\textwidth}{!}{\input{4/figures/fig12_pipeline_limpieza}}
+        \caption[Pipeline de limpieza y normalización del corpus electoral multicanal]{Pipeline de limpieza y normalización del corpus electoral multicanal, mostrando las etapas de eliminación de ruido, detección de idioma y normalización textual.\\Fuente: Elaboración propia.}
+        \label{5:fig12}
+    \end{center}
+\end{figure}
 
 La nube de palabras de la Figura \ref{5:fig13} representa los términos más frecuentes
 en el corpus de noticias digitales posterior a la limpieza, evidenciando que los términos
@@ -345,7 +375,13 @@ El prompt de análisis, que sigue la estructura de cinco componentes —rol, con
 instrucción, formato y ejemplos \textit{few-shot}— desarrollada en el marco conceptual,
 se muestra en la Figura \ref{5:fig16}.
 
-\figpendiente{5:fig16}{Prompt de análisis de sentimientos a nivel de aspecto para el contexto electoral peruano}{Prompt de análisis de sentimientos a nivel de aspecto (\textit{Aspect-Based Sentiment Analysis}) diseñado para el contexto electoral peruano, con estructura role-context-task-format-examples y salida en JSON estructurado.}
+\begin{figure}[!ht]
+    \begin{center}
+        \resizebox{\textwidth}{!}{\input{4/figures/fig16_prompt_absa}}
+        \caption[Prompt de análisis de sentimientos a nivel de aspecto para el contexto electoral peruano]{Prompt de análisis de sentimientos a nivel de aspecto (\textit{Aspect-Based Sentiment Analysis\\Fuente: Elaboración propia.}
+        \label{5:fig16}
+    \end{center}
+\end{figure}) diseñado para el contexto electoral peruano, con estructura role-context-task-format-examples y salida en JSON estructurado.}
 
 El \textit{prompt} extrae en una sola llamada por documento los siguientes campos en
 formato JSON: candidato protagonista, candidatos secundarios, sentimiento por

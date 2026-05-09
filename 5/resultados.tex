@@ -42,7 +42,13 @@ responde a su mecanismo de \textit{prompt cache} con descuento por
 ejemplos \textit{few-shot}); el \textit{cache hit rate} medido empíricamente sobre
 el corpus electoral fue de 85.5\%.
 
-\figpendiente{6:fig1}{Arquitectura del prompt ABSA para análisis de sentimientos electorales}{Arquitectura del prompt de análisis de sentimientos a nivel de aspecto (ABSA) para el contexto electoral peruano, con sus cinco componentes: rol, contexto, instrucción, formato JSON y ejemplos few-shot.}
+\begin{figure}[!ht]
+    \begin{center}
+        \resizebox{\textwidth}{!}{\input{5/figures/fig1_prompt_absa}}
+        \caption[Arquitectura del prompt ABSA para análisis de sentimientos electorales]{Arquitectura del prompt de análisis de sentimientos a nivel de aspecto (ABSA) para el contexto electoral peruano, con sus cinco componentes: rol, contexto, instrucción, formato JSON y ejemplos few-shot.\\Fuente: Elaboración propia.}
+        \label{6:fig1}
+    \end{center}
+\end{figure}
 
 La arquitectura del prompt comienza con la asignación del rol de analista político
 experto en discurso electoral latinoamericano, lo que orienta al modelo hacia el
@@ -79,7 +85,13 @@ BERTopic+UMAP+HDBSCAN reportado en los trabajos de
 \cite{pr_mendonca2025bertopic_political} y \cite{pr_janssens2025bertopic_llm}. La
 arquitectura del módulo se muestra en la Figura \ref{6:fig2}.
 
-\figpendiente{6:fig2}{Arquitectura del módulo de detección dinámica de temas con LLM y retrieval multinivel}{Arquitectura del módulo de detección dinámica de temas electorales: \textit{embeddings} multilingües, menú de cinco \textit{tiers} (\textit{trending}, semántico, léxico, actor, evento), llamada concurrente al LLM con \textit{prompt} de extracción, \textit{override} semántico post-LLM y \textit{dedup} intra-\textit{batch} previo al \textit{upsert} en \texttt{temas\_conocidos}.}
+\begin{figure}[!ht]
+    \begin{center}
+        \resizebox{\textwidth}{!}{\input{5/figures/fig2_arquitectura_temas}}
+        \caption[Arquitectura del módulo de detección dinámica de temas con LLM y retrieval multinivel]{Arquitectura del módulo de detección dinámica de temas electorales: \textit{embeddings\\Fuente: Elaboración propia.}
+        \label{6:fig2}
+    \end{center}
+\end{figure} multilingües, menú de cinco \textit{tiers} (\textit{trending}, semántico, léxico, actor, evento), llamada concurrente al LLM con \textit{prompt} de extracción, \textit{override} semántico post-LLM y \textit{dedup} intra-\textit{batch} previo al \textit{upsert} en \texttt{temas\_conocidos}.}
 
 El módulo comienza con la generación de \textit{embeddings} mediante el modelo
 \texttt{paraphrase-multilingual-mpnet-base-v2} de Sentence-BERT, seleccionado por
@@ -122,7 +134,13 @@ contenedor Docker dentro de la misma red local que PostgreSQL. El esquema final
 implementado se muestra en la Figura \ref{6:fig3}, con sus diez tipos de nodos y
 siete tipos de relaciones.
 
-\figpendiente{6:fig3}{Esquema final del grafo de conocimiento electoral implementado en Neo4j}{Esquema final del grafo de conocimiento electoral en Neo4j Community, con sus diez tipos de nodos (\texttt{Documento}, \texttt{Fragmento}, \texttt{Tema}, \texttt{Actor}, \texttt{Candidato}, \texttt{Categoria}, \texttt{Encuesta}, \texttt{TipoCambio}, \texttt{IndicadorMacro}, \texttt{SentimientoDiario}) y siete tipos de relaciones (\texttt{CONTIENE}, \texttt{SOBRE\_TEMA}, \texttt{MENCIONA}, \texttt{MENCIONA\_ACTOR}, \texttt{DE\_CATEGORIA}, \texttt{MIDE}, \texttt{TIENE\_SENTIMIENTO\_EN}) con su respectiva metadata de aristas.}
+\begin{figure}[!ht]
+    \begin{center}
+        \resizebox{\textwidth}{!}{\input{5/figures/fig3_grafo_neo4j_schema}}
+        \caption[Esquema final del grafo de conocimiento electoral implementado en Neo4j]{Esquema final del grafo de conocimiento electoral en Neo4j Community, con sus diez tipos de nodos (\texttt{Documento\\Fuente: Elaboración propia.}
+        \label{6:fig3}
+    \end{center}
+\end{figure}, \texttt{Fragmento}, \texttt{Tema}, \texttt{Actor}, \texttt{Candidato}, \texttt{Categoria}, \texttt{Encuesta}, \texttt{TipoCambio}, \texttt{IndicadorMacro}, \texttt{SentimientoDiario}) y siete tipos de relaciones (\texttt{CONTIENE}, \texttt{SOBRE\_TEMA}, \texttt{MENCIONA}, \texttt{MENCIONA\_ACTOR}, \texttt{DE\_CATEGORIA}, \texttt{MIDE}, \texttt{TIENE\_SENTIMIENTO\_EN}) con su respectiva metadata de aristas.}
 
 Antes de continuar con la implementación del sistema GraphRAG, en la Tabla
 \ref{6:table1} se presentan las variables del grafo que fueron utilizadas para
@@ -202,7 +220,13 @@ continuación:
     de temas y grafo de conocimiento), se implementó el sistema GraphRAG Electoral
     completo ilustrado en la Figura \ref{6:fig4}.
 
-\figpendiente{6:fig4}{Arquitectura completa del sistema GraphRAG Electoral}{Arquitectura completa del sistema GraphRAG Electoral, mostrando el flujo desde la ingesta de datos en tiempo real hasta la generación de indicadores de percepción pública y el módulo de consultas en lenguaje natural sobre el grafo de conocimiento.}
+\begin{figure}[!ht]
+    \begin{center}
+        \resizebox{\textwidth}{!}{\input{5/figures/fig4_arquitectura_completa}}
+        \caption[Arquitectura completa del sistema GraphRAG Electoral]{Arquitectura completa del sistema GraphRAG Electoral, mostrando el flujo desde la ingesta de datos en tiempo real hasta la generación de indicadores de percepción pública y el módulo de consultas en lenguaje natural sobre el grafo de conocimiento.\\Fuente: Elaboración propia.}
+        \label{6:fig4}
+    \end{center}
+\end{figure}
 \end{landscape}
 
 La finalidad del sistema GraphRAG Electoral es permitir a los usuarios —analistas
@@ -436,7 +460,13 @@ preguntas ambiguas o multiobjetivo. Sin embargo, una vez seleccionada la herrami
 las consultas SQL/Cypher subyacentes fueron ejecutadas correctamente en la totalidad
 de los casos debido a su naturaleza parametrizada y validada previamente.
 
-\figpendiente{6:fig9}{Ejemplos representativos de preguntas electorales en español y las herramientas MCP invocadas automáticamente por el sistema PeruVox, incluyendo los parámetros tipados enviados al motor de consultas.}{Ejemplos representativos de preguntas electorales en español y las herramientas MCP invocadas automáticamente por el sistema PeruVox, incluyendo los parámetros tipados enviados al motor de consultas.}
+\begin{figure}[!ht]
+    \begin{center}
+        \resizebox{\textwidth}{!}{\input{5/figures/fig9_ejemplos_mcp}}
+        \caption[Ejemplos representativos de preguntas electorales en español y las herramientas MCP invocadas automáticamente por el sistema PeruVox, incluyendo los parámetros tipados enviados al motor de consultas.]{Ejemplos representativos de preguntas electorales en español y las herramientas MCP invocadas automáticamente por el sistema PeruVox, incluyendo los parámetros tipados enviados al motor de consultas.\\Fuente: Elaboración propia.}
+        \label{6:fig9}
+    \end{center}
+\end{figure}
 
 \vspace{0.5cm}
 \textbf{Actividad 4: Evaluar el sistema integrado}

@@ -208,6 +208,27 @@ pdfauthor={autor nombres}]{hyperref}
     upquote=true%
 }
 
+%% Estilo python para \lstinputlisting de snippets de codigo Python.
+\lstdefinestyle{python}{%
+    language=Python,%
+    basicstyle=\ttfamily\scriptsize,%
+    backgroundcolor=\color{gray!8},%
+    frame=single,%
+    framesep=4pt,%
+    keywordstyle=\color{blue!70!black}\bfseries,%
+    stringstyle=\color{red!60!black},%
+    commentstyle=\color{green!50!black}\itshape,%
+    morekeywords={async,await,self},%
+    showstringspaces=false,%
+    columns=fullflexible,%
+    breaklines=true,%
+    breakatwhitespace=false,%
+    upquote=true,%
+    numbers=left,%
+    numberstyle=\tiny\color{gray!60},%
+    numbersep=5pt%
+}
+
 %%%%%%%%%%%%%%%%%%%%%%%%%
 \usepackage{xparse}
 \usepackage{expl3}
