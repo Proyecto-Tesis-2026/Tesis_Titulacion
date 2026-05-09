@@ -129,12 +129,17 @@ limitaciones, pero no las elimina.
 \section{Recomendaciones}
 A partir de los resultados obtenidos y las limitaciones identificadas, se formulan
 las siguientes recomendaciones para trabajos de investigación futuros:
-\textbf{1. Incorporar TikTok como cuarta fuente de datos.} TikTok se ha consolidado
-como la principal plataforma de contenido político para la población menor de 35
-años en el Perú. Su inclusión en el pipeline multi-fuente de PeruVox permitiría
-mejorar la representatividad del corpus y capturar dinámicas de opinión que no
-se reflejan en X/Twitter ni en YouTube. Para ello, puede utilizarse la TikTok
-Research API o técnicas de scraping ético sobre contenido público.
+\textbf{1. Incorporar medios audiovisuales tradicionales como quinta y sexta
+fuente de datos.} Si bien el sistema PeruVox ya integra las cuatro fuentes
+digitales más representativas del ecosistema electoral peruano (noticias web,
+X/Twitter, YouTube y TikTok), un porcentaje no despreciable del electorado —en
+particular en zonas rurales y entre adultos mayores— consume información
+política principalmente por radio y televisión. Se recomienda incorporar
+transcripciones automáticas de programas de radio (mediante \textit{streams}
+públicos y \texttt{whisper} u otros modelos ASR) y de noticieros televisivos
+(YouTube oficial de los canales) como fuentes adicionales del pipeline, lo que
+permitiría mejorar la representatividad del corpus y capturar dinámicas de
+opinión que hoy no se reflejan en el ecosistema digital monitorizado.
 \textbf{2. Realizar ajuste fino (fine-tuning) con datos anotados del español
 político peruano.} Si bien los LLMs en modalidad few-shot mostraron resultados
 superiores a los modelos de referencia, el rendimiento podría mejorarse
