@@ -276,8 +276,9 @@ políticos y los temas de mayor presencia en la cobertura mediática del períod
 % \end{figure}
 
 Para el corpus de X/Twitter, la Figura \ref{5:fig11} muestra la distribución de
-proyectos según la presencia de menciones a candidatos, confirmando que el filtrado
-con Aho-Corasick redujo efectivamente el corpus a publicaciones con menciones directas.
+publicaciones según la presencia de menciones a candidatos, confirmando que el
+filtrado pre-LLM por catálogos (cuentas no políticas, hashtags y palabras clave de
+título) redujo efectivamente el corpus a publicaciones con menciones directas.
 En el análisis de transcripciones de YouTube, el 78\% de los videos con duración
 superior a tres minutos presentaron al menos una mención a un candidato presidencial,
 mientras que los videos de menor duración tendieron a ser genéricos sin referencias
@@ -363,10 +364,9 @@ documento-segmento fue registrada en la tabla \texttt{segmentos} de la capa Silv
 de la base de datos, que relaciona cada segmento con su documento original mediante
 la clave foránea \texttt{documento\_id}.
 
-Una vez dividido el corpus en subconjuntos de entrenamiento (80\%) y validación (20\%)
-estratificados según la fuente de datos \citep{pr_alvi2023twitter_election_review,
-pr_gujral2024llm_elections}, se procedió a construir el diccionario de aliases
-electorales para el filtrado eficiente con Aho-Corasick.
+Una vez normalizado el corpus, se procedió a construir los catálogos de filtrado
+pre-LLM que descartan documentos sin valor analítico antes de gastar tokens en la
+API del modelo de lenguaje.
 
 Para calcular el peso relativo de cada fuente en el corpus final, se utilizó la siguiente
 fórmula de normalización por fuente, Ecuación \ref{eq:weight_source}:
@@ -381,30 +381,42 @@ Donde $N_{fuente}$ es el número de segmentos de una fuente determinada y $\sum_
 es el total de segmentos del corpus. Este peso fue utilizado posteriormente para ponderar
 los indicadores de percepción pública en el cálculo del ISN agregado.
 
-\textbf{Actividad 3: Construir diccionario de aliases electorales}
+\textbf{Actividad 3: Construir catálogos de filtrado pre-LLM}
 \\
-Para el filtrado eficiente con Aho-Corasick, se construyó un diccionario que asocia cada
-candidato presidencial con el conjunto exhaustivo de sus aliases: nombre completo, nombre
-de pila, apellidos, apodos populares, nombres de su partido político y hashtags de campaña.
-El algoritmo de construcción del autómata y su uso en el filtrado se muestran en la
-Figura \ref{5:fig15}.
+El sistema de filtrado pre-LLM se implementó como una cascada de tres filtros
+parametrizados desde catálogos YAML versionados en el repositorio
+(\texttt{catalogs/filtros\_descarte.yaml}, \texttt{catalogs/candidatos.yaml}). Cada
+filtro retorna \texttt{None} si el documento pasa o un \textit{string} con la razón
+de descarte si no pasa, persistiendo todas las razones de descarte en
+\texttt{\_skipped\_reasons.json} del día para análisis posterior. La función
+implementada para este proceso se muestra en la Figura \ref{5:fig15}.
 
 % \begin{figure}[!ht]
 %     \begin{center}
-%         \includegraphics[width=0.95\textwidth]{4/figures/aho_corasick_construccion.png}
-%         \caption[Construcción del autómata Aho-Corasick y su aplicación en el filtrado del corpus]{Construcción del autómata Aho-Corasick a partir del diccionario de aliases electorales y su aplicación para el filtrado eficiente del corpus en O(n), descartando segmentos sin menciones a candidatos.\\
+%         \includegraphics[width=0.95\textwidth]{4/figures/filtros_pre_llm.png}
+%         \caption[Cascada de filtros pre-LLM por catálogos YAML]{Cascada de filtros pre-LLM aplicada a cada documento del corpus electoral: descarte por cuenta o canal en \textit{blacklist}, por hashtag de descarte y por palabra clave en el título. Los catálogos viven en \texttt{catalogs/filtros\_descarte.yaml} y se aplican en \texttt{src/electoral/filters/pre\_llm.py}.\\
 %             Fuente: Elaboración propia.}
 %         \label{5:fig15}
 %     \end{center}
 % \end{figure}
 
-El autómata Aho-Corasick, implementado en Python mediante la biblioteca
-pyahocorasick, permite buscar todos los aliases de todos los candidatos en el
-texto en una única pasada de complejidad O(n), donde n es la longitud del texto, siendo
-200 veces más eficiente que un enfoque de expresiones regulares iterativas (O(n×k),
-con k el número de aliases). Los segmentos que no presentaron ninguna coincidencia con
-el diccionario de aliases fueron descartados sin consumir tokens de la API del LLM,
-reduciendo el costo computacional del pipeline en aproximadamente un 40\%.
+Los tres filtros de la cascada operan en orden y el primero que rechace gana:
+(1) \texttt{filter\_by\_account} descarta el documento si la cuenta o canal aparece
+en el catálogo \texttt{cuentas\_no\_politicas} (\textit{match} exacto
+\textit{case-insensitive}); (2) \texttt{filter\_by\_hashtag} descarta si alguno de
+los \texttt{tags} del documento aparece en \texttt{hashtags\_descarte} (\textit{match}
+exacto \textit{case-insensitive} previa normalización del símbolo \texttt{\#}); y
+(3) \texttt{filter\_by\_title\_keywords} descarta si el título contiene alguna
+\textit{keyword} del catálogo (\textit{match} por subcadena
+\textit{case-insensitive}). El diseño es deliberadamente conservador: se prefiere
+pasar al LLM 100 documentos irrelevantes que perder 1 relevante por sobreajuste
+del filtro, dado que la regla \#5 del \textit{prompt} de extracción cubre el resto
+del \textit{bleed} clasificándolos como \texttt{otros\_<categoria>} con costo de
+salida mínimo (~50 tokens por documento). Adicionalmente, el ingestor de noticias
+descarta artículos cuyo \textit{slug} de URL coincida con secciones no políticas
+del medio (deportes, espectáculos, gastronomía, horóscopo, mascotas, entre otras),
+como se define en \texttt{SECCIONES\_NO\_POLITICAS\_DEFAULT}
+(\texttt{src/electoral/filters/pre\_llm.py}).
 
 % ──────────────────────────────────────────────────────────────
 \section{Modelamiento}
