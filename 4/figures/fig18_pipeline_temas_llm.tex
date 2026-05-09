@@ -1,0 +1,37 @@
+% Fig 5:fig18 — Pipeline de detección dinámica de temas (LLM + retrieval multinivel)
+\begin{tikzpicture}[
+    node distance=0.6cm and 0.7cm,
+    every node/.style={font=\footnotesize},
+    tier/.style={draw, rounded corners=2pt, minimum width=2.8cm, minimum height=0.7cm, fill=blue!8, align=center, font=\scriptsize},
+    phase/.style={draw, rounded corners=4pt, minimum width=4cm, minimum height=1cm, align=center},
+    p1/.style={phase, fill=yellow!12},
+    p2/.style={phase, fill=green!12},
+    p3/.style={phase, fill=orange!12},
+    p4/.style={phase, fill=purple!10},
+    db/.style={cylinder, draw, shape border rotate=90, aspect=0.25, minimum height=1cm, minimum width=2.4cm, align=center, fill=yellow!10, font=\scriptsize},
+    arrow/.style={-Stealth, thick}
+]
+    % Tiers (left column)
+    \node[tier] (t1) {Tier 1: \textit{trending}};
+    \node[tier, below=of t1] (t2) {Tier 2: semántico (cosine)};
+    \node[tier, below=of t2] (t3) {Tier 3: léxico};
+    \node[tier, below=of t3] (t4) {Tier 4: actor};
+    \node[tier, below=of t4] (t5) {Tier 5: evento};
+
+    \node[draw, dashed, fit=(t1)(t5), inner sep=6pt, label={[font=\scriptsize\bfseries]above:menú $\le$ 20 candidatos}] (menu) {};
+
+    % Phases (right column)
+    \node[p1, right=2.2cm of t1] (ph1) {\textbf{Fase 1} (paralelo)\\LLM call $\times$ 5\\\texttt{asyncio.gather}};
+    \node[p2, below=of ph1] (ph2) {\textbf{Fase 2} (secuencial)\\override semántico\\(cosine $\ge 0.85$)};
+    \node[p3, below=of ph2] (ph3) {\textbf{Fase 3} (en memoria)\\dedup intra-batch\\(triple match)};
+    \node[p4, below=of ph3] (ph4) {\textbf{Fase 4} (secuencial)\\\texttt{upsert\_tema}\\sin race};
+
+    \node[db, right=of ph2] (pg) {Postgres\\\texttt{temas\_conocidos}\\\texttt{aliases\_temas}};
+
+    \draw[arrow] (menu.east) -- (ph1.west);
+    \draw[arrow] (ph1) -- (ph2);
+    \draw[arrow] (ph2) -- (ph3);
+    \draw[arrow] (ph3) -- (ph4);
+    \draw[arrow] (ph4.east) -| (pg.south);
+    \draw[arrow, dashed, gray] (pg.north) -| ($(menu.east)+(0.6,0)$) |- (menu.east);
+\end{tikzpicture}

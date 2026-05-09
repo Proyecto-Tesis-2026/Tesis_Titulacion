@@ -194,14 +194,14 @@ el scraper y los persiste como documentos en la capa Bronze del pipeline en
 \texttt{data/raw/tiktok/\{YYYY-MM-DD\}/}, con el mismo schema canónico que las demás
 fuentes (\texttt{TipoFuente.TIKTOK}).
 
-% \begin{figure}[!ht]
-%     \begin{center}
-%         \includegraphics[width=0.95\textwidth]{4/figures/tiktok_scraper_arquitectura.png}
-%         \caption[Arquitectura hexagonal del scraper de TikTok con Playwright]{Arquitectura hexagonal del scraper de TikTok con Playwright sobre Chromium, mostrando los puertos y adaptadores (\texttt{ProfileScraperPort}, \texttt{VideoScraperPort}, \texttt{StoragePort}) y la generación de archivos JSON raw que alimentan la capa Bronze.\\
-%             Fuente: Elaboración propia.}
-%         \label{5:fig6b}
-%     \end{center}
-% \end{figure}
+\begin{figure}[!ht]
+    \begin{center}
+        \input{4/figures/fig6b_scraper_tiktok}
+        \caption[Arquitectura hexagonal del scraper de TikTok con Playwright]{Arquitectura hexagonal del scraper de TikTok con Playwright sobre Chromium, mostrando los puertos y adaptadores (\texttt{ProfileScraperPort}, \texttt{VideoScraperPort}, \texttt{StoragePort}) y la generación de archivos JSON raw que alimentan la capa Bronze.\\
+            Fuente: Elaboración propia.}
+        \label{5:fig6b}
+    \end{center}
+\end{figure}
 
 Por la naturaleza de TikTok como plataforma de creciente influencia política entre la
 población joven peruana, la inclusión de esta fuente complementa las perspectivas de
@@ -354,14 +354,14 @@ del \texttt{factory}
 (\texttt{src/electoral/llm/embeddings/factory.py}), evitando recargas repetidas. La
 función implementada para este proceso se muestra en la Figura \ref{5:fig14}.
 
-% \begin{figure}[!ht]
-%     \begin{center}
-%         \includegraphics[width=0.85\textwidth]{4/figures/embeddings_pipeline.png}
-%         \caption[Generación de embeddings multilingües con sentence-transformers]{Generación de \textit{embeddings} multilingües por documento mediante el modelo \texttt{paraphrase-multilingual-mpnet-base-v2} (768 dimensiones), con \textit{singleton} cacheado en memoria y persistencia en la tabla \texttt{segmentos} de la capa Silver.\\
-%             Fuente: Elaboración propia.}
-%         \label{5:fig14}
-%     \end{center}
-% \end{figure}
+\begin{figure}[!ht]
+    \begin{center}
+        \input{4/figures/fig14_embeddings_pipeline}
+        \caption[Generación de embeddings multilingües con sentence-transformers]{Generación de \textit{embeddings} multilingües por documento mediante el modelo \texttt{paraphrase-multilingual-mpnet-base-v2} (768 dimensiones), con \textit{singleton} cacheado en memoria y persistencia en la tabla \texttt{segmentos} de la capa Silver.\\
+            Fuente: Elaboración propia.}
+        \label{5:fig14}
+    \end{center}
+\end{figure}
 
 Cada \textit{embedding} se vincula al documento original mediante la clave
 foránea \texttt{documento\_id} de la tabla \texttt{segmentos}. Esta representación
@@ -396,14 +396,14 @@ de descarte si no pasa, persistiendo todas las razones de descarte en
 \texttt{\_skipped\_reasons.json} del día para análisis posterior. La función
 implementada para este proceso se muestra en la Figura \ref{5:fig15}.
 
-% \begin{figure}[!ht]
-%     \begin{center}
-%         \includegraphics[width=0.95\textwidth]{4/figures/filtros_pre_llm.png}
-%         \caption[Cascada de filtros pre-LLM por catálogos YAML]{Cascada de filtros pre-LLM aplicada a cada documento del corpus electoral: descarte por cuenta o canal en \textit{blacklist}, por hashtag de descarte y por palabra clave en el título. Los catálogos viven en \texttt{catalogs/filtros\_descarte.yaml} y se aplican en \texttt{src/electoral/filters/pre\_llm.py}.\\
-%             Fuente: Elaboración propia.}
-%         \label{5:fig15}
-%     \end{center}
-% \end{figure}
+\begin{figure}[!ht]
+    \begin{center}
+        \input{4/figures/fig15_filtros_pre_llm}
+        \caption[Cascada de filtros pre-LLM por catálogos YAML]{Cascada de filtros pre-LLM aplicada a cada documento del corpus electoral: descarte por cuenta o canal en \textit{blacklist}, por hashtag de descarte y por palabra clave en el título. Los catálogos viven en \texttt{catalogs/filtros\_descarte.yaml} y se aplican en \texttt{src/electoral/filters/pre\_llm.py}.\\
+            Fuente: Elaboración propia.}
+        \label{5:fig15}
+    \end{center}
+\end{figure}
 
 Los tres filtros de la cascada operan en orden y el primero que rechace gana:
 (1) \texttt{filter\_by\_account} descarta el documento si la cuenta o canal aparece
@@ -467,14 +467,14 @@ de los datos persistidos en la tabla \texttt{analisis\_llm} de la capa Silver
 (con la columna \texttt{resultado} de tipo JSONB que conserva el \textit{payload}
 completo del modelo).
 
-% \begin{figure}[!ht]
-%     \begin{center}
-%         \includegraphics[width=0.95\textwidth]{4/figures/modulo_llm_llamada.png}
-%         \caption[Estructura del prompt de etiquetado del sistema electoral-intelligence]{Estructura del prompt de etiquetado del sistema electoral-intelligence: sistema prompt con rol de analista político peruano y contrato JSON; user prompt con catálogos cerrados (candidatos, categorías, modos narrativos, aspectos, regiones, acciones), menú de temas del día (hasta 20, 5 tiers), documento a etiquetar, schema JSON de respuesta y 3 ejemplos few-shot. Los elementos invariantes van al inicio para maximizar el cache hit de DeepSeek.\\
-%     Fuente: Elaboración propia.}
-%         \label{5:fig17}
-%     \end{center}
-% \end{figure}
+\begin{figure}[!ht]
+    \begin{center}
+        \input{4/figures/fig17_prompt_structure}
+        \caption[Estructura del prompt de etiquetado del sistema electoral-intelligence]{Estructura del \textit{prompt} de etiquetado del sistema \texttt{electoral-intelligence}: \textit{system prompt} con rol de analista político peruano y contrato JSON; \textit{user prompt} con catálogos cerrados (candidatos, categorías, modos narrativos, aspectos, regiones, acciones), \textit{schema} JSON de respuesta y ejemplos \textit{few-shot}, seguidos del menú de temas del día y el documento a etiquetar. Los elementos invariantes van al inicio para maximizar el \textit{cache hit} de DeepSeek (85.5\% medido).\\
+            Fuente: Elaboración propia.}
+        \label{5:fig17}
+    \end{center}
+\end{figure}
 
 \textbf{Actividad 2: Desarrollar módulo de detección dinámica de temas}
 \\
@@ -486,14 +486,14 @@ en la Figura \ref{5:fig18}, comprende cuatro etapas: construcción del menú de
 temas candidatos, llamada LLM con \textit{prompt} de extracción, \textit{override}
 semántico post-LLM y consolidación intra-batch.
 
-% \begin{figure}[!ht]
-%     \begin{center}
-%         \includegraphics[width=1\textwidth]{4/figures/pipeline_temas_llm.png}
-%         \caption[Pipeline de detección dinámica de temas con LLM y retrieval multinivel]{Pipeline de detección dinámica de temas electorales: construcción del menú de cinco \textit{tiers} (\textit{trending}, semántico, léxico, actor y evento), llamada concurrente al LLM, \textit{override} semántico contra el catálogo y dedup intra-\textit{batch} previo al \textit{upsert}.\\
-%             Fuente: Elaboración propia.}
-%         \label{5:fig18}
-%     \end{center}
-% \end{figure}
+\begin{figure}[!ht]
+    \begin{center}
+        \input{4/figures/fig18_pipeline_temas_llm}
+        \caption[Pipeline de detección dinámica de temas con LLM y retrieval multinivel]{Pipeline de detección dinámica de temas electorales: construcción del menú de cinco \textit{tiers} (\textit{trending}, semántico, léxico, actor y evento), llamada concurrente al LLM, \textit{override} semántico contra el catálogo y \textit{dedup} intra-\textit{batch} previo al \textit{upsert}.\\
+            Fuente: Elaboración propia.}
+        \label{5:fig18}
+    \end{center}
+\end{figure}
 
 En primer lugar, para cada documento se construye un menú de hasta 20 temas
 candidatos mediante cinco \textit{tiers} de \textit{retrieval} sobre la tabla
@@ -535,14 +535,14 @@ Finalmente, los \textit{upserts} a \texttt{temas\_conocidos} y
 condiciones de carrera. La función de etiquetado y consolidación se muestra en la
 Figura \ref{5:fig19}.
 
-% \begin{figure}[!ht]
-%     \begin{center}
-%         \includegraphics[width=0.90\textwidth]{4/figures/temas_consolidate_dedup.png}
-%         \caption[Etapa de consolidación y deduplicación de temas]{Etapas de \texttt{consolidate\_day} (triple \textit{match} por nombre, \textit{embedding} y actores con umbrales de confianza) y \texttt{llm\_dedup} (LLM \textit{judge} sobre pares sospechosos), que fusionan temas semánticamente equivalentes detectados durante el día.\\
-%             Fuente: Elaboración propia.}
-%         \label{5:fig19}
-%     \end{center}
-% \end{figure}
+\begin{figure}[!ht]
+    \begin{center}
+        \input{4/figures/fig19_consolidate_dedup}
+        \caption[Etapa de consolidación y deduplicación de temas]{Etapas de \texttt{consolidate\_day} (triple \textit{match} por nombre, \textit{embedding} y actores con umbrales de confianza) y \texttt{llm\_dedup} (LLM \textit{judge} sobre pares sospechosos), que fusionan temas semánticamente equivalentes detectados durante el día.\\
+            Fuente: Elaboración propia.}
+        \label{5:fig19}
+    \end{center}
+\end{figure}
 
 Para el componente dinámico, el pipeline procesa el corpus día por día
 (\texttt{run-day}/\texttt{run-range}); el día N+1 reutiliza temas creados en N
@@ -585,14 +585,14 @@ huésped si se desea automatización. Cada \textit{upsert} a Neo4j se realiza co
 idempotencia ante re-ejecuciones del mismo día. La sentencia principal de
 escritura al grafo se muestra en la Figura \ref{5:fig20}.
 
-% \begin{figure}[!ht]
-%     \begin{center}
-%         \includegraphics[width=0.90\textwidth]{4/figures/neo4j_merge_aristas.png}
-%         \caption[Sentencia Cypher MERGE para la escritura idempotente de aristas en el grafo electoral]{Sentencia Cypher \texttt{MERGE} para la escritura idempotente de relaciones \texttt{MENCIONA} y \texttt{SOBRE\_TEMA} en el grafo electoral de Neo4j Community, leyendo desde las tablas \texttt{documentos}, \texttt{analisis\_llm} y \texttt{temas\_conocidos} de la capa Silver de Postgres.\\
-%             Fuente: Elaboración propia.}
-%         \label{5:fig20}
-%     \end{center}
-% \end{figure}
+\begin{figure}[!ht]
+    \begin{center}
+        \input{4/figures/fig20_cypher_merge}
+        \caption[Sentencia Cypher MERGE para la escritura idempotente de aristas en el grafo electoral]{Sentencia Cypher \texttt{MERGE} para la escritura idempotente de relaciones \texttt{MENCIONA} y \texttt{SOBRE\_TEMA} en el grafo electoral de Neo4j Community, leyendo desde las tablas \texttt{documentos}, \texttt{analisis\_llm} y \texttt{temas\_conocidos} de la capa Silver de Postgres.\\
+            Fuente: Elaboración propia.}
+        \label{5:fig20}
+    \end{center}
+\end{figure}
 
 En la Figura \ref{5:fig21} se visualiza un fragmento del grafo de conocimiento
 electoral generado, mostrando las relaciones entre fragmentos, candidatos, temas
@@ -631,14 +631,14 @@ determina automáticamente cuál invocar y con qué parámetros a partir de la
 pregunta del usuario en lenguaje natural. La Figura \ref{5:fig22} muestra el
 flujo del sistema.
 
-% \begin{figure}[!ht]
-%     \begin{center}
-%         \includegraphics[width=0.95\textwidth]{4/figures/graphrag_typed_tools_mcp.png}
-%         \caption[Sistema GraphRAG basado en herramientas tipadas sobre protocolo MCP]{Sistema GraphRAG implementado como servidor MCP con 13 herramientas tipadas: el cliente LLM (Claude Desktop, Claude.ai, Cursor) recibe las descripciones semánticas y los esquemas Pydantic de las herramientas, selecciona la apropiada y la invoca con parámetros validados. La consulta SQL/Cypher subyacente es \textit{pre-loaded} y parametrizada, garantizando ejecución correcta por construcción.\\
-%             Fuente: Elaboración propia.}
-%         \label{5:fig22}
-%     \end{center}
-% \end{figure}
+\begin{figure}[!ht]
+    \begin{center}
+        \input{4/figures/fig22_graphrag_mcp}
+        \caption[Sistema GraphRAG basado en herramientas tipadas sobre protocolo MCP]{Sistema GraphRAG implementado como servidor MCP con 13 herramientas tipadas: el cliente LLM (Claude Desktop, Claude.ai, Cursor) recibe las descripciones semánticas y los esquemas Pydantic de las herramientas, selecciona la apropiada y la invoca con parámetros validados. La consulta SQL/Cypher subyacente es \textit{pre-loaded} y parametrizada, garantizando ejecución correcta por construcción.\\
+            Fuente: Elaboración propia.}
+        \label{5:fig22}
+    \end{center}
+\end{figure}
 
 Este enfoque ofrece dos ventajas frente al paradigma tradicional de generación
 dinámica de Cypher: (1) las consultas son correctas por construcción, eliminando
@@ -836,14 +836,14 @@ natural; para presentaciones remotas se expone vía \texttt{cloudflared tunnel} 
 \texttt{ngrok} sobre HTTPS efímero. La arquitectura del prototipo integrado se
 muestra en la Figura \ref{5:fig24}.
 
-% \begin{figure}[!ht]
-%     \begin{center}
-%         \includegraphics[width=0.95\textwidth]{4/figures/demo_flux.png}
-%         \caption[Proceso de operación del prototipo del sistema de inteligencia electoral]{Proceso de operación del prototipo: ingesta diaria del corpus multifuente, etiquetado LLM, sincronización del grafo y consultas en lenguaje natural desde un cliente MCP que invoca las 13 herramientas tipadas del servidor \texttt{electoral\_mcp}.\\
-%             Fuente: Elaboración propia.}
-%         \label{5:fig24}
-%     \end{center}
-% \end{figure}
+\begin{figure}[!ht]
+    \begin{center}
+        \input{4/figures/fig24_demo_flux}
+        \caption[Proceso de operación del prototipo del sistema de inteligencia electoral]{Proceso de operación del prototipo: ingesta diaria del corpus multifuente, etiquetado LLM, sincronización del grafo y consultas en lenguaje natural desde un cliente MCP que invoca las 13 herramientas tipadas del servidor \texttt{electoral\_mcp}.\\
+            Fuente: Elaboración propia.}
+        \label{5:fig24}
+    \end{center}
+\end{figure}
 
 \textbf{Actividad 2: Ejecutar prototipo con datos electorales en vivo}
 \\

@@ -1,0 +1,22 @@
+% Fig 5:fig14 — Pipeline de generación de embeddings
+\begin{tikzpicture}[
+    node distance=1cm and 0.8cm,
+    every node/.style={font=\footnotesize},
+    box/.style={draw, rounded corners=2pt, minimum width=2.5cm, minimum height=1.1cm, align=center, fill=blue!5},
+    model/.style={box, fill=green!10, minimum width=3.2cm, minimum height=1.3cm},
+    db/.style={cylinder, draw, shape border rotate=90, aspect=0.25, minimum height=1.4cm, minimum width=2.4cm, align=center, fill=yellow!10},
+    arrow/.style={-Stealth, thick}
+]
+    \node[box] (doc) {Documento\\\texttt{titulo|cuerpo}};
+    \node[box, right=of doc] (trunc) {Truncar\\512 tokens};
+    \node[model, right=of trunc] (model) {\texttt{paraphrase-}\\\texttt{multilingual-}\\\texttt{mpnet-base-v2}};
+    \node[box, right=of model] (vec) {Vector\\$\mathbb{R}^{768}$};
+    \node[db, below=1.4cm of model] (sg) {tabla \texttt{segmentos}\\\texttt{embedding} \texttt{vector(768)}};
+
+    \node[draw, dashed, fit=(model), inner sep=10pt, label={[font=\scriptsize\itshape]above:singleton + LRU factory (carga única por proceso)}] (cache) {};
+
+    \draw[arrow] (doc) -- (trunc);
+    \draw[arrow] (trunc) -- (model);
+    \draw[arrow] (model) -- (vec);
+    \draw[arrow] (vec.south) |- (sg.east);
+\end{tikzpicture}

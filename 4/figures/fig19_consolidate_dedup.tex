@@ -1,0 +1,27 @@
+% Fig 5:fig19 — Etapas de consolidate y llm_dedup
+\begin{tikzpicture}[
+    node distance=0.7cm and 1cm,
+    every node/.style={font=\footnotesize},
+    box/.style={draw, rounded corners=2pt, minimum width=3.4cm, minimum height=1cm, align=center},
+    cons/.style={box, fill=yellow!15},
+    judge/.style={box, fill=orange!15, minimum height=1.1cm},
+    merge/.style={box, fill=green!15},
+    arrow/.style={-Stealth, thick}
+]
+    \node[box, fill=blue!8] (in) {temas creados\\durante el día};
+
+    \node[cons, right=of in] (cd) {\textbf{consolidate\_day}\\nombre $\ge 60$\\embedding $\ge 0.78$\\actores Jaccard $\ge 0.30$};
+    \node[draw, dashed, below=0.3cm of cd, font=\scriptsize, fill=yellow!5] (cdrule) {if confianza $\ge 0.72$: merge};
+
+    \node[judge, right=of cd] (pre) {pre-filtro\\cosine $\ge 0.70$ +\\actor overlap $\ge 0.30$ +\\misma categoría};
+
+    \node[judge, right=of pre] (jd) {\textbf{llm\_dedup}\\(LLM \textit{judge})\\\textit{cap} 200 pares/día};
+    \node[draw, dashed, below=0.3cm of jd, font=\scriptsize, fill=orange!5] (jdrule) {\{mismo\_tema, canonico, razon\}};
+
+    \node[merge, right=of jd] (out) {merge B$\to$A\\update parquet\\\texttt{aliases\_temas}};
+
+    \draw[arrow] (in) -- (cd);
+    \draw[arrow] (cd) -- (pre);
+    \draw[arrow] (pre) -- node[above, font=\scriptsize] {pares} (jd);
+    \draw[arrow] (jd) -- node[above, font=\scriptsize] {true} (out);
+\end{tikzpicture}

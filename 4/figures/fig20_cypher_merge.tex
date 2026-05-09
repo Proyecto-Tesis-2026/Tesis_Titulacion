@@ -1,0 +1,39 @@
+% Fig 5:fig20 — Sentencia Cypher MERGE para escritura idempotente
+\begin{lstlisting}[
+    basicstyle=\ttfamily\footnotesize,
+    backgroundcolor=\color{gray!8},
+    frame=single,
+    framesep=4pt,
+    rulecolor=\color{gray!40},
+    keywordstyle=\color{blue!70!black}\bfseries,
+    keywords={MATCH, MERGE, SET, ON, CREATE, WHERE, RETURN, WITH, UNWIND, CALL},
+    morekeywords={DATETIME, COALESCE, datetime},
+    commentstyle=\color{green!50!black}\itshape,
+    stringstyle=\color{red!60!black},
+    morecomment=[l]{//},
+    showstringspaces=false,
+    columns=fullflexible,
+    breaklines=true,
+    breakatwhitespace=false,
+    upquote=true,
+    literate={$}{{\$}}1
+]
+// Upsert idempotente de fragmentos y sus relaciones MENCIONA / SOBRE_TEMA
+// Lee desde Postgres (analisis_llm.resultado JSONB) y escribe en Neo4j
+UNWIND $rows AS row
+MERGE (d:Documento {id: row.documento_id})
+  ON CREATE SET d.fuente = row.fuente, d.publicado_en = datetime(row.publicado_en),
+                d.titulo = row.titulo, d.url = row.url
+MERGE (f:Fragmento {id: row.fragmento_id})
+  ON CREATE SET f.texto = row.texto, f.fecha = datetime(row.fecha)
+MERGE (d)-[:CONTIENE]->(f)
+WITH f, row
+UNWIND row.candidatos AS c
+  MERGE (cd:Candidato {id: c.id})
+  MERGE (f)-[m:MENCIONA]->(cd)
+    SET m.sentimiento = c.sentimiento, m.rol = c.rol
+WITH f, row
+MERGE (t:Tema {id: row.tema_id})
+MERGE (f)-[r:SOBRE_TEMA]->(t)
+  SET r.sentimiento = row.sentimiento_tema, r.confianza = row.confianza
+\end{lstlisting}
