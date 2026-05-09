@@ -197,6 +197,27 @@ pdfauthor={autor nombres}]{hyperref}
 %%%%%%%%%%%%%%%%%%%%%%%%%
 \usepackage{xparse}
 \usepackage{expl3}
+
+%%%% Comando para figuras pendientes (placeholder vectorial).
+%%%% Uso: \figpendiente{label}{caption corto LOF}{caption largo}
+%%%% Renderiza un cuadro con texto "[FIGURA PENDIENTE]" + descripcion,
+%%%% con su \caption y \label, para que las refs del texto resuelvan
+%%%% mientras se prepara la imagen final. Reemplazar por
+%%%% \includegraphics{...} cuando se tenga la imagen real.
+\newcommand{\figpendiente}[3]{%
+    \begin{figure}[!ht]
+        \begin{center}
+            \fbox{\parbox[c][3.2cm][c]{0.9\textwidth}{%
+                \centering\bfseries\color{red!70!black}\large
+                [FIGURA PENDIENTE]\\[6pt]
+                \normalfont\normalsize\itshape\color{black} #2
+            }}
+            \caption[#2]{#3\\Fuente: Elaboración propia.}
+            \label{#1}
+        \end{center}
+    \end{figure}%
+}
+
 %%%%funcion de reemplazar regex
 \ExplSyntaxOn
 \NewDocumentCommand{\replace}{mmm}
