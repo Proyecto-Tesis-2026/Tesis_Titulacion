@@ -1,37 +1,35 @@
-% Fig 5:fig18 — Pipeline de detección dinámica de temas (LLM + retrieval multinivel)
+% Fig 5:fig18 -- Pipeline de deteccion dinamica de temas (LLM + retrieval multinivel)
 \begin{tikzpicture}[
-    node distance=0.6cm and 0.7cm,
-    every node/.style={font=\footnotesize},
-    tier/.style={draw, rounded corners=2pt, minimum width=2.8cm, minimum height=0.7cm, fill=blue!8, align=center, font=\scriptsize},
-    phase/.style={draw, rounded corners=4pt, minimum width=4cm, minimum height=1cm, align=center},
-    p1/.style={phase, fill=yellow!12},
-    p2/.style={phase, fill=green!12},
-    p3/.style={phase, fill=orange!12},
-    p4/.style={phase, fill=purple!10},
-    db/.style={cylinder, draw, shape border rotate=90, aspect=0.25, minimum height=1cm, minimum width=2.4cm, align=center, fill=yellow!10, font=\scriptsize},
-    arrow/.style={-Stealth, thick}
+    node distance=0.45cm,
+    every node/.style={font=\footnotesize, align=center, inner sep=4pt},
+    tier/.style={draw, rounded corners=2pt, fill=blue!10, minimum width=3cm, minimum height=0.65cm, font=\scriptsize},
+    phase/.style={draw, rounded corners=2pt, minimum width=4.2cm, minimum height=1cm},
+    p1/.style={phase, fill=yellow!15},
+    p2/.style={phase, fill=green!15},
+    p3/.style={phase, fill=orange!15},
+    p4/.style={phase, fill=purple!12},
+    db/.style={draw, rounded corners=2pt, fill=yellow!12, minimum width=3cm, minimum height=1cm, font=\scriptsize},
+    menulabel/.style={font=\scriptsize\bfseries},
+    arrow/.style={-{Stealth[length=2mm]}, thick}
 ]
-    % Tiers (left column)
-    \node[tier] (t1) {Tier 1: \textit{trending}};
-    \node[tier, below=of t1] (t2) {Tier 2: semántico (cosine)};
-    \node[tier, below=of t2] (t3) {Tier 3: léxico};
+    \node[tier] (t1) {Tier 1: trending};
+    \node[tier, below=of t1] (t2) {Tier 2: semantico};
+    \node[tier, below=of t2] (t3) {Tier 3: lexico};
     \node[tier, below=of t3] (t4) {Tier 4: actor};
     \node[tier, below=of t4] (t5) {Tier 5: evento};
 
-    \node[draw, dashed, fit=(t1)(t5), inner sep=6pt, label={[font=\scriptsize\bfseries]above:menú $\le$ 20 candidatos}] (menu) {};
+    \node[menulabel, above=0.15cm of t1] {Menu (hasta 20 candidatos)};
 
-    % Phases (right column)
-    \node[p1, right=2.2cm of t1] (ph1) {\textbf{Fase 1} (paralelo)\\LLM call $\times$ 5\\\texttt{asyncio.gather}};
-    \node[p2, below=of ph1] (ph2) {\textbf{Fase 2} (secuencial)\\override semántico\\(cosine $\ge 0.85$)};
-    \node[p3, below=of ph2] (ph3) {\textbf{Fase 3} (en memoria)\\dedup intra-batch\\(triple match)};
-    \node[p4, below=of ph3] (ph4) {\textbf{Fase 4} (secuencial)\\\texttt{upsert\_tema}\\sin race};
+    \node[p1, right=2.5cm of t1] (ph1) {\textbf{Fase 1} paralelo \\ \scriptsize LLM call x 5 asyncio.gather};
+    \node[p2, below=of ph1] (ph2) {\textbf{Fase 2} secuencial \\ \scriptsize override semantico cosine >= 0.85};
+    \node[p3, below=of ph2] (ph3) {\textbf{Fase 3} en memoria \\ \scriptsize dedup intra-batch triple match};
+    \node[p4, below=of ph3] (ph4) {\textbf{Fase 4} secuencial \\ \scriptsize upsert\_tema sin race};
 
-    \node[db, right=of ph2] (pg) {Postgres\\\texttt{temas\_conocidos}\\\texttt{aliases\_temas}};
+    \node[db, right=1.2cm of ph2] (pg) {Postgres \\ \scriptsize temas\_conocidos \\ \scriptsize aliases\_temas};
 
-    \draw[arrow] (menu.east) -- (ph1.west);
+    \draw[arrow] (t1.east) -- (ph1.west);
     \draw[arrow] (ph1) -- (ph2);
     \draw[arrow] (ph2) -- (ph3);
     \draw[arrow] (ph3) -- (ph4);
     \draw[arrow] (ph4.east) -| (pg.south);
-    \draw[arrow, dashed, gray] (pg.north) -| ($(menu.east)+(0.6,0)$) |- (menu.east);
 \end{tikzpicture}

@@ -1,25 +1,25 @@
-% Fig 5:fig17 — Estructura del prompt de extracción (DeepSeek cache hit)
+% Fig 5:fig17 -- Estructura del prompt de extraccion (DeepSeek cache hit)
 \begin{tikzpicture}[
-    node distance=0.15cm,
-    every node/.style={font=\footnotesize},
-    sys/.style={draw, rounded corners=2pt, minimum width=11cm, minimum height=0.7cm, align=center, fill=blue!8, font=\scriptsize},
-    inv/.style={draw, rounded corners=2pt, minimum width=11cm, minimum height=0.55cm, align=left, fill=green!10, font=\scriptsize, inner sep=4pt},
-    var/.style={draw, rounded corners=2pt, minimum width=11cm, minimum height=0.55cm, align=left, fill=orange!12, font=\scriptsize, inner sep=4pt}
+    node distance=0.12cm,
+    every node/.style={font=\scriptsize, align=left, inner sep=4pt},
+    sys/.style={draw, rounded corners=2pt, fill=blue!10, minimum width=12cm, minimum height=0.7cm},
+    inv/.style={draw, rounded corners=2pt, fill=green!12, minimum width=12cm, minimum height=0.55cm},
+    var/.style={draw, rounded corners=2pt, fill=orange!12, minimum width=12cm, minimum height=0.55cm},
+    label/.style={font=\scriptsize\itshape, align=left}
 ]
-    \node[sys] (sys) {\textbf{SYSTEM} — rol "analista político del Perú" + contrato JSON estricto};
-
-    \node[inv, below=of sys] (b1) {\textbf{USER (prefijo invariante — \emph{cacheado})}};
-    \node[inv, below=of b1] (b2) {Catálogo de candidatos (40)};
-    \node[inv, below=of b2] (b3) {Categorías (17, las 5 últimas no-políticas)};
+    \node[sys] (sys) {\textbf{SYSTEM} -- rol ``analista politico del Peru'' + contrato JSON estricto};
+    \node[inv, below=of sys] (b1) {\textbf{USER (prefijo invariante -- cacheado)}};
+    \node[inv, below=of b1] (b2) {Catalogo de candidatos (40)};
+    \node[inv, below=of b2] (b3) {Categorias (17, las 5 ultimas no-politicas)};
     \node[inv, below=of b3] (b4) {Modos narrativos / aspectos / regiones / acciones};
     \node[inv, below=of b4] (b5) {Schema JSON de respuesta};
     \node[inv, below=of b5] (b6) {Ejemplos few-shot (5)};
-    \node[inv, below=of b6] (b7) {Instrucciones (9 reglas, \#5 = no-político)};
+    \node[inv, below=of b6] (b7) {Instrucciones (9 reglas, regla \#5 = no-politico)};
 
     \node[var, below=0.35cm of b7] (v1) {\textbf{USER (sufijo variable)}};
-    \node[var, below=of v1] (v2) {Menú de temas del día (5 tiers, $\le 20$)};
+    \node[var, below=of v1] (v2) {Menu de temas del dia (5 tiers, hasta 20)};
     \node[var, below=of v2] (v3) {Documento a etiquetar (1 por llamada)};
 
-    \draw[decorate, decoration={brace, amplitude=6pt}, thick, blue!50!black] ($(b1.north east)+(0.15,0)$) -- ($(b7.south east)+(0.15,0)$) node[midway, right=8pt, font=\scriptsize\itshape, text width=2cm] {prompt cache hit 85.5\%};
-    \draw[decorate, decoration={brace, amplitude=6pt}, thick, orange!70!black] ($(v1.north east)+(0.15,0)$) -- ($(v3.south east)+(0.15,0)$) node[midway, right=8pt, font=\scriptsize\itshape, text width=2cm] {cambia por documento};
+    \node[label, right=0.2cm of b4] {prompt cache hit 85.5\%};
+    \node[label, right=0.2cm of v2] {cambia por documento};
 \end{tikzpicture}

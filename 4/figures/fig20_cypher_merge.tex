@@ -1,29 +1,24 @@
-% Fig 5:fig20 — Sentencia Cypher MERGE para escritura idempotente
+% Fig 5:fig20 -- Sentencia Cypher MERGE para escritura idempotente
 \begin{lstlisting}[
     basicstyle=\ttfamily\footnotesize,
     backgroundcolor=\color{gray!8},
     frame=single,
     framesep=4pt,
-    rulecolor=\color{gray!40},
     keywordstyle=\color{blue!70!black}\bfseries,
-    keywords={MATCH, MERGE, SET, ON, CREATE, WHERE, RETURN, WITH, UNWIND, CALL},
-    morekeywords={DATETIME, COALESCE, datetime},
+    keywords={MATCH, MERGE, SET, ON, CREATE, WHERE, RETURN, WITH, UNWIND, AS, CONTIENE, MENCIONA, SOBRE},
+    morekeywords={datetime},
     commentstyle=\color{green!50!black}\itshape,
-    stringstyle=\color{red!60!black},
     morecomment=[l]{//},
     showstringspaces=false,
     columns=fullflexible,
     breaklines=true,
-    breakatwhitespace=false,
-    upquote=true,
-    literate={$}{{\$}}1
+    upquote=true
 ]
-// Upsert idempotente de fragmentos y sus relaciones MENCIONA / SOBRE_TEMA
-// Lee desde Postgres (analisis_llm.resultado JSONB) y escribe en Neo4j
-UNWIND $rows AS row
+// Upsert idempotente de fragmentos y relaciones
+// Lee desde Postgres (analisis_llm) y escribe en Neo4j
+UNWIND rows AS row
 MERGE (d:Documento {id: row.documento_id})
-  ON CREATE SET d.fuente = row.fuente, d.publicado_en = datetime(row.publicado_en),
-                d.titulo = row.titulo, d.url = row.url
+  ON CREATE SET d.fuente = row.fuente, d.publicado_en = datetime(row.publicado_en)
 MERGE (f:Fragmento {id: row.fragmento_id})
   ON CREATE SET f.texto = row.texto, f.fecha = datetime(row.fecha)
 MERGE (d)-[:CONTIENE]->(f)

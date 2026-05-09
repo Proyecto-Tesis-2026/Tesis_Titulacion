@@ -1,33 +1,16 @@
-% Fig 5:fig6b — Arquitectura hexagonal del scraper-tiktok
+% Fig 5:fig6b -- Arquitectura hexagonal del scraper-tiktok
 \begin{tikzpicture}[
-    node distance=0.6cm,
-    every node/.style={font=\footnotesize},
-    layer/.style={draw, rounded corners=2pt, minimum width=10cm, minimum height=1.4cm, align=center, fill=blue!5},
-    domain/.style={layer, fill=green!8, minimum height=1.6cm},
-    app/.style={layer, fill=yellow!10},
-    adapt/.style={layer, fill=orange!10, minimum height=1.6cm},
-    driver/.style={layer, fill=red!8, minimum width=4cm, minimum height=0.9cm},
-    arrow/.style={-Stealth, thick, gray!70}
+    node distance=0.45cm,
+    every node/.style={font=\footnotesize, align=center, inner sep=4pt},
+    layer/.style={draw, rounded corners=2pt, minimum width=12cm, minimum height=1.1cm},
+    arrow/.style={-{Stealth[length=2mm]}, thick, gray!70}
 ]
-    \node[domain] (dom) {%
-        \textbf{domain/} \\[2pt]
-        \texttt{entities.py} (Profile, Video, StageRecord, RunAudit) \quad\textbar\quad \texttt{ports.py} (ProfileScraperPort, VideoScraperPort, StoragePort) \quad\textbar\quad \texttt{utils.py}
-    };
-    \node[app, below=of dom] (app) {%
-        \textbf{application/} \\[2pt]
-        \texttt{ScrapeService} — wires ports, tracks per-stage timings, writes \texttt{run\_audit.json}
-    };
-    \node[adapt, below=of app] (adapt) {%
-        \textbf{adapters/} \\[2pt]
-        \texttt{profile\_playwright.py} (Playwright/Chromium) \quad\textbar\quad \texttt{video\_ytdlp.py} (yt-dlp + cookies) \\
-        \texttt{storage\_filesystem.py} $\rightarrow$ \texttt{data/<run\_id>/}
-    };
-    \node[driver, below=of adapt] (main) {\textbf{main.py} (CLI / driving adapter)};
+    \node[layer, fill=green!10] (dom) {\textbf{domain/} \\ \scriptsize entities.py (Profile, Video, StageRecord, RunAudit) -- ports.py -- utils.py};
+    \node[layer, fill=yellow!12, below=of dom] (app) {\textbf{application/} \\ \scriptsize ScrapeService -- conecta puertos, audita stages, escribe run\_audit.json};
+    \node[layer, fill=orange!12, below=of app] (adapt) {\textbf{adapters/} \\ \scriptsize profile\_playwright.py -- video\_ytdlp.py -- storage\_filesystem.py};
+    \node[layer, fill=red!10, minimum width=4cm, minimum height=0.7cm, below=of adapt] (main) {\textbf{main.py} (CLI)};
 
-    \draw[arrow] (main) -- (adapt) node[midway, right, font=\scriptsize] {invoca};
-    \draw[arrow] (adapt) -- (app) node[midway, right, font=\scriptsize] {implementa};
-    \draw[arrow] (app) -- (dom) node[midway, right, font=\scriptsize] {usa contratos};
-
-    \node[right=0.3cm of dom, font=\scriptsize\itshape, text width=2.5cm, align=left] {sin deps externas};
-    \node[right=0.3cm of adapt, font=\scriptsize\itshape, text width=2.5cm, align=left] {Playwright, yt-dlp, FS};
+    \draw[arrow] (main) -- (adapt);
+    \draw[arrow] (adapt) -- (app);
+    \draw[arrow] (app) -- (dom);
 \end{tikzpicture}

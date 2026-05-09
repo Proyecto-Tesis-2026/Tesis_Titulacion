@@ -1,39 +1,33 @@
-% Fig 5:fig24 — Flujo de operación del prototipo integrado
+% Fig 5:fig24 -- Flujo de operacion del prototipo integrado
 \begin{tikzpicture}[
-    node distance=0.5cm and 0.7cm,
-    every node/.style={font=\footnotesize},
-    src/.style={draw, rounded corners=2pt, minimum width=2.2cm, minimum height=0.6cm, align=center, fill=blue!10, font=\scriptsize},
-    pipe/.style={draw, rounded corners=4pt, minimum width=2cm, minimum height=0.7cm, align=center, fill=yellow!12, font=\scriptsize},
-    db/.style={cylinder, draw, shape border rotate=90, aspect=0.25, minimum height=1cm, minimum width=2cm, align=center, fill=orange!10, font=\scriptsize},
-    mcp/.style={draw, rounded corners=4pt, minimum width=2.6cm, minimum height=1cm, align=center, fill=green!12},
-    cli/.style={draw, rounded corners=2pt, minimum width=2.4cm, minimum height=0.9cm, align=center, fill=purple!10},
-    arrow/.style={-Stealth, thick}
+    node distance=0.45cm,
+    every node/.style={font=\footnotesize, align=center, inner sep=4pt},
+    src/.style={draw, rounded corners=2pt, fill=blue!12, minimum width=2.2cm, minimum height=0.55cm, font=\scriptsize},
+    pipe/.style={draw, rounded corners=2pt, fill=yellow!15, minimum width=2.4cm, minimum height=0.6cm, font=\scriptsize},
+    db/.style={draw, rounded corners=2pt, fill=orange!12, minimum width=2.4cm, minimum height=0.9cm, font=\scriptsize},
+    mcp/.style={draw, rounded corners=2pt, fill=green!15, minimum width=2.6cm, minimum height=1cm},
+    cli/.style={draw, rounded corners=2pt, fill=purple!12, minimum width=2.6cm, minimum height=1cm},
+    arrow/.style={-{Stealth[length=2mm]}, thick}
 ]
-    % Sources column
     \node[src] (s1) {noticias};
     \node[src, below=of s1] (s2) {twitter};
     \node[src, below=of s2] (s3) {youtube};
     \node[src, below=of s3] (s4) {tiktok};
-    \node[draw, dashed, fit=(s1)(s4), inner sep=4pt, label={[font=\scriptsize\bfseries]above:Bronze (raw JSON)}] {};
 
-    % Pipeline column
-    \node[pipe, right=1.6cm of s1] (p1) {ingest};
+    \node[pipe, right=1.8cm of s1] (p1) {ingest};
     \node[pipe, below=of p1] (p2) {embed};
     \node[pipe, below=of p2] (p3) {label (LLM)};
-    \node[pipe, below=of p3] (p4) {consolidate +\\llm\_dedup};
+    \node[pipe, below=of p3] (p4) {consolidate + llm\_dedup};
     \node[pipe, below=of p4] (p5) {load\_silver};
     \node[pipe, below=of p5] (p6) {build\_graph};
     \node[pipe, below=of p6] (p7) {refresh\_gold};
 
-    % DBs
-    \node[db, right=2cm of p3] (pgdb) {PostgreSQL\\+ pgvector};
-    \node[db, below=of pgdb, yshift=-0.5cm] (neodb) {Neo4j\\Community};
+    \node[db, right=2cm of p3] (pgdb) {PostgreSQL \\ \scriptsize + pgvector};
+    \node[db, below=1.4cm of pgdb] (neodb) {Neo4j \\ \scriptsize Community};
 
-    % MCP server + client
-    \node[mcp, right=of pgdb] (srv) {electoral\_mcp\\(13 tools)};
-    \node[cli, right=of srv] (claude) {Cliente MCP\\(Claude Desktop)};
+    \node[mcp, right=1cm of pgdb] (srv) {electoral\_mcp \\ \scriptsize 13 tools};
+    \node[cli, right=of srv] (claude) {Cliente MCP \\ \scriptsize Claude Desktop};
 
-    % Edges
     \draw[arrow] (s1.east) -- (p1.west);
     \draw[arrow] (p1) -- (p2);
     \draw[arrow] (p2) -- (p3);
@@ -43,7 +37,7 @@
     \draw[arrow] (p6) -- (p7);
     \draw[arrow, dashed, gray] (p5.east) -- (pgdb.west);
     \draw[arrow, dashed, gray] (p6.east) -- (neodb.west);
-    \draw[arrow] (pgdb) -- (srv);
-    \draw[arrow] (neodb.east) -- (srv.south west);
+    \draw[arrow] (pgdb.east) -- (srv.west);
+    \draw[arrow] (neodb.east) -| (srv.south);
     \draw[arrow] (srv) -- node[above, font=\scriptsize] {streamable-http} (claude);
 \end{tikzpicture}

@@ -1,27 +1,26 @@
-% Fig 5:fig22 — GraphRAG basado en typed tools sobre MCP
+% Fig 5:fig22 -- GraphRAG basado en typed tools sobre MCP
 \begin{tikzpicture}[
-    node distance=0.7cm and 1.1cm,
-    every node/.style={font=\footnotesize},
-    actor/.style={draw, rounded corners=2pt, minimum width=2.4cm, minimum height=0.9cm, align=center, fill=blue!10},
-    server/.style={draw, rounded corners=4pt, minimum width=4.8cm, minimum height=2.6cm, align=center, fill=green!8},
-    tools/.style={draw, rounded corners=2pt, minimum width=4.4cm, minimum height=0.7cm, align=center, fill=yellow!12, font=\scriptsize},
-    db/.style={cylinder, draw, shape border rotate=90, aspect=0.25, minimum height=1.1cm, minimum width=2.4cm, align=center, fill=orange!10, font=\scriptsize},
-    arrow/.style={-Stealth, thick},
-    msg/.style={font=\scriptsize\itshape}
+    node distance=0.6cm,
+    every node/.style={font=\footnotesize, align=center, inner sep=4pt},
+    actor/.style={draw, rounded corners=2pt, fill=blue!12, minimum width=3cm, minimum height=1.2cm},
+    server/.style={draw, rounded corners=2pt, fill=green!10, minimum width=5cm, minimum height=2.6cm},
+    tools/.style={draw, rounded corners=2pt, fill=yellow!15, minimum width=4.6cm, minimum height=0.6cm, font=\scriptsize},
+    db/.style={draw, rounded corners=2pt, fill=orange!12, minimum width=3cm, minimum height=1cm, font=\scriptsize},
+    arrow/.style={-{Stealth[length=2mm]}, thick}
 ]
-    \node[actor] (cli) {Cliente MCP\\\scriptsize{(Claude Desktop /}\\\scriptsize{Claude.ai / Cursor)}};
+    \node[actor] (cli) {Cliente MCP \\ \scriptsize Claude Desktop / \\ \scriptsize Claude.ai / Cursor};
 
-    \node[server, right=2.4cm of cli] (srv) {};
-    \node[font=\scriptsize\bfseries, anchor=north] at (srv.north) {electoral\_mcp (FastMCP + Starlette)};
-    \node[tools, anchor=north] at ($(srv.north)+(0,-0.45)$) (sch) {Pydantic v2: input + output schemas};
-    \node[tools, below=0.1cm of sch] (reg) {13 tools: candidatos / temas / actores / ...};
-    \node[tools, below=0.1cm of reg] (q) {SQL/Cypher \textbf{pre-loaded} parametrizados};
+    \node[right=2.5cm of cli] (srvanchor) {};
+    \node[server, right=2.5cm of cli] (srv) {};
+    \node[font=\scriptsize\bfseries, anchor=north] at (srv.north) {electoral\_mcp (FastMCP)};
+    \node[tools, below=0.4cm of srv.north] (sch) {Pydantic v2: input + output schemas};
+    \node[tools, below=0.05cm of sch] (reg) {13 tools en 6 dominios};
+    \node[tools, below=0.05cm of reg] (q) {SQL/Cypher pre-loaded parametrizados};
 
-    \node[db, right=of srv, yshift=0.7cm] (pg) {PostgreSQL\\(\texttt{\$1, \$2, ...})};
-    \node[db, right=of srv, yshift=-0.7cm] (neo) {Neo4j\\(\texttt{\$param})};
+    \node[db, right=2.4cm of srv, yshift=0.8cm] (pg) {PostgreSQL \\ \scriptsize asyncpg pool};
+    \node[db, right=2.4cm of srv, yshift=-0.8cm] (neo) {Neo4j \\ \scriptsize driver async};
 
-    \draw[arrow] (cli.north east) to[bend left=15] node[msg, above] {tools/list, tools/call} (srv.north west);
-    \draw[arrow] (srv.south west) to[bend left=15] node[msg, below] {structuredContent} (cli.south east);
+    \draw[arrow] (cli.east) -- node[above, font=\scriptsize\itshape] {tools/list, tools/call} (srv.west);
     \draw[arrow] (q.east) -- (pg.west);
     \draw[arrow] (q.east) -- (neo.west);
 \end{tikzpicture}
