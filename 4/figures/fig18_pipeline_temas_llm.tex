@@ -21,7 +21,7 @@
     \node[menulabel, above=0.15cm of t1] {Menu (hasta 20 candidatos)};
 
     \node[p1, right=2.5cm of t1] (ph1) {\textbf{Fase 1} paralelo \\ \scriptsize LLM call x 5 asyncio.gather};
-    \node[p2, below=of ph1] (ph2) {\textbf{Fase 2} secuencial \\ \scriptsize override semantico cosine >= 0.85};
+    \node[p2, below=of ph1] (ph2) {\textbf{Fase 2} secuencial \\ \scriptsize override semantico cosine $\ge 0.85$};
     \node[p3, below=of ph2] (ph3) {\textbf{Fase 3} en memoria \\ \scriptsize dedup intra-batch triple match};
     \node[p4, below=of ph3] (ph4) {\textbf{Fase 4} secuencial \\ \scriptsize upsert\_tema sin race};
 
