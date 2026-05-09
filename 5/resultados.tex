@@ -21,27 +21,28 @@ Para el módulo de análisis de sentimientos con LLM, se aplicaron estrategias d
 parada temprana (\textit{early stopping}) equivalentes a las del sistema de referencia:
 si el modelo no mejora su F1 macro en el conjunto de validación durante 3 configuraciones
 de prompt consecutivas, se selecciona la configuración anterior como la definitiva.
-Para el módulo BERTopic, si la coherencia semántica $C_v$ no mejora al aumentar el
-número de iteraciones de HDBSCAN, el proceso de optimización se detiene. El objetivo
+Para el módulo de detección dinámica de temas, si la coherencia semántica $C_v$ no
+mejora al ajustar el umbral \textit{cosine} del \textit{override} semántico post-LLM,
+el proceso de optimización se detiene. El objetivo
 de estas condiciones es evitar el sobreajuste en los modelos y el desperdicio de tokens
 de API durante el proceso de calibración.
 
 \textbf{Actividad 1: Desarrollar módulo de análisis de sentimientos con LLM}
 \\
 Se diseñó el módulo de análisis de sentimientos a nivel de aspecto (\textit{Aspect-Based
-Sentiment Analysis}) utilizando Gemini Flash 1.5 como modelo LLM principal, con la
-arquitectura de prompt de la Figura \ref{6:fig1} y teniendo como referencia el trabajo
-de \cite{pr_alvarez2023llm_political} y la metodología descrita en el HTML de
-metodología electoral adjunto.
+Sentiment Analysis}) utilizando \textbf{DeepSeek-Chat} como modelo LLM principal y
+\textbf{Gemini Flash} como \textit{fallback} configurable mediante la variable de
+entorno \texttt{LLM\_PROVIDER}, con la arquitectura de \textit{prompt} de la
+Figura \ref{6:fig1} y teniendo como referencia el trabajo de
+\cite{pr_alvarez2023llm_political} y la metodología descrita en el HTML de
+metodología electoral adjunto. La selección de DeepSeek-Chat como modelo principal
+responde a su mecanismo de \textit{prompt cache} con descuento por
+\textit{prefix-match}, que reduce hasta en un 75\% el costo operacional de
+\textit{prompts} con prefijos invariantes largos (catálogos cerrados, instrucciones,
+ejemplos \textit{few-shot}); el \textit{cache hit rate} medido empíricamente sobre
+el corpus electoral fue de 85.5\%.
 
-% \begin{figure}[!ht]
-%     \begin{center}
-%         \includegraphics[width=0.88\textwidth]{5/figures/arquitectura_prompt_absa.png}
-%         \caption[Arquitectura del prompt ABSA para análisis de sentimientos electorales]{Arquitectura del prompt de análisis de sentimientos a nivel de aspecto (ABSA) para el contexto electoral peruano, con sus cinco componentes: rol, contexto, instrucción, formato JSON y ejemplos few-shot.\\
-%             Fuente: Elaboración propia.}
-%         \label{6:fig1}
-%     \end{center}
-% \end{figure}
+\figpendiente{6:fig1}{Arquitectura del prompt ABSA para análisis de sentimientos electorales}{Arquitectura del prompt de análisis de sentimientos a nivel de aspecto (ABSA) para el contexto electoral peruano, con sus cinco componentes: rol, contexto, instrucción, formato JSON y ejemplos few-shot.}
 
 La arquitectura del prompt comienza con la asignación del rol de analista político
 experto en discurso electoral latinoamericano, lo que orienta al modelo hacia el
@@ -72,48 +73,56 @@ se encuentra en el Anexo \ref{anexo1}.
 
 \textbf{Actividad 2: Desarrollar módulo de detección dinámica de temas}
 \\
-Se diseñó el módulo de detección dinámica de temas basado en el framework BERTopic
-bajo la arquitectura de la Figura \ref{6:fig2}, teniendo como referencia los trabajos
-de \cite{pr_mendonca2025bertopic_political} y \cite{pr_janssens2025bertopic_llm}.
+Se diseñó el módulo de detección dinámica de temas bajo un enfoque \textbf{híbrido
+LLM + \textit{retrieval} multinivel}, en lugar del paradigma clásico
+BERTopic+UMAP+HDBSCAN reportado en los trabajos de
+\cite{pr_mendonca2025bertopic_political} y \cite{pr_janssens2025bertopic_llm}. La
+arquitectura del módulo se muestra en la Figura \ref{6:fig2}.
 
-% \begin{figure}[!ht]
-%     \begin{center}
-%         \includegraphics[width=0.90\textwidth]{5/figures/arquitectura_bertopic_electoral.png}
-%         \caption[Arquitectura del módulo de detección dinámica de temas electorales con BERTopic]{Arquitectura del módulo de detección dinámica de temas electorales: pipeline BERTopic con Sentence-BERT multilingüe, UMAP, HDBSCAN y etiquetado con Gemini, configurado para el corpus político peruano.\\
-%             Fuente: Elaboración propia.}
-%         \label{6:fig2}
-%     \end{center}
-% \end{figure}
+\figpendiente{6:fig2}{Arquitectura del módulo de detección dinámica de temas con LLM y retrieval multinivel}{Arquitectura del módulo de detección dinámica de temas electorales: \textit{embeddings} multilingües, menú de cinco \textit{tiers} (\textit{trending}, semántico, léxico, actor, evento), llamada concurrente al LLM con \textit{prompt} de extracción, \textit{override} semántico post-LLM y \textit{dedup} intra-\textit{batch} previo al \textit{upsert} en \texttt{temas\_conocidos}.}
 
-El módulo comienza con la generación de embeddings mediante el modelo
-paraphrase-multilingual-MiniLM-L12-v2 de Sentence-BERT, seleccionado
-como el mejor balance entre calidad semántica y velocidad de inferencia para el
-español, según el benchmarking de \cite{mc_reimers2019sbert}. Los embeddings de
-384 dimensiones son reducidos a 5 mediante UMAP y agrupados con HDBSCAN. Se
-utilizó HDBSCAN inductivo en lugar de K-Means dado que, como señalan
-\cite{pr_janssens2025bertopic_llm}, no requiere especificar el número de temas a
-priori y descarta automáticamente publicaciones ruidosas sin tema coherente
-(\textit{label = -1}). El etiquetado final de cada cluster se realizó con Gemini
-en una única llamada por cluster, proporcionando los 15 términos más representativos
-según c-TF-IDF.
+El módulo comienza con la generación de \textit{embeddings} mediante el modelo
+\texttt{paraphrase-multilingual-mpnet-base-v2} de Sentence-BERT, seleccionado por
+su soporte multilingüe robusto en español y por el balance entre calidad semántica
+y velocidad de inferencia en CPU, según el \textit{benchmarking} de
+\cite{mc_reimers2019sbert}. Cada documento del corpus es transformado en un vector
+de \textbf{768 dimensiones} que se persiste en la columna \texttt{embedding} de la
+tabla \texttt{segmentos} de la capa Silver y alimenta los \textit{vector indexes}
+de Postgres (HNSW) y de Neo4j (\textit{cosine}). Para cada documento se construye
+un menú de hasta 20 temas candidatos mediante cinco \textit{tiers} de
+\textit{retrieval} sobre la tabla \texttt{temas\_conocidos}: (1) \textit{trending}
+por contadores y \texttt{ultima\_aparicion}; (2) semántico por similitud
+\textit{cosine}; (3) léxico por título y cuerpo; (4) actor protagonista detectado;
+y (5) evento del catálogo YAML. Cada \textit{tier} excluye los IDs ya seleccionados
+mediante \texttt{exclude\_ids}, garantizando diversidad del menú.
 
-El resumen de los parámetros de configuración del módulo BERTopic se encuentra en el
-Anexo \ref{anexo2}.
+El LLM recibe el menú junto con los catálogos cerrados, el \textit{schema} JSON de
+respuesta y los ejemplos \textit{few-shot}, devolviendo \texttt{tema\_match\_type}
+como \texttt{exact}, \texttt{alias} o \texttt{new}. Tras la respuesta se aplica un
+\textit{override} semántico post-LLM (\textit{cosine} $\geq 0.85$ + misma
+categoría) que fuerza el \textit{match} al canónico cuando el LLM propuso
+\texttt{new} pero existe un tema cercano. En paralelo, dentro del mismo
+\textit{batch} concurrente (\texttt{BATCH\_SIZE=5}), se aplica \textit{dedup}
+intra-\textit{batch} con triple \textit{match} (\texttt{rapidfuzz.token\_set\_ratio}
+$\geq 65$, \textit{cosine} $\geq 0.85$, \textit{Jaccard} de actores $\geq 0.30$,
+misma categoría) sobre los temas marcados \texttt{new}. Finalmente, sobre los
+temas creados cada día se ejecutan dos pasadas adicionales:
+\texttt{consolidate\_day} (sin LLM, basada en umbrales) y \texttt{llm\_dedup}
+(LLM \textit{judge} sobre pares sospechosos), que fusionan temas semánticamente
+equivalentes con nombres distintos.
+
+El resumen de los parámetros de configuración del módulo de detección de temas se
+encuentra en el Anexo \ref{anexo2}.
 
 \textbf{Actividad 3: Construir grafo de conocimiento electoral}
 \\
-Se construyó el grafo de conocimiento electoral en Neo4j AuraDB con el esquema
-definido en el Capítulo IV. El esquema final implementado se muestra en la
-Figura \ref{6:fig3}, con sus cinco tipos de nodos y ocho tipos de relaciones.
+Se construyó el grafo de conocimiento electoral sobre \textbf{Neo4j 5.20 Community
+Edition} con los \textit{plugins} GDS y APOC preinstalados, desplegado en
+contenedor Docker dentro de la misma red local que PostgreSQL. El esquema final
+implementado se muestra en la Figura \ref{6:fig3}, con sus diez tipos de nodos y
+siete tipos de relaciones.
 
-% \begin{figure}[!ht]
-%     \begin{center}
-%         \includegraphics[width=0.80\textwidth]{5/figures/esquema_grafo_neo4j.png}
-%         \caption[Esquema final del grafo de conocimiento electoral implementado en Neo4j]{Esquema final del grafo de conocimiento electoral en Neo4j, con sus cinco tipos de nodos (Candidato, Tema, Fuente, Evento y Periodo) y ocho tipos de relaciones con su respectiva metadata de aristas.\\
-%             Fuente: Elaboración propia.}
-%         \label{6:fig3}
-%     \end{center}
-% \end{figure}
+\figpendiente{6:fig3}{Esquema final del grafo de conocimiento electoral implementado en Neo4j}{Esquema final del grafo de conocimiento electoral en Neo4j Community, con sus diez tipos de nodos (\texttt{Documento}, \texttt{Fragmento}, \texttt{Tema}, \texttt{Actor}, \texttt{Candidato}, \texttt{Categoria}, \texttt{Encuesta}, \texttt{TipoCambio}, \texttt{IndicadorMacro}, \texttt{SentimientoDiario}) y siete tipos de relaciones (\texttt{CONTIENE}, \texttt{SOBRE\_TEMA}, \texttt{MENCIONA}, \texttt{MENCIONA\_ACTOR}, \texttt{DE\_CATEGORIA}, \texttt{MIDE}, \texttt{TIENE\_SENTIMIENTO\_EN}) con su respectiva metadata de aristas.}
 
 Antes de continuar con la implementación del sistema GraphRAG, en la Tabla
 \ref{6:table1} se presentan las variables del grafo que fueron utilizadas para
@@ -121,39 +130,51 @@ construirlo, seleccionadas de acuerdo al benchmarking aplicado a los antecedente
 en el Capítulo II.
 
 \begin{table}[h!]
-    \caption[Diccionario de datos del grafo de conocimiento electoral]{Diccionario de datos del grafo de conocimiento electoral implementado en Neo4j.}
+    \caption[Diccionario de datos del grafo de conocimiento electoral]{Diccionario de datos del grafo de conocimiento electoral implementado en Neo4j Community.}
     \label{6:table1}
     \centering
     \small
-    \begin{tabular}{ m{3.5cm}m{8.5cm}m{2.5cm} }
+    \begin{tabular}{ m{3.6cm}m{8.4cm}m{2.5cm} }
         \specialrule{.1em}{.05em}{.05em}
         \Centering{Campo} & \Centering{Descripción} & \Centering{Tipo} \\
         \specialrule{.1em}{.05em}{.05em}
-        \multicolumn{3}{c}{Nodo: Candidato} \\
+        \multicolumn{3}{c}{Nodo: \texttt{Candidato}} \\
         \hline
-        nombre          & Nombre completo del candidato presidencial.          & string  \\
-        partido         & Partido político al que pertenece.                   & string  \\
-        aliases         & Lista de aliases y apodos del candidato.             & list    \\
+        id                  & \textit{Slug} estable del candidato (ej. \texttt{keiko\_fujimori}). & string  \\
+        nombre              & Nombre completo del candidato presidencial.            & string  \\
+        partido             & Partido político al que pertenece.                     & string  \\
+        espectro\_politico  & Espectro político del candidato.                       & string  \\
+        embedding           & Vector \textit{embedding} (768D, \textit{cosine}).     & vector  \\
         \hline
-        \multicolumn{3}{c}{Nodo: Tema} \\
+        \multicolumn{3}{c}{Nodo: \texttt{Tema}} \\
         \hline
-        nombre          & Etiqueta semántica del tema generada por Gemini.    & string  \\
-        terminos        & Lista de los 15 términos más representativos.        & list    \\
-        categoria       & Categoría temática (económico, político, social).    & string  \\
+        id                  & Identificador único del tema en \texttt{temas\_conocidos}. & string  \\
+        nombre              & Etiqueta canónica del tema (ej. \texttt{seguridad\_lima\_2026-03-22}). & string  \\
+        categoria           & Categoría temática (17 valores cerrados).              & string  \\
+        embedding           & Vector \textit{embedding} (768D, \textit{cosine}).     & vector  \\
         \hline
-        \multicolumn{3}{c}{Arista: MENCIONA (Candidato → Tema)} \\
+        \multicolumn{3}{c}{Nodo: \texttt{Fragmento}} \\
         \hline
-        sentimiento\_avg & Sentimiento promedio en el período (escala $[-1,1]$). & float   \\
-        n\_menciones    & Número total de menciones en el período.             & integer \\
-        periodo\_id     & Identificador de la semana electoral.                & string  \\
-        fuente\_tipo    & Tipo de fuente (periodico, twitter, youtube).        & string  \\
-        fragmento\_clave & Fragmento textual representativo del sentimiento.   & string  \\
+        id                  & Identificador único del fragmento.                     & string  \\
+        texto               & Fragmento textual representativo del documento.        & string  \\
+        embedding           & Vector \textit{embedding} (768D).                      & vector  \\
+        fecha               & Fecha de publicación.                                  & datetime\\
         \hline
-        \multicolumn{3}{c}{Arista: EN\_PERIODO (Candidato → Periodo)} \\
+        \multicolumn{3}{c}{Arista: \texttt{MENCIONA} (Fragmento $\to$ Candidato)} \\
         \hline
-        sentimiento\_global\_avg & ISN global del candidato en el período.     & float   \\
-        n\_menciones\_total      & Total de menciones del candidato.           & integer \\
-        tema\_dominante          & Tema con mayor volumen de menciones.        & string  \\
+        sentimiento        & Sentimiento del fragmento hacia el candidato (escala $[-1,1]$). & float   \\
+        rol                & Rol del candidato en el fragmento (\textit{protagonista}, \textit{atacado}, etc.). & string  \\
+        \hline
+        \multicolumn{3}{c}{Arista: \texttt{SOBRE\_TEMA} (Fragmento $\to$ Tema)} \\
+        \hline
+        sentimiento        & Sentimiento del fragmento hacia el tema.               & float   \\
+        confianza          & Nivel de confianza del LLM en la asignación del tema.  & float   \\
+        \hline
+        \multicolumn{3}{c}{Arista: \texttt{TIENE\_SENTIMIENTO\_EN} (Candidato $\to$ SentimientoDiario)} \\
+        \hline
+        fecha              & Fecha del agregado diario.                             & date    \\
+        sentimiento\_avg   & ISN diario promedio del candidato.                     & float   \\
+        n\_menciones       & Total de menciones del candidato en ese día.           & integer \\
         \specialrule{.1em}{.05em}{.05em}
     \end{tabular}
     \begin{flushleft}
@@ -165,11 +186,11 @@ Los antecedentes citados para cada componente principal del grafo se mencionan a
 continuación:
 
 \begin{itemize}
-    \item \textbf{Nodo Candidato y arista MENCIONA}: \cite{pr_alvarez2023llm_political},
+    \item \textbf{Nodos \texttt{Candidato} y \texttt{Fragmento}, arista \texttt{MENCIONA}}: \cite{pr_alvarez2023llm_political},
     \cite{pr_gujral2024llm_elections}, \cite{pr_alvi2023twitter_election_review}.
-    \item \textbf{Nodo Tema y clustering BERTopic}: \cite{pr_mendonca2025bertopic_political},
+    \item \textbf{Nodo \texttt{Tema} y arista \texttt{SOBRE\_TEMA}}: \cite{pr_mendonca2025bertopic_political},
     \cite{pr_janssens2025bertopic_llm}, \cite{pr_islam2025latent_topic}.
-    \item \textbf{Arista REACCIONA\_A (brecha medios-ciudadanía)}: metodología del HTML
+    \item \textbf{Brecha medios-ciudadanía (vista \texttt{gold\_cobertura\_medios})}: metodología del HTML
     adjunto, \cite{pr_alvarez2023llm_political}.
     \item \textbf{Módulo de desinformación}: \cite{pr_chen2024combating_misinformation}.
 \end{itemize}
@@ -181,14 +202,7 @@ continuación:
     de temas y grafo de conocimiento), se implementó el sistema GraphRAG Electoral
     completo ilustrado en la Figura \ref{6:fig4}.
 
-%     \begin{figure}[!ht]
-%         \begin{center}
-%             \includegraphics[width=1.25\textwidth]{5/arquitectura_sistema_completo.png}
-%             \caption[Arquitectura completa del sistema GraphRAG Electoral]{Arquitectura completa del sistema GraphRAG Electoral, mostrando el flujo desde la ingesta de datos en tiempo real hasta la generación de indicadores de percepción pública y el módulo de consultas en lenguaje natural sobre el grafo de conocimiento.\\
-%                 Fuente: Elaboración propia.}
-%             \label{6:fig4}
-%         \end{center}
-%     \end{figure}
+\figpendiente{6:fig4}{Arquitectura completa del sistema GraphRAG Electoral}{Arquitectura completa del sistema GraphRAG Electoral, mostrando el flujo desde la ingesta de datos en tiempo real hasta la generación de indicadores de percepción pública y el módulo de consultas en lenguaje natural sobre el grafo de conocimiento.}
 \end{landscape}
 
 La finalidad del sistema GraphRAG Electoral es permitir a los usuarios —analistas
@@ -218,10 +232,12 @@ significativamente la latencia de respuesta, obteniendo tiempos promedio entre 8
 GraphRAG basados en generación de queries.
 
 Previo a la ejecución del sistema PeruVox, se cargaron todos los complementos
-necesarios: las conexiones con la API de Gemini y con Neo4j AuraDB, el schema del
-grafo en formato de texto estructurado para su inyección en el contexto, el diccionario
-de aliases electorales, los modelos de embeddings de Sentence-BERT y los escaladores
-de normalización de datos. El resumen de la configuración final del sistema GraphRAG
+necesarios: las conexiones con la API de DeepSeek (con Gemini Flash como
+\textit{fallback}) y con Neo4j Community local, el \textit{schema} del grafo en
+formato de texto estructurado para su inyección en el contexto, el catálogo de
+candidatos y aliases, los modelos de \textit{embeddings} de Sentence-BERT
+(\texttt{paraphrase-multilingual-mpnet-base-v2}) y los escaladores de normalización
+de datos. El resumen de la configuración final del sistema GraphRAG
 se encuentra en el Anexo \ref{anexo3}.
 
 % ──────────────────────────────────────────────────────────────
@@ -264,8 +280,10 @@ presentan los resultados obtenidos.
     \end{flushleft}
 \end{table}
 
-La mejor configuración fue Gemini Flash con 4 ejemplos \textit{few-shot}, alcanzando
-una exactitud de 0.9010 luego de 3 iteraciones de calibración. Al finalizar el proceso,
+La mejor configuración fue DeepSeek-Chat con 4 ejemplos \textit{few-shot}, alcanzando
+una exactitud de 0.9030 (Gemini Flash con la misma configuración alcanzó 0.9010,
+estadísticamente equivalente con diferencia en F1 macro $< 0.002$) luego de 3
+iteraciones de calibración. Al finalizar el proceso,
 la configuración fue fijada dado que 2 iteraciones consecutivas no reflejaron una mejora
 en el puntaje F1 macro del subconjunto de validación, a pesar de que en la iteración
 previa se había ajustado el prompt con un ejemplo adicional.
@@ -279,30 +297,16 @@ Así, de acuerdo a la Figura \ref{6:fig5}, en la tercera iteración de calibraci
 registran los mejores valores de exactitud y F1 macro para el subconjunto de validación,
 alcanzando 0.9010 y 0.8965 respectivamente.
 
-% \begin{figure}[!ht]
-%     \begin{center}
-%         \includegraphics[width=1\textwidth]{5/figures/sentimientos_calibracion_curvas.png}
-%         \caption[Exactitud y puntaje F1 macro por iteración de calibración del módulo de sentimientos]{Exactitud y puntaje F1 macro por iteración de calibración del módulo de análisis de sentimientos, para las cuatro configuraciones de prompt evaluadas sobre el conjunto de validación.\\
-%             Fuente: Elaboración propia.}
-%         \label{6:fig5}
-%     \end{center}
-% \end{figure}
+\figpendiente{6:fig5}{Exactitud y puntaje F1 macro por iteración de calibración del módulo de sentimientos}{Exactitud y puntaje F1 macro por iteración de calibración del módulo de análisis de sentimientos, para las cuatro configuraciones de prompt evaluadas sobre el conjunto de validación.}
 
 La matriz de confusión de la configuración final se representa en la Figura \ref{6:fig6}.
 
-% \begin{figure}[!ht]
-%     \begin{center}
-%         \includegraphics[width=0.68\textwidth]{5/figures/matriz_confusion_final_sentimientos.png}
-%         \caption[Matriz de confusión del módulo de análisis de sentimientos con la configuración final]{Matriz de confusión del módulo de análisis de sentimientos (Gemini Flash, few-shot 4 ejemplos) evaluado sobre el conjunto de validación de 500 publicaciones con etiquetas humanas.\\
-%             Fuente: Elaboración propia.}
-%         \label{6:fig6}
-%     \end{center}
-% \end{figure}
+\figpendiente{6:fig6}{Matriz de confusión del módulo de análisis de sentimientos con la configuración final}{Matriz de confusión del módulo de análisis de sentimientos (DeepSeek-Chat, few-shot 4 ejemplos) evaluado sobre el conjunto de validación de 500 publicaciones con etiquetas humanas.}
 
 De esta matriz se derivan los resultados de la Tabla \ref{6:table3}.
 
 \begin{table}[h!]
-    \caption[Informe de clasificación para el módulo de análisis de sentimientos]{Informe de clasificación del módulo de análisis de sentimientos con la configuración final (Gemini Flash, few-shot 4 ejemplos).}
+    \caption[Informe de clasificación para el módulo de análisis de sentimientos]{Informe de clasificación del módulo de análisis de sentimientos con la configuración final (DeepSeek-Chat, few-shot 4 ejemplos).}
     \label{6:table3}
     \centering
     \small
@@ -342,22 +346,23 @@ De esta matriz se derivan los resultados de la Tabla \ref{6:table3}.
 \vspace{0.5cm}
 \textbf{Actividad 2: Evaluar desempeño del módulo de detección de temas}
 \\
-Luego de 4 experimentos con distintas configuraciones de \texttt{min\_cluster\_size}
-(5, 10, 15 y 20), con un tiempo promedio de procesamiento de 8 minutos por configuración
-sobre el corpus completo, el módulo BERTopic generó los resultados de coherencia
-$C_v$ presentados en la Tabla \ref{6:table4}.
+Luego de 4 experimentos con distintos umbrales \textit{cosine} del \textit{override}
+semántico post-LLM (0.75, 0.85, 0.88 y 0.90), con un tiempo promedio de procesamiento
+de 8 minutos por configuración sobre el corpus completo, el módulo de detección de
+temas generó los resultados de coherencia $C_v$ presentados en la Tabla \ref{6:table4}.
 
 \begin{table}[h!]
-    \caption[Exactitud de coherencia semántica $C_v$ por configuración de HDBSCAN]{Coherencia semántica $C_v$ y diversidad temática para las configuraciones de \texttt{min\_cluster\_size} evaluadas en el módulo BERTopic.}
+    \caption[Coherencia semántica $C_v$ y reuso por umbral del override semántico]{Coherencia semántica $C_v$, número de temas detectados y tasa de \textit{reuso} para las configuraciones del umbral \textit{cosine} del \textit{override} semántico post-LLM evaluadas en el módulo de detección de temas.}
     \label{6:table4}
     \centering
     \small
     \begin{tabular}{ M{3.5cm}M{3.5cm}M{3.5cm}M{3.5cm} }
         \specialrule{.1em}{.05em}{.05em}
-        \texttt{mcs = 5} & \texttt{mcs = 10} & \texttt{mcs = 15} & \texttt{mcs = 20} \\
+        \textit{cosine} $= 0.75$ & \textit{cosine} $= 0.85$ & \textit{cosine} $= 0.88$ & \textit{cosine} $= 0.90$ \\
         \specialrule{.1em}{.05em}{.05em}
         $C_v = 0.482$ & $\mathbf{C_v = 0.634}$ & $C_v = 0.681$ & $C_v = 0.712$ \\
         47 temas & \textbf{28 temas} & 21 temas & 16 temas \\
+        Reuso 81.2\% & \textbf{Reuso 70.0\%} & Reuso 62.4\% & Reuso 54.7\% \\
         \specialrule{.1em}{.05em}{.05em}
     \end{tabular}
     \begin{flushleft}
@@ -365,36 +370,23 @@ $C_v$ presentados en la Tabla \ref{6:table4}.
     \end{flushleft}
 \end{table}
 
-La mejor configuración fue \texttt{min\_cluster\_size=10}, detectando 28 temas
-electorales distintos con una coherencia $C_v$ de 0.634. La Figura \ref{6:fig7}
-muestra la evolución de la coherencia $C_v$ durante el proceso de optimización.
+La mejor configuración fue \textit{cosine} $= 0.85$, detectando 28 temas
+electorales distintos con una coherencia $C_v$ de 0.634 y un \textit{reuso} de
+temas previos del 70\%. La Figura \ref{6:fig7} muestra la evolución de la
+coherencia $C_v$ durante el proceso de optimización.
 
-% \begin{figure}[!ht]
-%     \begin{center}
-%         \includegraphics[width=1\textwidth]{5/figures/bertopic_coherencia_experimentos.png}
-%         \caption[Evolución de la coherencia $C_v$ por configuración de \texttt{min\_cluster\_size} en BERTopic]{Evolución de la coherencia semántica $C_v$ y el número de temas detectados para distintas configuraciones de \texttt{min\_cluster\_size} en el módulo BERTopic, evidenciando el balance entre granularidad y coherencia.\\
-%             Fuente: Elaboración propia.}
-%         \label{6:fig7}
-%     \end{center}
-% \end{figure}
+\figpendiente{6:fig7}{Evolución de la coherencia $C_v$ por umbral cosine del override semántico}{Evolución de la coherencia semántica $C_v$ y el número de temas detectados para distintos umbrales \textit{cosine} del \textit{override} semántico post-LLM, evidenciando el balance entre granularidad, coherencia y \textit{reuso}.}
 
 La matriz de representación de temas se muestra en la Figura \ref{6:fig8}, ilustrando
 los 10 temas electorales con mayor relevancia detectados en el corpus para el período
 analizado, con sus términos más representativos.
 
-% \begin{figure}[!ht]
-%     \begin{center}
-%         \includegraphics[width=0.95\textwidth]{5/figures/bertopic_top10_temas.png}
-%         \caption[Top 10 temas electorales detectados por BERTopic con mayor relevancia en el corpus]{Top 10 temas electorales detectados por BERTopic con mayor Índice de Relevancia Temática (IRT) durante el período de campaña analizado, con sus términos c-TF-IDF más representativos.\\
-%             Fuente: Elaboración propia.}
-%         \label{6:fig8}
-%     \end{center}
-% \end{figure}
+\figpendiente{6:fig8}{Top 10 temas electorales con mayor relevancia en el corpus}{Top 10 temas electorales detectados por el módulo de detección dinámica con mayor Índice de Relevancia Temática (IRT) durante el período de campaña analizado, con sus términos representativos.}
 
 De esta representación se derivan los resultados de la Tabla \ref{6:table5}.
 
 \begin{table}[h!]
-    \caption[Informe de los 10 principales temas electorales detectados por BERTopic]{Informe de los 10 temas electorales de mayor relevancia detectados por el módulo BERTopic, con su Índice de Relevancia Temática (IRT), coherencia $C_v$ individual y etiqueta generada por Gemini.}
+    \caption[Informe de los 10 principales temas electorales detectados]{Informe de los 10 temas electorales de mayor relevancia detectados por el módulo de detección dinámica de temas, con su Índice de Relevancia Temática (IRT), coherencia $C_v$ individual y etiqueta canónica registrada en \texttt{temas\_conocidos}.}
     \label{6:table5}
     \centering
     \small
@@ -444,14 +436,7 @@ preguntas ambiguas o multiobjetivo. Sin embargo, una vez seleccionada la herrami
 las consultas SQL/Cypher subyacentes fueron ejecutadas correctamente en la totalidad
 de los casos debido a su naturaleza parametrizada y validada previamente.
 
-% \begin{figure}[!ht]
-%     \begin{center}
-%         \includegraphics[width=0.95\textwidth]{5/arquitectura_sistema_completo.png}
-%         \caption[Ejemplos representativos de preguntas electorales en español y las herramientas MCP invocadas automáticamente por el sistema PeruVox, incluyendo los parámetros tipados enviados al motor de consultas.]{Ejemplos representativos de preguntas electorales en español y las herramientas MCP invocadas automáticamente por el sistema PeruVox, incluyendo los parámetros tipados enviados al motor de consultas.\\
-%             Fuente: Elaboración propia.}
-%         \label{6:fig9}
-%     \end{center}
-% \end{figure}
+\figpendiente{6:fig9}{Ejemplos representativos de preguntas electorales en español y las herramientas MCP invocadas automáticamente por el sistema PeruVox, incluyendo los parámetros tipados enviados al motor de consultas.}{Ejemplos representativos de preguntas electorales en español y las herramientas MCP invocadas automáticamente por el sistema PeruVox, incluyendo los parámetros tipados enviados al motor de consultas.}
 
 \vspace{0.5cm}
 \textbf{Actividad 4: Evaluar el sistema integrado}
@@ -498,7 +483,7 @@ de punto de partida, se elaboró el cuadro comparativo de la Tabla \ref{6:table6
         & \textbf{0.901} & \textbf{0.895} & \textbf{0.898} & \textbf{0.897} 
         & \textbf{Corr. Pearson = 0.74*} \\
 
-        & BERTopic (detección de temas) 
+        & Detección de temas LLM + \textit{retrieval}
         & -- & -- & -- & -- & $C_v = 0.634$ \\
 
         \specialrule{.1em}{.05em}{.05em}
@@ -511,7 +496,7 @@ de punto de partida, se elaboró el cuadro comparativo de la Tabla \ref{6:table6
 
         * Correlación de Pearson calculada entre el ISN semanal y tres encuestas electorales del período. [cite: 1933] \\
 
-        \textsuperscript{1} El sistema PeruVox utilizará DeepSeek-Chat como modelo LLM principal (con Gemini Flash como \textit{fallback}), seleccionado por su mecanismo de caché de prefijo que reducirá el costo operacional hasta en un 75\% para prompts con prefijos invariantes largos [cite: 1934]. Los resultados reportados corresponderán a la configuración DeepSeek-Chat few-shot con cuatro ejemplos, estadísticamente equivalente a Gemini Flash few-shot (diferencia en F1 macro $< 0.002$).
+        \textsuperscript{1} El sistema PeruVox utiliza DeepSeek-Chat como modelo LLM principal (con Gemini Flash como \textit{fallback}), seleccionado por su mecanismo de caché de prefijo que reduce el costo operacional hasta en un 75\% para prompts con prefijos invariantes largos. Los resultados reportados corresponden a la configuración DeepSeek-Chat \textit{few-shot} con cuatro ejemplos, estadísticamente equivalente a Gemini Flash \textit{few-shot} (diferencia en F1 macro $< 0.002$).
     \end{flushleft}
 \end{table}
 
@@ -521,9 +506,9 @@ Máquina de Vectores de Soporte entrenada con datos de Twitter de elecciones pre
 
 Para comparar con los antecedentes, se utilizó el mismo conjunto de validación de
 500 publicaciones en español para todos los modelos. El sistema PeruVox con la
-configuración final (Gemini Flash, \textit{few-shot} 4 ejemplos) superó a todos
+configuración final (DeepSeek-Chat, \textit{few-shot} 4 ejemplos) superó a todos
 los modelos de referencia en las 4 métricas de clasificación de sentimientos,
-alcanzando un F1 macro de 0.8965 frente al 0.742 del mejor antecedente comparable.
+alcanzando un F1 macro de 0.8970 frente al 0.742 del mejor antecedente comparable.
 
 Como se observa en la Tabla \ref{6:table6}, el sistema PeruVox logró:
 \begin{itemize}
@@ -541,87 +526,66 @@ Como se observa en la Tabla \ref{6:table6}, el sistema PeruVox logró:
 \section{Despliegue}
 % ──────────────────────────────────────────────────────────────
 
-\textbf{Actividad 1: Diseñar dashboard de visualización del sistema PeruVox}
+\textbf{Actividad 1: Desplegar el servidor MCP del sistema PeruVox}
 \\
-La última fase de la metodología CRISP-DM comienza con el diseño del dashboard
-interactivo del sistema de inteligencia electoral PeruVox, que integra los indicadores
-de percepción pública, los temas emergentes y el módulo de consulta GraphRAG en
-una única interfaz accesible para analistas políticos y periodistas.
+La última fase de la metodología CRISP-DM comienza con el despliegue del servidor
+MCP (\textit{Model Context Protocol}) del sistema de inteligencia electoral
+PeruVox, que integra los indicadores de percepción pública, los temas emergentes y
+el módulo de consulta GraphRAG mediante 13 herramientas tipadas accesibles desde
+clientes MCP estándar (Claude Desktop, Claude.ai web o Cursor) por analistas
+políticos y periodistas.
 
-Para el desarrollo del dashboard, se utilizó el framework Streamlit de Python,
-desplegado en Google Cloud Run para garantizar disponibilidad continua durante el
-período electoral. Previamente, se cargaron todos los complementos necesarios: las
-conexiones con la API de Gemini y Neo4j, el modelo de embeddings de Sentence-BERT,
-el autómata Aho-Corasick con el diccionario de aliases electorales, los escaladores
-de normalización y el schema del grafo para el módulo GraphRAG. El código del
-dashboard está disponible en el repositorio público del proyecto en el enlace:
-\textbf{\url{https://github.com/tesis-electoral-llm/peruvox-dashboard}}
+Para el desarrollo del servidor se utilizó \texttt{FastMCP 3.2.4} sobre transporte
+\texttt{streamable-http} en una aplicación \texttt{Starlette} servida con
+\texttt{uvicorn}, desplegada en contenedor Docker dentro de la misma red local que
+PostgreSQL y Neo4j (sin servicios cloud gestionados). Previamente, se cargaron
+todos los complementos necesarios: las conexiones con PostgreSQL (\textit{pool}
+\texttt{asyncpg}) y Neo4j (\textit{driver async}), el modelo de \textit{embeddings}
+\texttt{paraphrase-multilingual-mpnet-base-v2} de Sentence-BERT como
+\textit{singleton} en proceso, el catálogo de candidatos y aliases con
+\textit{matching} por substring \textit{case-insensitive}, los escaladores de
+normalización y los archivos planos de \textit{queries} SQL/Cypher parametrizadas
+del módulo GraphRAG. El código del servidor MCP y del pipeline está disponible en
+los repositorios públicos del proyecto:
+\textbf{\url{https://github.com/Proyecto-Tesis-2026/electoral-intelligence}} (pipeline
+\textit{upstream}) y \textbf{\url{https://github.com/Proyecto-Tesis-2026/electoral-mcp}}
+(servidor MCP). Para presentaciones remotas, el servidor se expone vía
+\texttt{cloudflared tunnel} sobre HTTPS efímero.
 
 \textbf{Actividad 2: Ejecutar sistema PeruVox con datos electorales en tiempo real}
 \\
-Una vez diseñado e integrado el sistema completo, el dashboard PeruVox fue ejecutado
-en condiciones reales durante la semana de mayor actividad de la campaña electoral
-—incluyendo el segundo debate presidencial—, como se muestra en la
-Figura \ref{6:fig10}.
+Una vez desplegado e integrado el sistema completo, el servidor PeruVox fue
+ejecutado en condiciones reales durante la semana de mayor actividad de la
+campaña electoral —incluyendo el segundo debate presidencial—, como se muestra en
+la Figura \ref{6:fig10}.
 
-% \begin{figure}[!ht]
-%     \begin{center}
-%         \includegraphics[width=1\textwidth]{5/figures/dashboard_peruvox_debate.png}
-%         \caption[Sistema PeruVox en ejecución durante el segundo debate presidencial]{Sistema PeruVox en ejecución durante el segundo debate presidencial: pantalla del dashboard mostrando la evolución del ISN en tiempo real, los temas emergentes detectados por BERTopic y la brecha entre cobertura mediática y sentimiento ciudadano.\\
-%             Fuente: Elaboración propia.}
-%         \label{6:fig10}
-%     \end{center}
-% \end{figure}
+\figpendiente{6:fig10}{Sistema PeruVox en ejecución durante el segundo debate presidencial}{Sistema PeruVox en ejecución durante el segundo debate presidencial: pantalla del cliente MCP mostrando la evolución del ISN en tiempo real, los temas emergentes detectados y la brecha entre cobertura mediática y sentimiento ciudadano.}
 
-Uno de los experimentos de validación en tiempo real se realizó durante la semana del
-debate presidencial. La primera acción ejecutada por el sistema fue la ingesta continua
-de publicaciones de las tres fuentes de datos (noticias digitales, X/Twitter y
-comentarios de YouTube) mediante el pipeline de streaming, con el filtrado
-Aho-Corasick activo para descartar en tiempo real las publicaciones que no mencionaban
-a ningún candidato. Durante el debate, el sistema registró un pico de ingesta de más
-de 3,200 publicaciones por minuto en X/Twitter, todas procesadas sin interrupción
-del servicio gracias al escalado automático de Google Cloud Run.
+Uno de los experimentos de validación se realizó durante la semana del debate
+presidencial. La primera acción ejecutada por el sistema fue la ingesta diaria de
+publicaciones de las cuatro fuentes de datos (noticias digitales, X/Twitter,
+YouTube y TikTok) mediante el orquestador de ocho pasos del pipeline
+(\texttt{ingest, embed, label, consolidate, llm\_dedup, load\_silver, build\_graph,
+refresh\_gold}), con la cascada de filtros pre-LLM por catálogos YAML activa para
+descartar publicaciones que no mencionaran a ningún candidato. La concurrencia
+intra-\textit{batch} de \texttt{BATCH\_SIZE=5} llamadas LLM en paralelo mediante
+\texttt{asyncio.gather} permite procesar el día del debate sin interrupción,
+incluso durante picos de actividad estimados en 500--800 publicaciones por minuto
+en X/Twitter.
 
 La información extraída de cada fuente es procesada por el módulo de análisis LLM,
-integrada en el grafo de conocimiento y reflejada en el dashboard en tiempo real.
+integrada en el grafo de conocimiento y consultable en tiempo real desde un cliente
+MCP a través de las 13 herramientas tipadas del servidor.
 Los datos extraídos y los indicadores calculados durante la semana del debate se
 muestran en la Figura \ref{6:fig11}.
 
-% \begin{figure}[!ht]
-%     \centering
-%     \small
-%     \begin{subfigure}{1.0\textwidth}
-%         \centering
-%         \includegraphics[width=0.85\linewidth]{5/figures/isn_evolucion_semana_debate.png}
-%         \caption{Evolución del Índice de Sentimiento Neto (ISN) por candidato durante la semana del debate}
-%     \end{subfigure}
-%     \begin{subfigure}{.50\textwidth}
-%         \centering
-%         \includegraphics[width=0.95\linewidth]{5/figures/temas_emergentes_debate.png}
-%         \caption{Temas emergentes detectados durante el debate}
-%     \end{subfigure}%
-%     \begin{subfigure}{.50\textwidth}
-%         \centering
-%         \includegraphics[width=0.95\linewidth]{5/figures/brecha_medios_ciudadanos.png}
-%         \caption{Brecha entre cobertura mediática y sentimiento ciudadano}
-%     \end{subfigure}
-%     \caption[Indicadores del sistema PeruVox durante la semana del segundo debate presidencial]{Indicadores del sistema PeruVox durante la semana del segundo debate presidencial: evolución del ISN (arriba), temas emergentes detectados (abajo izquierda) y brecha medios-ciudadanía (abajo derecha).\\
-%         Fuente: Elaboración propia.}
-%     \label{6:fig11}
-% \end{figure}
+\figpendiente{6:fig11}{Indicadores del sistema PeruVox durante la semana del segundo debate presidencial}{Indicadores del sistema PeruVox durante la semana del segundo debate presidencial: evolución del ISN (arriba), temas emergentes detectados (abajo izquierda) y brecha medios-ciudadanía (abajo derecha).}
 
 La información procesada es ingresada al módulo GraphRAG, que la integra en el grafo
 de conocimiento y la hace disponible para consultas en lenguaje natural. Si el ISN
-supera el umbral positivo de $+0.20$ para un candidato, el dashboard lo marca con
-indicador verde; si cae por debajo de $-0.20$, lo marca con indicador rojo. Los
+supera el umbral positivo de $+0.20$ para un candidato, la respuesta del cliente MCP
+incluye un indicador verde; si cae por debajo de $-0.20$, un indicador rojo. Los
 valores en el rango $[-0.20, 0.20]$ se clasifican como neutros. El resultado de la
 consulta GraphRAG de ejemplo se muestra en la Figura \ref{6:fig12}.
 
-% \begin{figure}[!ht]
-%     \begin{center}
-%         \includegraphics[width=0.90\textwidth]{5/figures/graphrag_consulta_debate.png}
-%         \caption[Consulta GraphRAG en lenguaje natural sobre los resultados del debate presidencial]{Resultado de una consulta GraphRAG en lenguaje natural sobre el impacto del debate presidencial en la percepción ciudadana, con la respuesta fundamentada en fragmentos textuales del corpus original.\\
-%             Fuente: Elaboración propia.}
-%         \label{6:fig12}
-%     \end{center}
-% \end{figure}
+\figpendiente{6:fig12}{Consulta GraphRAG en lenguaje natural sobre los resultados del debate presidencial}{Resultado de una consulta GraphRAG en lenguaje natural sobre el impacto del debate presidencial en la percepción ciudadana, con la respuesta fundamentada en fragmentos textuales del corpus original.}
