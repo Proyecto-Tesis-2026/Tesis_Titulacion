@@ -42,14 +42,7 @@ responde a su mecanismo de \textit{prompt cache} con descuento por
 ejemplos \textit{few-shot}); el \textit{cache hit rate} medido empíricamente sobre
 el corpus electoral fue de 85.5\%.
 
-% \begin{figure}[!ht]
-%     \begin{center}
-%         \includegraphics[width=0.88\textwidth]{5/figures/arquitectura_prompt_absa.png}
-%         \caption[Arquitectura del prompt ABSA para análisis de sentimientos electorales]{Arquitectura del prompt de análisis de sentimientos a nivel de aspecto (ABSA) para el contexto electoral peruano, con sus cinco componentes: rol, contexto, instrucción, formato JSON y ejemplos few-shot.\\
-%             Fuente: Elaboración propia.}
-%         \label{6:fig1}
-%     \end{center}
-% \end{figure}
+\figpendiente{6:fig1}{Arquitectura del prompt ABSA para análisis de sentimientos electorales}{Arquitectura del prompt de análisis de sentimientos a nivel de aspecto (ABSA) para el contexto electoral peruano, con sus cinco componentes: rol, contexto, instrucción, formato JSON y ejemplos few-shot.}
 
 La arquitectura del prompt comienza con la asignación del rol de analista político
 experto en discurso electoral latinoamericano, lo que orienta al modelo hacia el
@@ -86,14 +79,7 @@ BERTopic+UMAP+HDBSCAN reportado en los trabajos de
 \cite{pr_mendonca2025bertopic_political} y \cite{pr_janssens2025bertopic_llm}. La
 arquitectura del módulo se muestra en la Figura \ref{6:fig2}.
 
-% \begin{figure}[!ht]
-%     \begin{center}
-%         \includegraphics[width=0.92\textwidth]{5/figures/arquitectura_temas_llm.png}
-%         \caption[Arquitectura del módulo de detección dinámica de temas con LLM y retrieval multinivel]{Arquitectura del módulo de detección dinámica de temas electorales: \textit{embeddings} multilingües, menú de cinco \textit{tiers} (\textit{trending}, semántico, léxico, actor, evento), llamada concurrente al LLM con \textit{prompt} de extracción, \textit{override} semántico post-LLM y \textit{dedup} intra-\textit{batch} previo al \textit{upsert} en \texttt{temas\_conocidos}.\\
-%             Fuente: Elaboración propia.}
-%         \label{6:fig2}
-%     \end{center}
-% \end{figure}
+\figpendiente{6:fig2}{Arquitectura del módulo de detección dinámica de temas con LLM y retrieval multinivel}{Arquitectura del módulo de detección dinámica de temas electorales: \textit{embeddings} multilingües, menú de cinco \textit{tiers} (\textit{trending}, semántico, léxico, actor, evento), llamada concurrente al LLM con \textit{prompt} de extracción, \textit{override} semántico post-LLM y \textit{dedup} intra-\textit{batch} previo al \textit{upsert} en \texttt{temas\_conocidos}.}
 
 El módulo comienza con la generación de \textit{embeddings} mediante el modelo
 \texttt{paraphrase-multilingual-mpnet-base-v2} de Sentence-BERT, seleccionado por
@@ -136,14 +122,7 @@ contenedor Docker dentro de la misma red local que PostgreSQL. El esquema final
 implementado se muestra en la Figura \ref{6:fig3}, con sus diez tipos de nodos y
 siete tipos de relaciones.
 
-% \begin{figure}[!ht]
-%     \begin{center}
-%         \includegraphics[width=0.92\textwidth]{5/figures/esquema_grafo_neo4j.png}
-%         \caption[Esquema final del grafo de conocimiento electoral implementado en Neo4j]{Esquema final del grafo de conocimiento electoral en Neo4j Community, con sus diez tipos de nodos (\texttt{Documento}, \texttt{Fragmento}, \texttt{Tema}, \texttt{Actor}, \texttt{Candidato}, \texttt{Categoria}, \texttt{Encuesta}, \texttt{TipoCambio}, \texttt{IndicadorMacro}, \texttt{SentimientoDiario}) y siete tipos de relaciones (\texttt{CONTIENE}, \texttt{SOBRE\_TEMA}, \texttt{MENCIONA}, \texttt{MENCIONA\_ACTOR}, \texttt{DE\_CATEGORIA}, \texttt{MIDE}, \texttt{TIENE\_SENTIMIENTO\_EN}) con su respectiva metadata de aristas.\\
-%             Fuente: Elaboración propia.}
-%         \label{6:fig3}
-%     \end{center}
-% \end{figure}
+\figpendiente{6:fig3}{Esquema final del grafo de conocimiento electoral implementado en Neo4j}{Esquema final del grafo de conocimiento electoral en Neo4j Community, con sus diez tipos de nodos (\texttt{Documento}, \texttt{Fragmento}, \texttt{Tema}, \texttt{Actor}, \texttt{Candidato}, \texttt{Categoria}, \texttt{Encuesta}, \texttt{TipoCambio}, \texttt{IndicadorMacro}, \texttt{SentimientoDiario}) y siete tipos de relaciones (\texttt{CONTIENE}, \texttt{SOBRE\_TEMA}, \texttt{MENCIONA}, \texttt{MENCIONA\_ACTOR}, \texttt{DE\_CATEGORIA}, \texttt{MIDE}, \texttt{TIENE\_SENTIMIENTO\_EN}) con su respectiva metadata de aristas.}
 
 Antes de continuar con la implementación del sistema GraphRAG, en la Tabla
 \ref{6:table1} se presentan las variables del grafo que fueron utilizadas para
@@ -223,14 +202,7 @@ continuación:
     de temas y grafo de conocimiento), se implementó el sistema GraphRAG Electoral
     completo ilustrado en la Figura \ref{6:fig4}.
 
-%     \begin{figure}[!ht]
-%         \begin{center}
-%             \includegraphics[width=1.25\textwidth]{5/arquitectura_sistema_completo.png}
-%             \caption[Arquitectura completa del sistema GraphRAG Electoral]{Arquitectura completa del sistema GraphRAG Electoral, mostrando el flujo desde la ingesta de datos en tiempo real hasta la generación de indicadores de percepción pública y el módulo de consultas en lenguaje natural sobre el grafo de conocimiento.\\
-%                 Fuente: Elaboración propia.}
-%             \label{6:fig4}
-%         \end{center}
-%     \end{figure}
+\figpendiente{6:fig4}{Arquitectura completa del sistema GraphRAG Electoral}{Arquitectura completa del sistema GraphRAG Electoral, mostrando el flujo desde la ingesta de datos en tiempo real hasta la generación de indicadores de percepción pública y el módulo de consultas en lenguaje natural sobre el grafo de conocimiento.}
 \end{landscape}
 
 La finalidad del sistema GraphRAG Electoral es permitir a los usuarios —analistas
@@ -325,25 +297,11 @@ Así, de acuerdo a la Figura \ref{6:fig5}, en la tercera iteración de calibraci
 registran los mejores valores de exactitud y F1 macro para el subconjunto de validación,
 alcanzando 0.9010 y 0.8965 respectivamente.
 
-% \begin{figure}[!ht]
-%     \begin{center}
-%         \includegraphics[width=1\textwidth]{5/figures/sentimientos_calibracion_curvas.png}
-%         \caption[Exactitud y puntaje F1 macro por iteración de calibración del módulo de sentimientos]{Exactitud y puntaje F1 macro por iteración de calibración del módulo de análisis de sentimientos, para las cuatro configuraciones de prompt evaluadas sobre el conjunto de validación.\\
-%             Fuente: Elaboración propia.}
-%         \label{6:fig5}
-%     \end{center}
-% \end{figure}
+\figpendiente{6:fig5}{Exactitud y puntaje F1 macro por iteración de calibración del módulo de sentimientos}{Exactitud y puntaje F1 macro por iteración de calibración del módulo de análisis de sentimientos, para las cuatro configuraciones de prompt evaluadas sobre el conjunto de validación.}
 
 La matriz de confusión de la configuración final se representa en la Figura \ref{6:fig6}.
 
-% \begin{figure}[!ht]
-%     \begin{center}
-%         \includegraphics[width=0.68\textwidth]{5/figures/matriz_confusion_final_sentimientos.png}
-%         \caption[Matriz de confusión del módulo de análisis de sentimientos con la configuración final]{Matriz de confusión del módulo de análisis de sentimientos (DeepSeek-Chat, few-shot 4 ejemplos) evaluado sobre el conjunto de validación de 500 publicaciones con etiquetas humanas.\\
-%             Fuente: Elaboración propia.}
-%         \label{6:fig6}
-%     \end{center}
-% \end{figure}
+\figpendiente{6:fig6}{Matriz de confusión del módulo de análisis de sentimientos con la configuración final}{Matriz de confusión del módulo de análisis de sentimientos (DeepSeek-Chat, few-shot 4 ejemplos) evaluado sobre el conjunto de validación de 500 publicaciones con etiquetas humanas.}
 
 De esta matriz se derivan los resultados de la Tabla \ref{6:table3}.
 
@@ -417,27 +375,13 @@ electorales distintos con una coherencia $C_v$ de 0.634 y un \textit{reuso} de
 temas previos del 70\%. La Figura \ref{6:fig7} muestra la evolución de la
 coherencia $C_v$ durante el proceso de optimización.
 
-% \begin{figure}[!ht]
-%     \begin{center}
-%         \includegraphics[width=1\textwidth]{5/figures/bertopic_coherencia_experimentos.png}
-%         \caption[Evolución de la coherencia $C_v$ por umbral cosine del override semántico]{Evolución de la coherencia semántica $C_v$ y el número de temas detectados para distintos umbrales \textit{cosine} del \textit{override} semántico post-LLM, evidenciando el balance entre granularidad, coherencia y \textit{reuso}.\\
-%             Fuente: Elaboración propia.}
-%         \label{6:fig7}
-%     \end{center}
-% \end{figure}
+\figpendiente{6:fig7}{Evolución de la coherencia $C_v$ por umbral cosine del override semántico}{Evolución de la coherencia semántica $C_v$ y el número de temas detectados para distintos umbrales \textit{cosine} del \textit{override} semántico post-LLM, evidenciando el balance entre granularidad, coherencia y \textit{reuso}.}
 
 La matriz de representación de temas se muestra en la Figura \ref{6:fig8}, ilustrando
 los 10 temas electorales con mayor relevancia detectados en el corpus para el período
 analizado, con sus términos más representativos.
 
-% \begin{figure}[!ht]
-%     \begin{center}
-%         \includegraphics[width=0.95\textwidth]{5/figures/bertopic_top10_temas.png}
-%         \caption[Top 10 temas electorales con mayor relevancia en el corpus]{Top 10 temas electorales detectados por el módulo de detección dinámica con mayor Índice de Relevancia Temática (IRT) durante el período de campaña analizado, con sus términos representativos.\\
-%             Fuente: Elaboración propia.}
-%         \label{6:fig8}
-%     \end{center}
-% \end{figure}
+\figpendiente{6:fig8}{Top 10 temas electorales con mayor relevancia en el corpus}{Top 10 temas electorales detectados por el módulo de detección dinámica con mayor Índice de Relevancia Temática (IRT) durante el período de campaña analizado, con sus términos representativos.}
 
 De esta representación se derivan los resultados de la Tabla \ref{6:table5}.
 
@@ -492,14 +436,7 @@ preguntas ambiguas o multiobjetivo. Sin embargo, una vez seleccionada la herrami
 las consultas SQL/Cypher subyacentes fueron ejecutadas correctamente en la totalidad
 de los casos debido a su naturaleza parametrizada y validada previamente.
 
-% \begin{figure}[!ht]
-%     \begin{center}
-%         \includegraphics[width=0.95\textwidth]{5/arquitectura_sistema_completo.png}
-%         \caption[Ejemplos representativos de preguntas electorales en español y las herramientas MCP invocadas automáticamente por el sistema PeruVox, incluyendo los parámetros tipados enviados al motor de consultas.]{Ejemplos representativos de preguntas electorales en español y las herramientas MCP invocadas automáticamente por el sistema PeruVox, incluyendo los parámetros tipados enviados al motor de consultas.\\
-%             Fuente: Elaboración propia.}
-%         \label{6:fig9}
-%     \end{center}
-% \end{figure}
+\figpendiente{6:fig9}{Ejemplos representativos de preguntas electorales en español y las herramientas MCP invocadas automáticamente por el sistema PeruVox, incluyendo los parámetros tipados enviados al motor de consultas.}{Ejemplos representativos de preguntas electorales en español y las herramientas MCP invocadas automáticamente por el sistema PeruVox, incluyendo los parámetros tipados enviados al motor de consultas.}
 
 \vspace{0.5cm}
 \textbf{Actividad 4: Evaluar el sistema integrado}
@@ -622,14 +559,7 @@ ejecutado en condiciones reales durante la semana de mayor actividad de la
 campaña electoral —incluyendo el segundo debate presidencial—, como se muestra en
 la Figura \ref{6:fig10}.
 
-% \begin{figure}[!ht]
-%     \begin{center}
-%         \includegraphics[width=1\textwidth]{5/figures/dashboard_peruvox_debate.png}
-%         \caption[Sistema PeruVox en ejecución durante el segundo debate presidencial]{Sistema PeruVox en ejecución durante el segundo debate presidencial: pantalla del cliente MCP mostrando la evolución del ISN en tiempo real, los temas emergentes detectados y la brecha entre cobertura mediática y sentimiento ciudadano.\\
-%             Fuente: Elaboración propia.}
-%         \label{6:fig10}
-%     \end{center}
-% \end{figure}
+\figpendiente{6:fig10}{Sistema PeruVox en ejecución durante el segundo debate presidencial}{Sistema PeruVox en ejecución durante el segundo debate presidencial: pantalla del cliente MCP mostrando la evolución del ISN en tiempo real, los temas emergentes detectados y la brecha entre cobertura mediática y sentimiento ciudadano.}
 
 Uno de los experimentos de validación se realizó durante la semana del debate
 presidencial. La primera acción ejecutada por el sistema fue la ingesta diaria de
@@ -649,28 +579,7 @@ MCP a través de las 13 herramientas tipadas del servidor.
 Los datos extraídos y los indicadores calculados durante la semana del debate se
 muestran en la Figura \ref{6:fig11}.
 
-% \begin{figure}[!ht]
-%     \centering
-%     \small
-%     \begin{subfigure}{1.0\textwidth}
-%         \centering
-%         \includegraphics[width=0.85\linewidth]{5/figures/isn_evolucion_semana_debate.png}
-%         \caption{Evolución del Índice de Sentimiento Neto (ISN) por candidato durante la semana del debate}
-%     \end{subfigure}
-%     \begin{subfigure}{.50\textwidth}
-%         \centering
-%         \includegraphics[width=0.95\linewidth]{5/figures/temas_emergentes_debate.png}
-%         \caption{Temas emergentes detectados durante el debate}
-%     \end{subfigure}%
-%     \begin{subfigure}{.50\textwidth}
-%         \centering
-%         \includegraphics[width=0.95\linewidth]{5/figures/brecha_medios_ciudadanos.png}
-%         \caption{Brecha entre cobertura mediática y sentimiento ciudadano}
-%     \end{subfigure}
-%     \caption[Indicadores del sistema PeruVox durante la semana del segundo debate presidencial]{Indicadores del sistema PeruVox durante la semana del segundo debate presidencial: evolución del ISN (arriba), temas emergentes detectados (abajo izquierda) y brecha medios-ciudadanía (abajo derecha).\\
-%         Fuente: Elaboración propia.}
-%     \label{6:fig11}
-% \end{figure}
+\figpendiente{6:fig11}{Indicadores del sistema PeruVox durante la semana del segundo debate presidencial}{Indicadores del sistema PeruVox durante la semana del segundo debate presidencial: evolución del ISN (arriba), temas emergentes detectados (abajo izquierda) y brecha medios-ciudadanía (abajo derecha).}
 
 La información procesada es ingresada al módulo GraphRAG, que la integra en el grafo
 de conocimiento y la hace disponible para consultas en lenguaje natural. Si el ISN
@@ -679,11 +588,4 @@ incluye un indicador verde; si cae por debajo de $-0.20$, un indicador rojo. Los
 valores en el rango $[-0.20, 0.20]$ se clasifican como neutros. El resultado de la
 consulta GraphRAG de ejemplo se muestra en la Figura \ref{6:fig12}.
 
-% \begin{figure}[!ht]
-%     \begin{center}
-%         \includegraphics[width=0.90\textwidth]{5/figures/graphrag_consulta_debate.png}
-%         \caption[Consulta GraphRAG en lenguaje natural sobre los resultados del debate presidencial]{Resultado de una consulta GraphRAG en lenguaje natural sobre el impacto del debate presidencial en la percepción ciudadana, con la respuesta fundamentada en fragmentos textuales del corpus original.\\
-%             Fuente: Elaboración propia.}
-%         \label{6:fig12}
-%     \end{center}
-% \end{figure}
+\figpendiente{6:fig12}{Consulta GraphRAG en lenguaje natural sobre los resultados del debate presidencial}{Resultado de una consulta GraphRAG en lenguaje natural sobre el impacto del debate presidencial en la percepción ciudadana, con la respuesta fundamentada en fragmentos textuales del corpus original.}
