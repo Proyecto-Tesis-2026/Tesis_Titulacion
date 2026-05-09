@@ -32,3 +32,6 @@
 
 # macOS
 .DS_Store
+
+# Directorio de salida de latexmk (PDF + aux files generados)
+output/

@@ -2,11 +2,14 @@
 # Funciona en macOS (Apple Silicon y Intel), Linux y Windows.
 # Imagen base: texlive/texlive:latest (multi-arch, ~5 GB primera vez).
 #
+# El PDF y todos los archivos auxiliares se generan en ./output/
+# para mantener limpia la raiz del repo.
+#
 # Uso:
-#   docker compose run --rm build    # compila una vez y genera tesis.pdf
+#   docker compose run --rm build    # compila una vez -> output/tesis.pdf
 #   docker compose run --rm watch    # recompila automaticamente al guardar
 #   docker compose run --rm shell    # bash interactivo dentro del contenedor
-#   docker compose run --rm clean    # borra todos los artefactos generados
+#   docker compose run --rm clean    # borra el directorio output/ entero
 
 services:
   build:
@@ -18,7 +21,8 @@ services:
     user: "${UID:-1000}:${GID:-1000}"
     volumes:
       - .:/work
-    command: latexmk -pdf -interaction=nonstopmode tesis.tex
+    # -outdir=output: PDF + .aux + .bbl + .toc + ... -> ./output/
+    command: latexmk -pdf -outdir=output -interaction=nonstopmode tesis.tex
 
   watch:
     image: texlive/texlive:latest
@@ -27,7 +31,7 @@ services:
     volumes:
       - .:/work
     # -pvc = preview continuous. Detecta cambios y recompila.
-    command: latexmk -pdf -pvc -interaction=nonstopmode tesis.tex
+    command: latexmk -pdf -pvc -outdir=output -interaction=nonstopmode tesis.tex
 
   shell:
     image: texlive/texlive:latest
@@ -45,4 +49,6 @@ services:
     user: "${UID:-1000}:${GID:-1000}"
     volumes:
       - .:/work
-    command: latexmk -C
+    # -outdir=output asegura que latexmk -C borre los aux files que esten alla.
+    # Tambien removemos manualmente el directorio entero para empezar de cero.
+    command: sh -c "latexmk -C -outdir=output && rm -rf output"

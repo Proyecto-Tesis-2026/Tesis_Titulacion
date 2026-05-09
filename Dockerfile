@@ -15,6 +15,6 @@ FROM texlive/texlive:latest
 
 WORKDIR /work
 
-# Comando por defecto: compilar tesis.tex con latexmk.
+# Comando por defecto: compilar tesis.tex con latexmk hacia ./output/.
 # Sobrescribir desde la linea de comandos si se quiere otra cosa.
-CMD ["latexmk", "-pdf", "-interaction=nonstopmode", "tesis.tex"]
+CMD ["latexmk", "-pdf", "-outdir=output", "-interaction=nonstopmode", "tesis.tex"]

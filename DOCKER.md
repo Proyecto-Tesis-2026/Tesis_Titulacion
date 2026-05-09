@@ -37,8 +37,10 @@ La primera vez tarda **5–10 minutos** porque descarga la imagen
 `texlive/texlive:latest` (~5 GB). Las siguientes compilaciones tardan
 **30–60 segundos** porque la imagen ya está en caché.
 
-Cuando termina, encontrarás `tesis.pdf` en el directorio del proyecto. Lo abrís
-con Preview (Mac), Evince/Okular (Linux) o Adobe Reader (Windows).
+Cuando termina, encontrarás el PDF en `output/tesis.pdf` (no en la raíz, para
+mantener limpio el directorio del proyecto). Lo abrís con Preview (Mac),
+Evince/Okular (Linux) o Adobe Reader (Windows). Los archivos auxiliares
+(`.aux`, `.toc`, `.bbl`, etc.) también quedan en `output/`.
 
 ## Modo continuo (recomendado durante la edición)
 
@@ -55,7 +57,7 @@ recompila automáticamente y actualiza `tesis.pdf`. Para salir: `Ctrl+C`.
 # Bash interactivo dentro del contenedor (debug, instalar algo, etc.):
 docker compose run --rm shell
 
-# Borrar TODOS los artefactos generados (.aux, .bbl, .toc, .pdf, etc.):
+# Borrar el directorio output/ entero (PDF + aux files):
 docker compose run --rm clean
 ```
 
@@ -84,9 +86,11 @@ docker compose run --rm clean
    - Corre `pdflatex tesis.tex` (3ª pasada — resuelve TOC y cross-refs).
    - Repite hasta que todo esté estable.
 
-4. **Genera `tesis.pdf`** y los archivos auxiliares (`.aux`, `.toc`, `.bbl`,
-   `.bcf`, `.lof`, `.lot`, `.fdb_latexmk`, `.fls`, `.log`, `.synctex.gz`).
-   Todos estos quedan en tu directorio local gracias al bind mount.
+4. **Genera `output/tesis.pdf`** y los archivos auxiliares (`.aux`, `.toc`,
+   `.bbl`, `.bcf`, `.lof`, `.lot`, `.fdb_latexmk`, `.fls`, `.log`,
+   `.synctex.gz`) en el subdirectorio `output/`. Todo eso queda en tu
+   directorio local gracias al bind mount; `output/` está en `.gitignore`,
+   así que no se commitea.
 
 5. **El contenedor termina y se elimina** (`--rm`). La imagen `texlive/texlive`
    queda en caché para la próxima vez.
@@ -127,6 +131,12 @@ O simplemente confiá en los defaults `1000:1000` que vienen en
 docker compose run --rm clean
 docker compose run --rm build
 ```
+
+### Quiero que el PDF salga en otro lado (no `output/`)
+
+Editá `command:` en `docker-compose.yml` cambiando `-outdir=output` por la
+ruta que prefieras (relativa al repo). También editá `$out_dir` en
+`.latexmkrc` para mantener coherencia si compilás sin Docker.
 
 ### Quiero usar otra imagen (más liviana, más reciente, etc.)
 

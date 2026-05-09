@@ -15,6 +15,10 @@ $max_repeat = 6;
 # Documento principal explicito (por si lo invocan sin argumento)
 @default_files = ('tesis.tex');
 
+# Directorio de salida: tesis.pdf y aux files van a ./output/ para mantener
+# limpia la raiz del repo. Se respeta tambien con docker-compose.
+$out_dir = 'output';
+
 # Extensiones extra a limpiar con `latexmk -c` y `latexmk -C`
 # (paquetes locales de la tesis: cool/mathtools producen estos, mas los .pytxcode de pythontex)
 $clean_ext = "bbl bbl-SAVE-ERROR run.xml bcf eqflts equ loeqfloat loequcaption lomycapequ pytxcode synctex.gz";
