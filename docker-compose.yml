@@ -20,25 +20,25 @@ services:
     # En Windows: ignorado, sin efecto pernicioso.
     user: "${UID:-1000}:${GID:-1000}"
     volumes:
-      - .:/work
+      - .:/work:z
     # -outdir=output: PDF + .aux + .bbl + .toc + ... -> ./output/
-    command: latexmk -pdf -outdir=output -interaction=nonstopmode tesis.tex
+    command: sh -c "mkdir -p output && latexmk -pdf -outdir=output -interaction=nonstopmode tesis.tex"
 
   watch:
     image: texlive/texlive:latest
     working_dir: /work
     user: "${UID:-1000}:${GID:-1000}"
     volumes:
-      - .:/work
+      - .:/work:z
     # -pvc = preview continuous. Detecta cambios y recompila.
-    command: latexmk -pdf -pvc -outdir=output -interaction=nonstopmode tesis.tex
+    command: sh -c "mkdir -p output && latexmk -pdf -pvc -outdir=output -interaction=nonstopmode tesis.tex"
 
   shell:
     image: texlive/texlive:latest
     working_dir: /work
     user: "${UID:-1000}:${GID:-1000}"
     volumes:
-      - .:/work
+      - .:/work:z
     command: bash
     stdin_open: true
     tty: true
@@ -48,7 +48,7 @@ services:
     working_dir: /work
     user: "${UID:-1000}:${GID:-1000}"
     volumes:
-      - .:/work
+      - .:/work:z
     # -outdir=output asegura que latexmk -C borre los aux files que esten alla.
     # Tambien removemos manualmente el directorio entero para empezar de cero.
     command: sh -c "latexmk -C -outdir=output && rm -rf output"
