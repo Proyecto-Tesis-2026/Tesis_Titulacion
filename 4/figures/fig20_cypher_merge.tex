@@ -1,18 +1,5 @@
-% Fig 5:fig20 -- Sentencia Cypher MERGE para escritura idempotente
-% Se usa \lstinputlisting porque \begin{lstlisting} no funciona dentro
-% de \input{} (lstlisting necesita leer el flujo de entrada en modo
-% verbatim, lo que rompe cuando el archivo ya fue tokenizado por \input)
-\lstinputlisting[
-    basicstyle=\ttfamily\footnotesize,
-    backgroundcolor=\color{gray!8},
-    frame=single,
-    framesep=4pt,
-    keywordstyle=\color{blue!70!black}\bfseries,
-    morekeywords={MATCH, MERGE, SET, ON, CREATE, WHERE, RETURN, WITH, UNWIND, AS, datetime},
-    commentstyle=\color{green!50!black}\itshape,
-    morecomment=[l]{//},
-    showstringspaces=false,
-    columns=fullflexible,
-    breaklines=true,
-    upquote=true
-]{4/figures/fig20_cypher_merge.cypher}
+% Fig 5:fig20 -- Sentencia Cypher MERGE para escritura idempotente.
+% El estilo "cypher" se define en el preambulo (tesis.tex), inmediatamente
+% despues de cargar xcolor, para evitar problemas de tokenizacion cuando
+% \lstinputlisting se invoca via cadenas de \input{}.
+\lstinputlisting[style=cypher]{4/figures/fig20_cypher_merge.cypher}

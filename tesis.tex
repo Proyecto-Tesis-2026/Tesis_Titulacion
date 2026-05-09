@@ -104,7 +104,8 @@ pdfauthor={autor nombres}]{hyperref}
 % caption ya cargado mas arriba con sus opciones; subcaption va aparte
 \usepackage{subcaption}
 \usepackage{eucal}
-\usepackage[usenames, dvipsnames]{color}
+% color NO se carga aqui: lo carga xcolor (linea ~167) con [usenames,dvipsnames]
+% combinado en sus opciones para evitar "Option clash for package color"
 \usepackage[perpage]{footmisc}
 %\usepackage[round, sort]{natbib}
 \usepackage{ifthen}
@@ -164,14 +165,34 @@ pdfauthor={autor nombres}]{hyperref}
 \usepackage{makecell}
 \usepackage{rotating}
 \usepackage{siunitx} % To align the numbers later on
-\usepackage[table,xcdraw]{xcolor}
-% color ya cargado mas arriba (linea 107); solo agregamos colortbl
+% xcolor carga internamente color con las mismas opciones (usenames, dvipsnames),
+% evitando el "Option clash for package color"
+\usepackage[usenames, dvipsnames, table, xcdraw]{xcolor}
 \usepackage{colortbl}
 \definecolor{Gray}{gray}{0.9}
 \definecolor{orange}{rgb}{1,0.647,0}
 \definecolor{turq3}{rgb}{0.54, 0.81, 0.94}
 \definecolor{turq}{rgb}{0.63, 0.79, 0.95}
 \definecolor{bluejean}{rgb}{0.03, 0.27, 0.49}
+
+%% Estilo cypher para \lstinputlisting. Definido aqui (despues de cargar
+%% listings, xcolor y los colores) para evitar el error
+%% "File ended while scanning use of \lst@Delim@delim" que ocurre cuando
+%% se pasan opciones complejas (con \color) en linea via archivos \input{}.
+\lstdefinestyle{cypher}{%
+    basicstyle=\ttfamily\footnotesize,%
+    backgroundcolor=\color{gray!8},%
+    frame=single,%
+    framesep=4pt,%
+    keywordstyle=\color{blue!70!black}\bfseries,%
+    morekeywords={MATCH,MERGE,SET,ON,CREATE,WHERE,RETURN,WITH,UNWIND,AS,datetime},%
+    commentstyle=\color{green!50!black}\itshape,%
+    morecomment=[l]{//},%
+    showstringspaces=false,%
+    columns=fullflexible,%
+    breaklines=true,%
+    upquote=true%
+}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%
 \usepackage{xparse}

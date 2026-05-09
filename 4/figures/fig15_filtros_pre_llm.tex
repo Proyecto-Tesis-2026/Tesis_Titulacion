@@ -5,11 +5,11 @@
     decision/.style={draw, rounded corners=2pt, fill=orange!12, minimum width=4.8cm, minimum height=1.1cm},
     drop/.style={draw, rounded corners=2pt, fill=red!12, minimum width=3.4cm, minimum height=0.8cm},
     pass/.style={draw, rounded corners=2pt, fill=green!15, minimum width=3.6cm, minimum height=0.9cm},
-    in/.style={draw, rounded corners=2pt, fill=blue!10, minimum width=3.6cm, minimum height=0.9cm},
+    entry/.style={draw, rounded corners=2pt, fill=blue!10, minimum width=3.6cm, minimum height=0.9cm},
     cat/.style={draw, dashed, rounded corners=2pt, fill=yellow!10, minimum width=3.6cm, minimum height=1.4cm},
     arrow/.style={-{Stealth[length=2mm]}, thick}
 ]
-    \node[in] (input) {Documento canonico};
+    \node[entry] (input) {Documento canonico};
     \node[decision, below=of input] (f1) {\texttt{filter\_by\_account} \\ \scriptsize cuenta en cuentas\_no\_politicas?};
     \node[decision, below=of f1] (f2) {\texttt{filter\_by\_hashtag} \\ \scriptsize tag en hashtags\_descarte?};
     \node[decision, below=of f2] (f3) {\texttt{filter\_by\_title\_keywords} \\ \scriptsize titulo con keyword de descarte?};
