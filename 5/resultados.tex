@@ -130,14 +130,16 @@ encuentra en el Anexo \ref{anexo2}.
 
 \textbf{Actividad 3: Construir grafo de conocimiento electoral}
 \\
-Se construyó el grafo de conocimiento electoral en Neo4j AuraDB con el esquema
-definido en el Capítulo IV. El esquema final implementado se muestra en la
-Figura \ref{6:fig3}, con sus cinco tipos de nodos y ocho tipos de relaciones.
+Se construyó el grafo de conocimiento electoral sobre \textbf{Neo4j 5.20 Community
+Edition} con los \textit{plugins} GDS y APOC preinstalados, desplegado en
+contenedor Docker dentro de la misma red local que PostgreSQL. El esquema final
+implementado se muestra en la Figura \ref{6:fig3}, con sus diez tipos de nodos y
+siete tipos de relaciones.
 
 % \begin{figure}[!ht]
 %     \begin{center}
-%         \includegraphics[width=0.80\textwidth]{5/figures/esquema_grafo_neo4j.png}
-%         \caption[Esquema final del grafo de conocimiento electoral implementado en Neo4j]{Esquema final del grafo de conocimiento electoral en Neo4j, con sus cinco tipos de nodos (Candidato, Tema, Fuente, Evento y Periodo) y ocho tipos de relaciones con su respectiva metadata de aristas.\\
+%         \includegraphics[width=0.92\textwidth]{5/figures/esquema_grafo_neo4j.png}
+%         \caption[Esquema final del grafo de conocimiento electoral implementado en Neo4j]{Esquema final del grafo de conocimiento electoral en Neo4j Community, con sus diez tipos de nodos (\texttt{Documento}, \texttt{Fragmento}, \texttt{Tema}, \texttt{Actor}, \texttt{Candidato}, \texttt{Categoria}, \texttt{Encuesta}, \texttt{TipoCambio}, \texttt{IndicadorMacro}, \texttt{SentimientoDiario}) y siete tipos de relaciones (\texttt{CONTIENE}, \texttt{SOBRE\_TEMA}, \texttt{MENCIONA}, \texttt{MENCIONA\_ACTOR}, \texttt{DE\_CATEGORIA}, \texttt{MIDE}, \texttt{TIENE\_SENTIMIENTO\_EN}) con su respectiva metadata de aristas.\\
 %             Fuente: Elaboración propia.}
 %         \label{6:fig3}
 %     \end{center}
@@ -149,39 +151,51 @@ construirlo, seleccionadas de acuerdo al benchmarking aplicado a los antecedente
 en el Capítulo II.
 
 \begin{table}[h!]
-    \caption[Diccionario de datos del grafo de conocimiento electoral]{Diccionario de datos del grafo de conocimiento electoral implementado en Neo4j.}
+    \caption[Diccionario de datos del grafo de conocimiento electoral]{Diccionario de datos del grafo de conocimiento electoral implementado en Neo4j Community.}
     \label{6:table1}
     \centering
     \small
-    \begin{tabular}{ m{3.5cm}m{8.5cm}m{2.5cm} }
+    \begin{tabular}{ m{3.6cm}m{8.4cm}m{2.5cm} }
         \specialrule{.1em}{.05em}{.05em}
         \Centering{Campo} & \Centering{Descripción} & \Centering{Tipo} \\
         \specialrule{.1em}{.05em}{.05em}
-        \multicolumn{3}{c}{Nodo: Candidato} \\
+        \multicolumn{3}{c}{Nodo: \texttt{Candidato}} \\
         \hline
-        nombre          & Nombre completo del candidato presidencial.          & string  \\
-        partido         & Partido político al que pertenece.                   & string  \\
-        aliases         & Lista de aliases y apodos del candidato.             & list    \\
+        id                  & \textit{Slug} estable del candidato (ej. \texttt{keiko\_fujimori}). & string  \\
+        nombre              & Nombre completo del candidato presidencial.            & string  \\
+        partido             & Partido político al que pertenece.                     & string  \\
+        espectro\_politico  & Espectro político del candidato.                       & string  \\
+        embedding           & Vector \textit{embedding} (768D, \textit{cosine}).     & vector  \\
         \hline
-        \multicolumn{3}{c}{Nodo: Tema} \\
+        \multicolumn{3}{c}{Nodo: \texttt{Tema}} \\
         \hline
-        nombre          & Etiqueta semántica del tema generada por Gemini.    & string  \\
-        terminos        & Lista de los 15 términos más representativos.        & list    \\
-        categoria       & Categoría temática (económico, político, social).    & string  \\
+        id                  & Identificador único del tema en \texttt{temas\_conocidos}. & string  \\
+        nombre              & Etiqueta canónica del tema (ej. \texttt{seguridad\_lima\_2026-03-22}). & string  \\
+        categoria           & Categoría temática (17 valores cerrados).              & string  \\
+        embedding           & Vector \textit{embedding} (768D, \textit{cosine}).     & vector  \\
         \hline
-        \multicolumn{3}{c}{Arista: MENCIONA (Candidato → Tema)} \\
+        \multicolumn{3}{c}{Nodo: \texttt{Fragmento}} \\
         \hline
-        sentimiento\_avg & Sentimiento promedio en el período (escala $[-1,1]$). & float   \\
-        n\_menciones    & Número total de menciones en el período.             & integer \\
-        periodo\_id     & Identificador de la semana electoral.                & string  \\
-        fuente\_tipo    & Tipo de fuente (periodico, twitter, youtube).        & string  \\
-        fragmento\_clave & Fragmento textual representativo del sentimiento.   & string  \\
+        id                  & Identificador único del fragmento.                     & string  \\
+        texto               & Fragmento textual representativo del documento.        & string  \\
+        embedding           & Vector \textit{embedding} (768D).                      & vector  \\
+        fecha               & Fecha de publicación.                                  & datetime\\
         \hline
-        \multicolumn{3}{c}{Arista: EN\_PERIODO (Candidato → Periodo)} \\
+        \multicolumn{3}{c}{Arista: \texttt{MENCIONA} (Fragmento $\to$ Candidato)} \\
         \hline
-        sentimiento\_global\_avg & ISN global del candidato en el período.     & float   \\
-        n\_menciones\_total      & Total de menciones del candidato.           & integer \\
-        tema\_dominante          & Tema con mayor volumen de menciones.        & string  \\
+        sentimiento        & Sentimiento del fragmento hacia el candidato (escala $[-1,1]$). & float   \\
+        rol                & Rol del candidato en el fragmento (\textit{protagonista}, \textit{atacado}, etc.). & string  \\
+        \hline
+        \multicolumn{3}{c}{Arista: \texttt{SOBRE\_TEMA} (Fragmento $\to$ Tema)} \\
+        \hline
+        sentimiento        & Sentimiento del fragmento hacia el tema.               & float   \\
+        confianza          & Nivel de confianza del LLM en la asignación del tema.  & float   \\
+        \hline
+        \multicolumn{3}{c}{Arista: \texttt{TIENE\_SENTIMIENTO\_EN} (Candidato $\to$ SentimientoDiario)} \\
+        \hline
+        fecha              & Fecha del agregado diario.                             & date    \\
+        sentimiento\_avg   & ISN diario promedio del candidato.                     & float   \\
+        n\_menciones       & Total de menciones del candidato en ese día.           & integer \\
         \specialrule{.1em}{.05em}{.05em}
     \end{tabular}
     \begin{flushleft}
@@ -193,11 +207,11 @@ Los antecedentes citados para cada componente principal del grafo se mencionan a
 continuación:
 
 \begin{itemize}
-    \item \textbf{Nodo Candidato y arista MENCIONA}: \cite{pr_alvarez2023llm_political},
+    \item \textbf{Nodos \texttt{Candidato} y \texttt{Fragmento}, arista \texttt{MENCIONA}}: \cite{pr_alvarez2023llm_political},
     \cite{pr_gujral2024llm_elections}, \cite{pr_alvi2023twitter_election_review}.
-    \item \textbf{Nodo Tema y detección dinámica con LLM + \textit{retrieval}}: \cite{pr_mendonca2025bertopic_political},
+    \item \textbf{Nodo \texttt{Tema} y arista \texttt{SOBRE\_TEMA}}: \cite{pr_mendonca2025bertopic_political},
     \cite{pr_janssens2025bertopic_llm}, \cite{pr_islam2025latent_topic}.
-    \item \textbf{Arista REACCIONA\_A (brecha medios-ciudadanía)}: metodología del HTML
+    \item \textbf{Brecha medios-ciudadanía (vista \texttt{gold\_cobertura\_medios})}: metodología del HTML
     adjunto, \cite{pr_alvarez2023llm_political}.
     \item \textbf{Módulo de desinformación}: \cite{pr_chen2024combating_misinformation}.
 \end{itemize}
@@ -246,10 +260,12 @@ significativamente la latencia de respuesta, obteniendo tiempos promedio entre 8
 GraphRAG basados en generación de queries.
 
 Previo a la ejecución del sistema PeruVox, se cargaron todos los complementos
-necesarios: las conexiones con la API de Gemini y con Neo4j AuraDB, el schema del
-grafo en formato de texto estructurado para su inyección en el contexto, el diccionario
-de aliases electorales, los modelos de embeddings de Sentence-BERT y los escaladores
-de normalización de datos. El resumen de la configuración final del sistema GraphRAG
+necesarios: las conexiones con la API de DeepSeek (con Gemini Flash como
+\textit{fallback}) y con Neo4j Community local, el \textit{schema} del grafo en
+formato de texto estructurado para su inyección en el contexto, el catálogo de
+candidatos y aliases, los modelos de \textit{embeddings} de Sentence-BERT
+(\texttt{paraphrase-multilingual-mpnet-base-v2}) y los escaladores de normalización
+de datos. El resumen de la configuración final del sistema GraphRAG
 se encuentra en el Anexo \ref{anexo3}.
 
 % ──────────────────────────────────────────────────────────────
