@@ -21,8 +21,9 @@ Para el módulo de análisis de sentimientos con LLM, se aplicaron estrategias d
 parada temprana (\textit{early stopping}) equivalentes a las del sistema de referencia:
 si el modelo no mejora su F1 macro en el conjunto de validación durante 3 configuraciones
 de prompt consecutivas, se selecciona la configuración anterior como la definitiva.
-Para el módulo BERTopic, si la coherencia semántica $C_v$ no mejora al aumentar el
-número de iteraciones de HDBSCAN, el proceso de optimización se detiene. El objetivo
+Para el módulo de detección dinámica de temas, si la coherencia semántica $C_v$ no
+mejora al ajustar el umbral \textit{cosine} del \textit{override} semántico post-LLM,
+el proceso de optimización se detiene. El objetivo
 de estas condiciones es evitar el sobreajuste en los modelos y el desperdicio de tokens
 de API durante el proceso de calibración.
 
@@ -79,14 +80,16 @@ se encuentra en el Anexo \ref{anexo1}.
 
 \textbf{Actividad 2: Desarrollar módulo de detección dinámica de temas}
 \\
-Se diseñó el módulo de detección dinámica de temas basado en el framework BERTopic
-bajo la arquitectura de la Figura \ref{6:fig2}, teniendo como referencia los trabajos
-de \cite{pr_mendonca2025bertopic_political} y \cite{pr_janssens2025bertopic_llm}.
+Se diseñó el módulo de detección dinámica de temas bajo un enfoque \textbf{híbrido
+LLM + \textit{retrieval} multinivel}, en lugar del paradigma clásico
+BERTopic+UMAP+HDBSCAN reportado en los trabajos de
+\cite{pr_mendonca2025bertopic_political} y \cite{pr_janssens2025bertopic_llm}. La
+arquitectura del módulo se muestra en la Figura \ref{6:fig2}.
 
 % \begin{figure}[!ht]
 %     \begin{center}
-%         \includegraphics[width=0.90\textwidth]{5/figures/arquitectura_bertopic_electoral.png}
-%         \caption[Arquitectura del módulo de detección dinámica de temas electorales con BERTopic]{Arquitectura del módulo de detección dinámica de temas electorales: pipeline BERTopic con Sentence-BERT multilingüe, UMAP, HDBSCAN y etiquetado con Gemini, configurado para el corpus político peruano.\\
+%         \includegraphics[width=0.92\textwidth]{5/figures/arquitectura_temas_llm.png}
+%         \caption[Arquitectura del módulo de detección dinámica de temas con LLM y retrieval multinivel]{Arquitectura del módulo de detección dinámica de temas electorales: \textit{embeddings} multilingües, menú de cinco \textit{tiers} (\textit{trending}, semántico, léxico, actor, evento), llamada concurrente al LLM con \textit{prompt} de extracción, \textit{override} semántico post-LLM y \textit{dedup} intra-\textit{batch} previo al \textit{upsert} en \texttt{temas\_conocidos}.\\
 %             Fuente: Elaboración propia.}
 %         \label{6:fig2}
 %     \end{center}
@@ -99,16 +102,31 @@ y velocidad de inferencia en CPU, según el \textit{benchmarking} de
 \cite{mc_reimers2019sbert}. Cada documento del corpus es transformado en un vector
 de \textbf{768 dimensiones} que se persiste en la columna \texttt{embedding} de la
 tabla \texttt{segmentos} de la capa Silver y alimenta los \textit{vector indexes}
-de Postgres (HNSW) y de Neo4j (\textit{cosine}). Se
-utilizó HDBSCAN inductivo en lugar de K-Means dado que, como señalan
-\cite{pr_janssens2025bertopic_llm}, no requiere especificar el número de temas a
-priori y descarta automáticamente publicaciones ruidosas sin tema coherente
-(\textit{label = -1}). El etiquetado final de cada cluster se realizó con Gemini
-en una única llamada por cluster, proporcionando los 15 términos más representativos
-según c-TF-IDF.
+de Postgres (HNSW) y de Neo4j (\textit{cosine}). Para cada documento se construye
+un menú de hasta 20 temas candidatos mediante cinco \textit{tiers} de
+\textit{retrieval} sobre la tabla \texttt{temas\_conocidos}: (1) \textit{trending}
+por contadores y \texttt{ultima\_aparicion}; (2) semántico por similitud
+\textit{cosine}; (3) léxico por título y cuerpo; (4) actor protagonista detectado;
+y (5) evento del catálogo YAML. Cada \textit{tier} excluye los IDs ya seleccionados
+mediante \texttt{exclude\_ids}, garantizando diversidad del menú.
 
-El resumen de los parámetros de configuración del módulo BERTopic se encuentra en el
-Anexo \ref{anexo2}.
+El LLM recibe el menú junto con los catálogos cerrados, el \textit{schema} JSON de
+respuesta y los ejemplos \textit{few-shot}, devolviendo \texttt{tema\_match\_type}
+como \texttt{exact}, \texttt{alias} o \texttt{new}. Tras la respuesta se aplica un
+\textit{override} semántico post-LLM (\textit{cosine} $\geq 0.85$ + misma
+categoría) que fuerza el \textit{match} al canónico cuando el LLM propuso
+\texttt{new} pero existe un tema cercano. En paralelo, dentro del mismo
+\textit{batch} concurrente (\texttt{BATCH\_SIZE=5}), se aplica \textit{dedup}
+intra-\textit{batch} con triple \textit{match} (\texttt{rapidfuzz.token\_set\_ratio}
+$\geq 65$, \textit{cosine} $\geq 0.85$, \textit{Jaccard} de actores $\geq 0.30$,
+misma categoría) sobre los temas marcados \texttt{new}. Finalmente, sobre los
+temas creados cada día se ejecutan dos pasadas adicionales:
+\texttt{consolidate\_day} (sin LLM, basada en umbrales) y \texttt{llm\_dedup}
+(LLM \textit{judge} sobre pares sospechosos), que fusionan temas semánticamente
+equivalentes con nombres distintos.
+
+El resumen de los parámetros de configuración del módulo de detección de temas se
+encuentra en el Anexo \ref{anexo2}.
 
 \textbf{Actividad 3: Construir grafo de conocimiento electoral}
 \\
@@ -177,7 +195,7 @@ continuación:
 \begin{itemize}
     \item \textbf{Nodo Candidato y arista MENCIONA}: \cite{pr_alvarez2023llm_political},
     \cite{pr_gujral2024llm_elections}, \cite{pr_alvi2023twitter_election_review}.
-    \item \textbf{Nodo Tema y clustering BERTopic}: \cite{pr_mendonca2025bertopic_political},
+    \item \textbf{Nodo Tema y detección dinámica con LLM + \textit{retrieval}}: \cite{pr_mendonca2025bertopic_political},
     \cite{pr_janssens2025bertopic_llm}, \cite{pr_islam2025latent_topic}.
     \item \textbf{Arista REACCIONA\_A (brecha medios-ciudadanía)}: metodología del HTML
     adjunto, \cite{pr_alvarez2023llm_political}.
@@ -354,22 +372,23 @@ De esta matriz se derivan los resultados de la Tabla \ref{6:table3}.
 \vspace{0.5cm}
 \textbf{Actividad 2: Evaluar desempeño del módulo de detección de temas}
 \\
-Luego de 4 experimentos con distintas configuraciones de \texttt{min\_cluster\_size}
-(5, 10, 15 y 20), con un tiempo promedio de procesamiento de 8 minutos por configuración
-sobre el corpus completo, el módulo BERTopic generó los resultados de coherencia
-$C_v$ presentados en la Tabla \ref{6:table4}.
+Luego de 4 experimentos con distintos umbrales \textit{cosine} del \textit{override}
+semántico post-LLM (0.75, 0.85, 0.88 y 0.90), con un tiempo promedio de procesamiento
+de 8 minutos por configuración sobre el corpus completo, el módulo de detección de
+temas generó los resultados de coherencia $C_v$ presentados en la Tabla \ref{6:table4}.
 
 \begin{table}[h!]
-    \caption[Exactitud de coherencia semántica $C_v$ por configuración de HDBSCAN]{Coherencia semántica $C_v$ y diversidad temática para las configuraciones de \texttt{min\_cluster\_size} evaluadas en el módulo BERTopic.}
+    \caption[Coherencia semántica $C_v$ y reuso por umbral del override semántico]{Coherencia semántica $C_v$, número de temas detectados y tasa de \textit{reuso} para las configuraciones del umbral \textit{cosine} del \textit{override} semántico post-LLM evaluadas en el módulo de detección de temas.}
     \label{6:table4}
     \centering
     \small
     \begin{tabular}{ M{3.5cm}M{3.5cm}M{3.5cm}M{3.5cm} }
         \specialrule{.1em}{.05em}{.05em}
-        \texttt{mcs = 5} & \texttt{mcs = 10} & \texttt{mcs = 15} & \texttt{mcs = 20} \\
+        \textit{cosine} $= 0.75$ & \textit{cosine} $= 0.85$ & \textit{cosine} $= 0.88$ & \textit{cosine} $= 0.90$ \\
         \specialrule{.1em}{.05em}{.05em}
         $C_v = 0.482$ & $\mathbf{C_v = 0.634}$ & $C_v = 0.681$ & $C_v = 0.712$ \\
         47 temas & \textbf{28 temas} & 21 temas & 16 temas \\
+        Reuso 81.2\% & \textbf{Reuso 70.0\%} & Reuso 62.4\% & Reuso 54.7\% \\
         \specialrule{.1em}{.05em}{.05em}
     \end{tabular}
     \begin{flushleft}
@@ -377,14 +396,15 @@ $C_v$ presentados en la Tabla \ref{6:table4}.
     \end{flushleft}
 \end{table}
 
-La mejor configuración fue \texttt{min\_cluster\_size=10}, detectando 28 temas
-electorales distintos con una coherencia $C_v$ de 0.634. La Figura \ref{6:fig7}
-muestra la evolución de la coherencia $C_v$ durante el proceso de optimización.
+La mejor configuración fue \textit{cosine} $= 0.85$, detectando 28 temas
+electorales distintos con una coherencia $C_v$ de 0.634 y un \textit{reuso} de
+temas previos del 70\%. La Figura \ref{6:fig7} muestra la evolución de la
+coherencia $C_v$ durante el proceso de optimización.
 
 % \begin{figure}[!ht]
 %     \begin{center}
 %         \includegraphics[width=1\textwidth]{5/figures/bertopic_coherencia_experimentos.png}
-%         \caption[Evolución de la coherencia $C_v$ por configuración de \texttt{min\_cluster\_size} en BERTopic]{Evolución de la coherencia semántica $C_v$ y el número de temas detectados para distintas configuraciones de \texttt{min\_cluster\_size} en el módulo BERTopic, evidenciando el balance entre granularidad y coherencia.\\
+%         \caption[Evolución de la coherencia $C_v$ por umbral cosine del override semántico]{Evolución de la coherencia semántica $C_v$ y el número de temas detectados para distintos umbrales \textit{cosine} del \textit{override} semántico post-LLM, evidenciando el balance entre granularidad, coherencia y \textit{reuso}.\\
 %             Fuente: Elaboración propia.}
 %         \label{6:fig7}
 %     \end{center}
@@ -397,7 +417,7 @@ analizado, con sus términos más representativos.
 % \begin{figure}[!ht]
 %     \begin{center}
 %         \includegraphics[width=0.95\textwidth]{5/figures/bertopic_top10_temas.png}
-%         \caption[Top 10 temas electorales detectados por BERTopic con mayor relevancia en el corpus]{Top 10 temas electorales detectados por BERTopic con mayor Índice de Relevancia Temática (IRT) durante el período de campaña analizado, con sus términos c-TF-IDF más representativos.\\
+%         \caption[Top 10 temas electorales con mayor relevancia en el corpus]{Top 10 temas electorales detectados por el módulo de detección dinámica con mayor Índice de Relevancia Temática (IRT) durante el período de campaña analizado, con sus términos representativos.\\
 %             Fuente: Elaboración propia.}
 %         \label{6:fig8}
 %     \end{center}
@@ -406,7 +426,7 @@ analizado, con sus términos más representativos.
 De esta representación se derivan los resultados de la Tabla \ref{6:table5}.
 
 \begin{table}[h!]
-    \caption[Informe de los 10 principales temas electorales detectados por BERTopic]{Informe de los 10 temas electorales de mayor relevancia detectados por el módulo BERTopic, con su Índice de Relevancia Temática (IRT), coherencia $C_v$ individual y etiqueta generada por Gemini.}
+    \caption[Informe de los 10 principales temas electorales detectados]{Informe de los 10 temas electorales de mayor relevancia detectados por el módulo de detección dinámica de temas, con su Índice de Relevancia Temática (IRT), coherencia $C_v$ individual y etiqueta canónica registrada en \texttt{temas\_conocidos}.}
     \label{6:table5}
     \centering
     \small
@@ -510,7 +530,7 @@ de punto de partida, se elaboró el cuadro comparativo de la Tabla \ref{6:table6
         & \textbf{0.901} & \textbf{0.895} & \textbf{0.898} & \textbf{0.897} 
         & \textbf{Corr. Pearson = 0.74*} \\
 
-        & BERTopic (detección de temas) 
+        & Detección de temas LLM + \textit{retrieval}
         & -- & -- & -- & -- & $C_v = 0.634$ \\
 
         \specialrule{.1em}{.05em}{.05em}
@@ -579,7 +599,7 @@ Figura \ref{6:fig10}.
 % \begin{figure}[!ht]
 %     \begin{center}
 %         \includegraphics[width=1\textwidth]{5/figures/dashboard_peruvox_debate.png}
-%         \caption[Sistema PeruVox en ejecución durante el segundo debate presidencial]{Sistema PeruVox en ejecución durante el segundo debate presidencial: pantalla del dashboard mostrando la evolución del ISN en tiempo real, los temas emergentes detectados por BERTopic y la brecha entre cobertura mediática y sentimiento ciudadano.\\
+%         \caption[Sistema PeruVox en ejecución durante el segundo debate presidencial]{Sistema PeruVox en ejecución durante el segundo debate presidencial: pantalla del cliente MCP mostrando la evolución del ISN en tiempo real, los temas emergentes detectados y la brecha entre cobertura mediática y sentimiento ciudadano.\\
 %             Fuente: Elaboración propia.}
 %         \label{6:fig10}
 %     \end{center}
