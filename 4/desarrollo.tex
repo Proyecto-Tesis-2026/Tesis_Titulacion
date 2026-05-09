@@ -429,11 +429,17 @@ como se define en \texttt{SECCIONES\_NO\_POLITICAS\_DEFAULT}
 
 \textbf{Actividad 1: Desarrollar módulo de análisis de sentimientos con LLM}
 \\
-En esta actividad se diseñó el prompt de análisis de sentimientos a nivel de aspecto y
-se implementó el módulo de llamadas a la API del LLM. Siguiendo el benchmarking de los
-autores citados en la sección 4.3.1, se optó por la API de Gemini Flash 1.5 como modelo
-principal por su óptima relación entre capacidad semántica, soporte multilingüe en
-español y latencia de respuesta en entornos de tiempo real.
+En esta actividad se diseñó el \textit{prompt} de análisis de sentimientos a nivel
+de aspecto y se implementó el módulo de llamadas a la API del LLM. Siguiendo el
+\textit{benchmarking} de los autores citados en la sección 4.3.1, se optó por la
+API de \textbf{DeepSeek-Chat} como modelo principal por su mecanismo de caché de
+prefijo (\textit{prompt cache}) que reduce hasta en un 75\% el costo operacional
+para \textit{prompts} con prefijos invariantes largos —catálogos cerrados,
+instrucciones, ejemplos \textit{few-shot}— como los del sistema. Se mantiene
+\textbf{Gemini Flash} como \textit{fallback} configurable mediante la variable
+de entorno \texttt{LLM\_PROVIDER}, con la abstracción de cliente unificado en
+\texttt{src/electoral/llm/clients/} (contrato base en \texttt{base.py}, factoría
+en \texttt{factory.py}).
 
 El prompt de análisis, que sigue la estructura de cinco componentes —rol, contexto,
 instrucción, formato y ejemplos \textit{few-shot}— desarrollada en el marco conceptual,
@@ -448,14 +454,18 @@ se muestra en la Figura \ref{5:fig16}.
 %     \end{center}
 % \end{figure}
 
-El prompt extrae en una sola llamada por segmento los siguientes campos en formato JSON:
-candidato detectado, método de detección (\textit{nombre\_exacto} o \textit{alias}),
-nivel de confianza (0--1), score de sentimiento continuo (--1 a 1), fragmento clave que
-justifica el sentimiento, lista de temas identificados y relaciones entre temas. El
-módulo de llamadas a la API, mostrado en la Figura \ref{5:fig17}, implementa reintentos
-exponenciales ante errores de tasa de llamadas y validación del JSON de respuesta
-para garantizar la integridad de los datos almacenados en la tabla \texttt{analisis}
-de la capa Silver.
+El \textit{prompt} extrae en una sola llamada por documento los siguientes campos en
+formato JSON: candidato protagonista, candidatos secundarios, sentimiento por
+candidato (continuo en $[-1, 1]$), categoría temática del documento, tema emergente
+con su \texttt{tema\_match\_type} (\texttt{exact}, \texttt{alias} o \texttt{new}),
+fragmento clave que justifica el sentimiento, actores principales detectados,
+modos narrativos, aspectos, regiones y nivel de confianza. El módulo de llamadas a
+la API, mostrado en la Figura \ref{5:fig17}, implementa reintentos hasta tres veces
+(\texttt{retry\_until\_valid}) ante errores de tasa de llamadas o respuestas que no
+validen contra el schema Pydantic \texttt{AnalisisLLM}, garantizando la integridad
+de los datos persistidos en la tabla \texttt{analisis\_llm} de la capa Silver
+(con la columna \texttt{resultado} de tipo JSONB que conserva el \textit{payload}
+completo del modelo).
 
 % \begin{figure}[!ht]
 %     \begin{center}
@@ -700,12 +710,16 @@ temporales complejas entre más de dos períodos simultáneos.
 \\
 La evaluación final del sistema integrado comprendió la medición de la latencia
 extremo a extremo del pipeline y la correlación de los indicadores ISN con encuestas
-electorales disponibles. Se midió el tiempo total de procesamiento de 1,000 segmentos
-del corpus en condiciones de carga media, obteniendo una latencia promedio de 2.3
-segundos por segmento con la API de Gemini Flash. Esto permite al sistema procesar
-en tiempo real los picos de actividad del ecosistema digital electoral (estimados en
-500--800 publicaciones por minuto durante los debates presidenciales) con una
-arquitectura de procesamiento paralelo de 4 workers simultáneos.
+electorales disponibles. Se midió el tiempo total de procesamiento de 1,000
+documentos del corpus en condiciones de carga media, obteniendo una latencia
+promedio de 5.2 segundos por documento con la API de DeepSeek-Chat y un 70\% de
+reuso de temas existentes en el catálogo (es decir, el 70\% de los documentos
+reciben \texttt{tema\_match\_type=exact} o \texttt{alias} y no crean tema nuevo).
+Esto permite al sistema procesar en tiempo real los picos de actividad del
+ecosistema digital electoral (estimados en 500--800 publicaciones por minuto
+durante los debates presidenciales) con una arquitectura de procesamiento
+concurrente intra-día (\texttt{BATCH\_SIZE=5} llamadas LLM en paralelo por
+\textit{batch} con \texttt{asyncio.gather}).
 
 Para la validación de los indicadores ISN, se calculó la correlación de Pearson entre
 los valores semanales del ISN por candidato generados por el sistema y los resultados
