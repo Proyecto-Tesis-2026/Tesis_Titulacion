@@ -819,19 +819,27 @@ la intención de voto declarada en las encuestas convencionales.
 \section{Despliegue}
 % ──────────────────────────────────────────────────────────────
 
-\textbf{Actividad 1: Diseñar dashboard de visualización}
+\textbf{Actividad 1: Desplegar el servidor MCP de inteligencia electoral}
 \\
-Se diseñó e implementó el dashboard interactivo del sistema de inteligencia electoral
-utilizando el framework Streamlit de Python, desplegado en Google Cloud Run para
-garantizar disponibilidad continua. El dashboard presenta tres vistas principales:
-(1) la evolución temporal del ISN por candidato, (2) el mapa de calor de temas relevantes
-por semana y (3) el módulo de consulta GraphRAG en lenguaje natural. La arquitectura
-del prototipo del sistema integrado se muestra en la Figura \ref{5:fig24}.
+Se diseñó e implementó la interfaz del sistema de inteligencia electoral como un
+\textbf{servidor MCP} (\textit{Model Context Protocol}) sobre transporte
+\texttt{streamable-http}, desplegado en contenedor Docker en la misma red local
+que las bases de datos PostgreSQL y Neo4j (\textit{stack} reproducible en una
+\textit{laptop} o servidor único, sin servicios cloud gestionados). El servidor
+\texttt{electoral\_mcp} se implementa en Python 3.12 con \texttt{FastMCP 3.2.4}
+sobre \texttt{Starlette} y \texttt{uvicorn}, autenticación \textit{Bearer token}
+y \textit{lifespan} combinado que conecta los \textit{pools} \texttt{asyncpg} y
+\texttt{neo4j async} antes del primer \textit{request}. La interacción con el
+sistema se realiza desde clientes MCP estándar (Claude Desktop, Claude.ai web o
+Cursor) que descubren las 13 herramientas tipadas y las invocan en lenguaje
+natural; para presentaciones remotas se expone vía \texttt{cloudflared tunnel} o
+\texttt{ngrok} sobre HTTPS efímero. La arquitectura del prototipo integrado se
+muestra en la Figura \ref{5:fig24}.
 
 % \begin{figure}[!ht]
 %     \begin{center}
 %         \includegraphics[width=0.95\textwidth]{4/figures/demo_flux.png}
-%         \caption[Proceso de operación del prototipo del sistema de inteligencia electoral]{Proceso de operación del prototipo del sistema de inteligencia electoral: desde la ingesta de datos en tiempo real hasta la presentación de indicadores de percepción pública en el dashboard interactivo.\\
+%         \caption[Proceso de operación del prototipo del sistema de inteligencia electoral]{Proceso de operación del prototipo: ingesta diaria del corpus multifuente, etiquetado LLM, sincronización del grafo y consultas en lenguaje natural desde un cliente MCP que invoca las 13 herramientas tipadas del servidor \texttt{electoral\_mcp}.\\
 %             Fuente: Elaboración propia.}
 %         \label{5:fig24}
 %     \end{center}
@@ -841,27 +849,30 @@ del prototipo del sistema integrado se muestra en la Figura \ref{5:fig24}.
 \\
 En esta actividad se ejecutaron las acciones de la arquitectura del prototipo
 descritas en la figura anterior. La prueba piloto consistió en operar el sistema
-durante una semana de campaña electoral activa, incluyendo un debate presidencial
-que generó un pico de 3,200 tweets por minuto en el ecosistema digital. Durante esta
-semana, el sistema procesó en tiempo real más de 48,000 publicaciones distribuidas
-entre las cuatro fuentes de datos, generando los indicadores ISN, IRT e IVE para los
-candidatos en liza. Los principales hallazgos de la prueba piloto se presentan en
-la Figura \ref{5:fig25}.
+durante una semana de campaña electoral activa, incluyendo un debate presidencial.
+El pipeline diario (\texttt{run-day}/\texttt{run-range}) procesó las cuatro
+fuentes de datos día por día con concurrencia intra-batch
+(\texttt{BATCH\_SIZE=5}), generando los indicadores ISN, IRT e IVE para los
+candidatos en liza y poblando las vistas Gold materializadas
+(\texttt{gold\_sentimiento\_diario}, \texttt{gold\_temas\_diarios},
+\texttt{gold\_cobertura\_medios}) que alimentan al servidor MCP. Los principales
+hallazgos de la prueba piloto se presentan en la Figura \ref{5:fig25}.
 
 % \begin{figure}[!ht]
 %     \begin{center}
 %         \includegraphics[width=0.92\textwidth]{4/figures/dashboard_resultados.png}
-%         \caption[Resultados del dashboard de inteligencia electoral durante la semana de prueba piloto]{Resultados del dashboard de inteligencia electoral durante la semana de prueba piloto, mostrando la evolución del ISN por candidato, los temas emergentes identificados y la brecha entre cobertura mediática y sentimiento ciudadano.\\
+%         \caption[Resultados del prototipo de inteligencia electoral durante la semana de prueba piloto]{Resultados del prototipo de inteligencia electoral durante la semana de prueba piloto, mostrando la evolución del ISN por candidato, los temas emergentes identificados y la brecha entre cobertura mediática y sentimiento ciudadano, todos consultados desde un cliente MCP mediante las herramientas \texttt{evolucion\_sentimiento\_candidato}, \texttt{temas\_top\_periodo} y \texttt{panorama\_diario}.\\
 %             Fuente: Elaboración propia.}
 %         \label{5:fig25}
 %     \end{center}
 % \end{figure}
 
-La prueba piloto confirmó la viabilidad del sistema para detectar en tiempo real
-cambios bruscos en la percepción pública —como el pico de sentimiento negativo
-registrado durante y después del debate presidencial— y para identificar los temas
-que emergieron como consecuencia de los intercambios entre candidatos. El sistema
-también identificó correctamente una discrepancia significativa entre la cobertura
-positiva de un candidato en los medios digitales y el sentimiento negativo expresado
-hacia ese mismo candidato en X/Twitter durante la misma semana, constituyendo un
-hallazgo de inteligencia electoral relevante para los analistas usuarios del sistema.
+La prueba piloto confirmó la viabilidad del sistema para detectar cambios
+relevantes en la percepción pública —como el pico de sentimiento negativo
+registrado durante y después del debate presidencial— y para identificar los
+temas que emergieron como consecuencia de los intercambios entre candidatos. El
+sistema también identificó correctamente una discrepancia significativa entre la
+cobertura positiva de un candidato en los medios digitales y el sentimiento
+negativo expresado hacia ese mismo candidato en X/Twitter durante la misma
+semana, constituyendo un hallazgo de inteligencia electoral relevante para los
+analistas usuarios del sistema.
