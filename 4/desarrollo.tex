@@ -136,16 +136,22 @@ por candidato durante el período de análisis.
 \textbf{Actividad 3: Construir corpus de YouTube}
 \\
 La recolección de contenido de YouTube se realizó mediante yt-dlp
-(src/electoral/ingestion/youtube.py), siguiendo un patrón
+(\texttt{src/electoral/ingestion/youtube.py}), siguiendo un patrón
 productor-consumidor con hilos paralelos. Un hilo extrae los IDs de videos en lotes
 sin descargar contenido (\texttt{extract\_flat}), y múltiples hilos trabajadores
-obtienen la metadata completa, filtran por \texttt{upload\_date\_iso} y almacenan
-los resultados. Las transcripciones automáticas se identifican por el flag
-\texttt{is\_auto\_generated}. El scraper tolera el formato compacto de fecha
+obtienen la metadata completa de cada video y su transcripción automática (cuando
+está disponible), filtran por \texttt{upload\_date\_iso} y almacenan los resultados.
+Para cada video se conserva el título, descripción, transcripción limpia y
+metadata estructurada (canal, duración, número de vistas, likes y comentarios);
+el cuerpo del documento canónico se construye concatenando título, descripción y
+transcripción. Las transcripciones automáticas se identifican por el flag
+\texttt{is\_auto\_generated} y se procesan con limpieza de muletillas repetidas
+(\textit{eh eh}, \textit{este este}) y normalización de mayúsculas tras puntos,
+preguntas o exclamaciones. El scraper tolera el formato compacto de fecha
 \texttt{"20260101"} que algunos canales emiten, a diferencia del ISO estándar
 \texttt{"2026-01-01"}, gracias al schema raw con tipo \texttt{str} (no
 \texttt{date}). Un pool de cookies Netscape en \texttt{cookies/} se distribuye
-entre workers por round-robin para evitar bloqueos por límite de tasa.
+entre workers por \textit{round-robin} para evitar bloqueos por límite de tasa.
 
 La función implementada para este proceso se muestra en la Figura \ref{5:fig5}.
 
@@ -160,14 +166,14 @@ La función implementada para este proceso se muestra en la Figura \ref{5:fig5}.
 
 Los datos recolectados fueron almacenados en formato JSON raw dentro de la capa
 Bronze, preservando tanto la metadata estructurada de los videos como las
-transcripciones y comentarios asociados para su posterior análisis. En la Figura
+transcripciones automáticas para su posterior análisis. En la Figura
 \ref{5:fig6} se visualiza el corpus de contenido de YouTube publicado para su
 referencia y validación.
 
 % \begin{figure}[!ht]
 %     \begin{center}
 %         \includegraphics[width=0.45\textwidth]{4/figures/youtube_corpus_preview.png}
-%         \caption[Visualización del corpus de comentarios de YouTube recolectados]{Visualización del corpus de comentarios de YouTube recolectados: distribución por video, longitud promedio del comentario y porcentaje de comentarios en español.\\
+%         \caption[Visualización del corpus de transcripciones de YouTube recolectadas]{Visualización del corpus de videos de YouTube recolectados: distribución por canal, duración promedio de los videos y porcentaje con transcripción automática disponible en español.\\
 %             Fuente: Elaboración propia.}
 %         \label{5:fig6}
 %     \end{center}
@@ -272,9 +278,9 @@ políticos y los temas de mayor presencia en la cobertura mediática del períod
 Para el corpus de X/Twitter, la Figura \ref{5:fig11} muestra la distribución de
 proyectos según la presencia de menciones a candidatos, confirmando que el filtrado
 con Aho-Corasick redujo efectivamente el corpus a publicaciones con menciones directas.
-En el análisis de comentarios de YouTube, el 78\% de los proyectos con más de 100
-comentarios presentaron al menos una mención a un candidato presidencial, mientras
-que los videos con menos de 50 comentarios tendieron a ser genéricos sin referencias
+En el análisis de transcripciones de YouTube, el 78\% de los videos con duración
+superior a tres minutos presentaron al menos una mención a un candidato presidencial,
+mientras que los videos de menor duración tendieron a ser genéricos sin referencias
 específicas a candidatos.
 
 % \begin{figure}[!ht]
@@ -288,7 +294,7 @@ específicas a candidatos.
 
 Respecto a la longitud de los textos, el artículo de noticias de mayor extensión
 presentó 4,218 palabras, el tweet más largo 280 caracteres (límite de la plataforma) y
-el comentario de YouTube más extenso alcanzó 1,847 palabras. A nivel del corpus total,
+la transcripción de YouTube más extensa alcanzó 1,847 palabras. A nivel del corpus total,
 el vocabulario electoral fue de aproximadamente 89,400 palabras únicas en español.
 
 % ──────────────────────────────────────────────────────────────
@@ -351,7 +357,7 @@ necesario para el análisis de sentimientos a nivel de aspecto.
 %     \end{center}
 % \end{figure}
 
-Los tweets y comentarios de YouTube, por su naturaleza más corta, no requirieron
+Los tweets y posts de TikTok, por su naturaleza más corta, no requirieron
 segmentación y fueron procesados como documentos individuales. La relación
 documento-segmento fue registrada en la tabla \texttt{segmentos} de la capa Silver
 de la base de datos, que relaciona cada segmento con su documento original mediante
