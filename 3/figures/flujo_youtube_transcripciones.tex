@@ -1,4 +1,4 @@
-% Fig 4:fig6 -- Proceso de recoleccion del corpus de comentarios de YouTube
+% Fig 4:fig6 -- Proceso de recoleccion del corpus de transcripciones de YouTube
 \begin{tikzpicture}[
     node distance=0.6cm,
     every node/.style={font=\footnotesize, align=center, inner sep=4pt},
@@ -20,9 +20,9 @@
 
     \node[cookie, right=0.5cm of w4] (ck) {Pool cookies\\Netscape\\round-robin};
 
-    \node[proc, below=1.0cm of w2.south, xshift=1.5cm] (s3) {Metadata + transcripcion + comentarios\\\scriptsize is\_auto\_generated flag};
+    \node[proc, below=1.0cm of w2.south, xshift=1.5cm] (s3) {Metadata + transcripcion del video\\\scriptsize subtitulos manuales o autogenerados};
     \node[proc, below=of s3] (s4) {Filtrado por fecha de publicacion\\\scriptsize ventana electoral};
-    \node[storage, below=of s4] (s5) {Capa Bronze\\\scriptsize raw\_youtube\_comments (PostgreSQL)};
+    \node[storage, below=of s4] (s5) {Capa Bronze\\\scriptsize raw\_youtube\_transcripts (PostgreSQL)};
 
     \draw[arrow] (s1) -- (s2);
     \draw[arrow] (s2.south) -- (w1.north);

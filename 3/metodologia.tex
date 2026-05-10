@@ -95,7 +95,7 @@ Los conjuntos de datos recopilados para la investigación están conformados por
 \begin{figure}[!ht]
     \begin{center}
         \resizebox{0.95\textwidth}{!}{\input{3/figures/flujo_recoleccion.tex}}
-        \caption[Flujograma de recolección de los conjuntos de datos del corpus electoral]{Flujograma de recolección de los conjuntos de datos del corpus electoral: noticias digitales, comentarios de YouTube y tweets de X/Twitter, con sus respectivos procesos de filtrado y almacenamiento en la capa Bronze de la arquitectura Medallion.\\
+        \caption[Flujograma de recolección de los conjuntos de datos del corpus electoral]{Flujograma de recolección de los conjuntos de datos del corpus electoral: noticias digitales, transcripciones de videos de YouTube y tweets de X/Twitter, con sus respectivos procesos de filtrado y almacenamiento en la capa Bronze de la arquitectura Medallion.\\
             Fuente: Elaboración propia.}
         \label{4:fig1}
     \end{center}
@@ -105,7 +105,7 @@ De manera específica, las técnicas computacionales empleadas para la recolecci
 \begin{itemize}
     \item \textbf{Módulo de Noticias (\textit{Web Scraping}):} Utiliza \textit{scripts} automatizados en Python diseñados específicamente para analizar la estructura de los principales diarios nacionales (El Comercio, La República, RPP, Diario Correo), extrayendo el titular, el cuerpo de la noticia, la fecha de publicación y la URL de origen.
     \item \textbf{Módulo de X/Twitter (\textit{API Integration}):} Emplea adaptadores de conexión (como \texttt{twitterapi\_io}) para capturar \textit{tweets}, respuestas e hilos relevantes mediante la inyección de parámetros de búsqueda específicos, gestionando la paginación y los límites de peticiones (\textit{rate limits}).
-    \item \textbf{Módulo de YouTube (\textit{API \& Scraping}):} Encargado de la extracción de metadatos de videos electorales, transcripciones de contenido audiovisual y comentarios de los ciudadanos, separando el discurso oficial del candidato de la reacción del público.
+    \item \textbf{Módulo de YouTube (\textit{API \& Scraping}):} Encargado de la extracción de metadatos de videos electorales y de la transcripción de su contenido audiovisual, capturando el discurso de candidatos, periodistas y comunicadores políticos en programas y entrevistas difundidos en la plataforma.
     \item \textbf{Módulo de TikTok (\textit{Scraping especializado}):} Desarrollado para capturar la conversación en formatos de video corto, extrayendo las descripciones de las publicaciones (\textit{captions}), etiquetas temáticas (\textit{hashtags}) y métricas de viralidad.
 \end{itemize}
 
@@ -257,7 +257,7 @@ De las anteriores fuentes, los datos de encuestas electorales no fueron incluido
 pipeline principal de procesamiento ya que se utilizan exclusivamente como conjunto de
 validación para calibrar los indicadores del sistema, y no como datos de entrada para el
 análisis de sentimientos. Finalmente, fueron seleccionadas las tres fuentes principales
-—noticias digitales, X/Twitter y comentarios de YouTube— cuya arquitectura de
+—noticias digitales, X/Twitter y transcripciones de videos de YouTube— cuya arquitectura de
 recolección, procesamiento y análisis se detalla en las subsecciones siguientes.
  
 El marco de trabajo del sistema propuesto, denominado \textbf{Pipeline GraphRAG
@@ -385,12 +385,12 @@ Construir corpus de X/Twitter.
 \end{itemize} \\ 
 \hline
 Construir corpus de YouTube.
-& Construcción del corpus de comentarios de usuarios en videos electorales de YouTube.
+& Construcción del corpus de transcripciones de videos electorales de YouTube.
 & \begin{itemize}[label={--},nosep,leftmargin=*]
-\item Identificar videos electorales mediante YouTube Data API.
-\item Recolectar comentarios con ID de usuario y fecha.
-\item Almacenar comentarios crudos en capa Bronze.
-\end{itemize} \\ 
+\item Identificar videos electorales mediante búsqueda y canales de interés.
+\item Extraer transcripción y metadatos del video con \texttt{yt-dlp}.
+\item Almacenar transcripciones crudas en capa Bronze.
+\end{itemize} \\
 \hline
 Realizar análisis exploratorio del corpus.
 & Análisis estadístico y exploratorio de las variables del corpus para cada fuente de datos.
@@ -438,18 +438,18 @@ La recolección de tweets se realizó mediante TwitterAPI.io, un proveedor de ac
  
 \textbf{Actividad 3: Construir corpus de YouTube}
  
-La recolección de contenido de YouTube se realizó mediante \texttt{yt-dlp}, una herramienta de scraping de video de código abierto que extrae metadata, transcripciones y comentarios de videos de YouTube sin depender de cuotas de la API oficial. El ingestor (src/electoral/ingestion/youtube.py) implementa un patrón productor-consumidor con hilos paralelos: un hilo extrae los IDs de videos en lotes (\textit{extract\_flat}), y múltiples hilos trabajadores obtienen la metadata completa y filtran por fecha de publicación. Las transcripciones se marcan con el flag \texttt{is\_auto\_generated} para distinguir subtítulos automáticos de los manuales. El pool de cookies Netscape del directorio \texttt{cookies/} es distribuido entre los workers por round-robin para reducir bloqueos.
+La recolección de contenido de YouTube se realizó mediante \texttt{yt-dlp}, una herramienta de scraping de video de código abierto que extrae metadata y transcripciones de videos de YouTube sin depender de cuotas de la API oficial. El ingestor (src/electoral/ingestion/youtube.py) implementa un patrón productor-consumidor con hilos paralelos: un hilo extrae los IDs de videos en lotes (\textit{extract\_flat}), y múltiples hilos trabajadores obtienen la metadata completa, descargan la transcripción y filtran por fecha de publicación. Las transcripciones se marcan con el flag \texttt{is\_auto\_generated} para distinguir subtítulos automáticos de los manuales. El pool de cookies Netscape del directorio \texttt{cookies/} es distribuido entre los workers por round-robin para reducir bloqueos.
 
 \begin{figure}[!ht]
     \begin{center}
-        \resizebox{0.85\textwidth}{!}{\input{3/figures/flujo_youtube_comentarios.tex}}
-        \caption[Proceso de recolección del corpus de comentarios de YouTube]{Proceso de extracción de comentarios de usuarios en videos electorales de YouTube, desde la identificación de videos relevantes hasta el almacenamiento en capa Bronze.\\
+        \resizebox{0.85\textwidth}{!}{\input{3/figures/flujo_youtube_transcripciones.tex}}
+        \caption[Proceso de recolección del corpus de transcripciones de YouTube]{Proceso de extracción de transcripciones de videos electorales de YouTube, desde la identificación de videos relevantes hasta el almacenamiento en capa Bronze.\\
             Fuente: Elaboración propia.}
         \label{4:fig6}
     \end{center}
 \end{figure}
  
-\textbf{Entregable}: Corpus de comentarios de YouTube con ID de video, texto del comentario, fecha y número de likes.
+\textbf{Entregable}: Corpus de transcripciones de videos de YouTube con ID de video, texto transcrito, fecha de publicación, canal, duración y flag de autogeneración.
  
 \textbf{Actividad 4: Realizar análisis exploratorio del corpus}
  
