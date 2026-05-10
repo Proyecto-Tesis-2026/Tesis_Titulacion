@@ -14,8 +14,8 @@ El inicio de la implementación de la primera fase de la metodología CRISP-DM f
 identificación del problema general a partir del estudio de la realidad problemática
 abordada en los primeros capítulos de la investigación. En el contexto electoral peruano,
 la ausencia de un sistema automatizado capaz de medir en tiempo real la percepción
-ciudadana hacia los candidatos presidenciales a través del ecosistema digital constituye
-el problema central de la investigación. El objetivo, por lo tanto, busca resolver este
+proyectada por los medios de comunicación hacia los candidatos presidenciales a
+través del ecosistema digital constituye el problema central de la investigación. El objetivo, por lo tanto, busca resolver este
 problema y se encuentra alineado con el título del trabajo. La hipótesis resulta la
 proposición planteada para explicar el logro del objetivo: que un sistema basado en LLMs
 es capaz de analizar el sentimiento y detectar dinámicamente los temas relevantes en
@@ -268,7 +268,7 @@ w_{fuente} = \frac{N_{fuente}}{\sum_{f} N_f} \times 100\%
 
 Donde $N_{fuente}$ es el número de segmentos de una fuente determinada y $\sum_{f} N_f$
 es el total de segmentos del corpus. Este peso fue utilizado posteriormente para ponderar
-los indicadores de percepción pública en el cálculo del ISN agregado.
+los indicadores de percepción proyectada por los medios en el cálculo del ISN agregado.
 
 \textbf{Actividad 3: Construir catálogos de filtrado pre-LLM}
 \\
@@ -798,10 +798,10 @@ candidatos en liza y poblando las vistas Gold materializadas
 \texttt{gold\_cobertura\_medios}) que alimentan al servidor MCP. Los principales
 hallazgos de la prueba piloto se presentan en la Figura \ref{5:fig25}.
 
-\figpendiente{5:fig25}{Resultados del prototipo de inteligencia electoral durante la semana de prueba piloto}{Resultados del prototipo de inteligencia electoral durante la semana de prueba piloto, mostrando la evolución del ISN por candidato, los temas emergentes identificados y la brecha entre cobertura mediática y sentimiento ciudadano, todos consultados desde un cliente MCP mediante las herramientas \texttt{evolucion\_sentimiento\_candidato}, \texttt{temas\_top\_periodo} y \texttt{panorama\_diario}.}
+\figpendiente{5:fig25}{Resultados del prototipo de inteligencia electoral durante la semana de prueba piloto}{Resultados del prototipo de inteligencia electoral durante la semana de prueba piloto, mostrando la evolución del ISN por candidato y los temas emergentes identificados en la cobertura mediática, todos consultados desde un cliente MCP mediante las herramientas \texttt{evolucion\_sentimiento\_candidato}, \texttt{temas\_top\_periodo} y \texttt{panorama\_diario}.}
 
 La prueba piloto confirmó la viabilidad del sistema para detectar cambios
-relevantes en la percepción pública —como el pico de sentimiento negativo
+relevantes en la percepción proyectada por los medios —como el pico de sentimiento negativo
 registrado durante y después del debate presidencial— y para identificar los
 temas que emergieron como consecuencia de los intercambios entre candidatos. El
 sistema también identificó correctamente una discrepancia significativa entre la

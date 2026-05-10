@@ -14,8 +14,9 @@ de prensa, publicaciones de X/Twitter, transcripciones de YouTube y posts de
 TikTok—, procesa el corpus diario completo (655 documentos válidos del 22 de
 marzo de 2026) en aproximadamente 57 minutos secuenciales con un costo de
 US\$0{,}13 y un \textit{cache hit rate} de 85{,}5\% sobre el \textit{prompt} de
-extracción, y genera indicadores de percepción pública (sentimiento por candidato,
-temas dominantes, brecha medios-ciudadanía) consultables en lenguaje natural
+extracción, y genera indicadores de percepción proyectada por los medios
+(sentimiento por candidato, temas dominantes, distribución de cobertura por
+medio) consultables en lenguaje natural
 español a través de un servidor MCP de 13 herramientas tipadas. El sistema queda
 construido y operativo; la validación cuantitativa de los indicadores frente a
 encuestas convencionales (correlación de Pearson sobre el ISN semanal vs. las 9
@@ -166,7 +167,7 @@ análisis como la capacidad de contextualización de las respuestas del módulo 
 incluye en su diseño un módulo de detección de desinformación basado en RAG, que
 fue parcialmente desarrollado pero no evaluado en el presente trabajo. Completar
 e integrar este módulo es prioritario, dado que la desinformación condiciona
-directamente la percepción ciudadana y puede distorsionar sistemáticamente los
+directamente la percepción proyectada por los medios y puede distorsionar sistemáticamente los
 indicadores ISN generados por el sistema \parencite{pr_chen2024combating_misinformation}.
 \textbf{6. Definir un protocolo de umbral adaptativo para el ISN.} El umbral fijo de $\pm 0.20$ utilizado para la clasificación de sentimientos positivo/negativo/neutro
 fue definido de manera experimental. Se recomienda explorar técnicas de
@@ -176,7 +177,7 @@ distribución de sentimientos a lo largo de la campaña.
 \textbf{7. Publicar la plataforma como herramienta de acceso público.} Siguiendo
 principios de transparencia democrática, se recomienda poner a disposición de la
 ciudadanía, investigadores y periodistas una versión pública del dashboard PeruVox
-con los indicadores de percepción pública agregados, sin datos individuales
+con los indicadores de percepción proyectada por los medios agregados, sin datos individuales
 identificables, en cumplimiento de la Ley N.º 29733 de Protección de Datos
 Personales del Perú y bajo un protocolo de uso ético supervisado por los
 organismos electorales.

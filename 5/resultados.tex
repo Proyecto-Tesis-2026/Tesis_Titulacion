@@ -208,7 +208,7 @@ continuación:
     \cite{pr_gujral2024llm_elections}, \cite{pr_alvi2023twitter_election_review}.
     \item \textbf{Nodo \texttt{Tema} y arista \texttt{SOBRE\_TEMA}}: \cite{pr_mendonca2025bertopic_political},
     \cite{pr_janssens2025bertopic_llm}, \cite{pr_islam2025latent_topic}.
-    \item \textbf{Brecha medios-ciudadanía (vista \texttt{gold\_cobertura\_medios})}: metodología del HTML
+    \item \textbf{Cobertura por medio (vista \texttt{gold\_cobertura\_medios})}: metodología del HTML
     adjunto, \cite{pr_alvarez2023llm_political}.
     \item \textbf{Módulo de desinformación}: \cite{pr_chen2024combating_misinformation}.
 \end{itemize}
@@ -223,7 +223,7 @@ continuación:
 \begin{figure}[!ht]
     \begin{center}
         \resizebox{0.85\textwidth}{!}{\input{5/figures/fig4_arquitectura_completa}}
-        \caption[Arquitectura completa del sistema GraphRAG Electoral]{Arquitectura completa del sistema GraphRAG Electoral, mostrando el flujo desde la ingesta de datos en tiempo real hasta la generación de indicadores de percepción pública y el módulo de consultas en lenguaje natural sobre el grafo de conocimiento.\\Fuente: Elaboración propia.}
+        \caption[Arquitectura completa del sistema GraphRAG Electoral]{Arquitectura completa del sistema GraphRAG Electoral, mostrando el flujo desde la ingesta de datos en tiempo real hasta la generación de indicadores de percepción proyectada por los medios y el módulo de consultas en lenguaje natural sobre el grafo de conocimiento.\\Fuente: Elaboración propia.}
         \label{6:fig4}
     \end{center}
 \end{figure}
@@ -233,7 +233,7 @@ La finalidad del sistema GraphRAG Electoral es permitir a los usuarios —analis
 políticos, periodistas e investigadores— consultar el grafo de conocimiento en lenguaje
 natural español, obteniendo respuestas fundamentadas con evidencia textual de los
 documentos originales del corpus. Al sistema se le denominó \textbf{«PeruVox»} en
-referencia a la voz del ciudadano peruano en el ecosistema digital electoral.
+referencia a la narrativa mediática del ecosistema digital electoral peruano.
 
 A diferencia del enfoque clásico de GraphRAG que traduce preguntas en lenguaje natural
 a consultas Cypher mediante \textit{few-shot prompting}, el sistema implementado adopta
@@ -548,7 +548,7 @@ excede el alcance temporal del presente trabajo y queda como trabajo futuro.
 \\
 La última fase de la metodología CRISP-DM comienza con el despliegue del servidor
 MCP (\textit{Model Context Protocol}) del sistema de inteligencia electoral
-PeruVox, que integra los indicadores de percepción pública, los temas emergentes y
+PeruVox, que integra los indicadores de percepción proyectada por los medios, los temas emergentes y
 el módulo de consulta GraphRAG mediante 13 herramientas tipadas accesibles desde
 clientes MCP estándar (Claude Desktop, Claude.ai web o Cursor) por analistas
 políticos y periodistas.
@@ -577,7 +577,7 @@ ejecutado en condiciones reales durante la semana de mayor actividad de la
 campaña electoral —incluyendo el segundo debate presidencial—, como se muestra en
 la Figura \ref{6:fig10}.
 
-\figpendiente{6:fig10}{Sistema PeruVox en ejecución durante el segundo debate presidencial}{Sistema PeruVox en ejecución durante el segundo debate presidencial: pantalla del cliente MCP mostrando la evolución del ISN en tiempo real, los temas emergentes detectados y la brecha entre cobertura mediática y sentimiento ciudadano.}
+\figpendiente{6:fig10}{Sistema PeruVox en ejecución durante el segundo debate presidencial}{Sistema PeruVox en ejecución durante el segundo debate presidencial: pantalla del cliente MCP mostrando la evolución del ISN en tiempo real y los temas emergentes detectados en la cobertura mediática.}
 
 Uno de los experimentos de validación se realizó durante la semana del debate
 presidencial. La primera acción ejecutada por el sistema fue la ingesta diaria de
@@ -602,4 +602,4 @@ incluye un indicador verde; si cae por debajo de $-0.20$, un indicador rojo. Los
 valores en el rango $[-0.20, 0.20]$ se clasifican como neutros. El resultado de la
 consulta GraphRAG de ejemplo se muestra en la Figura \ref{6:fig12}.
 
-\figpendiente{6:fig12}{Consulta GraphRAG en lenguaje natural sobre los resultados del debate presidencial}{Resultado de una consulta GraphRAG en lenguaje natural sobre el impacto del debate presidencial en la percepción ciudadana, con la respuesta fundamentada en fragmentos textuales del corpus original.}
+\figpendiente{6:fig12}{Consulta GraphRAG en lenguaje natural sobre los resultados del debate presidencial}{Resultado de una consulta GraphRAG en lenguaje natural sobre el impacto del debate presidencial en la percepción proyectada por los medios, con la respuesta fundamentada en fragmentos textuales del corpus original.}
