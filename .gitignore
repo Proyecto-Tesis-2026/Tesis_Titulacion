@@ -9,6 +9,7 @@
 *.lof
 *.lot
 *.synctex.gz
+*.synctex(busy)
 *.fdb_latexmk
 *.fls
 
@@ -16,6 +17,7 @@
 *.bbl
 *.bbl-SAVE-ERROR
 *.bcf
+*.bcf-SAVE-ERROR
 *.blg
 *.run.xml
 *-blx.bib
