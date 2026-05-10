@@ -1,0 +1,24 @@
+% Fig 4:fig6b -- Proceso de recoleccion del corpus de TikTok
+\begin{tikzpicture}[
+    node distance=0.6cm,
+    every node/.style={font=\footnotesize, align=center, inner sep=4pt},
+    src/.style={draw, rounded corners=2pt, fill=red!12, minimum width=4.6cm, minimum height=0.9cm},
+    config/.style={draw, rounded corners=2pt, fill=blue!12, minimum width=4.6cm, minimum height=0.9cm},
+    proc/.style={draw, rounded corners=2pt, fill=yellow!15, minimum width=4.6cm, minimum height=0.9cm},
+    filter/.style={draw, dashed, rounded corners=2pt, fill=orange!15, minimum width=4.6cm, minimum height=0.8cm, font=\scriptsize},
+    storage/.style={draw, rounded corners=2pt, fill=brown!20, minimum width=4.6cm, minimum height=1cm, font=\footnotesize\bfseries},
+    arrow/.style={-{Stealth[length=2mm]}, thick}
+]
+    \node[src] (s1) {Identificacion de cuentas y rango de fechas\\\scriptsize ACCOUNTS, DATE\_FROM, DATE\_TO};
+    \node[config, below=of s1] (s2) {Playwright sobre Chromium\\\scriptsize scraper-tiktok (arquitectura hexagonal)};
+    \node[proc, below=of s2] (s3) {Recorrido de playlist\\\scriptsize ordenadas de mas reciente a mas antiguo};
+    \node[filter, below=of s3] (s4) {Parada temprana (match\_filter)\\post-filtro estricto por rango de fechas};
+    \node[proc, below=of s4] (s5) {Extraccion de descripcion, hashtags\\y metadatos por post};
+    \node[storage, below=of s5] (s6) {Capa Bronze\\\scriptsize data/raw/tiktok/\{YYYY-MM-DD\}/};
+
+    \draw[arrow] (s1) -- (s2);
+    \draw[arrow] (s2) -- (s3);
+    \draw[arrow] (s3) -- (s4);
+    \draw[arrow] (s4) -- (s5);
+    \draw[arrow] (s5) -- (s6);
+\end{tikzpicture}
