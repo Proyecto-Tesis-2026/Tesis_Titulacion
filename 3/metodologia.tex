@@ -36,61 +36,54 @@ emergencia de temas.
  
 En la Tabla \ref{4:table1} se muestra la operacionalización de las variables correspondientes a la investigación.
  
-\begin{longtable}{M{3cm}M{4.2cm}M{3.6cm}M{4.8cm}}
-    \caption[Matriz de operacionalización de variables]{Matriz de operacionalización de variables.}
-    \label{4:table1}
-    \centering
-    \small
-    \tabularnewline \specialrule{.1em}{.05em}{.05em}
-    VARIABLE & DIMENSIÓN & INDICADOR & CÁLCULO \\
-    \specialrule{.1em}{.05em}{.05em}
- 
-    % Variable independiente
-    \multirow{8}{3cm}[-5ex]{\centering Independiente: Sistema de Inteligencia Electoral con LLM}
-    & \multirow{6}{4.2cm}[-1ex]{\centering Modelo LLM de Análisis}
-    & \multicolumn{2}{c}{\centering Configuración del pipeline de análisis} \\
-    \cline{3-4}
-    & & \multirow{5}{3.6cm}[0ex]{\centering Efectividad del análisis con LLM}
-    & Exactitud en clasificación de sentimiento \\
-    \cline{4-4}
-    & & & Coherencia semántica de temas (C\textsubscript{v}) \\
-    \cline{4-4}
-    & & & Índice de Sentimiento Neto (ISN) \\
-    \cline{4-4}
-    & & & Índice de Relevancia Temática (IRT) \\
-    \cline{4-4}
-    & & & Latencia de procesamiento (ms) \\
-    \cline{2-4}
-    & Arquitectura del pipeline
-    & \multicolumn{2}{c}{\thead{Complejidad e integridad\\del pipeline de procesamiento}} \\
- 
-    \hline
- 
-    % Variable dependiente
-    \multirow{8}{3cm}[-5ex]{\centering Dependiente: Percepción pública nacional en el ecosistema digital}
-    & \multirow{3}{4.2cm}[-2ex]{\centering Sentimiento ciudadano}
-    & \multirow{2}{3.6cm}[0ex]{\centering Polaridad de sentimiento}
-    & $Positivo: S(d,e) > 0$ \\
-    \cline{4-4}
-    & & & $Negativo: S(d,e) < 0$ \\
-    \cline{3-4}
-    & & Intensidad del sentimiento & Score continuo $[-1, 1]$ \\
-    \cline{2-4}
-    & \multirow{5}{4.2cm}[-2ex]{\centering Conversación digital electoral}
-    & \multirow{2}{3.6cm}[0ex]{\centering Metainformación del corpus}
-    & Volumen de publicaciones por período \\
-    \cline{4-4}
-    & & & Distribución por fuente de datos \\
-    \cline{3-4}
-    & & Temas relevantes & Número y coherencia de temas detectados \\
-    \cline{3-4}
-    & & \multirow{2}{3.6cm}[0ex]{\centering Evolución temporal}
-    & Velocidad de emergencia de temas \\
-    \cline{4-4}
-    & & & Cambios de sentimiento por evento electoral \\
- 
-    \specialrule{.1em}{.05em}{.05em}
+\begingroup
+\renewcommand\arraystretch{1.3}
+\small
+% Ajustamos los anchos para que sumen exactamente el ancho del texto (aprox 15.5cm totales)
+\begin{longtable}{p{2.8cm} p{3.5cm} p{3.5cm} p{4.5cm}}
+\caption[Matriz de operacionalización de variables]{Matriz de operacionalización de variables.}
+\label{4:table1} \\
+\specialrule{.1em}{.05em}{.05em}
+\centering\textbf{VARIABLE} & \centering\textbf{DIMENSIÓN} & \centering\textbf{INDICADOR} & \centering\arraybackslash\textbf{CÁLCULO} \\
+\specialrule{.1em}{.05em}{.05em}
+\endfirsthead
+
+\caption[]{Matriz de operacionalización de variables (continuación).} \\
+\specialrule{.1em}{.05em}{.05em}
+\centering\textbf{VARIABLE} & \centering\textbf{DIMENSIÓN} & \centering\textbf{INDICADOR} & \centering\arraybackslash\textbf{CÁLCULO} \\
+\specialrule{.1em}{.05em}{.05em}
+\endhead
+
+% Variable independiente
+\multirow{9}{=}{Independiente: Sistema de Inteligencia Electoral con LLM} 
+& \multirow{7}{=}{Modelo LLM de Análisis} 
+& \multicolumn{2}{p{8cm}}{\centering Configuración del pipeline de análisis} \\* \cline{3-4}
+& & \multirow{6}{=}{Efectividad del análisis con LLM} 
+& Exactitud en clasificación de sentimiento \\* \cline{4-4}
+& & & Coherencia semántica de temas ($C_v$) \\* \cline{4-4}
+& & & Índice de Sentimiento Neto (ISN) \\* \cline{4-4}
+& & & Índice de Relevancia Temática (IRT) \\* \cline{4-4}
+& & & Latencia de procesamiento (ms) \\* \cline{2-4}
+& Arquitectura del pipeline & \multicolumn{2}{p{8cm}}{Complejidad e integridad del pipeline de procesamiento} \\ \hline
+
+% Variable dependiente
+\multirow{10}{=}{Dependiente: Percepción pública nacional en el ecosistema digital} 
+& \multirow{4}{=}{Sentimiento ciudadano} 
+& \multirow{2}{=}{Polaridad de sentimiento} 
+& Positivo: $S(d,e) > 0$ \\* \cline{4-4}
+& & & Negativo: $S(d,e) < 0$ \\* \cline{3-4}
+& & Intensidad del sentimiento & Score continuo $[-1, 1]$ \\* \cline{2-4}
+& \multirow{6}{=}{Conversación digital electoral} 
+& \multirow{2}{=}{Metainformación del corpus} 
+& Volumen de publicaciones por período \\* \cline{4-4}
+& & & Distribución por fuente de datos \\* \cline{3-4}
+& & Temas relevantes & Número y coherencia de temas detectados \\* \cline{3-4}
+& & \multirow{2}{=}{Evolución temporal} 
+& Velocidad de emergencia de temas \\* \cline{4-4}
+& & & Cambios de sentimiento por evento electoral \\
+\specialrule{.1em}{.05em}{.05em}
 \end{longtable}
+\endgroup
 \begin{flushleft}
     \small Fuente: Elaboración propia.
 \end{flushleft}
@@ -141,82 +134,79 @@ metodología de implementación, creamos la Tabla \ref{4:table2} con el propósi
  
 \vspace{2ex}
 \begingroup
-\renewcommand\arraystretch{0.3}
-\begin{longtable}{M{3cm}M{2.5cm}M{2.5cm}M{6cm}}
-    \caption[Cuadro comparativo para la selección de la metodología]{Cuadro comparativo para la selección de la metodología de implementación.}
-    \label{4:table2}
-    \footnotesize
-    \centering
-    \small
-    \tabularnewline \specialrule{.1em}{.05em}{.05em}
-    Metodología & Cantidad de referencias & Número de pasos & Nombre de los pasos \\
-    \specialrule{.1em}{.05em}{.05em}
-    {CRISP-DM}
-    & 2
-    & 6
-    & \setlist{nolistsep}
-    \begin{itemize}[label={--},nosep,noitemsep,leftmargin=*,topsep=0pt,partopsep=0pt]
-       \item Entendimiento del negocio.
+\renewcommand\arraystretch{1.2}
+\small
+\begin{longtable}{p{3cm}p{2.5cm}p{2.5cm}p{6cm}}
+\caption[Cuadro comparativo para la selección de la metodología]{Cuadro comparativo para la selección de la metodología de implementación.}
+\label{4:table2} \\
+\specialrule{.1em}{.05em}{.05em}
+\centering\textbf{Metodología} & \centering\textbf{Cantidad de referencias} & \centering\textbf{Número de pasos} & \centering\arraybackslash\textbf{Nombre de los pasos} \\
+\specialrule{.1em}{.05em}{.05em}
+\endfirsthead
+
+% Este bloque se repetirá automáticamente si la tabla salta a la siguiente página
+\caption[]{Cuadro comparativo para la selección de la metodología (continuación).} \\
+\specialrule{.1em}{.05em}{.05em}
+\centering\textbf{Metodología} & \centering\textbf{Cantidad de referencias} & \centering\textbf{Número de pasos} & \centering\arraybackslash\textbf{Nombre de los pasos} \\
+\specialrule{.1em}{.05em}{.05em}
+\endhead
+
+CRISP-DM
+& 2
+& 6
+& \begin{itemize}[label={--},nosep,leftmargin=*]
+\item Entendimiento del negocio.
 \item Análisis de los datos.
 \item Preparación de la información.
 \item Construcción del modelo.
 \item Validación.
 \item Implementación.
-    \end{itemize}
-    \\
-    \hline
-    {Grupo A}
-    & 2
-    & 6
-    & \setlist{nolistsep}
-    \begin{itemize}[label={--},nosep,noitemsep,leftmargin=*,topsep=0pt,partopsep=0pt]
-        \item Planteamiento del problema.
-        \item Obtención de datos multicanal.
-        \item Preprocesamiento de texto.
-        \item Análisis con LLM.
-        \item Evaluación.
-        \item Despliegue.
-    \end{itemize}
-    \\
-    \hline
-    {Grupo B}
-    & 2
-    & 5
-    & \setlist{nolistsep}
-    \begin{itemize}[label={--},nosep,noitemsep,leftmargin=*,topsep=0pt,partopsep=0pt]
-        \item Obtención de datos.
-        \item Preprocesamiento y filtrado.
-        \item Análisis de sentimientos.
-        \item Detección de temas.
-        \item Evaluación.
-    \end{itemize}
-    \\
-    \hline
-    {Grupo C}
-    & 2
-    & 5
-    & \setlist{nolistsep}
-    \begin{itemize}[label={--},nosep,noitemsep,leftmargin=*,topsep=0pt,partopsep=0pt]
-        \item Planteamiento del problema.
-        \item Obtención de datos.
-        \item Preprocesamiento de datos.
-        \item Modelado y análisis.
-        \item Evaluación.
-    \end{itemize}
-    \\
-    \hline
-    {Grupo D}
-    & 1
-    & 4
-    & \setlist{nolistsep}
-    \begin{itemize}[label={--},nosep,noitemsep,leftmargin=*,topsep=0pt,partopsep=0pt]
-        \item Obtención de datos.
-        \item Preprocesamiento.
-        \item Análisis LLM y clustering.
-        \item Evaluación.
-    \end{itemize}
-    \\
-    \specialrule{.1em}{.05em}{.05em}
+\end{itemize} \\ 
+\hline
+Grupo A
+& 2
+& 6
+& \begin{itemize}[label={--},nosep,leftmargin=*]
+\item Planteamiento del problema.
+\item Obtención de datos multicanal.
+\item Preprocesamiento de texto.
+\item Análisis con LLM.
+\item Evaluación.
+\item Despliegue.
+\end{itemize} \\ 
+\hline
+Grupo B
+& 2
+& 5
+& \begin{itemize}[label={--},nosep,leftmargin=*]
+\item Obtención de datos.
+\item Preprocesamiento y filtrado.
+\item Análisis de sentimientos.
+\item Detección de temas.
+\item Evaluación.
+\end{itemize} \\ 
+\hline
+Grupo C
+& 2
+& 5
+& \begin{itemize}[label={--},nosep,leftmargin=*]
+\item Planteamiento del problema.
+\item Obtención de datos.
+\item Preprocesamiento de datos.
+\item Modelado y análisis.
+\item Evaluación.
+\end{itemize} \\ 
+\hline
+Grupo D
+& 1
+& 4
+& \begin{itemize}[label={--},nosep,leftmargin=*]
+\item Obtención de datos.
+\item Preprocesamiento.
+\item Análisis LLM y clustering.
+\item Evaluación.
+\end{itemize} \\ 
+\specialrule{.1em}{.05em}{.05em}
 \end{longtable}
 \endgroup
 \begin{flushleft}
@@ -257,7 +247,7 @@ inteligencia electoral con LLMs, lo describimos en la Figura \ref{4:fig2}.
 Durante la ejecución de la metodología, se definió construir un pipeline
 de análisis multicanal que integra análisis de sentimientos con LLMs, detección dinámica
 de temas con BERTopic y un grafo de conocimiento con Neo4j, arquitectura denominada
-\textbf{GraphRAG Electoral}. De acuerdo a la literatura de los antecedentes revisados,
+\textbf{Pipeline de Inteligencia Electoral Basado en LLMs y Grafo de Conocimiento}. De acuerdo a la literatura de los antecedentes revisados,
 se analizaron las siguientes posibles fuentes de datos a incorporar:
  
 \begin{itemize}
@@ -295,43 +285,45 @@ En la fase inicial, se definió el problema a partir de la comprensión del cont
  
 \vspace{2ex}
 \begingroup
-\renewcommand\arraystretch{0.3}
-\begin{longtable}{m{5cm}m{5cm}M{5cm}}
+\renewcommand\arraystretch{1.2} 
+\small 
+\begin{longtable}{p{5cm}p{5cm}p{5cm}} 
 \caption[Plan de Ejecución de la fase Entendimiento del negocio]{Plan de Ejecución de la fase Entendimiento del negocio.}
-\label{4:table3}
-\footnotesize
-\small
-\tabularnewline \specialrule{.1em}{.05em}{.05em}
-\centering Plan de Ejecución & \centering Alcance & Acciones \
+\label{4:table3} \\ 
 \specialrule{.1em}{.05em}{.05em}
+\centering\textbf{Plan de Ejecución} & \centering\textbf{Alcance} & \centering\arraybackslash\textbf{Acciones} \\
+\specialrule{.1em}{.05em}{.05em}
+\endfirsthead
+
+% Esto aparecerá automáticamente si la tabla salta a una nueva página
+\caption[]{Plan de Ejecución de la fase Entendimiento del negocio (continuación).} \\
+\specialrule{.1em}{.05em}{.05em}
+\centering\textbf{Plan de Ejecución} & \centering\textbf{Alcance} & \centering\arraybackslash\textbf{Acciones} \\
+\specialrule{.1em}{.05em}{.05em}
+\endhead
+
 Plantear el problema, los objetivos y las hipótesis.
 & Planteamiento del problema principal, así como de los objetivos generales y específicos y las hipótesis de investigación.
-& \setlist{nolistsep}
-\begin{itemize}[label={--},nosep,noitemsep,leftmargin=*,topsep=0pt,partopsep=0pt]
+& \begin{itemize}[label={--},nosep,leftmargin=*]
 \item Identificar la brecha existente en el análisis de la percepción electoral digital.
 \item Establecer los objetivos del sistema de inteligencia electoral.
 \item Formular las hipótesis del estudio.
-\end{itemize}
-\
+\end{itemize} \\ 
 \hline
 Desarrollar el marco teórico de la investigación.
 & Revisión de estudios previos relacionados con el análisis de sentimientos en contextos políticos, LLMs y detección de temas.
-& \setlist{nolistsep}
-\begin{itemize}[label={--},nosep,noitemsep,leftmargin=*,topsep=0pt,partopsep=0pt]
+& \begin{itemize}[label={--},nosep,leftmargin=*]
 \item Buscar literatura académica sobre el uso de LLMs en escenarios electorales.
 \item Revisar material sobre BERTopic y GraphRAG aplicado a datos políticos.
-\end{itemize}
-\
+\end{itemize} \\ 
 \hline
 Definir la metodología y la arquitectura del sistema.
 & Selección de la metodología de trabajo y diseño de la arquitectura del pipeline.
-& \setlist{nolistsep}
-\begin{itemize}[label={--},nosep,noitemsep,leftmargin=*,topsep=0pt,partopsep=0pt]
+& \begin{itemize}[label={--},nosep,leftmargin=*]
 \item Analizar metodologías propuestas en la literatura.
 \item Escoger la metodología CRISP-DM.
 \item Diseñar la arquitectura tipo Medallion del sistema.
-\end{itemize}
-\
+\end{itemize} \\ 
 \specialrule{.1em}{.05em}{.05em}
 \end{longtable}
 \endgroup
@@ -363,55 +355,55 @@ En la segunda fase se llevó a cabo la recolección de datos y el análisis esta
  
 \vspace{2ex}
 \begingroup
-\renewcommand\arraystretch{0.3}
-\begin{longtable}{m{4cm}m{5.5cm}M{5.5cm}}
-    \caption[Plan de Ejecución de la fase Análisis de los datos]{Plan de Ejecución de la fase Análisis de los datos.}
-    \label{4:table4}
-    \footnotesize
-    \small
-    \tabularnewline \specialrule{.1em}{.05em}{.05em}
-    \centering Plan de Ejecución & \centering Alcance & Acciones \\
-    \specialrule{.1em}{.05em}{.05em}
-    Construir corpus de noticias digitales.
-    & Construcción del corpus de artículos y titulares de los principales portales de prensa peruanos (capa Bronze).
-    & \setlist{nolistsep}
-    \begin{itemize}[label={--},nosep,noitemsep,leftmargin=*,topsep=0pt,partopsep=0pt]
-        \item Diseñar scrapers para portales de noticias objetivo.
-        \item Recolectar artículos con URL, fecha, titular y texto.
-        \item Almacenar datos crudos en capa Bronze.
-    \end{itemize}
-    \\
-    \hline
-    Construir corpus de X/Twitter.
-    & Construcción del corpus de tweets relacionados con los candidatos presidenciales mediante la API de X.
-    & \setlist{nolistsep}
-    \begin{itemize}[label={--},nosep,noitemsep,leftmargin=*,topsep=0pt,partopsep=0pt]
-        \item Configurar conexión con la API Filtered Stream de X.
-        \item Definir palabras clave, hashtags y cuentas de interés.
-        \item Almacenar tweets con metadatos en capa Bronze.
-    \end{itemize}
-    \\
-    \hline
-    Construir corpus de YouTube.
-    & Construcción del corpus de comentarios de usuarios en videos electorales de YouTube.
-    & \setlist{nolistsep}
-    \begin{itemize}[label={--},nosep,noitemsep,leftmargin=*,topsep=0pt,partopsep=0pt]
-        \item Identificar videos electorales mediante YouTube Data API.
-        \item Recolectar comentarios con ID de usuario y fecha.
-        \item Almacenar comentarios crudos en capa Bronze.
-    \end{itemize}
-    \\
-    \hline
-    Realizar análisis exploratorio del corpus.
-    & Análisis estadístico y exploratorio de las variables del corpus para cada fuente de datos.
-    & \setlist{nolistsep}
-    \begin{itemize}[label={--},nosep,noitemsep,leftmargin=*,topsep=0pt,partopsep=0pt]
-        \item Describir distribución temporal y por fuente.
-        \item Analizar longitud de textos y vocabulario.
-        \item Identificar candidatos más mencionados.
-    \end{itemize}
-    \\
-    \specialrule{.1em}{.05em}{.05em}
+\renewcommand\arraystretch{1.2}
+\small
+\begin{longtable}{p{4cm}p{5.5cm}p{5.5cm}}
+\caption[Plan de Ejecución de la fase Análisis de los datos]{Plan de Ejecución de la fase Análisis de los datos.}
+\label{4:table4} \\
+\specialrule{.1em}{.05em}{.05em}
+\centering\textbf{Plan de Ejecución} & \centering\textbf{Alcance} & \centering\arraybackslash\textbf{Acciones} \\
+\specialrule{.1em}{.05em}{.05em}
+\endfirsthead
+
+% Este bloque se repetirá automáticamente si la tabla salta a la siguiente página
+\caption[]{Plan de Ejecución de la fase Análisis de los datos (continuación).} \\
+\specialrule{.1em}{.05em}{.05em}
+\centering\textbf{Plan de Ejecución} & \centering\textbf{Alcance} & \centering\arraybackslash\textbf{Acciones} \\
+\specialrule{.1em}{.05em}{.05em}
+\endhead
+
+Construir corpus de noticias digitales.
+& Construcción del corpus de artículos y titulares de los principales portales de prensa peruanos (capa Bronze).
+& \begin{itemize}[label={--},nosep,leftmargin=*]
+\item Diseñar scrapers para portales de noticias objetivo.
+\item Recolectar artículos con URL, fecha, titular y texto.
+\item Almacenar datos crudos en capa Bronze.
+\end{itemize} \\ 
+\hline
+Construir corpus de X/Twitter.
+& Construcción del corpus de tweets relacionados con los candidatos presidenciales mediante la API de X.
+& \begin{itemize}[label={--},nosep,leftmargin=*]
+\item Configurar conexión con la API Filtered Stream de X.
+\item Definir palabras clave, hashtags y cuentas de interés.
+\item Almacenar tweets con metadatos en capa Bronze.
+\end{itemize} \\ 
+\hline
+Construir corpus de YouTube.
+& Construcción del corpus de comentarios de usuarios en videos electorales de YouTube.
+& \begin{itemize}[label={--},nosep,leftmargin=*]
+\item Identificar videos electorales mediante YouTube Data API.
+\item Recolectar comentarios con ID de usuario y fecha.
+\item Almacenar comentarios crudos en capa Bronze.
+\end{itemize} \\ 
+\hline
+Realizar análisis exploratorio del corpus.
+& Análisis estadístico y exploratorio de las variables del corpus para cada fuente de datos.
+& \begin{itemize}[label={--},nosep,leftmargin=*]
+\item Describir distribución temporal y por fuente.
+\item Analizar longitud de textos y vocabulario.
+\item Identificar candidatos más mencionados.
+\end{itemize} \\ 
+\specialrule{.1em}{.05em}{.05em}
 \end{longtable}
 \endgroup
 \begin{flushleft}
@@ -435,8 +427,8 @@ De acuerdo a la Figura \ref{4:fig1}, en esta actividad se construyó el corpus d
  
 \textbf{Actividad 2: Construir corpus de X/Twitter}
  
-Una vez configurada la conexión con la API Filtered Stream de X, se definió el conjunto de palabras clave, hashtags y cuentas de candidatos que activan la captura en tiempo real. El proceso de recolección se realizó según el flujo de la Figura \ref{4:fig5}.
- 
+La recolección de tweets se realizó mediante TwitterAPI.io, un proveedor de acceso a datos de Twitter/X que expone una API REST compatible con los principales endpoints de búsqueda y usuario. A diferencia de la API oficial de X/Twitter —cuyo plan Basic tiene un costo de \$100/mes con limitación de 10,000 tweets mensuales—, TwitterAPI.io permite una recolección más flexible durante el período de campaña electoral. El cliente Python desarrollado en src/electoral/ingestion/twitter.py consume esta API de forma asíncrona mediante \texttt{httpx}, filtrando los resultados por \texttt{date\_from}/\texttt{date\_to} con tolerancia de $\pm1$ día respecto a la fecha de publicación.
+
 \begin{figure}[!ht]
     \begin{center}
         \includegraphics[width=0.80\textwidth]{3/figures/flujo_api_twitter.png}
@@ -450,8 +442,8 @@ Una vez configurada la conexión con la API Filtered Stream de X, se definió el
  
 \textbf{Actividad 3: Construir corpus de YouTube}
  
-Mediante la YouTube Data API, se identificaron los videos electorales más relevantes y se recolectaron sus comentarios de usuarios, excluyendo los publicados por los propios canales de los candidatos para evitar sesgo en la muestra ciudadana. El proceso se detalla en la Figura \ref{4:fig6}.
- 
+La recolección de contenido de YouTube se realizó mediante \texttt{yt-dlp}, una herramienta de scraping de video de código abierto que extrae metadata, transcripciones y comentarios de videos de YouTube sin depender de cuotas de la API oficial. El ingestor (src/electoral/ingestion/youtube.py) implementa un patrón productor-consumidor con hilos paralelos: un hilo extrae los IDs de videos en lotes (\textit{extract\_flat}), y múltiples hilos trabajadores obtienen la metadata completa y filtran por fecha de publicación. Las transcripciones se marcan con el flag \texttt{is\_auto\_generated} para distinguir subtítulos automáticos de los manuales. El pool de cookies Netscape del directorio \texttt{cookies/} es distribuido entre los workers por round-robin para reducir bloqueos.
+
 \begin{figure}[!ht]
     \begin{center}
         \includegraphics[width=0.80\textwidth]{3/figures/flujo_youtube_comentarios.png}
@@ -477,45 +469,47 @@ actividades de esta etapa se detallan en la Tabla \ref{4:table5}.
  
 \vspace{2ex}
 \begingroup
-\renewcommand\arraystretch{0.3}
-\begin{longtable}{m{5cm}m{5cm}M{5cm}}
-    \caption[Plan de Ejecución de la fase Preparación de la información]{Plan de Ejecución de la fase Preparación de la información.}
-    \label{4:table5}
-    \footnotesize
-    \small
-    \tabularnewline \specialrule{.1em}{.05em}{.05em}
-    \centering Plan de Ejecución & \centering Alcance & Acciones \\
-    \specialrule{.1em}{.05em}{.05em}
-    Limpiar y normalizar el corpus.
-    & Preprocesamiento textual de las publicaciones de las tres fuentes para su análisis con LLM.
-    & \setlist{nolistsep}
-    \begin{itemize}[label={--},nosep,noitemsep,leftmargin=*,topsep=0pt,partopsep=0pt]
-        \item Eliminar spam, bots y publicaciones duplicadas.
-        \item Normalizar caracteres especiales, emojis y URLs.
-        \item Detectar y filtrar publicaciones en idiomas distintos al español.
-    \end{itemize}
-    \\
-    \hline
-    Segmentar el corpus para análisis.
-    & División de textos largos en segmentos procesables por el LLM respetando la ventana de contexto.
-    & \setlist{nolistsep}
-    \begin{itemize}[label={--},nosep,noitemsep,leftmargin=*,topsep=0pt,partopsep=0pt]
-        \item Definir tamaño máximo de segmento en tokens.
-        \item Implementar segmentación con superposición de contexto.
-        \item Registrar relación documento-segmento en base de datos.
-    \end{itemize}
-    \\
-    \hline
-    Construir diccionario de aliases electorales.
-    & Creación del diccionario de names, apodos y aliases de candidatos para el filtrado con Aho-Corasick.
-    & \setlist{nolistsep}
-    \begin{itemize}[label={--},nosep,noitemsep,leftmargin=*,topsep=0pt,partopsep=0pt]
-        \item Recopilar nombres completos y apodos de candidatos.
-        \item Incluir nombres de partidos y lemas de campaña.
-        \item Construir el autómata Aho-Corasick para búsqueda eficiente.
-    \end{itemize}
-    \\
-    \specialrule{.1em}{.05em}{.05em}
+\renewcommand\arraystretch{1.2}
+\small
+\begin{longtable}{p{5cm}p{5cm}p{5cm}}
+\caption[Plan de Ejecución de la fase Preparación de la información]{Plan de Ejecución de la fase Preparación de la información.}
+\label{4:table5} \\
+\specialrule{.1em}{.05em}{.05em}
+\centering\textbf{Plan de Ejecución} & \centering\textbf{Alcance} & \centering\arraybackslash\textbf{Acciones} \\
+\specialrule{.1em}{.05em}{.05em}
+\endfirsthead
+
+% Este bloque se repetirá automáticamente si la tabla salta a la siguiente página
+\caption[]{Plan de Ejecución de la fase Preparación de la información (continuación).} \\
+\specialrule{.1em}{.05em}{.05em}
+\centering\textbf{Plan de Ejecución} & \centering\textbf{Alcance} & \centering\arraybackslash\textbf{Acciones} \\
+\specialrule{.1em}{.05em}{.05em}
+\endhead
+
+Limpiar y normalizar el corpus.
+& Preprocesamiento textual de las publicaciones de las tres fuentes para su análisis con LLM.
+& \begin{itemize}[label={--},nosep,leftmargin=*]
+\item Eliminar spam, bots y publicaciones duplicadas.
+\item Normalizar caracteres especiales, emojis y URLs.
+\item Detectar y filtrar publicaciones en idiomas distintos al español.
+\end{itemize} \\ 
+\hline
+Segmentar el corpus para análisis.
+& División de textos largos en segmentos procesables por el LLM respetando la ventana de contexto.
+& \begin{itemize}[label={--},nosep,leftmargin=*]
+\item Definir tamaño máximo de segmento en tokens.
+\item Implementar segmentación con superposición de contexto.
+\item Registrar relación documento-segmento en base de datos.
+\end{itemize} \\ 
+\hline
+Construir diccionario de aliases electorales.
+& Creación del diccionario de names, apodos y aliases de candidatos para el filtrado con Aho-Corasick.
+& \begin{itemize}[label={--},nosep,leftmargin=*]
+\item Recopilar nombres completos y apodos de candidatos.
+\item Incluir nombres de partidos y lemas de campaña.
+\item Construir el autómata Aho-Corasick para búsqueda eficiente.
+\end{itemize} \\ 
+\specialrule{.1em}{.05em}{.05em}
 \end{longtable}
 \endgroup
 \begin{flushleft}
@@ -548,56 +542,56 @@ en la Tabla \ref{4:table6}.
  
 \vspace{2ex}
 \begingroup
-\renewcommand\arraystretch{0.3}
-\begin{longtable}{m{4.6cm}m{4.9cm}M{5.5cm}}
-    \caption[Plan de Ejecución de la fase Construcción del modelo]{Plan de Ejecución de la fase Construcción del modelo.}
-    \label{4:table6}
-    \footnotesize
-    \small
-    \tabularnewline \specialrule{.1em}{.05em}{.05em}
-    \centering Plan de Ejecución & \centering Alcance & Acciones \\
-    \specialrule{.1em}{.05em}{.05em}
-    Construir módulo de análisis de sentimientos con LLM.
-    & Implementación del análisis de sentimientos a nivel de aspecto mediante prompts diseñados para el contexto electoral peruano.
-    & \setlist{nolistsep}
-    \begin{itemize}[label={--},nosep,noitemsep,leftmargin=*,topsep=0pt,partopsep=0pt]
-        \item Diseñar prompt de análisis con estructura role-context-task-format.
-        \item Implementar llamadas a la API del LLM con respuesta JSON estructurada.
-        \item Validar outputs y gestionar errores de parsing.
-    \end{itemize}
-    \\
-    \hline
-    Desarrollar módulo de detección dinámica de temas.
-    & Implementación del pipeline BERTopic para clustering semántico de temas electorales.
-    & \setlist{nolistsep}
-    \begin{itemize}[label={--},nosep,noitemsep,leftmargin=*,topsep=0pt,partopsep=0pt]
-        \item Generar embeddings con Sentence-BERT multilingüe.
-        \item Reducir dimensionalidad con UMAP.
-        \item Aplicar HDBSCAN para clustering inductivo.
-        \item Etiquetar clusters con LLM mediante c-TF-IDF.
-    \end{itemize}
-    \\
-    \hline
-    Construir grafo de conocimiento electoral.
-    & Implementación del grafo Neo4j con nodos y relaciones del ecosistema electoral digital.
-    & \setlist{nolistsep}
-    \begin{itemize}[label={--},nosep,noitemsep,leftmargin=*,topsep=0pt,partopsep=0pt]
-        \item Definir esquema de nodos (Candidato, Tema, Fuente, Periodo, Evento).
-        \item Implementar jobs de agregación semanal con MERGE idempotente.
-        \item Calcular relaciones MENCIONA, CO\_OCURRE, CUBRE y REACCIONA\_A.
-    \end{itemize}
-    \\
-    \hline
-    Implementar sistema GraphRAG para consultas.
-    & Desarrollo del módulo de consulta en lenguaje natural sobre el grafo de conocimiento electoral.
-    & \setlist{nolistsep}
-    \begin{itemize}[label={--},nosep,noitemsep,leftmargin=*,topsep=0pt,partopsep=0pt]
-        \item Inyectar schema del grafo al contexto del LLM.
-        \item Implementar traducción de preguntas en español a consultas Cypher.
-        \item Validar respuestas con evidencia textual de los documentos originales.
-    \end{itemize}
-    \\
-    \specialrule{.1em}{.05em}{.05em}
+\renewcommand\arraystretch{1.2}
+\small
+\begin{longtable}{p{4.6cm}p{4.9cm}p{5.5cm}}
+\caption[Plan de Ejecución de la fase Construcción del modelo]{Plan de Ejecución de la fase Construcción del modelo.}
+\label{4:table6} \\
+\specialrule{.1em}{.05em}{.05em}
+\centering\textbf{Plan de Ejecución} & \centering\textbf{Alcance} & \centering\arraybackslash\textbf{Acciones} \\
+\specialrule{.1em}{.05em}{.05em}
+\endfirsthead
+
+% Este bloque se repetirá automáticamente si la tabla salta a la siguiente página
+\caption[]{Plan de Ejecución de la fase Construcción del modelo (continuación).} \\
+\specialrule{.1em}{.05em}{.05em}
+\centering\textbf{Plan de Ejecución} & \centering\textbf{Alcance} & \centering\arraybackslash\textbf{Acciones} \\
+\specialrule{.1em}{.05em}{.05em}
+\endhead
+
+Construir módulo de análisis de sentimientos con LLM.
+& Implementación del análisis de sentimientos a nivel de aspecto mediante prompts diseñados para el contexto electoral peruano.
+& \begin{itemize}[label={--},nosep,leftmargin=*]
+\item Diseñar prompt de análisis con estructura role-context-task-format.
+\item Implementar llamadas a la API del LLM con respuesta JSON estructurada.
+\item Validar outputs y gestionar errores de parsing.
+\end{itemize} \\ 
+\hline
+Desarrollar módulo de detección dinámica de temas.
+& Implementación del pipeline BERTopic para clustering semántico de temas electorales.
+& \begin{itemize}[label={--},nosep,leftmargin=*]
+\item Generar embeddings con Sentence-BERT multilingüe.
+\item Reducir dimensionalidad con UMAP.
+\item Aplicar HDBSCAN para clustering inductivo.
+\item Etiquetar clusters con LLM mediante c-TF-IDF.
+\end{itemize} \\ 
+\hline
+Construir grafo de conocimiento electoral.
+& Implementación del grafo Neo4j con nodos y relaciones del ecosistema electoral digital.
+& \begin{itemize}[label={--},nosep,leftmargin=*]
+\item Definir esquema de nodos (Candidato, Tema, Fuente, Periodo, Evento).
+\item Implementar jobs de agregación semanal con MERGE idempotente.
+\item Calcular relaciones MENCIONA, CO\_OCURRE, CUBRE y REACCIONA\_A.
+\end{itemize} \\ 
+\hline
+Implementar sistema GraphRAG para consultas.
+& Desarrollo del módulo de consulta en lenguaje natural sobre el grafo de conocimiento electoral.
+& \begin{itemize}[label={--},nosep,leftmargin=*]
+\item Inyectar schema del grafo al contexto del LLM.
+\item Implementar traducción de preguntas en español a consultas Cypher.
+\item Validar respuestas con evidencia textual de los documentos originales.
+\end{itemize} \\ 
+\specialrule{.1em}{.05em}{.05em}
 \end{longtable}
 \endgroup
 \begin{flushleft}
@@ -622,54 +616,51 @@ autores de los antecedentes:
     \item \textbf{mBERT / XLM-RoBERTa (modelos encoder)}: \cite{pr_alvi2023twitter_election_review}.
 \end{itemize}
  
-De acuerdo a los resultados de los antecedentes, los modelos generativos (GPT-4, Gemini)
-superan a los modelos encoder en precisión contextual para análisis de sentimientos
-político en español, especialmente en el manejo de ironía, sarcasmo y ambigüedad
-semántica. Dado que la investigación requiere análisis en tiempo real con respuestas JSON
-estructuradas, se seleccionó la API de Gemini Flash como modelo principal por su relación
-entre capacidad y latencia, y GPT-4o como modelo de validación para los experimentos de
-evaluación.
+Para la selección del modelo LLM, se evaluaron las alternativas propuestas en los antecedentes de la investigación. A diferencia de lo inicialmente planificado con Gemini Flash como modelo principal, el sistema implementado seleccionó DeepSeek-Chat como proveedor LLM principal, con Gemini Flash como fallback configurable mediante la variable de entorno \texttt{LLM\_PROVIDER}. La decisión se fundamentó en tres factores: (1) el mecanismo de caché de prefijo transparente de DeepSeek, que descuenta hasta el 75\% del costo en tokens de entrada para el prefijo invariante del prompt (catálogos, instrucciones y ejemplos few-shot), alcanzando un 85.5\% de \textit{cache hit} sostenido; (2) el soporte nativo de \texttt{response\_format: JSON} que garantiza outputs parseables por Pydantic sin prompting heroico; y (3) un costo por documento aproximadamente 10 veces menor que GPT-4o para el mismo volumen. La abstracción \texttt{LLMClient} (\texttt{src/electoral/llm/clients/base.py}) permite intercambiar el proveedor con un cambio de variable de entorno, por lo que los experimentos de validación con GPT-4o se realizaron sin modificar el código del pipeline.
  
 \textbf{Entregable}: Módulo de análisis de sentimientos con LLM y tabla \texttt{analisis} de la capa Silver.
  
 \textbf{Actividad 2: Desarrollar módulo de detección dinámica de temas}
  
-En esta actividad se implementó el pipeline BERTopic para la detección dinámica de temas.
-Se generaron embeddings de oraciones mediante el modelo paraphrase-multilingual-MiniLM-L12-v2
-de Sentence-BERT, optimizado para español. Para el clustering, se utilizó HDBSCAN
-inductivo con \texttt{min\_cluster\_size=10} y \texttt{min\_samples=3}, parámetros que
-permiten detectar temas con al menos 10 publicaciones asociadas sin requerir definir el
-número de temas a priori. Gemini etiqueta cada cluster resultante en una sola llamada
-por cluster, procesando los 15 términos más representativos de cada grupo según c-TF-IDF.
-La elección de HDBSCAN sobre K-Means se justifica en que, a diferencia de este último, no
-requiere especificar el número de clusters y descarta automáticamente publicaciones ruidosas
-que no pertenecen a ningún tema coherente, siguiendo el enfoque de
-\cite{pr_mendonca2025bertopic_political} y \cite{pr_janssens2025bertopic_llm}.
+A diferencia del enfoque BERTopic propuesto inicialmente, el sistema implementado utiliza una estrategia de detección de temas emergentes dirigida por LLM con catálogo incremental. En cada llamada de análisis, el LLM recibe un menú de hasta 20 temas candidatos construido mediante cinco tiers de retrieval sobre el catálogo existente en PostgreSQL: (1) temas trending por volumen, (2) búsqueda semántica por cosine sobre pgvector, (3) coincidencia léxica con el título y cuerpo del documento, (4) temas asociados al actor protagonista detectado, y (5) temas del catálogo de eventos conocidos.
+
+El LLM indica si el documento corresponde a un tema existente (\texttt{exact}), a un alias de uno existente (\texttt{alias}), o a un tema nuevo (\texttt{new}). Esta arquitectura permite la detección dinámica de temas emergentes sin reentrenamiento de modelos y con un costo marginal aproximado de 50 tokens adicionales por documento.
+
+Los temas se consolidan posteriormente mediante dos procesos: \texttt{consolidate\_day}, basado en matching threshold-based con similitud cosine $\geq 0.78$, y \texttt{llm\_dedup\_day}, que realiza deduplicación semántica mediante evaluación LLM sobre pares sospechosos, limitado a un máximo de 200 pares por día.
+
+Asimismo, la regla número cinco del prompt maneja automáticamente publicaciones no políticas —como deportes, entretenimiento, farándula o humor/sátira— asignándoles es\_relevante=false y clasificándolas dentro de categorías fijas del tipo \texttt{otros\_<categoria>}, evitando inflar el catálogo de temas con ruido semántico.
  
 \textbf{Entregable}: Pipeline BERTopic configurado y taxonomía de temas electorales generada.
  
 \textbf{Actividad 3: Construir grafo de conocimiento electoral}
  
-En esta actividad se implementó el grafo de conocimiento electoral en Neo4j, con el
-esquema de cinco tipos de nodos (Candidato, Tema, Fuente, Evento y Periodo) y ocho
-tipos de relaciones (MENCIONA, MENCIONA\_CIUDADANO, EN\_PERIODO, CO\_OCURRE, CUBRE,
-SILENCIA, REACCIONA\_A y OCURRE\_EN) con su respectiva metadata de aristas, como se
-describe en el marco de la metodología GraphRAG. Los jobs de agregación semanal utilizan
-la cláusula \texttt{MERGE} de Cypher para que el proceso sea idempotente: si ya existe
-la arista para una semana, actualiza sus valores; si no existe, la crea. Esta propiedad
-garantiza que el grafo pueda repoblarse sin duplicar datos.
+En esta actividad se implementó el grafo de conocimiento electoral en Neo4j utilizando un esquema compuesto por los labels: \texttt{Documento}, \texttt{Fragmento}, \texttt{Tema}, \texttt{Actor}, \texttt{Candidato}, \texttt{Categoria}, \texttt{Encuesta}, \texttt{SentimientoDiario}, \texttt{TipoCambio} e \texttt{IndicadorMacro}. Las relaciones implementadas fueron: \texttt{CONTIENE}, \texttt{SOBRE\_TEMA}, \texttt{MENCIONA}, \texttt{MENCIONA\_ACTOR}, \texttt{DE\_CATEGORIA}, \texttt{MIDE} y \texttt{TIENE\_SENTIMIENTO\_EN}.
+
+A diferencia del diseño conceptual inicial, el sistema implementado no utiliza el nodo \texttt{Periodo} ni las relaciones \texttt{CO\_OCURRE}, \texttt{CUBRE}, \texttt{SILENCIA} o \texttt{REACCIONA\_A}. El pipeline de agregación actualiza los nodos y relaciones mediante operaciones idempotentes sobre Neo4j para evitar duplicación de información durante la reejecución de procesos ETL.
  
 \textbf{Entregable}: Grafo de conocimiento electoral en Neo4j con datos agregados semanalmente.
  
 \textbf{Actividad 4: Implementar sistema GraphRAG para consultas}
  
-En esta actividad se implementó el módulo de consulta en lenguaje natural sobre el grafo
-electoral. El sistema inyecta el schema completo del grafo al contexto del LLM en cada
-consulta, junto con ejemplos de preguntas-Cypher en modalidad few-shot, lo que permite
-al modelo traducir preguntas en español como «¿Qué temas co-ocurren con corrupción
-en cobertura negativa?» a consultas Cypher válidas sobre el grafo de Neo4j. Las respuestas
-son fundamentadas con fragmentos textuales de los documentos originales, garantizando
-la trazabilidad de cada hallazgo hasta su fuente primaria.
+El módulo de consulta al grafo de conocimiento se implementó como un servidor MCP (\textit{Model Context Protocol}) mediante el framework FastMCP 3.2.4, utilizando transporte \texttt{streamable-http} sobre el puerto 8080. El servidor expone 13 herramientas tipadas que los clientes LLM —como Claude Desktop y Claude.ai— pueden invocar directamente durante una conversación:
+
+\begin{itemize}
+    \item \texttt{contexto\_candidato}
+    \item \texttt{evolucion\_sentimiento\_candidato}
+    \item \texttt{comparar\_candidatos\_sentimiento}
+    \item \texttt{temas\_top\_periodo}
+    \item \texttt{buscar\_tema\_por\_descripcion}
+    \item \texttt{buscar\_actor\_por\_descripcion}
+    \item \texttt{noticias\_por\_actor}
+    \item \texttt{citar\_evidencia}
+    \item \texttt{panorama\_diario}
+    \item \texttt{intencion\_voto\_candidato}
+    \item \texttt{encuestas\_disponibles}
+    \item \texttt{tipo\_cambio\_periodo}
+    \item \texttt{indicador\_macro\_periodo}
+\end{itemize}
+
+Cada herramienta valida sus entradas y salidas mediante esquemas Pydantic v2, mientras que el \texttt{outputSchema} JSON generado automáticamente permite validación estricta por parte del cliente consumidor. La autenticación del servidor se implementó mediante Bearer Token con comparación en tiempo constante utilizando \texttt{hmac.compare\_digest}, reduciendo la posibilidad de ataques de temporización.
  
 \textbf{Entregable}: Módulo GraphRAG funcional con ejemplos de consultas en lenguaje natural validados.
  
@@ -678,55 +669,58 @@ la trazabilidad de cada hallazgo hasta su fuente primaria.
 Esta fase incluye la evaluación del sistema de inteligencia electoral mediante las métricas seleccionadas de clasificación y calidad de temas. Las actividades y tareas desarrolladas se presentan en la Tabla \ref{4:table7}.
 
  
-\begin{longtable}{m{5cm}m{4.5cm}M{5.5cm}}
-    \caption[Plan de Ejecución de la fase Validación]{Plan de Ejecución de la fase Validación.}
-    \label{4:table7}
-    \footnotesize
-    \small
-    \tabularnewline \specialrule{.1em}{.05em}{.05em}
-    \centering Plan de Ejecución & \centering Alcance & Acciones \\
-    \specialrule{.1em}{.05em}{.05em}
-    Evaluar módulo de análisis de sentimientos.
-    & Evaluación del desempeño del análisis de sentimientos comparando los resultados del LLM con etiquetas humanas de referencia.
-    & \setlist{nolistsep}
-    \begin{itemize}[label={--},nosep,noitemsep,leftmargin=*,topsep=0pt,partopsep=0pt]
-        \item Construir conjunto de validación con etiquetas humanas.
-        \item Calcular exactitud, precisión, sensibilidad y F1.
-        \item Comparar resultados entre distintas configuraciones de prompt.
-    \end{itemize}
-    \\
-    \hline
-    Evaluar módulo de detección de temas.
-    & Evaluación de la coherencia semántica y diversidad de los temas detectados por BERTopic.
-    & \setlist{nolistsep}
-    \begin{itemize}[label={--},nosep,noitemsep,leftmargin=*,topsep=0pt,partopsep=0pt]
-        \item Calcular coherencia C\textsubscript{v} de los temas.
-        \item Evaluar diversidad temática del corpus.
-        \item Validar etiquetas de clusters con analistas políticos.
-    \end{itemize}
-    \\
-    \hline
-    Evaluar sistema GraphRAG.
-    & Evaluación de la precisión de las consultas Cypher generadas y la calidad de las respuestas en lenguaje natural.
-    & \setlist{nolistsep}
-    \begin{itemize}[label={--},nosep,noitemsep,leftmargin=*,topsep=0pt,partopsep=0pt]
-        \item Diseñar conjunto de preguntas de evaluación con respuesta esperada.
-        \item Medir exactitud de las consultas Cypher generadas.
-        \item Evaluar factualidad y trazabilidad de las respuestas.
-    \end{itemize}
-    \\
-    \hline
-    Evaluar el sistema integrado.
-    & Evaluación del pipeline completo en términos de latencia, escalabilidad y correlación con encuestas de opinión.
-    & \setlist{nolistsep}
-    \begin{itemize}[label={--},nosep,noitemsep,leftmargin=*,topsep=0pt,partopsep=0pt]
-        \item Medir latencia extremo a extremo del pipeline.
-        \item Comparar indicadores ISN con encuestas electorales disponibles.
-        \item Evaluar correlación de Pearson entre ambas fuentes.
-    \end{itemize}
-    \\
-    \specialrule{.1em}{.05em}{.05em}
+\begingroup
+\renewcommand\arraystretch{1.2}
+\small
+\begin{longtable}{p{5cm}p{4.5cm}p{5.5cm}}
+\caption[Plan de Ejecución de la fase Validación]{Plan de Ejecución de la fase Validación.}
+\label{4:table7} \\
+\specialrule{.1em}{.05em}{.05em}
+\centering\textbf{Plan de Ejecución} & \centering\textbf{Alcance} & \centering\arraybackslash\textbf{Acciones} \\
+\specialrule{.1em}{.05em}{.05em}
+\endfirsthead
+
+% Este bloque se repetirá automáticamente si la tabla salta a la siguiente página
+\caption[]{Plan de Ejecución de la fase Validación (continuación).} \\
+\specialrule{.1em}{.05em}{.05em}
+\centering\textbf{Plan de Ejecución} & \centering\textbf{Alcance} & \centering\arraybackslash\textbf{Acciones} \\
+\specialrule{.1em}{.05em}{.05em}
+\endhead
+
+Evaluar módulo de análisis de sentimientos.
+& Evaluación del desempeño del análisis de sentimientos comparando los resultados del LLM con etiquetas humanas de referencia.
+& \begin{itemize}[label={--},nosep,leftmargin=*]
+\item Construir conjunto de validación con etiquetas humanas.
+\item Calcular exactitud, precisión, sensibilidad y F1.
+\item Comparar resultados entre distintas configuraciones de prompt.
+\end{itemize} \\ 
+\hline
+Evaluar módulo de detección de temas.
+& Evaluación de la coherencia semántica y diversidad de los temas detectados por BERTopic.
+& \begin{itemize}[label={--},nosep,leftmargin=*]
+\item Calcular coherencia C\textsubscript{v} de los temas.
+\item Evaluar diversidad temática del corpus.
+\item Validar etiquetas de clusters con analistas políticos.
+\end{itemize} \\ 
+\hline
+Evaluar sistema GraphRAG.
+& Evaluación de la precisión de las consultas Cypher generadas y la calidad de las respuestas en lenguaje natural.
+& \begin{itemize}[label={--},nosep,leftmargin=*]
+\item Diseñar conjunto de preguntas de evaluación con respuesta esperada.
+\item Medir exactitud de las consultas Cypher generadas.
+\item Evaluar factualidad y trazabilidad de las respuestas.
+\end{itemize} \\ 
+\hline
+Evaluar el sistema integrado.
+& Evaluación del pipeline completo en términos de latencia, escalabilidad y correlación con encuestas de opinión.
+& \begin{itemize}[label={--},nosep,leftmargin=*]
+\item Medir latencia extremo a extremo del pipeline.
+\item Comparar indicadores ISN con encuestas electorales disponibles.
+\item Evaluar correlación de Pearson entre ambas fuentes.
+\end{itemize} \\ 
+\specialrule{.1em}{.05em}{.05em}
 \end{longtable}
+\endgroup
 \begin{flushleft}
     \small Fuente: Elaboración propia.
 \end{flushleft}
@@ -736,36 +730,42 @@ Esta fase incluye la evaluación del sistema de inteligencia electoral mediante 
 En la fase final de la metodología, el sistema de inteligencia electoral se implementó como un prototipo funcional, accesible para analistas políticos y periodistas. Las actividades correspondientes a esta etapa se describen en la Tabla \ref{4:table8}.
 
  
-\begin{longtable}{m{4.5cm}m{5.3cm}M{5.2cm}}
-    \caption[Plan de Ejecución de la fase Implementación]{Plan de Ejecución de la fase Implementación.}
-    \label{4:table8}
-    \footnotesize
-    \centering
-    \small
-    \tabularnewline \specialrule{.1em}{.05em}{.05em}
-    \centering Plan de Ejecución & \centering Alcance & Acciones \\
-    \specialrule{.1em}{.05em}{.05em}
-    Diseñar dashboard de visualización.
-    & Diseño e implementación del dashboard interactivo que muestra los indicadores de percepción pública en tiempo real.
-    & \setlist{nolistsep}
-    \begin{itemize}[label={--},nosep,noitemsep,leftmargin=*,topsep=0pt,partopsep=0pt]
-        \item Diseñar vistas para ISN, IRT e IVE por candidato y período.
-        \item Implementar gráficos de evolución temporal y mapas de calor temáticos.
-        \item Integrar módulo de consulta GraphRAG en lenguaje natural.
-    \end{itemize}
-    \\
-    \hline
-    Ejecutar prototipo con datos electorales en vivo.
-    & Ejecución del sistema completo en condiciones reales durante el período de campaña presidencial.
-    & \setlist{nolistsep}
-    \begin{itemize}[label={--},nosep,noitemsep,leftmargin=*,topsep=0pt,partopsep=0pt]
-        \item Activar pipeline de ingesta en tiempo real.
-        \item Monitorear indicadores y detectar anomalías.
-        \item Generar reportes automáticos diarios.
-    \end{itemize}
-    \\
-    \specialrule{.1em}{.05em}{.05em}
+\begingroup
+\renewcommand\arraystretch{1.2}
+\small
+\begin{longtable}{p{4.5cm}p{5.3cm}p{5.2cm}}
+\caption[Plan de Ejecución de la fase Implementación]{Plan de Ejecución de la fase Implementación.}
+\label{4:table8} \\
+\specialrule{.1em}{.05em}{.05em}
+\centering\textbf{Plan de Ejecución} & \centering\textbf{Alcance} & \centering\arraybackslash\textbf{Acciones} \\
+\specialrule{.1em}{.05em}{.05em}
+\endfirsthead
+
+% Este bloque se repetirá automáticamente si la tabla salta a la siguiente página
+\caption[]{Plan de Ejecución de la fase Implementación (continuación).} \\
+\specialrule{.1em}{.05em}{.05em}
+\centering\textbf{Plan de Ejecución} & \centering\textbf{Alcance} & \centering\arraybackslash\textbf{Acciones} \\
+\specialrule{.1em}{.05em}{.05em}
+\endhead
+
+Diseñar dashboard de visualización.
+& Diseño e implementación del dashboard interactivo que muestra los indicadores de percepción pública en tiempo real.
+& \begin{itemize}[label={--},nosep,leftmargin=*]
+\item Diseñar vistas para ISN, IRT e IVE por candidato y período.
+\item Implementar gráficos de evolución temporal y mapas de calor temáticos.
+\item Integrar módulo de consulta GraphRAG en lenguaje natural.
+\end{itemize} \\ 
+\hline
+Ejecutar prototipo con datos electorales en vivo.
+& Ejecución del sistema completo en condiciones reales durante el período de campaña presidencial.
+& \begin{itemize}[label={--},nosep,leftmargin=*]
+\item Activar pipeline de ingesta en tiempo real.
+\item Monitorear indicadores y detectar anomalías.
+\item Generar reportes automáticos diarios.
+\end{itemize} \\ 
+\specialrule{.1em}{.05em}{.05em}
 \end{longtable}
+\endgroup
 \begin{flushleft}
     \small Fuente: Elaboración propia.
 \end{flushleft}
@@ -872,27 +872,28 @@ Fuente: Elaboración propia.}
 Los gastos asumidos por los autores para el desarrollo de la investigación se detallan en la Tabla \ref{4:table9}.
 
 \begin{table}[h!]
+\renewcommand\arraystretch{1.2}
 \caption[Presupuesto de costos personales del autor]{Detalle del presupuesto correspondiente a los costos personales del autor en el desarrollo de la investigación.}
 \label{4:table9}
 \centering
 \small
 \begin{tabular}{lcrr}
 \specialrule{.1em}{.05em}{.05em}
-\multicolumn{1}{c}{Ítem} & \multicolumn{1}{c}{Tiempo (horas)} & \multicolumn{1}{c}{Costo (soles)} & \multicolumn{1}{c}{Subtotal} \
+\multicolumn{1}{c}{\textbf{Ítem}} & \multicolumn{1}{c}{\textbf{Tiempo (horas)}} & \multicolumn{1}{c}{\textbf{Costo (soles)}} & \multicolumn{1}{c}{\textbf{Subtotal}} \\
 \specialrule{.1em}{.05em}{.05em}
-\multicolumn{4}{l}{Recursos materiales} \
-Equipo de cómputo para desarrollo (GPU integrada) & & S/.4,800.00 & S/.4,800.00 \
+\multicolumn{4}{l}{\textbf{Recursos materiales}} \\
+Equipo de cómputo para desarrollo (GPU integrada) & & S/.4,800.00 & S/.4,800.00 \\
 \hline
-\multicolumn{4}{l}{Gestiones académicas} \
-Matrícula en cursos de actualización y TSP & & S/.8500.00 & S/.8500.00 \
+\multicolumn{4}{l}{\textbf{Gestiones académicas}} \\
+Matrícula en cursos de actualización y TSP & & S/.8,500.00 & S/.8,500.00 \\
 \hline
-\multicolumn{4}{l}{Recursos humanos} \
-Desarrollo del avance de tesis & 900 & No cuantificable & -- \
+\multicolumn{4}{l}{\textbf{Recursos humanos}} \\
+Desarrollo del avance de tesis & 900 & No cuantificable & -- \\
 \hline
-\multicolumn{4}{l}{Servicios generales} \
-Internet y electricidad (5 meses) & 120 & S/.85.00 & S/.680.00 \
+\multicolumn{4}{l}{\textbf{Servicios generales}} \\
+Internet y electricidad (5 meses) & 120 & S/.85.00 & S/.680.00 \\
 \specialrule{.1em}{.05em}{.05em}
-Total & & & S/.14,880.00 \
+\textbf{Total} & & & \textbf{S/.14,880.00} \\
 \specialrule{.1em}{.05em}{.05em}
 \end{tabular}
 \begin{flushleft}
@@ -903,34 +904,31 @@ Total & & & S/.14,880.00 \
 Los gastos asociados al uso de servicios en la nube, necesarios para el procesamiento del corpus y el entrenamiento de los modelos, se detallan en la Tabla \ref{4:table10}.
 
 \begin{table}[h!]
-\caption[Presupuesto de herramientas y servicios en la nube]{Detalle del presupuesto correspondiente a herramientas y servicios en la nube empleados en el desarrollo del proyecto.}
+\renewcommand\arraystretch{1.2}
+\caption[Presupuesto de herramientas y servicios utilizados]{Detalle del presupuesto correspondiente a herramientas y servicios utilizados durante el desarrollo del sistema.}
 \label{4:table10}
 \centering
 \small
-\begin{tabular}{lcrcr}
+\begin{tabular}{p{5.5cm} >{\centering\arraybackslash}p{4.5cm} p{5cm}}
 \specialrule{.1em}{.05em}{.05em}
-\multicolumn{1}{c}{Ítem} & \multicolumn{1}{c}{Unidades} & \multicolumn{1}{c}{Costo (USD)} & \multicolumn{1}{c}{Horas} & \multicolumn{1}{c}{Subtotal} \
+\multicolumn{1}{c}{\textbf{Ítem}} & \multicolumn{1}{c}{\textbf{Costo estimado}} & \multicolumn{1}{c}{\textbf{Notas}} \\
 \specialrule{.1em}{.05em}{.05em}
-\multicolumn{4}{l}{Google Cloud Platform (GCP)} & -- \
-Máquina virtual para scraping (e2-medium, 4 GB RAM) & 1 & $0.034 & 400 & $13.60 \
-Cloud Run para ejecución del pipeline en tiempo real & 1 & $0.024 & 300 & $7.20 \
-Cloud Storage para la capa Bronze & 1 & $0.020 & -- & $8.00 \
-BigQuery para las capas Silver/Gold & 1 & $5.00 & -- & $15.00 \
+\multicolumn{3}{l}{\textbf{Servicios y APIs en la nube}} \\
+DeepSeek API (etiquetado LLM, $\sim$10k docs/mes) & $\sim$\$8 USD/mes & \$0.0008/doc con 85.5\% cache hit \\
 \hline
-\multicolumn{4}{l}{API de modelos LLM} & -- \
-Gemini Flash API (tokens de análisis) & -- & $0.075/1M & -- & $45.00 \
-OpenAI GPT-4o API (validación) & -- & $5.00/1M & -- & $25.00 \
+TwitterAPI.io (acceso datos Twitter/X) & Variable & Alternativa a API oficial X \\
 \hline
-\multicolumn{4}{l}{Neo4j AuraDB (base de datos de grafos)} & -- \
-Plan Professional (1 instancia) & 3 & $65.00 & -- & $195.00 \
+\multicolumn{3}{l}{\textbf{Infraestructura y bases de datos locales}} \\
+Infraestructura de cómputo & \$0 & Docker sobre laptop/servidor propio \\
 \hline
-\multicolumn{4}{l}{API de X/Twitter} & -- \
-Plan Basic (hasta 10k tweets/mes) & 6 & $100.00 & -- & $600.00 \
+Neo4j Community Edition & \$0 & Sin cargo (reemplaza AuraDB) \\
 \hline
-\multicolumn{4}{l}{YouTube Data API} & -- \
-Cuota gratuita (10,000 unidades/día) & -- & $0.00 & -- & $0.00 \
+PostgreSQL + pgvector & \$0 & Contenedor Docker local \\
+\hline
+\multicolumn{3}{l}{\textbf{Herramientas de extracción}} \\
+YouTube / TikTok scraping & \$0 & \texttt{yt-dlp}, sin API de pago \\
 \specialrule{.1em}{.05em}{.05em}
-Total & & & & $908.80 \
+\textbf{Total aproximado} & \textbf{$\sim$\$8 USD/mes + costos variables} & \textbf{Dependiente del volumen de datos} \\
 \specialrule{.1em}{.05em}{.05em}
 \end{tabular}
 \begin{flushleft}
