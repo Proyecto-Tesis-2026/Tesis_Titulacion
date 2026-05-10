@@ -182,7 +182,7 @@ En el contexto de la inteligencia electoral, la medición de la polarización po
 \subsection{Monitoreo en Tiempo Real}
 % ──────────────────────────────────────────────────────────────
 
-El \textbf{monitoreo en tiempo real} (\textit{real-time monitoring}) es la capacidad de un sistema computacional para ingerir, procesar y analizar flujos continuos de datos digitales con una latencia mínima, generando resultados actualizados de manera casi instantánea \parencite{mc_garcia2025real_time}. En el contexto de la inteligencia electoral, esto significa que el sistema es capaz de detectar un cambio brusco en el tono de la cobertura mediática o la emergencia de un nuevo tema en el ecosistema digital en cuestión de minutos desde que el evento desencadenante ocurre.
+El \textbf{monitoreo en tiempo real} (\textit{real-time monitoring}) es la capacidad de un sistema computacional para ingerir, procesar y analizar flujos continuos de datos digitales con una latencia mínima, generando resultados actualizados de manera casi instantánea \parencite{mc_stonebraker2005streaming}. En el contexto de la inteligencia electoral, esto significa que el sistema es capaz de detectar un cambio brusco en el tono de la cobertura mediática o la emergencia de un nuevo tema en el ecosistema digital en cuestión de minutos desde que el evento desencadenante ocurre.
 
 El monitoreo en tiempo real requiere una arquitectura de software que incluye: (1) un módulo de ingesta de datos en streaming (scrapers de noticias, API de X/Twitter, \textit{yt-dlp} para YouTube y TikTok), (2) un módulo de preprocesamiento y transcripción de contenido audiovisual, (3) un módulo de inferencia con el LLM que clasifica sentimientos y detecta temas de manera paralela para cada fuente, y (4) un módulo de visualización que actualiza los dashboards en tiempo real, como se esquematiza en la Figura \ref{fig:realtime_architecture}.
 
@@ -193,7 +193,7 @@ El monitoreo en tiempo real requiere una arquitectura de software que incluye: (
         %   el pipeline de transcripción audiovisual (YouTube/TikTok)
         %   como etapa previa al análisis LLM. Ver notas_figuras.tex.
         \caption[Arquitectura de procesamiento multimodal en tiempo real para monitoreo de cobertura mediática electoral]{Arquitectura del sistema de monitoreo de cobertura mediática electoral: ingesta multimodal (noticias, X/Twitter, YouTube, TikTok), preprocesamiento y transcripción audiovisual, inferencia LLM paralela y actualización de dashboards de visualización.\\
-            Fuente: Elaboración propia basada en \cite{mc_garcia2025real_time}.}
+            Fuente: Elaboración propia basada en \cite{mc_stonebraker2005streaming}.}
         \label{fig:realtime_architecture}
     \end{center}
 \end{figure}
