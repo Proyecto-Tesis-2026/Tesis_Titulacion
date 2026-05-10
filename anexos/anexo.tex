@@ -80,7 +80,7 @@
         & OE1: Evaluar la precisión del análisis de sentimientos utilizando LLMs frente a modelos tradicionales de procesamiento de lenguaje natural.
         & HE1: Los LLMs mejoran significativamente la precisión del análisis de sentimientos respecto a modelos tradicionales.
         & \multirow{10}{=}{Dependiente: Percepción actual proyectada por los medios de comunicación en ecosistemas digitales}
-        & Sentimiento ciudadano
+        & Sentimiento mediático por candidato
         & Score continuo $[-1, 1]$ por candidato \\
         \cline{2-4} \cline{6-7}
 
@@ -173,10 +173,10 @@
 		\textbf{Parámetro} & \textbf{Valor} & \textbf{Justificación} \\
 		\specialrule{.1em}{.05em}{.05em}
 
-		Modelo Embedding & \texttt{paraphrase-multilingual-MiniLM-L12-v2} & Mejor balance entre calidad semántica y velocidad para español \cite{mc_reimers2019sbert} \\
+		Modelo Embedding & \texttt{paraphrase-multilingual-mpnet-base-v2} & Mejor balance entre calidad semántica y velocidad para español \cite{mc_reimers2019sbert} \\
 		\hline
 
-		Dimensión Embedding & 384 & Dimensión estándar del modelo multilingüe seleccionado \\
+		Dimensión Embedding & 768 & Dimensión estándar del modelo multilingüe seleccionado \\
 		\hline
 
 		Almacén Vectorial & PostgreSQL + pgvector & Búsqueda por similitud cosine sobre el catálogo incremental de temas \\
@@ -221,9 +221,9 @@
 \small
 \setlength{\LTpost}{0pt}
 
-\begin{longtable}{p{2.5cm} p{3.5cm} p{6.5cm}}
-    \caption[Esquema del grafo de conocimiento electoral]{Especificación completa de nodos, propiedades y relaciones implementadas en el grafo de conocimiento electoral en Neo4j AuraDB.} \label{tbl:esquema_grafo} \\
-    
+\begin{longtable}{p{2.6cm} p{4.2cm} p{5.5cm}}
+    \caption[Esquema del grafo de conocimiento electoral]{Especificación completa de nodos, propiedades y relaciones implementadas en el grafo de conocimiento electoral en Neo4j 5.20 Community Edition (con plugins GDS y APOC).} \label{tbl:esquema_grafo} \\
+
     \specialrule{.1em}{.05em}{.05em}
     \centering\textbf{TIPO NODO} & \centering\textbf{PROPIEDADES} & \centering\arraybackslash\textbf{DESCRIPCIÓN} \\
     \specialrule{.1em}{.05em}{.05em}
@@ -233,25 +233,29 @@
     \centering\textbf{TIPO NODO} & \centering\textbf{PROPIEDADES} & \centering\arraybackslash\textbf{DESCRIPCIÓN} \\
     \specialrule{.1em}{.05em}{.05em}
     \endhead
-    
-    Candidato & id, nombre, partido, color\_hexa, estatus & Candidatos presidenciales en el proceso electoral \\ \hline
-    Tema & id, nombre, etiqueta\_llm, coherencia\_cv, palabras\_clave, frecuencia & Temas emergentes detectados por el módulo híbrido LLM con catálogo incremental \\ \hline
-    Fuente & id, tipo, nombre, url, alcance & Portales de noticias, redes sociales, canales de video \\ \hline
-    Evento & id, fecha, tipo, descripción, impacto & Debates, mítines, declaraciones críticas \\ \hline
-    Período & id, fecha\_inicio, fecha\_fin, nombre & Ventanas temporales de análisis (semanal, mensual) \\ \hline
-    
+
+    Documento & id, uid, fuente, tipo, titulo, url, publicado\_en & Publicaciones del corpus multifuente (noticia, twitter, youtube, tiktok) \\ \hline
+    Fragmento & id, texto, embedding (768D), fecha & Segmento textual extraído del documento, indexado vectorialmente \\ \hline
+    Tema & id, nombre, categoria, embedding (768D) & Temas emergentes detectados por el módulo híbrido LLM con catálogo incremental \\ \hline
+    Actor & id (slug), nombre, tipo, embedding (768D) & Actores institucionales o ad-hoc detectados en el corpus \\ \hline
+    Candidato & id (slug), nombre, partido, espectro\_politico, embedding (768D) & Candidatos presidenciales del proceso electoral \\ \hline
+    Categoria & nombre & Categoría temática del catálogo cerrado de 17 valores \\ \hline
+    Encuesta & id, encuestadora, fecha\_publicacion, n\_muestra, margen\_error & Encuestas electorales con metadatos completos \\ \hline
+    SentimientoDiario & id, fecha, actor\_id, sentimiento\_avg, n\_menciones & Agregado diario del sentimiento mediático por candidato \\ \hline
+    TipoCambio & fecha, moneda, compra, venta, promedio & Tipo de cambio diario (BCRP) \\ \hline
+    IndicadorMacro & fecha, indicador, valor, unidad & Indicadores macroeconómicos (IGBVL var \%, EMBI Perú) \\ \hline
+
     \specialrule{.1em}{.05em}{.05em}
     \textbf{TIPO RELACIÓN} & \multicolumn{2}{p{10cm}}{\centering\textbf{METADATOS Y DESCRIPCIÓN}} \\
     \specialrule{.1em}{.05em}{.05em}
-    
-    MENCIONA & timestamp, frecuencia, sentimiento\_promedio & Documento menciona a candidato \\ \hline
-    EXPRESA\_SENTIMIENTO & score\_continuo, fecha, fuente\_tipo & Candidato-Tema con polaridad \\ \hline
-    ASOCIADO\_A & confianza, coocurrencia & Tema asociado a evento electoral \\ \hline
-    PUBLICADO\_EN & fecha, alcance, interacciones & Documento publicado en fuente específica \\ \hline
-    PERTENECE\_A & período & Evento/documento asignado a período temporal \\ \hline
-    RELACIONADO\_CON & similitud\_temática & Temas relacionados \\ \hline
-    REACCIONA\_A & timestamp, sentimiento & Ciudadano reacciona a evento \\ \hline
-    INFLUYE & intensidad & Evento influye en percepción de candidato \\ 
+
+    CONTIENE & (sin propiedades) & Documento contiene Fragmento \\ \hline
+    SOBRE\_TEMA & sentimiento, confianza & Fragmento trata sobre un Tema \\ \hline
+    MENCIONA & sentimiento, rol & Fragmento menciona a un Candidato con un sentimiento dado \\ \hline
+    MENCIONA\_ACTOR & rol & Fragmento menciona a un Actor (institucional o ad-hoc) \\ \hline
+    DE\_CATEGORIA & (sin propiedades) & Tema pertenece a una Categoria del catálogo cerrado \\ \hline
+    MIDE & intencion\_voto, posicion\_ranking & Encuesta mide la intención de voto de un Candidato \\ \hline
+    TIENE\_SENTIMIENTO\_EN & (sin propiedades) & Candidato tiene un agregado SentimientoDiario en una fecha \\
     \specialrule{.1em}{.05em}{.05em}
 \end{longtable}
 \endgroup
@@ -286,7 +290,7 @@
 		Temas de Campaña & economía, seguridad, educación, salud, corrupción, gobernabilidad, infraestructura & 7 \\
 		\hline
 		
-		Hashtags Electorales & \#ElecciónesPerú2024, \#Voto2024, \#DebatePresidencial, \#CuéntaTuVoto & 4+ \\
+		Hashtags Electorales & \#EleccionesPerú2026, \#Voto2026, \#DebatePresidencial, \#CuéntaTuVoto & 4+ \\
 		\hline
 		
 		Candidatos & Nombres completos, apodos, siglas de partidos & Dinámico según proceso \\
@@ -362,7 +366,7 @@ Donde $W_t$ es el conjunto de palabras clave del tema $t$, y $\text{cohere}_V$ e
 		1. Comprensión del Negocio & Definición de problema, objetivos e hipótesis; Revisión de literatura & 2 semanas & Documento de especificaciones \\
 		\hline
 		
-		2. Comprensión de Datos & Construcción de corpus (noticias, X, YouTube); Análisis exploratorio & 3 semanas & Datasets en capas Bronze y Silver \\
+		2. Comprensión de Datos & Construcción de corpus (noticias digitales, X/Twitter, YouTube, TikTok); Análisis exploratorio & 3 semanas & Datasets en capas Bronze y Silver \\
 		\hline
 		
 		3. Preparación de Datos & Limpieza, normalización, tokenización; Segmentación por período & 2 semanas & Corpus preprocesado validado \\
