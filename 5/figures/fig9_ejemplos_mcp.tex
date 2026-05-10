@@ -1,0 +1,19 @@
+% Fig 6:fig9 -- Ejemplos de preguntas en lenguaje natural y tools MCP invocadas.
+\begin{tikzpicture}[
+    node distance=0.18cm,
+    every node/.style={font=\scriptsize, align=left, inner sep=5pt},
+    pregunta/.style={draw, rounded corners=2pt, fill=blue!10, minimum width=14cm, minimum height=0.6cm},
+    tool/.style={draw, rounded corners=2pt, fill=green!12, minimum width=14cm, minimum height=0.65cm, font=\ttfamily\scriptsize}
+]
+    \node[pregunta] (q1) {\textbf{P1.} ``\textit{Como va el sentimiento hacia Keiko Fujimori en la ultima semana?}''};
+    \node[tool, below=of q1] (t1) {\textbf{tools/call}: evolucion\_sentimiento\_candidato\{candidato\_id=``keiko\_fujimori'', fecha\_inicio=2026-03-15, fecha\_fin=2026-03-22\}};
+
+    \node[pregunta, below=0.3cm of t1] (q2) {\textbf{P2.} ``\textit{Cuales son los 5 temas mas cubiertos en marzo de 2026?}''};
+    \node[tool, below=of q2] (t2) {\textbf{tools/call}: temas\_top\_periodo\{fecha\_inicio=2026-03-01, fecha\_fin=2026-03-31, top\_n=5, metrica=``compuesto''\}};
+
+    \node[pregunta, below=0.3cm of t2] (q3) {\textbf{P3.} ``\textit{Que dice el corpus sobre el debate presidencial del 22 de marzo?}''};
+    \node[tool, below=of q3] (t3) {\textbf{tools/call}: buscar\_tema\_por\_descripcion\{query=``debate presidencial'', fecha\_inicio=2026-03-22\} $\to$ citar\_evidencia};
+
+    \node[pregunta, below=0.3cm of t3] (q4) {\textbf{P4.} ``\textit{Hay diferencia entre la cobertura de medios y X/Twitter?}''};
+    \node[tool, below=of q4] (t4) {\textbf{tools/call}: panorama\_diario\{fecha=2026-03-22, incluir\_buckets=false\}};
+\end{tikzpicture}

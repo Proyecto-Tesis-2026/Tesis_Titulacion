@@ -1,0 +1,33 @@
+% Fig 6:fig2 -- Arquitectura del modulo de deteccion dinamica de temas (LLM + retrieval).
+\begin{tikzpicture}[
+    node distance=0.4cm,
+    every node/.style={font=\footnotesize, align=center, inner sep=4pt},
+    src/.style={draw, rounded corners=2pt, fill=blue!12, minimum width=2.6cm, minimum height=0.6cm, font=\scriptsize},
+    proc/.style={draw, rounded corners=2pt, fill=yellow!15, minimum width=3.6cm, minimum height=0.9cm},
+    db/.style={draw, rounded corners=2pt, fill=orange!12, minimum width=3cm, minimum height=0.9cm, font=\scriptsize},
+    arrow/.style={-{Stealth[length=2mm]}, thick}
+]
+    % Entrada: documento + embedding
+    \node[src] (doc) {Documento};
+    \node[src, right=1cm of doc] (emb) {Embedding 768D};
+
+    % Construccion del menu (5 tiers)
+    \node[proc, below=of doc, xshift=2.2cm] (menu) {Menu de temas \\ \scriptsize 5 tiers (trending, semantico, \\ \scriptsize lexico, actor, evento)};
+
+    % LLM call
+    \node[proc, below=of menu, fill=green!15] (llm) {LLM (DeepSeek-Chat) \\ \scriptsize prompt + schema + few-shot};
+
+    % Override + dedup
+    \node[proc, below=of llm, fill=purple!12] (ovr) {Override semantico + dedup \\ \scriptsize cosine $\ge 0.85$ + Jaccard};
+
+    % Persistencia
+    \node[db, below=of ovr] (db) {temas\_conocidos \\ \scriptsize aliases\_temas};
+
+    % Conexiones
+    \draw[arrow] (doc.south) -- ($(menu.north)+(-1.1,0)$);
+    \draw[arrow] (emb.south) -- ($(menu.north)+(1.1,0)$);
+    \draw[arrow] (menu) -- (llm);
+    \draw[arrow] (llm)  -- (ovr);
+    \draw[arrow] (ovr)  -- (db);
+    \draw[arrow, dashed, gray] (db.east) to[bend right=60] node[right, font=\scriptsize] {alimenta menu siguiente} (menu.east);
+\end{tikzpicture}

@@ -6,7 +6,8 @@ En esta sección se describe el diseño, el tipo y el enfoque del trabajo de inv
  
 \subsection{Tipo de la investigación}
  
-Para establecer el tipo de investigación, fue necesario definir el presente estudio como de \textbf{Diseño Experimental}, dado que, según \cite{bk_hernandez2014metodologia} en su obra \citetitle{bk_hernandez2014metodologia}, este enfoque busca identificar el posible efecto de una causa que es manipulada. Dentro de esta categoría, se clasifica como un \textbf{Diseño Experimental Puro}, debido a que se intervinieron deliberadamente una o más variables independientes —en este caso, la configuración del pipeline de análisis con LLMs— con el propósito de evaluar su impacto sobre la variable dependiente: la precisión en la clasificación del sentimiento y la coherencia semántica en la detección de temas relevantes dentro del ecosistema digital electoral peruano.
+Para establecer el tipo de investigación, fue necesario definir el presente estudio como de \textbf{Diseño Experimental}, dado que, según \cite{bk_hernandez2014metodologia} en su obra \citetitle{bk_hernandez2014metodologia}, este enfoque busca identificar el posible efecto de una causa que es manipulada. Dentro de esta categoría, se clasifica como un \textbf{Diseño Experimental Puro}, debido a que se intervinieron deliberadamente una o más variables independientes —en este caso, la configuración de la arquitectura computacional, que integra un enfoque \textbf{GraphRAG Híbrido} (bases de datos vectoriales con \textit{pgvector} y de grafos con \textit{Neo4j}), la orquestación de múltiples Modelos Fundacionales como  DeepSeek y la exposición de herramientas analíticas vía el \textbf{Model Context Protocol (MCP)}— con el propósito de evaluar su impacto sobre la variable dependiente. Dicho impacto se mide a través de la precisión en la clasificación del sentimiento, la coherencia semántica en la detección de temas, y la eficiencia y relevancia en la recuperación de información del ecosistema digital electoral peruano.
+
 
 \subsection{Enfoque de la investigación}
  
@@ -14,71 +15,60 @@ El presente estudio adoptó un \textbf{enfoque cuantitativo}, ya que, de acuerdo
  
 \subsection{Población}
  
-La población fue el conjunto de todas las publicaciones digitales en español relacionadas
-con el proceso electoral peruano, generadas en plataformas de redes sociales (X/Twitter),
-portales de noticias digitales y canales de YouTube durante el período de campaña
-presidencial analizado.
+La población fue el conjunto de todas las publicaciones digitales en español relacionadas con el proceso electoral peruano, generadas en plataformas de redes sociales (X/Twitter), plataformas de videos cortos (TikTok), canales de contenido audiovisual (YouTube) y portales de noticias digitales durante el período de campaña presidencial analizado.
  
 \subsection{Muestra}
  
-La muestra estuvo conformada por publicaciones recolectadas de tres fuentes de datos
-durante el período electoral comprendido entre los meses de enero y junio del año en
-curso: (1) artículos y noticias digitales de los principales portales de prensa peruanos;
-(2) comentarios de usuarios en los videos de YouTube de los candidatos y programas
-periodísticos de cobertura electoral; y (3) tweets y publicaciones de X/Twitter
-relacionados con los candidatos presidenciales, filtrados mediante palabras clave
-electorales y hashtags de campaña. El criterio de delimitación temporal obedeció a la
-necesidad de capturar el período de mayor actividad del ecosistema digital electoral,
-excluyendo etapas de baja intensidad que distorsionarían los patrones de sentimiento y
-emergencia de temas.
- 
+La muestra estuvo conformada por publicaciones recolectadas de cuatro fuentes de datos independientes durante el período electoral analizado: (1) artículos y noticias digitales de los principales portales de prensa peruanos (El Comercio, La República, RPP, Diario Correo); (2) videos YouTube correspondientes a los candidatos y programas periodísticos de cobertura electoral; (3) tweets de la plataforma X/Twitter; y (4) videos y transcripciones de la red social TikTok. La extracción se delimitó mediante palabras clave electorales, \textit{hashtags} de campaña y menciones a cuentas oficiales. El criterio de delimitación temporal obedeció a la necesidad de capturar el período de mayor actividad del ecosistema digital electoral, excluyendo etapas de baja intensidad que distorsionarían los patrones de sentimiento y emergencia de temas.
+
 \subsection{Operacionalización de variables}
  
 En la Tabla \ref{4:table1} se muestra la operacionalización de las variables correspondientes a la investigación.
- 
 \begingroup
-\renewcommand\arraystretch{1.3}
-\small
-% Ajustamos los anchos para que sumen exactamente el ancho del texto (aprox 15.5cm totales)
-\begin{longtable}{p{2.8cm} p{3.5cm} p{3.5cm} p{4.5cm}}
-\caption[Matriz de operacionalización de variables]{Matriz de operacionalización de variables.}
-\label{4:table1} \\
-\specialrule{.1em}{.05em}{.05em}
-\centering\textbf{VARIABLE} & \centering\textbf{DIMENSIÓN} & \centering\textbf{INDICADOR} & \centering\arraybackslash\textbf{CÁLCULO} \\
-\specialrule{.1em}{.05em}{.05em}
-\endfirsthead
+\begin{longtable}{M{3cm}M{4.2cm}M{3.6cm}M{4.8cm}}
+    \caption[Matriz de operacionalización de variables]{Matriz de operacionalización de variables.}
+    \label{4:table1}
+    \centering
+    \small
+    \tabularnewline \specialrule{.1em}{.05em}{.05em}
+    VARIABLE & DIMENSIÓN & INDICADOR & CÁLCULO \\
+    \specialrule{.1em}{.05em}{.05em}
 
-\caption[]{Matriz de operacionalización de variables (continuación).} \\
-\specialrule{.1em}{.05em}{.05em}
-\centering\textbf{VARIABLE} & \centering\textbf{DIMENSIÓN} & \centering\textbf{INDICADOR} & \centering\arraybackslash\textbf{CÁLCULO} \\
-\specialrule{.1em}{.05em}{.05em}
-\endhead
+    % Variable independiente
+    \multirow{10}{3cm}[-6ex]{\centering Independiente: Sistema de Inteligencia Electoral GraphRAG Híbrido}
+    & \multirow{5}{4.2cm}[-1ex]{\centering Arquitectura de Extracción y Análisis (LLMs)}
+    & \multicolumn{2}{c}{\centering Configuración del pipeline de análisis} \\
+    \cline{3-4}
+    & & \multirow{4}{3.6cm}[0ex]{\centering Efectividad del análisis predictivo}
+    & Exactitud en clasificación de sentimiento y detección de actores \\
+    \cline{4-4}
+    & & & Coherencia semántica de temas (C\textsubscript{v}) \\
+    \cline{4-4}
+    & & & Latencia de procesamiento e ingesta (ms) \\
+    \cline{2-4}
+    & \multirow{5}{4.2cm}[-1ex]{\centering Arquitectura de Recuperación (Grafos y Vectores)}
+    & \multicolumn{2}{c}{\centering Configuración Neo4j y pgvector + MCP Server} \\
+    \cline{3-4}
+    & & \multirow{4}{3.6cm}[0ex]{\centering Efectividad de recuperación (Retrieval)}
+    & Latencia de consulta vía Model Context Protocol (ms) \\
+    \cline{4-4}
+    & & & Exhaustividad de contexto en nodos (Recall R@k) \\
 
-% Variable independiente
-\multirow{9}{=}{Independiente: Sistema de Inteligencia Electoral con LLM} 
-& \multirow{7}{=}{Modelo LLM de Análisis} 
-& \multicolumn{2}{p{8cm}}{\centering Configuración del pipeline de análisis} \\* \cline{3-4}
-& & \multirow{6}{=}{Efectividad del análisis con LLM} 
-& Exactitud en clasificación de sentimiento \\* \cline{4-4}
-& & & Coherencia semántica de temas ($C_v$) \\* \cline{4-4}
-& & & Índice de Sentimiento Neto (ISN) \\* \cline{4-4}
-& & & Índice de Relevancia Temática (IRT) \\* \cline{4-4}
-& & & Latencia de procesamiento (ms) \\* \cline{2-4}
-& Arquitectura del pipeline & \multicolumn{2}{p{8cm}}{Complejidad e integridad del pipeline de procesamiento} \\ \hline
+    \hline
 
 % Variable dependiente
-\multirow{10}{=}{Dependiente: Percepción pública nacional en el ecosistema digital} 
-& \multirow{4}{=}{Sentimiento ciudadano} 
-& \multirow{2}{=}{Polaridad de sentimiento} 
+\multirow{10}{=}{Dependiente: Percepción actual proyectada por los medios de comunicación en ecosistemas digitales}
+& \multirow{4}{=}{Sentimiento ciudadano}
+& \multirow{2}{=}{Polaridad de sentimiento}
 & Positivo: $S(d,e) > 0$ \\* \cline{4-4}
 & & & Negativo: $S(d,e) < 0$ \\* \cline{3-4}
 & & Intensidad del sentimiento & Score continuo $[-1, 1]$ \\* \cline{2-4}
-& \multirow{6}{=}{Conversación digital electoral} 
-& \multirow{2}{=}{Metainformación del corpus} 
+& \multirow{6}{=}{Conversación digital electoral}
+& \multirow{2}{=}{Metainformación del corpus}
 & Volumen de publicaciones por período \\* \cline{4-4}
 & & & Distribución por fuente de datos \\* \cline{3-4}
 & & Temas relevantes & Número y coherencia de temas detectados \\* \cline{3-4}
-& & \multirow{2}{=}{Evolución temporal} 
+& & \multirow{2}{=}{Evolución temporal}
 & Velocidad de emergencia de temas \\* \cline{4-4}
 & & & Cambios de sentimiento por evento electoral \\
 \specialrule{.1em}{.05em}{.05em}
@@ -88,10 +78,8 @@ En la Tabla \ref{4:table1} se muestra la operacionalización de las variables co
     \small Fuente: Elaboración propia.
 \end{flushleft}
  
-El estudio tiene como objetivo abordar el problema del análisis de la percepción pública a nivel nacional en ecosistemas digitales de carácter electoral, implementando un pipeline automatizado de inteligencia
-electoral que integra análisis de sentimientos con LLMs y detección dinámica de temas
-mediante BERTopic sobre un corpus multicanal de publicaciones en español.
- 
+El estudio tiene como objetivo abordar el problema del análisis de la percepción actual proyectada por los medios de comunicación en ecosistemas digitales de carácter electoral, implementando un pipeline automatizado de inteligencia electoral que integra análisis de sentimientos con LLMs y detección dinámica de temas mediante un enfoque híbrido LLM con catálogo incremental sobre un corpus multicanal de publicaciones en español.
+
 La variable dependiente —la percepción pública nacional— se operacionaliza a través del
 sentimiento expresado en publicaciones digitales hacia cada candidato presidencial,
 desagregado por fuente de información, período temporal y tema relevante asociado.
@@ -102,27 +90,35 @@ permite capturar la complejidad real del discurso político ciudadano a nivel de
  
 \section{Técnicas de recolección de datos}
  
-Los conjuntos de datos recopilados para la investigación están conformados por variables de carácter cuantitativo, como el score continuo de sentimiento $[-1, 1]$, el volumen de
-publicaciones por período y la frecuencia de temas— y variables cualitativas —como el
-texto de las publicaciones, los fragmentos clave que justifican el sentimiento y las
-etiquetas de temas generadas por el LLM—. Para obtener los tres corpus principales, se
-siguió el flujo de la Figura \ref{4:fig1}.
+Los conjuntos de datos recopilados para la investigación están conformados por variables de carácter cuantitativo —como el volumen de publicaciones por período y el \textit{score} continuo de sentimiento $[-1, 1]$— y variables cualitativas —como el texto de las publicaciones, las transcripciones de videos, los fragmentos clave que justifican el sentimiento y las entidades extraídas por el LLM—. Para obtener el corpus multicanal, se diseñaron e implementaron cuatro módulos extractores independientes dentro del componente de recolección (\texttt{scrap-information}), abarcando: (1) portales de noticias digitales, (2) la plataforma X/Twitter, (3) la red de videos YouTube y (4) la red social de videos cortos TikTok. El flujo de estas operaciones de extracción alimenta la capa de datos crudos (\textit{Raw}) de la arquitectura del sistema, tal como se ilustra en el esquema general de la Figura \ref{4:fig1}.
  
 \begin{figure}[!ht]
     \begin{center}
-        \includegraphics[width=0.90\textwidth]{3/figures/flujo_recoleccion.png}
-        \caption[Flujograma de recolección de los conjuntos de datos del corpus electoral]{Flujograma de recolección de los conjuntos de datos del corpus electoral: noticias digitales, comentarios de YouTube y tweets de X/Twitter, con sus respectivos procesos de filtrado y almacenamiento en la capa Bronze de la arquitectura Medallion.\\
+        \resizebox{0.95\textwidth}{!}{\input{3/figures/flujo_recoleccion.tex}}
+        \caption[Flujograma de recolección de los conjuntos de datos del corpus electoral]{Flujograma de recolección de los conjuntos de datos del corpus electoral: noticias digitales, transcripciones de videos de YouTube y tweets de X/Twitter, con sus respectivos procesos de filtrado y almacenamiento en la capa Bronze de la arquitectura Medallion.\\
             Fuente: Elaboración propia.}
         \label{4:fig1}
     \end{center}
 \end{figure}
  
+De manera específica, las técnicas computacionales empleadas para la recolección multicanal se dividen en los siguientes módulos operacionales:
+\begin{itemize}
+    \item \textbf{Módulo de Noticias (\textit{Web Scraping}):} Utiliza \textit{scripts} automatizados en Python diseñados específicamente para analizar la estructura de los principales diarios nacionales (El Comercio, La República, RPP, Diario Correo), extrayendo el titular, el cuerpo de la noticia, la fecha de publicación y la URL de origen.
+    \item \textbf{Módulo de X/Twitter (\textit{API Integration}):} Emplea adaptadores de conexión (como \texttt{twitterapi\_io}) para capturar \textit{tweets}, respuestas e hilos relevantes mediante la inyección de parámetros de búsqueda específicos, gestionando la paginación y los límites de peticiones (\textit{rate limits}).
+    \item \textbf{Módulo de YouTube (\textit{API \& Scraping}):} Encargado de la extracción de metadatos de videos electorales y de la transcripción de su contenido audiovisual, capturando el discurso de candidatos, periodistas y comunicadores políticos en programas y entrevistas difundidos en la plataforma.
+    \item \textbf{Módulo de TikTok (\textit{Scraping especializado}):} Desarrollado para capturar la conversación en formatos de video corto, extrayendo las descripciones de las publicaciones (\textit{captions}), etiquetas temáticas (\textit{hashtags}) y métricas de viralidad.
+\end{itemize}
+
 Asimismo, para identificar y filtrar las publicaciones relevantes para el análisis, se
 definió un diccionario de palabras clave y aliases electorales que incluye los nombres
 completos, apodos, partidos y hashtags de los candidatos presidenciales en liza, así como
 términos relacionados con los principales temas de la campaña: economía, seguridad,
 educación, salud, corrupción y gobernabilidad.
  
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 \section{Técnicas para el procesamiento y análisis de la información}
  
 \subsection{Metodología de implementación de la solución}
@@ -246,7 +242,7 @@ inteligencia electoral con LLMs, lo describimos en la Figura \ref{4:fig2}.
  
 Durante la ejecución de la metodología, se definió construir un pipeline
 de análisis multicanal que integra análisis de sentimientos con LLMs, detección dinámica
-de temas con BERTopic y un grafo de conocimiento con Neo4j, arquitectura denominada
+de temas mediante un enfoque híbrido LLM con catálogo incremental y un grafo de conocimiento con Neo4j, arquitectura denominada
 \textbf{Pipeline de Inteligencia Electoral Basado en LLMs y Grafo de Conocimiento}. De acuerdo a la literatura de los antecedentes revisados,
 se analizaron las siguientes posibles fuentes de datos a incorporar:
  
@@ -261,7 +257,7 @@ De las anteriores fuentes, los datos de encuestas electorales no fueron incluido
 pipeline principal de procesamiento ya que se utilizan exclusivamente como conjunto de
 validación para calibrar los indicadores del sistema, y no como datos de entrada para el
 análisis de sentimientos. Finalmente, fueron seleccionadas las tres fuentes principales
-—noticias digitales, X/Twitter y comentarios de YouTube— cuya arquitectura de
+—noticias digitales, X/Twitter y transcripciones de videos de YouTube— cuya arquitectura de
 recolección, procesamiento y análisis se detalla en las subsecciones siguientes.
  
 El marco de trabajo del sistema propuesto, denominado \textbf{Pipeline GraphRAG
@@ -339,7 +335,7 @@ Aquí vemos la manera en que identificamos la brecha existente en el análisis a
  
 \textbf{Actividad 2: Desarrollar el marco teórico de la investigación}
  
-Ya con los objetivos definidos, realizamos la investigación de antecedentes académicos relacionados con el uso de LLMs en contextos electorales, minería de sentimientos político en español, detección dinámica de temas con BERTopic y sistemas GraphRAG. Se elaboró el marco teórico y conceptual descritos en el Capítulo II del presente trabajo.
+Ya con los objetivos definidos, realizamos la investigación de antecedentes académicos relacionados con el uso de LLMs en contextos electorales, minería de sentimientos político en español, detección dinámica de temas y sistemas GraphRAG. Se elaboró el marco teórico y conceptual descritos en el Capítulo II del presente trabajo.
  
 \textbf{Entregable}: Marco teórico, antecedentes y conceptos operacionales de la investigación.
  
@@ -389,12 +385,12 @@ Construir corpus de X/Twitter.
 \end{itemize} \\ 
 \hline
 Construir corpus de YouTube.
-& Construcción del corpus de comentarios de usuarios en videos electorales de YouTube.
+& Construcción del corpus de transcripciones de videos electorales de YouTube.
 & \begin{itemize}[label={--},nosep,leftmargin=*]
-\item Identificar videos electorales mediante YouTube Data API.
-\item Recolectar comentarios con ID de usuario y fecha.
-\item Almacenar comentarios crudos en capa Bronze.
-\end{itemize} \\ 
+\item Identificar videos electorales mediante búsqueda y canales de interés.
+\item Extraer transcripción y metadatos del video con \texttt{yt-dlp}.
+\item Almacenar transcripciones crudas en capa Bronze.
+\end{itemize} \\
 \hline
 Realizar análisis exploratorio del corpus.
 & Análisis estadístico y exploratorio de las variables del corpus para cada fuente de datos.
@@ -416,7 +412,7 @@ De acuerdo a la Figura \ref{4:fig1}, en esta actividad se construyó el corpus d
  
 \begin{figure}[!ht]
     \begin{center}
-        \includegraphics[width=0.80\textwidth]{3/figures/flujo_scraping_noticias.png}
+        \resizebox{0.85\textwidth}{!}{\input{3/figures/flujo_scraping_noticias.tex}}
         \caption[Proceso de recolección del corpus de noticias digitales]{Proceso de recolección del corpus de noticias digitales: desde la identificación de portales objetivo hasta el almacenamiento en la capa Bronze de la arquitectura Medallion.\\
             Fuente: Elaboración propia.}
         \label{4:fig4}
@@ -431,7 +427,7 @@ La recolección de tweets se realizó mediante TwitterAPI.io, un proveedor de ac
 
 \begin{figure}[!ht]
     \begin{center}
-        \includegraphics[width=0.80\textwidth]{3/figures/flujo_api_twitter.png}
+        \resizebox{0.85\textwidth}{!}{\input{3/figures/flujo_api_twitter.tex}}
         \caption[Proceso de recolección del corpus de X/Twitter mediante API Filtered Stream]{Proceso de recolección del corpus de X/Twitter: configuración de reglas de filtrado, captura en streaming y almacenamiento con metadatos en capa Bronze.\\
             Fuente: Elaboración propia.}
         \label{4:fig5}
@@ -442,18 +438,18 @@ La recolección de tweets se realizó mediante TwitterAPI.io, un proveedor de ac
  
 \textbf{Actividad 3: Construir corpus de YouTube}
  
-La recolección de contenido de YouTube se realizó mediante \texttt{yt-dlp}, una herramienta de scraping de video de código abierto que extrae metadata, transcripciones y comentarios de videos de YouTube sin depender de cuotas de la API oficial. El ingestor (src/electoral/ingestion/youtube.py) implementa un patrón productor-consumidor con hilos paralelos: un hilo extrae los IDs de videos en lotes (\textit{extract\_flat}), y múltiples hilos trabajadores obtienen la metadata completa y filtran por fecha de publicación. Las transcripciones se marcan con el flag \texttt{is\_auto\_generated} para distinguir subtítulos automáticos de los manuales. El pool de cookies Netscape del directorio \texttt{cookies/} es distribuido entre los workers por round-robin para reducir bloqueos.
+La recolección de contenido de YouTube se realizó mediante \texttt{yt-dlp}, una herramienta de scraping de video de código abierto que extrae metadata y transcripciones de videos de YouTube sin depender de cuotas de la API oficial. El ingestor (src/electoral/ingestion/youtube.py) implementa un patrón productor-consumidor con hilos paralelos: un hilo extrae los IDs de videos en lotes (\textit{extract\_flat}), y múltiples hilos trabajadores obtienen la metadata completa, descargan la transcripción y filtran por fecha de publicación. Las transcripciones se marcan con el flag \texttt{is\_auto\_generated} para distinguir subtítulos automáticos de los manuales. El pool de cookies Netscape del directorio \texttt{cookies/} es distribuido entre los workers por round-robin para reducir bloqueos.
 
 \begin{figure}[!ht]
     \begin{center}
-        \includegraphics[width=0.80\textwidth]{3/figures/flujo_youtube_comentarios.png}
-        \caption[Proceso de recolección del corpus de comentarios de YouTube]{Proceso de extracción de comentarios de usuarios en videos electorales de YouTube, desde la identificación de videos relevantes hasta el almacenamiento en capa Bronze.\\
+        \resizebox{0.85\textwidth}{!}{\input{3/figures/flujo_youtube_transcripciones.tex}}
+        \caption[Proceso de recolección del corpus de transcripciones de YouTube]{Proceso de extracción de transcripciones de videos electorales de YouTube, desde la identificación de videos relevantes hasta el almacenamiento en capa Bronze.\\
             Fuente: Elaboración propia.}
         \label{4:fig6}
     \end{center}
 \end{figure}
  
-\textbf{Entregable}: Corpus de comentarios de YouTube con ID de video, texto del comentario, fecha y número de likes.
+\textbf{Entregable}: Corpus de transcripciones de videos de YouTube con ID de video, texto transcrito, fecha de publicación, canal, duración y flag de autogeneración.
  
 \textbf{Actividad 4: Realizar análisis exploratorio del corpus}
  
@@ -466,50 +462,45 @@ En esta actividad se realizó el análisis estadístico descriptivo de los tres 
 En la tercera fase, los datos crudos de la capa Bronze se transformaron en la capa Silver
 mediante un conjunto de procesos de limpieza, normalización y enriquecimiento. Las
 actividades de esta etapa se detallan en la Tabla \ref{4:table5}.
- 
-\vspace{2ex}
+ \vspace{2ex}
 \begingroup
-\renewcommand\arraystretch{1.2}
-\small
-\begin{longtable}{p{5cm}p{5cm}p{5cm}}
-\caption[Plan de Ejecución de la fase Preparación de la información]{Plan de Ejecución de la fase Preparación de la información.}
-\label{4:table5} \\
-\specialrule{.1em}{.05em}{.05em}
-\centering\textbf{Plan de Ejecución} & \centering\textbf{Alcance} & \centering\arraybackslash\textbf{Acciones} \\
-\specialrule{.1em}{.05em}{.05em}
-\endfirsthead
-
-% Este bloque se repetirá automáticamente si la tabla salta a la siguiente página
-\caption[]{Plan de Ejecución de la fase Preparación de la información (continuación).} \\
-\specialrule{.1em}{.05em}{.05em}
-\centering\textbf{Plan de Ejecución} & \centering\textbf{Alcance} & \centering\arraybackslash\textbf{Acciones} \\
-\specialrule{.1em}{.05em}{.05em}
-\endhead
-
-Limpiar y normalizar el corpus.
-& Preprocesamiento textual de las publicaciones de las tres fuentes para su análisis con LLM.
-& \begin{itemize}[label={--},nosep,leftmargin=*]
-\item Eliminar spam, bots y publicaciones duplicadas.
-\item Normalizar caracteres especiales, emojis y URLs.
-\item Detectar y filtrar publicaciones en idiomas distintos al español.
-\end{itemize} \\ 
-\hline
-Segmentar el corpus para análisis.
-& División de textos largos en segmentos procesables por el LLM respetando la ventana de contexto.
-& \begin{itemize}[label={--},nosep,leftmargin=*]
-\item Definir tamaño máximo de segmento en tokens.
-\item Implementar segmentación con superposición de contexto.
-\item Registrar relación documento-segmento en base de datos.
-\end{itemize} \\ 
-\hline
-Construir diccionario de aliases electorales.
-& Creación del diccionario de names, apodos y aliases de candidatos para el filtrado con Aho-Corasick.
-& \begin{itemize}[label={--},nosep,leftmargin=*]
-\item Recopilar nombres completos y apodos de candidatos.
-\item Incluir nombres de partidos y lemas de campaña.
-\item Construir el autómata Aho-Corasick para búsqueda eficiente.
-\end{itemize} \\ 
-\specialrule{.1em}{.05em}{.05em}
+\renewcommand\arraystretch{0.3}
+\begin{longtable}{m{5cm}m{5cm}M{5cm}}
+    \caption[Plan de Ejecución de la fase Preparación de la información]{Plan de Ejecución de la fase Preparación de la información adaptada al pipeline electoral.}
+    \label{4:table5}
+    \footnotesize
+    \small
+    \tabularnewline \specialrule{.1em}{.05em}{.05em}
+    \centering Plan de Ejecución & \centering Alcance & Acciones \\
+    \specialrule{.1em}{.05em}{.05em}
+    Normalización y filtrado Pre-LLM.
+    & Transformación de datos polimórficos de la capa Bronze a un esquema unificado de "Documentos".
+    & \setlist{nolistsep}
+    \begin{itemize}[label={--},nosep,noitemsep,leftmargin=*,topsep=0pt,partopsep=0pt]
+        \item Unificar formatos de Noticias, X, YouTube y TikTok.
+        \item Aplicar filtros de descarte (basado en \textit{filtros\_descarte.yaml}).
+        \item Descartar registros duplicados a nivel de metadatos.
+    \end{itemize}
+    \\
+    \hline
+    Segmentación semántica y limpieza.
+    & División de textos largos en segmentos contextuales procesables y almacenamiento relacional.
+    & \setlist{nolistsep}
+    \begin{itemize}[label={--},nosep,noitemsep,leftmargin=*,topsep=0pt,partopsep=0pt]
+        \item Implementar \textit{chunking} semántico respetando límites de \textit{tokens}.
+        \item Almacenar relación documento-segmento en PostgreSQL.
+    \end{itemize}
+    \\
+    \hline
+    Generación de \textit{Embeddings} (Vectorización).
+    & Cálculo de vectores de características semánticas para habilitar la recuperación híbrida.
+    & \setlist{nolistsep}
+    \begin{itemize}[label={--},nosep,noitemsep,leftmargin=*,topsep=0pt,partopsep=0pt]
+        \item Procesar segmentos mediante modelos locales de \textit{Sentence-Transformers}.
+        \item Indexar vectores en PostgreSQL utilizando la extensión \textit{pgvector} (Capa Silver).
+    \end{itemize}
+    \\
+    \specialrule{.1em}{.05em}{.05em}
 \end{longtable}
 \endgroup
 \begin{flushleft}
@@ -539,8 +530,7 @@ Se construyó el diccionario de aliases que alimenta el autómata Aho-Corasick d
 Al concluir la preparación de los datos, los segmentos del corpus enriquecido fueron
 procesados por el pipeline de análisis con LLMs. Las actividades de esta fase se detallan
 en la Tabla \ref{4:table6}.
- 
-\vspace{2ex}
+ \vspace{2ex}
 \begingroup
 \renewcommand\arraystretch{1.2}
 \small
@@ -552,7 +542,6 @@ en la Tabla \ref{4:table6}.
 \specialrule{.1em}{.05em}{.05em}
 \endfirsthead
 
-% Este bloque se repetirá automáticamente si la tabla salta a la siguiente página
 \caption[]{Plan de Ejecución de la fase Construcción del modelo (continuación).} \\
 \specialrule{.1em}{.05em}{.05em}
 \centering\textbf{Plan de Ejecución} & \centering\textbf{Alcance} & \centering\arraybackslash\textbf{Acciones} \\
@@ -565,16 +554,16 @@ Construir módulo de análisis de sentimientos con LLM.
 \item Diseñar prompt de análisis con estructura role-context-task-format.
 \item Implementar llamadas a la API del LLM con respuesta JSON estructurada.
 \item Validar outputs y gestionar errores de parsing.
-\end{itemize} \\ 
+\end{itemize} \\
 \hline
 Desarrollar módulo de detección dinámica de temas.
-& Implementación del pipeline BERTopic para clustering semántico de temas electorales.
+& Implementación del módulo híbrido LLM con catálogo incremental para detección dinámica de temas electorales.
 & \begin{itemize}[label={--},nosep,leftmargin=*]
 \item Generar embeddings con Sentence-BERT multilingüe.
-\item Reducir dimensionalidad con UMAP.
-\item Aplicar HDBSCAN para clustering inductivo.
-\item Etiquetar clusters con LLM mediante c-TF-IDF.
-\end{itemize} \\ 
+\item Construir menú de temas candidatos mediante retrieval multinivel.
+\item Clasificar con LLM: exact, alias o new.
+\item Consolidar y deduplicar temas diariamente.
+\end{itemize} \\
 \hline
 Construir grafo de conocimiento electoral.
 & Implementación del grafo Neo4j con nodos y relaciones del ecosistema electoral digital.
@@ -582,7 +571,7 @@ Construir grafo de conocimiento electoral.
 \item Definir esquema de nodos (Candidato, Tema, Fuente, Periodo, Evento).
 \item Implementar jobs de agregación semanal con MERGE idempotente.
 \item Calcular relaciones MENCIONA, CO\_OCURRE, CUBRE y REACCIONA\_A.
-\end{itemize} \\ 
+\end{itemize} \\
 \hline
 Implementar sistema GraphRAG para consultas.
 & Desarrollo del módulo de consulta en lenguaje natural sobre el grafo de conocimiento electoral.
@@ -590,14 +579,21 @@ Implementar sistema GraphRAG para consultas.
 \item Inyectar schema del grafo al contexto del LLM.
 \item Implementar traducción de preguntas en español a consultas Cypher.
 \item Validar respuestas con evidencia textual de los documentos originales.
-\end{itemize} \\ 
+\end{itemize} \\
 \specialrule{.1em}{.05em}{.05em}
 \end{longtable}
 \endgroup
 \begin{flushleft}
     \small Fuente: Elaboración propia.
 \end{flushleft}
- 
+
+\textbf{Actividad 1 y 2: Extracción y Orquestación con LLM Juez}
+En lugar de depender de un solo modelo, el sistema implementa un patrón de \textbf{Orquestación de LLMs}. Se diseñó un \textit{prompt} estructurado donde modelos veloces realizan la extracción de entidades y el análisis de sentimiento a escala. Posteriormente, dado que el lenguaje electoral es altamente dinámico, se diseñó un flujo de \textbf{Deduplicación Semántica} (\textit{intra-batch dedup}). En este paso, un modelo con mayores capacidades de razonamiento lógico como DeepSeek-V4 actúa como "LLM Juez", comparando entidades emergentes con los catálogos estables (\textit{YAML}) y fusionando \textit{aliases} no triviales, garantizando la consistencia ontológica antes de escribir en la base de datos.
+
+\textbf{Actividad 3 y 4: Capa Gold y Servidor MCP}
+Para la estructura de recuperación de información, se construyó el grafo en \textbf{Neo4j}. En lugar de forzar al usuario a escribir consultas complejas, se implementó el módulo \texttt{electoral-mcp}. Este servidor, basado en el estándar \textit{Model Context Protocol}, encapsula consultas SQL (\textit{pgvector}) y Cypher (Neo4j) en "herramientas" (ej. \texttt{panorama\_diario}, \texttt{comparar\_sentimiento}). Esto permite que sistemas de IA conversacionales se conecten al servidor de manera nativa y recuperen evidencia electoral altamente precisa, implementando el paradigma RAG en su máxima expresión.
+
+
 \textbf{Actividad 1: Desarrollar módulo de análisis de sentimientos con LLM}
  
 En esta actividad se diseñó el prompt de análisis de sentimientos a nivel de aspecto y se
@@ -616,7 +612,7 @@ autores de los antecedentes:
     \item \textbf{mBERT / XLM-RoBERTa (modelos encoder)}: \cite{pr_alvi2023twitter_election_review}.
 \end{itemize}
  
-Para la selección del modelo LLM, se evaluaron las alternativas propuestas en los antecedentes de la investigación. A diferencia de lo inicialmente planificado con Gemini Flash como modelo principal, el sistema implementado seleccionó DeepSeek-Chat como proveedor LLM principal, con Gemini Flash como fallback configurable mediante la variable de entorno \texttt{LLM\_PROVIDER}. La decisión se fundamentó en tres factores: (1) el mecanismo de caché de prefijo transparente de DeepSeek, que descuenta hasta el 75\% del costo en tokens de entrada para el prefijo invariante del prompt (catálogos, instrucciones y ejemplos few-shot), alcanzando un 85.5\% de \textit{cache hit} sostenido; (2) el soporte nativo de \texttt{response\_format: JSON} que garantiza outputs parseables por Pydantic sin prompting heroico; y (3) un costo por documento aproximadamente 10 veces menor que GPT-4o para el mismo volumen. La abstracción \texttt{LLMClient} (\texttt{src/electoral/llm/clients/base.py}) permite intercambiar el proveedor con un cambio de variable de entorno, por lo que los experimentos de validación con GPT-4o se realizaron sin modificar el código del pipeline.
+Para la selección del modelo LLM, se evaluaron las alternativas propuestas en los antecedentes de la investigación. A diferencia de lo inicialmente planificado con Claude Sonnet como modelo principal, el sistema implementado seleccionó DeepSeek-Chat como proveedor LLM principal, con Gemini Flash como fallback configurable mediante la variable de entorno \texttt{LLM\_PROVIDER}. La decisión se fundamentó en tres factores: (1) el mecanismo de caché de prefijo transparente de DeepSeek, que descuenta hasta el 75\% del costo en tokens de entrada para el prefijo invariante del prompt (catálogos, instrucciones y ejemplos few-shot), alcanzando un 85.5\% de \textit{cache hit} sostenido; (2) el soporte nativo de \texttt{response\_format: JSON} que garantiza outputs parseables por Pydantic sin prompting heroico; y (3) un costo por documento aproximadamente 10 veces menor que GPT-4o para el mismo volumen. La abstracción \texttt{LLMClient} (\texttt{src/electoral/llm/clients/base.py}) permite intercambiar el proveedor con un cambio de variable de entorno, por lo que los experimentos de validación con GPT-4o se realizaron sin modificar el código del pipeline.
  
 \textbf{Entregable}: Módulo de análisis de sentimientos con LLM y tabla \texttt{analisis} de la capa Silver.
  
@@ -630,7 +626,7 @@ Los temas se consolidan posteriormente mediante dos procesos: \texttt{consolidat
 
 Asimismo, la regla número cinco del prompt maneja automáticamente publicaciones no políticas —como deportes, entretenimiento, farándula o humor/sátira— asignándoles es\_relevante=false y clasificándolas dentro de categorías fijas del tipo \texttt{otros\_<categoria>}, evitando inflar el catálogo de temas con ruido semántico.
  
-\textbf{Entregable}: Pipeline BERTopic configurado y taxonomía de temas electorales generada.
+\textbf{Entregable}: Módulo de detección dinámica de temas configurado y catálogo incremental de temas electorales generado.
  
 \textbf{Actividad 3: Construir grafo de conocimiento electoral}
  
@@ -696,7 +692,7 @@ Evaluar módulo de análisis de sentimientos.
 \end{itemize} \\ 
 \hline
 Evaluar módulo de detección de temas.
-& Evaluación de la coherencia semántica y diversidad de los temas detectados por BERTopic.
+& Evaluación de la coherencia semántica y diversidad de los temas detectados por el módulo híbrido LLM con catálogo incremental.
 & \begin{itemize}[label={--},nosep,leftmargin=*]
 \item Calcular coherencia C\textsubscript{v} de los temas.
 \item Evaluar diversidad temática del corpus.
@@ -729,41 +725,34 @@ Evaluar el sistema integrado.
  
 En la fase final de la metodología, el sistema de inteligencia electoral se implementó como un prototipo funcional, accesible para analistas políticos y periodistas. Las actividades correspondientes a esta etapa se describen en la Tabla \ref{4:table8}.
 
- 
 \begingroup
-\renewcommand\arraystretch{1.2}
-\small
-\begin{longtable}{p{4.5cm}p{5.3cm}p{5.2cm}}
-\caption[Plan de Ejecución de la fase Implementación]{Plan de Ejecución de la fase Implementación.}
-\label{4:table8} \\
-\specialrule{.1em}{.05em}{.05em}
-\centering\textbf{Plan de Ejecución} & \centering\textbf{Alcance} & \centering\arraybackslash\textbf{Acciones} \\
-\specialrule{.1em}{.05em}{.05em}
-\endfirsthead
-
-% Este bloque se repetirá automáticamente si la tabla salta a la siguiente página
-\caption[]{Plan de Ejecución de la fase Implementación (continuación).} \\
-\specialrule{.1em}{.05em}{.05em}
-\centering\textbf{Plan de Ejecución} & \centering\textbf{Alcance} & \centering\arraybackslash\textbf{Acciones} \\
-\specialrule{.1em}{.05em}{.05em}
-\endhead
-
-Diseñar dashboard de visualización.
-& Diseño e implementación del dashboard interactivo que muestra los indicadores de percepción pública en tiempo real.
-& \begin{itemize}[label={--},nosep,leftmargin=*]
-\item Diseñar vistas para ISN, IRT e IVE por candidato y período.
-\item Implementar gráficos de evolución temporal y mapas de calor temáticos.
-\item Integrar módulo de consulta GraphRAG en lenguaje natural.
-\end{itemize} \\ 
-\hline
-Ejecutar prototipo con datos electorales en vivo.
-& Ejecución del sistema completo en condiciones reales durante el período de campaña presidencial.
-& \begin{itemize}[label={--},nosep,leftmargin=*]
-\item Activar pipeline de ingesta en tiempo real.
-\item Monitorear indicadores y detectar anomalías.
-\item Generar reportes automáticos diarios.
-\end{itemize} \\ 
-\specialrule{.1em}{.05em}{.05em}
+\begin{longtable}{m{4.5cm}m{5.3cm}M{5.2cm}}
+    \caption[Plan de Ejecución de la fase Implementación]{Plan de Ejecución de la fase Implementación (Despliegue del Sistema).}
+    \label{4:table8}
+    \footnotesize
+    \centering
+    \small
+    \tabularnewline \specialrule{.1em}{.05em}{.05em}
+    \centering Plan de Ejecución & \centering Alcance & Acciones \\
+    \specialrule{.1em}{.05em}{.05em}
+    Despliegue de Infraestructura en Contenedores.
+    & Configuración y despliegue del ecosistema de bases de datos y orquestadores usando \textit{Docker Compose}.
+    & \setlist{nolistsep}
+    \begin{itemize}[label={--},nosep,noitemsep,leftmargin=*,topsep=0pt,partopsep=0pt]
+            \item Desplegar instancia de PostgreSQL con extensión \textit{pgvector}.
+            \item Configurar contenedor de Neo4j y volúmenes de persistencia.
+    \end{itemize}
+    \\
+    \hline
+    Exposición y consumo vía MCP.
+    & Puesta en producción del servidor \texttt{electoral-mcp} para ser consumido por clientes de Inteligencia Artificial.
+    & \setlist{nolistsep}
+    \begin{itemize}[label={--},nosep,noitemsep,leftmargin=*,topsep=0pt,partopsep=0pt]
+            \item Publicar el catálogo de \textit{tools} analíticas (encuestas, macro, sentimiento).
+            \item Realizar pruebas de integración con clientes LLM (ej. Claude Desktop, Cursor).
+    \end{itemize}
+    \\
+    \specialrule{.1em}{.05em}{.05em}
 \end{longtable}
 \endgroup
 \begin{flushleft}
@@ -821,6 +810,8 @@ Para evaluar el desempeño de los módulos del sistema, correspondiente a la qui
     \end{equation}
     \myequations{Fórmula para calcular el puntaje F1 del módulo de sentimientos}
  
+    \item \textbf{Precisión de Recuperación (Hit Rate / Recall@k)}: Propia de las arquitecturas \textit{Retrieval-Augmented Generation} (RAG). Mide la capacidad del sistema de búsqueda híbrida (\textit{pgvector} + Neo4j) para devolver los fragmentos documentales más relevantes (evidencia) en el top $K$ de los resultados frente a una consulta electoral en lenguaje natural.
+
     \item \textbf{Coherencia semántica $C_v$}: Métrica estándar para evaluar la calidad de
     los temas generados por modelos de topic modeling. Mide la co-ocurrencia normalizada
     de los términos más representativos de cada tema en el corpus. Un valor de $C_v$

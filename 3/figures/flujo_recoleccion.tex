@@ -1,0 +1,38 @@
+% Fig 4:fig1 -- Flujograma de recoleccion del corpus electoral multicanal
+\begin{tikzpicture}[
+    node distance=0.55cm,
+    every node/.style={font=\footnotesize, align=center, inner sep=4pt},
+    src/.style={draw, rounded corners=2pt, fill=blue!12, minimum width=2.6cm, minimum height=0.9cm},
+    proc/.style={draw, rounded corners=2pt, fill=yellow!15, minimum width=2.6cm, minimum height=0.9cm},
+    filter/.style={draw, rounded corners=2pt, fill=orange!15, minimum width=3.2cm, minimum height=0.9cm},
+    bronze/.style={draw, rounded corners=2pt, fill=brown!20, minimum width=4cm, minimum height=1.1cm, font=\footnotesize\bfseries},
+    arrow/.style={-{Stealth[length=2mm]}, thick}
+]
+    \node[src] (n1) {Portales de\\noticias digitales};
+    \node[src, below=of n1] (n2) {X/Twitter\\(API)};
+    \node[src, below=of n2] (n3) {YouTube\\(transcripciones de videos)};
+    \node[src, below=of n3] (n4) {TikTok\\(videos cortos)};
+
+    \node[proc, right=1.2cm of n1] (p1) {Web Scraping\\\scriptsize Python + BS4};
+    \node[proc, right=1.2cm of n2] (p2) {API Integration\\\scriptsize twitterapi\_io};
+    \node[proc, right=1.2cm of n3] (p3) {API + Scraping\\\scriptsize yt-dlp};
+    \node[proc, right=1.2cm of n4] (p4) {Scraping\\\scriptsize Playwright};
+
+    \node[filter, right=1.2cm of p2, yshift=0.55cm] (f1) {Filtrado por\\diccionario electoral\\\scriptsize keywords + hashtags};
+    \node[filter, right=1.2cm of p3, yshift=-0.55cm] (f2) {Normalizacion\\y deduplicacion\\\scriptsize hash de contenido};
+
+    \node[bronze, right=1.2cm of f1, yshift=-0.4cm] (br) {Capa Bronze\\\scriptsize (Raw data lake)\\\scriptsize Medallion architecture};
+
+    \draw[arrow] (n1.east) -- (p1.west);
+    \draw[arrow] (n2.east) -- (p2.west);
+    \draw[arrow] (n3.east) -- (p3.west);
+    \draw[arrow] (n4.east) -- (p4.west);
+
+    \draw[arrow] (p1.east) -| (f1.north);
+    \draw[arrow] (p2.east) -- (f1.west);
+    \draw[arrow] (p3.east) -- (f2.west);
+    \draw[arrow] (p4.east) -| (f2.south);
+
+    \draw[arrow] (f1.east) -- (br.west |- f1.east) -- (br.west);
+    \draw[arrow] (f2.east) -- (br.west |- f2.east) -- (br.west);
+\end{tikzpicture}

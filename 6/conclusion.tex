@@ -6,15 +6,22 @@ implementar la metodología CRISP-DM sobre un corpus multicanal del ecosistema
 digital electoral peruano 2026, se presentan a continuación las conclusiones
 derivadas de cada objetivo de la investigación.
 \subsection*{Respecto al Objetivo General}
-Se logró analizar la percepción nacional en el contexto electoral peruano mediante
-un sistema de inteligencia electoral basado en Modelos de Lenguaje de Gran Escala
-(LLMs), minería de sentimientos y detección dinámica de temas en un ecosistema
-digital multi-fuente. El sistema PeruVox integra tres fuentes de datos digitales
-—noticias de portales de prensa, publicaciones de X/Twitter y comentarios de
-YouTube—, procesa hasta 3,200 publicaciones por minuto durante picos de actividad
-electoral y genera indicadores de percepción pública en tiempo real con una
-correlación de Pearson de $r = 0.74$ ($p < 0.05$) respecto a encuestas electorales
-convencionales, confirmando la hipótesis general de la investigación.
+Se logró diseñar e implementar un sistema de inteligencia electoral basado en
+Modelos de Lenguaje de Gran Escala (LLMs), minería de sentimientos y detección
+dinámica de temas en un ecosistema digital multi-fuente para el caso peruano. El
+sistema PeruVox integra cuatro fuentes de datos digitales —noticias de portales
+de prensa, publicaciones de X/Twitter, transcripciones de YouTube y posts de
+TikTok—, procesa el corpus diario completo (655 documentos válidos del 22 de
+marzo de 2026) en aproximadamente 57 minutos secuenciales con un costo de
+US\$0{,}13 y un \textit{cache hit rate} de 85{,}5\% sobre el \textit{prompt} de
+extracción, y genera indicadores de percepción proyectada por los medios
+(sentimiento por candidato, temas dominantes, distribución de cobertura por
+medio) consultables en lenguaje natural
+español a través de un servidor MCP de 13 herramientas tipadas. El sistema queda
+construido y operativo; la validación cuantitativa de los indicadores frente a
+encuestas convencionales (correlación de Pearson sobre el ISN semanal vs. las 9
+encuestas Datum cargadas) y la evaluación de calidad de salida con corpus
+etiquetado quedan como trabajo futuro.
 \subsection*{Respecto al Primer Objetivo Específico (OE1)}
 Se analizaron y sistematizaron los enfoques existentes en la literatura mediante
 la revisión de siete antecedentes internacionales publicados entre 2023 y 2025,
@@ -31,56 +38,78 @@ componentes más adecuados para el contexto electoral peruano en español.
 \subsection*{Respecto al Segundo Objetivo Específico (OE2)}
 Se diseñó e implementó exitosamente la arquitectura multi-fuente del sistema,
 organizada bajo el patrón Medallion en tres capas de procesamiento (Bronze, Silver
-y Gold) sobre una infraestructura dual de bases de datos —PostgreSQL con pgvector
-para datos relacionales y vectoriales, y Neo4j para el grafo de conocimiento—.
-La integración de múltiples fuentes de datos demostró que cada canal aporta una
-perspectiva complementaria: las noticias digitales reflejaron la agenda mediática,
-X/Twitter capturó la reacción ciudadana inmediata y los comentarios de YouTube
-proporcionaron opiniones de mayor longitud y elaboración argumentativa. El sistema
-Aho-Corasick de filtrado, implementado como primer estadio del pipeline, redujo el
-costo computacional del análisis LLM en aproximadamente un 40\% al descartar
-eficientemente los segmentos sin menciones a candidatos.
+y Gold) sobre una infraestructura dual de bases de datos —PostgreSQL con
+\texttt{pgvector} para datos relacionales y vectoriales, y Neo4j 5.20 Community
+Edition para el grafo de conocimiento—. La integración de las cuatro fuentes de
+datos demostró que cada canal aporta una perspectiva complementaria: las noticias
+digitales reflejaron la agenda mediática, X/Twitter capturó la reacción ciudadana
+inmediata, las transcripciones de YouTube proporcionaron opiniones argumentativas
+extensas y TikTok aportó dinámicas de opinión propias del formato audiovisual
+corto, particularmente entre la población joven. La cascada de filtros pre-LLM
+parametrizados desde catálogos YAML versionados (\texttt{filter\_by\_account},
+\texttt{filter\_by\_hashtag} y \texttt{filter\_by\_title\_keywords}), implementada
+como primer estadio del pipeline, redujo el costo computacional del análisis LLM
+en aproximadamente un 40\% al descartar eficientemente las publicaciones sin
+menciones a candidatos.
 
 \subsection*{Respecto al Tercer Objetivo Específico (OE3)}
-Se evaluó con rigurosidad el desempeño de los LLMs en las dos tareas principales
-del sistema. Para el módulo de análisis de sentimientos a nivel de aspecto (ABSA),
-la configuración final —Gemini Flash 1.5 en modalidad few-shot con 4 ejemplos
-calibrados para el español político peruano— alcanzó un puntaje F1 macro de
-\textbf{0.8965}, exactitud de \textbf{0.9010}, precisión de 0.8950 y sensibilidad
-de 0.8980 sobre un conjunto de validación de 500 publicaciones con etiquetas
-humanas (acuerdo inter-anotador $\kappa = 0.82$). Este resultado supera en
-\textbf{0.155 puntos de exactitud} al mejor modelo de referencia comparable
-(\cite{pr_alvi2023twitter_election_review}, SVM con análisis de sentimientos,
-exactitud = 0.780), confirmando la segunda hipótesis específica (HE2).
-Para el módulo de detección dinámica de temas, el framework BERTopic con la
-configuración óptima (\texttt{min\_cluster\_size=10}) detectó \textbf{28 temas
-electorales distintos} con una coherencia semántica $C_v = 0.634$, superando en
-\textbf{0.152 puntos} al modelo LDA utilizado como línea base ($C_v = 0.482$) en
-el mismo corpus. El 89.3\% de los temas detectados (25 de 28) fueron validados
-cualitativamente por analistas políticos como electoralmente relevantes y
-reconocibles en el contexto de la campaña peruana 2026. Los temas más relevantes
-—Economía e inflación (IRT = 18.4\%), Corrupción y justicia (IRT = 14.2\%) y
-Seguridad ciudadana (IRT = 11.7\%)— reflejaron fielmente las preocupaciones
-ciudadanas expresadas en los medios y en las redes sociales durante el período
-analizado.
+Se construyó y midió operacionalmente el desempeño de los LLMs en las dos tareas
+principales del sistema. Para el módulo de análisis de sentimientos a nivel de
+aspecto (ABSA), la configuración final —\textbf{DeepSeek-Chat} en modalidad
+\textit{few-shot} con 4 ejemplos calibrados para el español político peruano—
+mostró \textbf{validez del schema del 100\%} (655/655 documentos con respuesta
+parseable contra el modelo Pydantic \texttt{AnalisisLLM} en el primer intento,
+sin reintentos), \textbf{cobertura del 100\%} sobre el catálogo cerrado de 17
+categorías (sin alucinación de etiquetas) y un \textbf{cache hit rate} medido
+del 85{,}5\% que reduce el costo operacional efectivo en aproximadamente 75\%
+por \textit{prefix-match} con el caché del proveedor. Gemini Flash queda como
+\textit{fallback} configurable mediante la variable de entorno
+\texttt{LLM\_PROVIDER}. La evaluación cuantitativa de la calidad de salida
+(F1 macro, exactitud, sensibilidad) contra etiquetas humanas requiere un corpus
+de validación de 500 publicaciones que se documenta como trabajo futuro.
+
+Para el módulo de detección dinámica de temas, el enfoque híbrido LLM +
+\textit{retrieval} multinivel con la configuración \textit{cosine} $\geq 0.85$
+del \textit{override} semántico post-LLM detectó \textbf{27 temas únicos} en el
+corpus de 744 documentos del 22 de marzo de 2026 (vista
+\texttt{gold\_temas\_diarios} de Postgres). La \textbf{tasa de reuso} del catálogo
+ascendió del 13\% en la corrida inicial (catálogo vacío) al 70{,}5\% en la
+corrida completa, evidenciando la curva de maduración esperable. El
+\textit{override} semántico post-LLM disparó 88 veces, atrapando duplicados que
+escapaban del menú de cinco \textit{tiers}. Los cinco temas con mayor cobertura
+en el día (accidente policial, tensión Irán-EE.UU., captura de banda en El
+Agustino, Majes-Siguas II, propuestas educativas) reflejaron correctamente la
+agenda informativa de la fecha. La medición de coherencia semántica $C_v$ con
+metodología estándar y comparación contra \textit{baselines} LDA y BERTopic
+queda como trabajo futuro.
 \subsection*{Respecto al Cuarto Objetivo Específico (OE4)}
-Se implementó el sistema GraphRAG Electoral sobre el grafo de conocimiento construido
-en Neo4j, denominado \textbf{PeruVox}, que permite a analistas políticos y
-periodistas consultar en lenguaje natural español el ecosistema digital electoral
-y obtener respuestas fundamentadas con evidencia textual del corpus original. El
-sistema generó consultas Cypher correctas para el \textbf{85\%} de las preguntas
-del conjunto de evaluación (17 de 20), tras 13 experimentos de configuración del
-prompt con schema del grafo e instrucciones few-shot. Los errores correspondieron
-exclusivamente a preguntas que requerían comparaciones temporales complejas entre
-más de dos períodos simultáneos, lo cual constituye una limitación identificada
-para trabajo futuro. Este resultado confirma la cuarta hipótesis específica (HE4).
-La prueba piloto del sistema durante el segundo debate presidencial procesó más de
-48,000 publicaciones en tiempo real, identificó correctamente un pico de sentimiento
-negativo durante y después del debate, y detectó una discrepancia significativa
-entre la cobertura positiva de un candidato en medios digitales y el sentimiento
-negativo expresado por la ciudadanía en X/Twitter durante la misma semana,
-constituyendo un hallazgo de inteligencia electoral de alto valor para los
-analistas usuarios del sistema.
+Se implementó el sistema GraphRAG Electoral sobre el grafo de conocimiento
+construido en Neo4j Community, denominado \textbf{PeruVox}, bajo una arquitectura
+basada en \textbf{herramientas tipadas} (\textit{typed tools}) sobre el protocolo
+\textbf{MCP} (\textit{Model Context Protocol}), en lugar del paradigma clásico de
+generación dinámica de Cypher mediante \textit{few-shot prompting}. El servidor
+expone \textbf{13 herramientas} agrupadas en seis dominios (candidatos, temas,
+actores, evidencia, panorama, encuestas y macroeconómico), cada una con esquemas
+Pydantic v2 de entrada y salida y consultas SQL/Cypher pre-cargadas y
+parametrizadas, lo que permite a analistas políticos y periodistas consultar en
+lenguaje natural español el ecosistema digital electoral desde clientes MCP
+estándar (Claude Desktop, Claude.ai web o Cursor) y obtener respuestas
+fundamentadas con evidencia textual del corpus original. La validación operacional
+\textit{end-to-end} mostró que las 13 herramientas retornan \texttt{structuredContent}
+válido contra sus esquemas Pydantic v2 en el 100\% de las llamadas, y que las
+consultas SQL/Cypher subyacentes —pre-cargadas y parametrizadas— se ejecutan
+correctamente por construcción. La latencia mediana de las herramientas se ubicó
+entre 5 y 60\,ms para consultas no vectoriales y alrededor de 1100\,ms para
+búsquedas semánticas (dominadas por la generación local del \textit{embedding} de
+la consulta sobre CPU), frente a los 1--2\,segundos típicos de un sistema GraphRAG
+basado en generación dinámica de \textit{queries}, lo que confirma la ventaja
+operacional del enfoque \textit{typed tools}.
+
+La medición de la \textbf{tasa de selección correcta} de la herramienta adecuada
+por parte del LLM cliente para una batería diseñada de preguntas en lenguaje
+natural —que sería la métrica directa de cumplimiento de HE4— requiere un
+conjunto de preguntas anotadas con su \textit{ground truth} de tool esperada y se
+queda como trabajo futuro.
 \subsection*{Consideraciones y limitaciones}
 Sin perjuicio de los resultados obtenidos, el sistema PeruVox presenta limitaciones
 metodológicas que deben ser reconocidas. En primer lugar, la representatividad del
@@ -90,20 +119,31 @@ urbanos. En segundo lugar, los modelos LLM utilizados fueron pre-entrenados
 principalmente sobre corpus en inglés, lo que puede introducir sesgos sistemáticos
 en la clasificación del sentimiento hacia determinados actores políticos en español
 \parencite{pr_gujral2024llm_elections}. En tercer lugar, la cobertura del sistema
-se limitó a tres fuentes digitales, sin incluir TikTok —plataforma de creciente
-influencia política entre la población joven peruana— ni medios audiovisuales
-tradicionales. La triangulación de los resultados del ISN con encuestas
-convencionales (correlación de Pearson $r = 0.74$) mitiga parcialmente estas
-limitaciones, pero no las elimina.
+se limitó a las cuatro fuentes digitales mencionadas, sin incluir medios
+audiovisuales tradicionales (radio y televisión) ni plataformas de mensajería
+privada como WhatsApp o Telegram, donde circula información que no es accesible
+mediante \textit{scraping} público. En cuarto lugar, la presente investigación
+reporta únicamente \textbf{métricas operacionales} medidas (validez del schema,
+cobertura del catálogo, latencia, costo, idempotencia, tasa de \textit{reuso});
+la evaluación de calidad de salida contra \textit{ground truth} (F1 macro,
+exactitud frente a etiquetas humanas, coherencia semántica $C_v$, correlación de
+Pearson con encuestas Datum) requiere un corpus de validación etiquetado por
+anotadores expertos que excede el alcance temporal del trabajo y se dimensiona
+a futuro.
 \section{Recomendaciones}
 A partir de los resultados obtenidos y las limitaciones identificadas, se formulan
 las siguientes recomendaciones para trabajos de investigación futuros:
-\textbf{1. Incorporar TikTok como cuarta fuente de datos.} TikTok se ha consolidado
-como la principal plataforma de contenido político para la población menor de 35
-años en el Perú. Su inclusión en el pipeline multi-fuente de PeruVox permitiría
-mejorar la representatividad del corpus y capturar dinámicas de opinión que no
-se reflejan en X/Twitter ni en YouTube. Para ello, puede utilizarse la TikTok
-Research API o técnicas de scraping ético sobre contenido público.
+\textbf{1. Incorporar medios audiovisuales tradicionales como quinta y sexta
+fuente de datos.} Si bien el sistema PeruVox ya integra las cuatro fuentes
+digitales más representativas del ecosistema electoral peruano (noticias web,
+X/Twitter, YouTube y TikTok), un porcentaje no despreciable del electorado —en
+particular en zonas rurales y entre adultos mayores— consume información
+política principalmente por radio y televisión. Se recomienda incorporar
+transcripciones automáticas de programas de radio (mediante \textit{streams}
+públicos y \texttt{whisper} u otros modelos ASR) y de noticieros televisivos
+(YouTube oficial de los canales) como fuentes adicionales del pipeline, lo que
+permitiría mejorar la representatividad del corpus y capturar dinámicas de
+opinión que hoy no se reflejan en el ecosistema digital monitorizado.
 \textbf{2. Realizar ajuste fino (fine-tuning) con datos anotados del español
 político peruano.} Si bien los LLMs en modalidad few-shot mostraron resultados
 superiores a los modelos de referencia, el rendimiento podría mejorarse
@@ -127,7 +167,7 @@ análisis como la capacidad de contextualización de las respuestas del módulo 
 incluye en su diseño un módulo de detección de desinformación basado en RAG, que
 fue parcialmente desarrollado pero no evaluado en el presente trabajo. Completar
 e integrar este módulo es prioritario, dado que la desinformación condiciona
-directamente la percepción ciudadana y puede distorsionar sistemáticamente los
+directamente la percepción proyectada por los medios y puede distorsionar sistemáticamente los
 indicadores ISN generados por el sistema \parencite{pr_chen2024combating_misinformation}.
 \textbf{6. Definir un protocolo de umbral adaptativo para el ISN.} El umbral fijo de $\pm 0.20$ utilizado para la clasificación de sentimientos positivo/negativo/neutro
 fue definido de manera experimental. Se recomienda explorar técnicas de
@@ -137,7 +177,7 @@ distribución de sentimientos a lo largo de la campaña.
 \textbf{7. Publicar la plataforma como herramienta de acceso público.} Siguiendo
 principios de transparencia democrática, se recomienda poner a disposición de la
 ciudadanía, investigadores y periodistas una versión pública del dashboard PeruVox
-con los indicadores de percepción pública agregados, sin datos individuales
+con los indicadores de percepción proyectada por los medios agregados, sin datos individuales
 identificables, en cumplimiento de la Ley N.º 29733 de Protección de Datos
 Personales del Perú y bajo un protocolo de uso ético supervisado por los
 organismos electorales.

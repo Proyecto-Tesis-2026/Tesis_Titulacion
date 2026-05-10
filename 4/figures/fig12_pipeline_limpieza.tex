@@ -1,0 +1,30 @@
+% Fig 5:fig12 -- Pipeline de limpieza y normalizacion del corpus electoral.
+\begin{tikzpicture}[
+    node distance=0.35cm,
+    every node/.style={font=\footnotesize, align=center, inner sep=4pt},
+    raw/.style={draw, rounded corners=2pt, fill=blue!10, minimum width=3cm, minimum height=0.7cm},
+    pstep/.style={draw, rounded corners=2pt, fill=yellow!12, minimum width=3.4cm, minimum height=0.65cm, font=\scriptsize},
+    pout/.style={draw, rounded corners=2pt, fill=green!15, minimum width=3cm, minimum height=0.7cm},
+    arrow/.style={-{Stealth[length=2mm]}, thick}
+]
+    \node[raw] (raw) {Texto raw};
+    \node[pstep, below=of raw]   (s1) {1. Reemplazo de nulos por cadena vacia};
+    \node[pstep, below=of s1]    (s2) {2. Eliminacion de URLs};
+    \node[pstep, below=of s2]    (s3) {3. Eliminacion de menciones (@usuario)};
+    \node[pstep, below=of s3]    (s4) {4. Conversion de emojis a texto};
+    \node[pstep, below=of s4]    (s5) {5. Normalizacion de mayusculas};
+    \node[pstep, below=of s5]    (s6) {6. Deteccion de idioma (langdetect)};
+    \node[pstep, below=of s6]    (s7) {7. Filtro de duplicados};
+    \node[pstep, below=of s7]    (s8) {8. Filtro de longitud (>10 tokens)};
+    \node[pout,  below=of s8]    (cout) {Corpus normalizado};
+
+    \draw[arrow] (raw) -- (s1);
+    \draw[arrow] (s1)  -- (s2);
+    \draw[arrow] (s2)  -- (s3);
+    \draw[arrow] (s3)  -- (s4);
+    \draw[arrow] (s4)  -- (s5);
+    \draw[arrow] (s5)  -- (s6);
+    \draw[arrow] (s6)  -- (s7);
+    \draw[arrow] (s7)  -- (s8);
+    \draw[arrow] (s8)  -- (cout);
+\end{tikzpicture}

@@ -1,8 +1,11 @@
 \chapter{Planteamiento del Problema}
 
+El primer capítulo de la investigación desarrolla la descripción de la realidad problemática, a continuación, se definirá la formulación del problema y los objetivos que se llevaran a cabo. Finalmente, se presentará la justificación y la viabilidad del estudio investigación.
+
 \section{Descripción de la Realidad Problemática}
 
-En la última década, el crecimiento acelerado de los ecosistemas digitales ha transformado profundamente la manera en que se construye y percibe la opinión pública, especialmente en contextos electorales. Plataformas digitales como redes sociales, medios de comunicación en línea y servicios de contenido audiovisual han pasado a ser canales predominantes de información política, permitiendo a los ciudadanos expresar opiniones, consumir contenido y participar activamente en el debate público en tiempo real.
+
+En la última década, el crecimiento acelerado de las redes sociales y los ecosistemas digitales ha transformado significativamente la manera en que se desarrolla la comunicación política y se construye la opinión pública en contextos electorales. Plataformas como Facebook, X/Twitter, Instagram, TikTok y YouTube se han convertido en espacios predominantes para la difusión de información política, la interacción ciudadana y la movilización electoral. A través de estos medios, millones de usuarios consumen contenido, expresan opiniones y participan activamente en debates públicos en tiempo real. \textcite{cr_digital2025}
 
 De acuerdo con \textcite{cr_digital2025}, más del 64\% de la población mundial utiliza redes sociales, lo que evidencia la masificación de estos entornos como espacios clave para la interacción social y política. Como se observa en la Figura \ref{fig:social_media_global}, este crecimiento ha consolidado a las plataformas digitales como un componente fundamental en la formación de la opinión pública contemporánea.
 
@@ -26,7 +29,7 @@ En América Latina, esta tendencia es aún más pronunciada. Según el \textcite
 	\end{center}
 \end{figure}
 
-En el caso específico del Perú, el acceso a Internet ha alcanzado aproximadamente el 82\% de la población, lo que equivale a más de 28 millones de usuarios conectados, según el Instituto Nacional de Estadística e Informática \parencite{cr_inei2024}. Como se muestra en la Figura \ref{fig:internet_peru}, este alto nivel de penetración digital refuerza la relevancia de analizar la percepción pública en entornos digitales dentro del contexto nacional.
+En el Perú, el acceso a Internet ha alcanzado aproximadamente el 80\% de la población, equivalente a más de 28 millones de usuarios conectados, según el Instituto Nacional de Estadística e Informática \parencite{cr_inei2024}. Este escenario demuestra la importancia de los ecosistemas digitales como espacios de información, debate político y formación de opinión pública. Por ello, los partidos políticos y actores públicos utilizan cada vez más las redes sociales y medios digitales para comunicarse directamente con la ciudadanía, sin depender únicamente de los medios tradicionales.Figura \ref{fig:internet_peru}
 
 \begin{figure}[h]
 	\begin{center}
@@ -37,30 +40,26 @@ En el caso específico del Perú, el acceso a Internet ha alcanzado aproximadame
 	\end{center}
 \end{figure}
 
-Sin embargo, este crecimiento también ha generado nuevos desafíos. La sobrecarga informativa, la desinformación y la polarización dificultan la comprensión precisa de la percepción ciudadana en contextos electorales. Tal como señala \textcite{cr_castells2015comunicacion}, la comunicación digital ha dado lugar a una dinámica en la que los ciudadanos no solo consumen información, sino que también la reinterpretan y amplifican, generando múltiples capas de significado.
+Por otro lado, los métodos tradicionales usados para analizar la opinión pública, como encuestas o estudios estadísticos, presentan limitaciones importantes debido a su costo, periodicidad y limitada capacidad para capturar dinámicas sociales en tiempo real. Además, muchos enfoques computacionales actuales se enfocan únicamente en una sola fuente de datos, como Twitter/X o Facebook, ignorando la complejidad y diversidad de los ecosistemas digitales contemporáneos \textcite{pr_fujiwara2021Socialmedia}.
 
-En este contexto, los métodos tradicionales de análisis de opinión pública, como encuestas o estudios cualitativos, presentan limitaciones importantes debido a su costo, baja frecuencia y limitada capacidad de capturar dinámicas en tiempo real. Por otro lado, los enfoques computacionales existentes suelen centrarse en una sola fuente de datos, como redes sociales, ignorando la diversidad de actores y formatos presentes en el ecosistema digital.
+\textcite{pr_alvarez2023llm_political}, manifiesta que los avances en inteligencia artificial, especialmente en Modelos de Lenguaje de Gran Escala (LLMs), han abierto nuevas oportunidades para el análisis de grandes volúmenes de información textual proveniente redes sociales y medios digitales. Con lo cual, estas tecnologías permiten identificar sentimientos, tendencias, comportamiento digital, narrativas políticas y comprender relaciones complejas entre actores, temas y comunidades. 
 
-Asimismo, existe una brecha significativa entre el discurso mediático y la percepción ciudadana. Mientras los medios de comunicación establecen agendas informativas, los ciudadanos reaccionan de manera independiente en redes sociales, generando diferencias que no son adecuadamente modeladas por los enfoques actuales. Esta problemática resulta crítica durante procesos electorales, donde la identificación de tendencias, temas relevantes y cambios en la percepción pública es fundamental.
-
-Por otro lado, el avance de los Modelos de Lenguaje de Gran Escala (LLMs) ha abierto nuevas oportunidades para el análisis semántico profundo de grandes volúmenes de datos. Según \textcite{cr_bommasani2021foundation}, estos modelos permiten capturar relaciones complejas en el lenguaje natural, superando las limitaciones de técnicas tradicionales de procesamiento de lenguaje natural.
-
-En consecuencia, se identifica la necesidad de desarrollar un enfoque integral que permita analizar la percepción nacional en contextos electorales mediante la integración de múltiples fuentes de información, el uso de modelos avanzados de lenguaje y la representación estructurada de relaciones mediante grafos de conocimiento.
+En consecuencia, se identifica la necesidad de desarrollar un enfoque integral que permita analizar la percepción actual proyectada por los medios de comunicación en contextos electorales mediante la integración de múltiples fuentes de información, el uso de modelos avanzados de lenguaje y la representación estructurada de relaciones mediante grafos de conocimiento. Como propuesta, se plantea el desarrollo de un sistema de Inteligencia Electoral basado en Modelos de Lenguaje de Gran Escala (LLMs), minería de sentimientos y detección dinámica de temas relevantes. Este sistema permitiría comprender cómo se forman, evolucionan e influyen las percepciones ciudadanas en los ecosistemas digitales, así como identificar tendencias, narrativas y dinámicas que impactan en el comportamiento electoral y la opinión pública.
 
 \section{Formulación del Problema}
 
 \subsection{Problema General}
 PG: \newcommand{\ProblemaGeneral}{
-¿Es posible analizar la percepción nacional en contextos electorales mediante un sistema de Inteligencia Electoral basado en modelos de lenguaje de gran escala (LLMs), minería de sentimientos y detección dinámica de temas en ecosistemas digitales multi-fuente?
+¿De qué manera un sistema de inteligencia electoral basado en LLMs, grafos de conocimiento y enfoque multi-fuente permite analizar la percepción actual proyectada por los medios de comunicación hacia los candidatos presidenciales en ecosistemas digitales electorales?
 }
 \ProblemaGeneral
 
 \subsection{Problemas Específicos}
 
-\newcommand{\Pbone}{¿Qué enfoques existen en la literatura para el análisis de opinión pública mediante inteligencia artificial?}
-\newcommand{\Pbtwo}{¿Cómo integrar múltiples fuentes de datos (noticias digitales, Twitter/X, YouTube y TikTok) para representar la percepción pública?}
-\newcommand{\Pbthree}{¿Cuál es el impacto del uso de LLMs en el análisis de sentimientos y detección de temas?}
-\newcommand{\Pbfour}{¿Cómo modelar las relaciones entre discurso mediático y percepción ciudadana mediante grafos de conocimiento?}
+\newcommand{\Pbone}{¿El uso de LLMs mejora la precisión del análisis de sentimientos en comparación con modelos tradicionales?}
+\newcommand{\Pbtwo}{¿El enfoque multi-fuente mejora la cobertura y representatividad del análisis de la percepción proyectada por los medios de comunicación en ecosistemas digitales?}
+\newcommand{\Pbthree}{¿El uso de grafos de conocimiento permite modelar mejor las relaciones entre actores, temas y medios?}
+\newcommand{\Pbfour}{¿El uso de GraphRAG mejora la generación de insights frente a sistemas RAG tradicionales?}
 
 \begin{itemize}
 	\item PE1: {\Pbone}
@@ -74,15 +73,15 @@ PG: \newcommand{\ProblemaGeneral}{
 
 \subsection{Objetivo General}
 OG: \newcommand{\ObjetivoGeneral}{
-Analizar la percepción nacional en contextos electorales mediante un sistema basado en LLMs, minería de sentimientos y detección de temas en ecosistemas digitales.
+Desarrollar un sistema de inteligencia electoral basado en LLMs, grafos de conocimiento y enfoque multi-fuente que permita analizar la percepción actual proyectada por los medios de comunicación hacia los candidatos presidenciales en ecosistemas digitales electorales.
 }
 \ObjetivoGeneral
 \subsection{Objetivos Específicos}
 
-\newcommand{\Objone}{Analizar enfoques existentes en la literatura.}
-\newcommand{\Objtwo}{Diseñar una arquitectura multi-fuente.}
-\newcommand{\Objthree}{Evaluar el desempeño de LLMs en análisis de sentimientos y detección de temas.}
-\newcommand{\Objfour}{Implementar un sistema basado en grafos de conocimiento y GraphRAG.}
+\newcommand{\Objone}{Evaluar la precisión del análisis de sentimientos utilizando LLMs frente a modelos tradicionales de procesamiento de lenguaje natural.}
+\newcommand{\Objtwo}{Analizar el impacto de integrar múltiples fuentes digitales en la cobertura del análisis de la percepción proyectada por los medios de comunicación.}
+\newcommand{\Objthree}{Construir un grafo de conocimiento para representar las relaciones entre actores, medios y temas dentro del ecosistema electoral digital.}
+\newcommand{\Objfour}{Evaluar la calidad de los insights generados mediante GraphRAG frente a sistemas RAG tradicionales.}
 
 
 \begin{itemize}
@@ -96,15 +95,15 @@ Analizar la percepción nacional en contextos electorales mediante un sistema ba
 
 \subsection{Hipótesis General}
 HG: \newcommand{\HipotesisGeneral}{
-El uso de modelos de lenguaje de gran escala (LLMs) permite analizar con mayor precisión la percepción nacional en entornos digitales multi-fuente durante contextos electorales.
+El uso de modelos de lenguaje de gran escala (LLMs), grafos de conocimiento y enfoque multi-fuente permite analizar con mayor precisión y contextualización la percepción actual proyectada por los medios de comunicación hacia los candidatos presidenciales en ecosistemas digitales electorales.
 }
 \HipotesisGeneral
 \subsection{Hipótesis Específicas}
 
-\newcommand{\Hone}{La integración de múltiples fuentes de datos mejora la representatividad de la percepción pública.}
-\newcommand{\Htwo}{Los modelos LLMs mejoran la precisión del análisis de sentimientos y detección de temas.}
-\newcommand{\Hthree}{El uso de grafos de conocimiento permite modelar relaciones complejas entre actores y discursos.}
-\newcommand{\Hfour}{El enfoque GraphRAG mejora la generación de insights en el análisis electoral.}
+\newcommand{\Hone}{Los LLMs mejoran significativamente la precisión del análisis de sentimientos respecto a modelos tradicionales.}
+\newcommand{\Htwo}{La integración multi-fuente incrementa la cobertura y diversidad temática del análisis de la percepción proyectada por los medios de comunicación en ecosistemas digitales.}
+\newcommand{\Hthree}{Los grafos de conocimiento permiten identificar relaciones complejas no detectables mediante métodos tradicionales.}
+\newcommand{\Hfour}{GraphRAG mejora la relevancia, coherencia y contextualización de los insights generados.}
 
 \begin{itemize}
 	\item HE1: \Hone
@@ -150,20 +149,13 @@ Finalmente, la integración de estos componentes mediante un enfoque tipo GraphR
 
 \subsection{Espacial}
 
-La investigación se delimita geográficamente al contexto peruano, con una extensión analítica hacia el ámbito latinoamericano. Esta delimitación responde a la relevancia de los procesos electorales en la región, caracterizados por una alta participación en entornos digitales y una creciente influencia de las redes sociales en la formación de opinión pública.
+La presente investigación se desarrolla geográficamente en el contexto peruano, considerando información recolectada de diferentes plataformas digitales y redes sociales, enfocándose principalmente en el análisis de la interacción digital y la percepción pública de los ciudadanos dentro del territorio peruano durante contextos electorales.
 
-El enfoque en Perú permite contextualizar el análisis en un entorno específico con características sociopolíticas propias, mientras que la consideración del contexto latinoamericano posibilita la comparación y generalización de resultados en escenarios similares.
 
 \subsection{Temporal}
 
-En términos temporales, la investigación se centra en el análisis de datos recientes provenientes de ecosistemas digitales, priorizando información generada en los últimos años. Esta delimitación permite capturar dinámicas actuales en el comportamiento de los usuarios, así como tendencias emergentes en el uso de plataformas digitales para la expresión de opiniones políticas.
-
-Asimismo, el enfoque en datos recientes es coherente con la naturaleza cambiante del entorno digital, donde los temas de interés y el sentimiento colectivo pueden variar rápidamente en función de eventos coyunturales.
+El estudio se centra en el análisis de información digital generada durante el periodo comprendido entre los años 2025 y 2026, considerando publicaciones, comentarios, noticias y contenido relacionado con procesos políticos y electorales difundidos en redes sociales y medios digitales durante dicho intervalo temporales de ecosistemas digitales.
 
 \subsection{Conceptual}
 
-Desde el punto de vista conceptual, la investigación se enfoca en el análisis de la percepción pública mediante técnicas de Procesamiento de Lenguaje Natural (NLP), modelos de lenguaje de gran escala (LLMs) y grafos de conocimiento.
-
-Se consideran conceptos clave como minería de sentimientos, detección de tópicos, análisis semántico y modelado de relaciones entre entidades. Asimismo, se enmarca dentro del campo de la analítica de datos aplicada a la ciencia política, particularmente en el ámbito de la inteligencia electoral.
-
-No se abordan aspectos relacionados con la predicción directa de resultados electorales, sino que el énfasis se encuentra en la comprensión de la percepción ciudadana y la identificación de patrones en el discurso público digital.
+Desde el punto de vista conceptual, la investigación se enfoca en el análisis de percepción pública y comportamiento político digital mediante el uso de Modelos de Lenguaje de Gran Escala (LLMs), minería de sentimientos, detección de temas y grafos de conocimiento.
