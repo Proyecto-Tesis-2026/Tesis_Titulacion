@@ -147,7 +147,7 @@ El sistema de inteligencia electoral propuesto tiene como objetivos estratégico
 
 En primer lugar, \textbf{desarrollar un pipeline automatizado de minería de sentimientos} aplicado a la cobertura mediática del proceso electoral peruano, analizando contenidos de cuatro fuentes digitales (noticias web, X/Twitter, YouTube y TikTok) mediante LLMs en modalidad zero-shot y few-shot, capaz de clasificar la polaridad y el encuadre mediático de documentos en español con una exactitud superior al 85\% validada contra etiquetas humanas.
 
-En segundo lugar, \textbf{implementar un sistema de detección dinámica de temas} basado en BERTopic y embeddings de Sentence-BERT, capaz de identificar automáticamente los temas relevantes emergentes en la cobertura mediática digital y rastrear su evolución temporal durante el período enero–mayo de 2026.
+En segundo lugar, \textbf{implementar un sistema de detección dinámica de temas} basado en un enfoque híbrido LLM con catálogo incremental, que combina embeddings de Sentence-BERT multilingüe, retrieval multinivel y clasificación con LLM (\textit{exact}, \textit{alias}, \textit{new}), capaz de identificar automáticamente los temas relevantes emergentes en la cobertura mediática digital y rastrear su evolución temporal durante el período enero–mayo de 2026.
 
 En tercer lugar, \textbf{construir un módulo de análisis de framing mediático comparado} que permita identificar y cuantificar las diferencias en la percepción proyectada sobre los actores políticos por parte de distintos medios y plataformas digitales, habilitando el análisis de sesgos editoriales y divergencias de cobertura.
 
@@ -237,7 +237,7 @@ El modelo de negocio del sistema de inteligencia electoral se estructura bajo el
 
 \textbf{Recursos Clave}: Modelos LLM pre-entrenados (DeepSeek, Llama, BERT multilingüe); infraestructura local basada en Docker Compose; acceso a scrapers de noticias (aiohttp + BeautifulSoup), API TwitterAPI.io y herramienta yt-dlp para YouTube y TikTok; base de datos PostgreSQL con pgvector; Neo4j Community Edition para almacenamiento del grafo de conocimiento; equipo multidisciplinario de científicos de datos, analistas políticos y desarrolladores.
 
-\textbf{Actividades Clave}: Recolección y preprocesamiento de datos multimodales (noticias, tweets, transcripciones de YouTube y TikTok); análisis de sentimientos y framing con LLMs; detección dinámica de temas con BERTopic; análisis comparado de cobertura mediática; detección de desinformación; actualización y mantenimiento de los modelos; generación de reportes e indicadores de percepción mediática.
+\textbf{Actividades Clave}: Recolección y preprocesamiento de datos multimodales (noticias, tweets, transcripciones de YouTube y TikTok); análisis de sentimientos y framing con LLMs; detección dinámica de temas mediante un enfoque híbrido LLM con catálogo incremental; análisis comparado de cobertura mediática; detección de desinformación; actualización y mantenimiento de los modelos; generación de reportes e indicadores de percepción mediática.
 
 \textbf{Socios Clave}: Plataformas de redes sociales y video (proveedoras de datos); organismos electorales (JNE, ONPE) para datos de validación; universidades e instituciones académicas para investigación colaborativa; medios de comunicación interesados en el análisis de su propia cobertura.
 
@@ -289,7 +289,7 @@ Los \textbf{procesos operativos} constituyen el núcleo del sistema y comprenden
 
     \item \textbf{Análisis de sentimientos y framing con LLM}: Clasificación de la polaridad (positivo / negativo / neutral), la emoción y el encuadre mediático de cada documento hacia las entidades políticas mencionadas, mediante prompts diseñados para el contexto de cobertura mediática electoral peruana en modalidad zero-shot y few-shot. La salida se almacena en capa Silver en formato JSON estructurado con campos para: fuente mediática, tipo de plataforma, candidato protagonista, actores secundarios, tema emergente, categoría, sentimiento por candidato y nivel de confianza.
 
-    \item \textbf{Detección dinámica de temas}: Generación de embeddings semánticos con Sentence-BERT, reducción de dimensionalidad con UMAP, clustering con HDBSCAN y representación de temas con c-TF-IDF dentro del framework BERTopic, con actualización dinámica por ventanas de tiempo. La deduplicación semántica de temas entre fuentes heterogéneas se realiza mediante el pipeline de tres etapas descrito en el marco teórico.
+    \item \textbf{Detección dinámica de temas}: Generación de embeddings semánticos con Sentence-BERT multilingüe, construcción de un menú de temas candidatos mediante retrieval multinivel (trending, semántico, léxico, por actor y por evento) y clasificación con LLM en categorías \textit{exact}, \textit{alias} o \textit{new} dentro de un catálogo incremental, con consolidación y deduplicación semántica diaria. La deduplicación entre fuentes heterogéneas se realiza mediante el pipeline de tres etapas descrito en el marco teórico.
 
     \item \textbf{Análisis de cobertura mediática comparada}: Cálculo del Índice de Sentimiento Neto (ISN) desagregado por fuente mediática y plataforma, identificación de divergencias de framing entre medios y construcción de los perfiles de cobertura por candidato y período.
 
