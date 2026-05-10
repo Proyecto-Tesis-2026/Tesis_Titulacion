@@ -1,0 +1,42 @@
+% Fig 4:fig6 -- Proceso de recoleccion del corpus de comentarios de YouTube
+\begin{tikzpicture}[
+    node distance=0.6cm,
+    every node/.style={font=\footnotesize, align=center, inner sep=4pt},
+    src/.style={draw, rounded corners=2pt, fill=red!12, minimum width=4.4cm, minimum height=0.9cm},
+    prod/.style={draw, rounded corners=2pt, fill=blue!12, minimum width=4.4cm, minimum height=0.9cm},
+    cons/.style={draw, rounded corners=2pt, fill=green!12, minimum width=2.4cm, minimum height=0.7cm, font=\scriptsize},
+    proc/.style={draw, rounded corners=2pt, fill=yellow!15, minimum width=4.4cm, minimum height=0.9cm},
+    cookie/.style={draw, dashed, rounded corners=2pt, fill=orange!15, minimum width=2.6cm, minimum height=0.8cm, font=\scriptsize},
+    storage/.style={draw, rounded corners=2pt, fill=brown!20, minimum width=4.4cm, minimum height=1cm, font=\footnotesize\bfseries},
+    arrow/.style={-{Stealth[length=2mm]}, thick}
+]
+    \node[src] (s1) {Identificacion de videos electorales\\\scriptsize busqueda por keywords + canales oficiales};
+    \node[prod, below=of s1] (s2) {Productor: yt-dlp extract\_flat\\\scriptsize lotes de IDs de video};
+
+    \node[cons, below=1.2cm of s2.south, xshift=-3.0cm] (w1) {Worker 1};
+    \node[cons, right=0.25cm of w1] (w2) {Worker 2};
+    \node[cons, right=0.25cm of w2] (w3) {Worker 3};
+    \node[cons, right=0.25cm of w3] (w4) {Worker N};
+
+    \node[cookie, right=0.5cm of w4] (ck) {Pool cookies\\Netscape\\round-robin};
+
+    \node[proc, below=1.0cm of w2.south, xshift=1.5cm] (s3) {Metadata + transcripcion + comentarios\\\scriptsize is\_auto\_generated flag};
+    \node[proc, below=of s3] (s4) {Filtrado por fecha de publicacion\\\scriptsize ventana electoral};
+    \node[storage, below=of s4] (s5) {Capa Bronze\\\scriptsize raw\_youtube\_comments (PostgreSQL)};
+
+    \draw[arrow] (s1) -- (s2);
+    \draw[arrow] (s2.south) -- (w1.north);
+    \draw[arrow] (s2.south) -- (w2.north);
+    \draw[arrow] (s2.south) -- (w3.north);
+    \draw[arrow] (s2.south) -- (w4.north);
+
+    \draw[arrow, dashed] (ck.west) -- (w4.east);
+
+    \draw[arrow] (w1.south) -- ($(s3.north) + (-1.5,0)$);
+    \draw[arrow] (w2.south) -- ($(s3.north) + (-0.5,0)$);
+    \draw[arrow] (w3.south) -- ($(s3.north) + (0.5,0)$);
+    \draw[arrow] (w4.south) -- ($(s3.north) + (1.5,0)$);
+
+    \draw[arrow] (s3) -- (s4);
+    \draw[arrow] (s4) -- (s5);
+\end{tikzpicture}

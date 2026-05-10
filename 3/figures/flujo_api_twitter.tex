@@ -1,0 +1,27 @@
+% Fig 4:fig5 -- Proceso de recoleccion del corpus de X/Twitter (API Filtered Stream)
+\begin{tikzpicture}[
+    node distance=0.6cm,
+    every node/.style={font=\footnotesize, align=center, inner sep=4pt},
+    cfg/.style={draw, rounded corners=2pt, fill=blue!12, minimum width=4.6cm, minimum height=0.9cm},
+    api/.style={draw, rounded corners=2pt, fill=cyan!18, minimum width=4.6cm, minimum height=0.9cm},
+    proc/.style={draw, rounded corners=2pt, fill=yellow!15, minimum width=4.6cm, minimum height=0.9cm},
+    rate/.style={draw, dashed, rounded corners=2pt, fill=orange!12, minimum width=3.4cm, minimum height=0.8cm, font=\scriptsize},
+    storage/.style={draw, rounded corners=2pt, fill=brown!20, minimum width=4.6cm, minimum height=1cm, font=\footnotesize\bfseries},
+    arrow/.style={-{Stealth[length=2mm]}, thick}
+]
+    \node[cfg] (s1) {Configuracion de reglas\\\scriptsize candidatos + hashtags + idioma:es};
+    \node[api, below=of s1] (s2) {TwitterAPI.io REST endpoint\\\scriptsize tweet/advanced\_search};
+    \node[proc, below=of s2] (s3) {Cliente httpx asincrono\\\scriptsize asyncio + paginacion por cursor};
+    \node[proc, below=of s3] (s4) {Filtrado por date\_from/date\_to\\\scriptsize tolerancia $\pm$1 dia};
+    \node[proc, below=of s4] (s5) {Extraccion de metadatos\\\scriptsize id, texto, fecha, RT, menciones};
+    \node[storage, below=of s5] (s6) {Capa Bronze\\\scriptsize raw\_tweets (PostgreSQL)};
+
+    \node[rate, right=0.7cm of s3] (rl) {Rate limit\\\scriptsize backoff exponencial};
+
+    \draw[arrow] (s1) -- (s2);
+    \draw[arrow] (s2) -- (s3);
+    \draw[arrow] (s3) -- (s4);
+    \draw[arrow] (s4) -- (s5);
+    \draw[arrow] (s5) -- (s6);
+    \draw[arrow, dashed] (rl.west) -- (s3.east);
+\end{tikzpicture}

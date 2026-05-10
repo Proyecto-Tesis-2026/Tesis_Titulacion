@@ -1,0 +1,33 @@
+% Fig 4:fig4 -- Proceso de recoleccion del corpus de noticias digitales
+\begin{tikzpicture}[
+    node distance=0.6cm,
+    every node/.style={font=\footnotesize, align=center, inner sep=4pt},
+    portal/.style={draw, rounded corners=2pt, fill=blue!12, minimum width=2.4cm, minimum height=0.8cm, font=\scriptsize},
+    step/.style={draw, rounded corners=2pt, fill=yellow!15, minimum width=4.2cm, minimum height=0.9cm},
+    extract/.style={draw, rounded corners=2pt, fill=green!12, minimum width=4.2cm, minimum height=0.9cm},
+    storage/.style={draw, rounded corners=2pt, fill=brown!20, minimum width=4.2cm, minimum height=1cm, font=\footnotesize\bfseries},
+    arrow/.style={-{Stealth[length=2mm]}, thick}
+]
+    \node[portal] (p1) {El Comercio};
+    \node[portal, right=0.3cm of p1] (p2) {La Republica};
+    \node[portal, right=0.3cm of p2] (p3) {RPP};
+    \node[portal, right=0.3cm of p3] (p4) {Diario Correo};
+
+    \node[step, below=0.8cm of p2.south east, xshift=0.0cm] (s1) {Identificacion de portales\\\scriptsize (URLs base + sitemap)};
+    \node[step, below=of s1] (s2) {Scraper Python por portal\\\scriptsize requests + BeautifulSoup};
+    \node[extract, below=of s2] (s3) {Extraccion de campos\\\scriptsize titular + cuerpo + fecha + URL};
+    \node[step, below=of s3] (s4) {Filtro por palabras clave\\\scriptsize candidatos, partidos, eventos};
+    \node[step, below=of s4] (s5) {Deduplicacion\\\scriptsize hash SHA-1 sobre URL+titular};
+    \node[storage, below=of s5] (s6) {Capa Bronze\\\scriptsize raw\_news (PostgreSQL)};
+
+    \draw[arrow] (p1.south) -- ($(s1.north) + (-2.0,0.4)$) -- ($(s1.north) + (-2.0,0)$);
+    \draw[arrow] (p2.south) -- ($(s1.north) + (-0.6,0)$);
+    \draw[arrow] (p3.south) -- ($(s1.north) + (0.6,0)$);
+    \draw[arrow] (p4.south) -- ($(s1.north) + (2.0,0.4)$) -- ($(s1.north) + (2.0,0)$);
+
+    \draw[arrow] (s1) -- (s2);
+    \draw[arrow] (s2) -- (s3);
+    \draw[arrow] (s3) -- (s4);
+    \draw[arrow] (s4) -- (s5);
+    \draw[arrow] (s5) -- (s6);
+\end{tikzpicture}

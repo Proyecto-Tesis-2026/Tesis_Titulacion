@@ -94,7 +94,7 @@ Los conjuntos de datos recopilados para la investigación están conformados por
  
 \begin{figure}[!ht]
     \begin{center}
-        \includegraphics[width=0.90\textwidth]{3/figures/flujo_recoleccion.png}
+        \resizebox{0.95\textwidth}{!}{\input{3/figures/flujo_recoleccion.tex}}
         \caption[Flujograma de recolección de los conjuntos de datos del corpus electoral]{Flujograma de recolección de los conjuntos de datos del corpus electoral: noticias digitales, comentarios de YouTube y tweets de X/Twitter, con sus respectivos procesos de filtrado y almacenamiento en la capa Bronze de la arquitectura Medallion.\\
             Fuente: Elaboración propia.}
         \label{4:fig1}
@@ -412,7 +412,7 @@ De acuerdo a la Figura \ref{4:fig1}, en esta actividad se construyó el corpus d
  
 \begin{figure}[!ht]
     \begin{center}
-        \includegraphics[width=0.80\textwidth]{3/figures/flujo_scraping_noticias.png}
+        \resizebox{0.85\textwidth}{!}{\input{3/figures/flujo_scraping_noticias.tex}}
         \caption[Proceso de recolección del corpus de noticias digitales]{Proceso de recolección del corpus de noticias digitales: desde la identificación de portales objetivo hasta el almacenamiento en la capa Bronze de la arquitectura Medallion.\\
             Fuente: Elaboración propia.}
         \label{4:fig4}
@@ -427,7 +427,7 @@ La recolección de tweets se realizó mediante TwitterAPI.io, un proveedor de ac
 
 \begin{figure}[!ht]
     \begin{center}
-        \includegraphics[width=0.80\textwidth]{3/figures/flujo_api_twitter.png}
+        \resizebox{0.85\textwidth}{!}{\input{3/figures/flujo_api_twitter.tex}}
         \caption[Proceso de recolección del corpus de X/Twitter mediante API Filtered Stream]{Proceso de recolección del corpus de X/Twitter: configuración de reglas de filtrado, captura en streaming y almacenamiento con metadatos en capa Bronze.\\
             Fuente: Elaboración propia.}
         \label{4:fig5}
@@ -442,7 +442,7 @@ La recolección de contenido de YouTube se realizó mediante \texttt{yt-dlp}, un
 
 \begin{figure}[!ht]
     \begin{center}
-        \includegraphics[width=0.80\textwidth]{3/figures/flujo_youtube_comentarios.png}
+        \resizebox{0.85\textwidth}{!}{\input{3/figures/flujo_youtube_comentarios.tex}}
         \caption[Proceso de recolección del corpus de comentarios de YouTube]{Proceso de extracción de comentarios de usuarios en videos electorales de YouTube, desde la identificación de videos relevantes hasta el almacenamiento en capa Bronze.\\
             Fuente: Elaboración propia.}
         \label{4:fig6}
