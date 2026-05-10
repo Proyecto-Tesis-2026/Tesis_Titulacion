@@ -33,7 +33,7 @@ En el marco de esta investigación, la percepción actual proyectada por los med
 \subsection{Minería de Sentimientos}
 % ──────────────────────────────────────────────────────────────
 
-La minería de sentimientos, también conocida como análisis de sentimientos u \textit{opinion mining}, es la disciplina del Procesamiento del Lenguaje Natural orientada a identificar, extraer y cuantificar automáticamente las actitudes subjetivas expresadas en textos digitales —sean estas positivas, negativas o neutras— hacia personas, entidades, productos, eventos o temas de interés \parencite{mc_liu2012sentiment}. Va más allá de la simple clasificación de polaridad al buscar identificar también la intensidad del sentimiento, la emoción subyacente y las entidades específicas hacia las que se dirigen dichas actitudes.
+La minería de sentimientos, también conocida como análisis de sentimientos u \textit{opinion mining}, es la disciplina del Procesamiento del Lenguaje Natural orientada a identificar, extraer y cuantificar automáticamente las actitudes subjetivas expresadas en textos digitales —sean estas positivas, negativas o neutras— hacia personas, entidades, productos, eventos o temas de interés \parencite{tec_liu2012sentiment}. Va más allá de la simple clasificación de polaridad al buscar identificar también la intensidad del sentimiento, la emoción subyacente y las entidades específicas hacia las que se dirigen dichas actitudes.
 
 En el contexto de la inteligencia electoral, la minería de sentimientos permite responder preguntas como: ¿Con qué tono cubre la prensa digital a un candidato? ¿Cómo varía el encuadre mediático antes y después de un debate presidencial? ¿Qué emociones predominan en los videos de YouTube sobre una propuesta de política pública? Las respuestas a estas preguntas ofrecen información valiosa y complementaria a las encuestas convencionales para la comprensión de la dinámica mediática electoral \parencite{mc_ceron2017social}.
 
@@ -46,7 +46,7 @@ Formalmente, dado un conjunto de documentos $D = \{d_1, d_2, \ldots, d_n\}$, la 
         %   "fuente mediática" (noticias / X / YouTube / TikTok) como
         %   variable de segmentación en la etapa de generación de indicadores.
         \caption[Proceso general de la minería de sentimientos aplicada al análisis de cobertura mediática electoral]{Proceso de minería de sentimientos en el contexto de la cobertura mediática electoral: desde la recolección multimodal de contenidos (noticias, X/Twitter, YouTube, TikTok) hasta la generación de indicadores de percepción proyectada por fuente mediática y candidato.\\
-            Fuente: Elaboración propia basada en \cite{mc_liu2012sentiment}.}
+            Fuente: Elaboración propia basada en \cite{tec_liu2012sentiment}.}
         \label{fig:sentiment_mining_process}
     \end{center}
 \end{figure}
@@ -63,9 +63,9 @@ Los temas relevantes en la cobertura mediática de un proceso electoral pueden a
 \subsection{Detección Dinámica de Temas}
 % ──────────────────────────────────────────────────────────────
 
-La detección dinámica de temas es la capacidad de un sistema computacional para identificar automáticamente los temas latentes presentes en un corpus de textos y rastrear su evolución a lo largo del tiempo, sin requerir etiquetado manual previo ni un conjunto predefinido de categorías temáticas \parencite{mc_grootendorst2022bertopic}. El adjetivo «dinámica» hace referencia a que el sistema es capaz de detectar no solo los temas que ya existían al inicio del período de análisis, sino también los que emergen durante el proceso como respuesta a nuevos eventos, los que se intensifican y los que decaen.
+La detección dinámica de temas es la capacidad de un sistema computacional para identificar automáticamente los temas latentes presentes en un corpus de textos y rastrear su evolución a lo largo del tiempo, sin requerir etiquetado manual previo ni un conjunto predefinido de categorías temáticas \parencite{tec_grootendorst2022bertopic}. El adjetivo «dinámica» hace referencia a que el sistema es capaz de detectar no solo los temas que ya existían al inicio del período de análisis, sino también los que emergen durante el proceso como respuesta a nuevos eventos, los que se intensifican y los que decaen.
 
-En el contexto de la cobertura mediática electoral, la detección dinámica de temas responde a preguntas como: ¿Qué nuevos asuntos han irrumpido en la agenda de los medios esta semana? ¿Qué temas han perdido relevancia editorial? ¿Existe una correlación entre la aparición de un tema en los medios y un evento específico de la campaña? ¿Cómo difieren los temas cubiertos por la prensa escrita respecto a los abordados en YouTube o TikTok? Este tipo de análisis es imposible de realizar manualmente a la escala del corpus recolectado entre enero y mayo de 2026, de ahí la necesidad de automatizarlo mediante LLMs y modelos de topic modeling como BERTopic \parencite{mc_grootendorst2022bertopic}.
+En el contexto de la cobertura mediática electoral, la detección dinámica de temas responde a preguntas como: ¿Qué nuevos asuntos han irrumpido en la agenda de los medios esta semana? ¿Qué temas han perdido relevancia editorial? ¿Existe una correlación entre la aparición de un tema en los medios y un evento específico de la campaña? ¿Cómo difieren los temas cubiertos por la prensa escrita respecto a los abordados en YouTube o TikTok? Este tipo de análisis es imposible de realizar manualmente a la escala del corpus recolectado entre enero y mayo de 2026, de ahí la necesidad de automatizarlo mediante LLMs y modelos de topic modeling como BERTopic \parencite{tec_grootendorst2022bertopic}.
 
 La Figura \ref{fig:dynamic_detection_concept} ilustra el concepto de detección dinámica de temas en el contexto de la cobertura mediática electoral, mostrando cómo distintos temas emergen, se intensifican y decaen a lo largo del tiempo en respuesta a los hitos de la campaña.
 
@@ -90,7 +90,7 @@ En la presente investigación se trabaja con un \textbf{corpus multimodal}, ente
 \subsection{Token y Tokenización}
 % ──────────────────────────────────────────────────────────────
 
-Un \textbf{token} es la unidad mínima de procesamiento en la que se divide un texto para ser procesado por un modelo de NLP o un LLM. Dependiendo del tokenizador utilizado, un token puede corresponder a una palabra completa, a un subconjunto de caracteres de una palabra (\textit{subword}), a un signo de puntuación o incluso a un espacio en blanco \parencite{mc_devlin2018bert}. Los LLMs modernos utilizan tokenizadores de subpalabras como BPE (\textit{Byte Pair Encoding}) o WordPiece, que permiten manejar vocabularios abiertos y palabras fuera del vocabulario de entrenamiento.
+Un \textbf{token} es la unidad mínima de procesamiento en la que se divide un texto para ser procesado por un modelo de NLP o un LLM. Dependiendo del tokenizador utilizado, un token puede corresponder a una palabra completa, a un subconjunto de caracteres de una palabra (\textit{subword}), a un signo de puntuación o incluso a un espacio en blanco \parencite{tec_devlin2018bert}. Los LLMs modernos utilizan tokenizadores de subpalabras como BPE (\textit{Byte Pair Encoding}) o WordPiece, que permiten manejar vocabularios abiertos y palabras fuera del vocabulario de entrenamiento.
 
 La \textbf{tokenización} es el proceso de segmentar un texto de entrada en tokens antes de su procesamiento por el modelo, como se ilustra en la Figura \ref{fig:tokenization_example}. Este proceso es un paso previo indispensable en cualquier pipeline de NLP y tiene implicaciones directas en el rendimiento del modelo: textos en español político peruano, con sus variantes léxicas regionales y uso de jerga electoral, presentan desafíos particulares de tokenización que se ven amplificados en el corpus multimodal de esta investigación, donde coexisten el lenguaje formal de los artículos periodísticos, la informalidad de los tweets, el lenguaje oral de las transcripciones de YouTube y los neologismos frecuentes en TikTok.
 
@@ -98,7 +98,7 @@ La \textbf{tokenización} es el proceso de segmentar un texto de entrada en toke
     \begin{center}
         \includegraphics[width=0.82\textwidth]{2/figures/tokenization_example.jpg}
         \caption[Ejemplo de tokenización de un texto político con tokenizadores de subpalabras]{Ejemplo de tokenización BPE aplicada a un texto político en español: la oración es dividida en tokens de subpalabras que el LLM puede procesar como vectores numéricos.\\
-            Fuente: Elaboración propia basada en \cite{mc_devlin2018bert}.}
+            Fuente: Elaboración propia basada en \cite{tec_devlin2018bert}.}
         \label{fig:tokenization_example}
     \end{center}
 \end{figure}
@@ -107,7 +107,7 @@ La \textbf{tokenización} es el proceso de segmentar un texto de entrada en toke
 \subsection{Embedding o Incrustación Semántica}
 % ──────────────────────────────────────────────────────────────
 
-Un \textbf{embedding} (o incrustación semántica) es una representación vectorial densa de un token, palabra, oración o documento en un espacio de alta dimensión, donde la proximidad geométrica entre dos vectores refleja la similitud semántica entre los elementos que representan \parencite{mc_mikolov2013word2vec}. A diferencia de las representaciones dispersas como la Bolsa de Palabras o la codificación en caliente, los embeddings capturan relaciones semánticas y sintácticas complejas en un espacio de dimensión reducida.
+Un \textbf{embedding} (o incrustación semántica) es una representación vectorial densa de un token, palabra, oración o documento en un espacio de alta dimensión, donde la proximidad geométrica entre dos vectores refleja la similitud semántica entre los elementos que representan \parencite{tec_mikolov2013word2vec}. A diferencia de las representaciones dispersas como la Bolsa de Palabras o la codificación en caliente, los embeddings capturan relaciones semánticas y sintácticas complejas en un espacio de dimensión reducida.
 
 En el contexto de la presente investigación, los embeddings cumplen dos roles fundamentales. Por un lado, los \textbf{embeddings de palabras} generados por modelos como Word2Vec o GloVe permiten calcular la similitud semántica entre términos del discurso mediático electoral y construir representaciones del vocabulario periodístico. Por otro lado, los \textbf{embeddings de oraciones} generados por modelos como Sentence-BERT \parencite{mc_reimers2019sbert} constituyen la entrada al pipeline de BERTopic para la detección dinámica de temas, capturando el significado global de cada pieza de contenido —ya sea un artículo, un tweet, un fragmento de transcripción de YouTube o un texto de TikTok— en un único vector denso, como se representa en la Figura \ref{fig:embedding_space}.
 
@@ -124,7 +124,7 @@ En el contexto de la presente investigación, los embeddings cumplen dos roles f
 \subsection{Prompt}
 % ──────────────────────────────────────────────────────────────
 
-Un \textbf{prompt} es la instrucción textual o consulta que se proporciona como entrada a un LLM para orientar y condicionar la respuesta que este genera \parencite{mc_white2023prompt}. El diseño del prompt es el mecanismo principal a través del cual el usuario comunica al modelo la tarea que debe realizar, el contexto en el que debe operar, el formato de la respuesta esperada y las restricciones que debe respetar, todo ello sin modificar los parámetros internos del modelo.
+Un \textbf{prompt} es la instrucción textual o consulta que se proporciona como entrada a un LLM para orientar y condicionar la respuesta que este genera \parencite{tec_white2023prompt}. El diseño del prompt es el mecanismo principal a través del cual el usuario comunica al modelo la tarea que debe realizar, el contexto en el que debe operar, el formato de la respuesta esperada y las restricciones que debe respetar, todo ello sin modificar los parámetros internos del modelo.
 
 En el contexto de la inteligencia electoral, los prompts se utilizan para instrucciones como: «Analiza el encuadre mediático de la siguiente noticia hacia el candidato X y clasifícalo como positivo, negativo o neutro, indicando los términos que sustentan tu clasificación», o «Identifica el tema principal de los siguientes fragmentos de transcripción y etiquétalo con una frase descriptiva de no más de cinco palabras». La calidad del prompt determina directamente la calidad de los resultados del sistema sobre el corpus multimodal.
 
@@ -137,7 +137,7 @@ Los elementos clave de un prompt bien diseñado para análisis de cobertura medi
         %   para que incluya el campo "tipo_fuente" (noticia/tweet/youtube/tiktok)
         %   en el JSON de salida esperado. Ver notas_figuras.tex.
         \caption[Estructura de un prompt optimizado para análisis de cobertura mediática electoral]{Estructura de un prompt bien diseñado para análisis de cobertura mediática electoral, mostrando sus cinco componentes: rol, contexto (incluye tipo de fuente), instrucción, formato JSON estructurado y ejemplos few-shot.\\
-            Fuente: Elaboración propia basada en \cite{mc_white2023prompt}.}
+            Fuente: Elaboración propia basada en \cite{tec_white2023prompt}.}
         \label{fig:prompt_structure}
     \end{center}
 \end{figure}
@@ -146,7 +146,7 @@ Los elementos clave de un prompt bien diseñado para análisis de cobertura medi
 \subsection{Polaridad}
 % ──────────────────────────────────────────────────────────────
 
-La \textbf{polaridad} es la dimensión evaluativa fundamental del análisis de sentimientos, que indica la orientación afectiva de un texto hacia una entidad o aspecto determinado: positiva, negativa o neutral \parencite{mc_liu2012sentiment}. En el contexto de la cobertura mediática electoral, la polaridad mide si un artículo periodístico, tweet de un medio, video de YouTube o publicación de TikTok expresa apoyo, rechazo o una posición indefinida respecto a un candidato, partido político, propuesta o evento de la campaña.
+La \textbf{polaridad} es la dimensión evaluativa fundamental del análisis de sentimientos, que indica la orientación afectiva de un texto hacia una entidad o aspecto determinado: positiva, negativa o neutral \parencite{tec_liu2012sentiment}. En el contexto de la cobertura mediática electoral, la polaridad mide si un artículo periodístico, tweet de un medio, video de YouTube o publicación de TikTok expresa apoyo, rechazo o una posición indefinida respecto a un candidato, partido político, propuesta o evento de la campaña.
 
 Más allá de la clasificación ternaria básica (positivo / negativo / neutral), existen modelos de polaridad más granulares que incluyen escalas de intensidad —muy positivo, positivo, neutral, negativo, muy negativo— o que descomponen la polaridad en sus dimensiones emocionales constituyentes (alegría, enojo, miedo, sorpresa, tristeza, asco) siguiendo modelos como el de Plutchik \parencite{mc_plutchik1980emotion}. Los LLMs modernos son capaces de operar en este nivel de granularidad emocional, lo que constituye una ventaja significativa respecto a los clasificadores binarios clásicos.
 
