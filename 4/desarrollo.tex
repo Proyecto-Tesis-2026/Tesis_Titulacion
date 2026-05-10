@@ -891,3 +891,39 @@ cobertura positiva de un candidato en los medios digitales y el sentimiento
 negativo expresado hacia ese mismo candidato en X/Twitter durante la misma
 semana, constituyendo un hallazgo de inteligencia electoral relevante para los
 analistas usuarios del sistema.
+
+Como caso de uso real del sistema, se realizó la siguiente consulta al servidor
+MCP desde un cliente LLM en lenguaje natural:
+
+\begin{quote}
+\textit{``Muéstrame qué candidato presidencial Perú 2026 tuvo la mayor caída de
+sentimiento mediático entre el 10 y 12 de marzo. Dame: 1) cuánto bajó, 2) la razón
+principal según las noticias, 3) las 2 noticias más negativas con titular, medio
+y URL. Visualiza la evolución día a día.''}
+\end{quote}
+
+A partir de esta consulta, el LLM cliente seleccionó automáticamente las
+herramientas \texttt{comparar\_candidatos\_sentimiento},
+\texttt{noticias\_por\_actor} y \texttt{citar\_evidencia} con sus parámetros
+tipados, ejecutó las consultas SQL/Cypher subyacentes contra Postgres y Neo4j, y
+construyó la respuesta fundamentada en evidencia textual del corpus. El resultado
+se muestra en la Figura \ref{5:fig26}.
+
+\begin{figure}[!ht]
+    \centering
+    \begin{subfigure}{0.85\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{4/figures/fig12a_evolucion_sentimiento.png}
+        \caption{Evolución del sentimiento mediático día a día del candidato con la mayor caída entre el 10 y 12 de marzo de 2026.}
+        \label{5:fig26a}
+    \end{subfigure}
+    \\[0.5cm]
+    \begin{subfigure}{0.85\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{4/figures/fig12b_noticias_razones.png}
+        \caption{Las dos noticias más negativas que el sistema cita como razones de la caída, con titular, medio y URL.}
+        \label{5:fig26b}
+    \end{subfigure}
+    \caption[Consulta GraphRAG en lenguaje natural sobre la mayor caída de sentimiento mediático entre el 10 y 12 de marzo de 2026]{Respuesta del sistema GraphRAG a la consulta en lenguaje natural sobre la mayor caída de sentimiento mediático de un candidato presidencial entre el 10 y 12 de marzo de 2026: (a) evolución del ISN día a día con la magnitud y dirección de la caída, y (b) las dos noticias más negativas del corpus original que el sistema cita como razones de la caída, con su medio de origen y URL.\\Fuente: Elaboración propia.}
+    \label{5:fig26}
+\end{figure}
