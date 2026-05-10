@@ -489,6 +489,76 @@ y categorías para un día de campaña seleccionado.
     \end{center}
 \end{figure}
 
+El diccionario de datos del grafo —con las propiedades principales de cada nodo
+y arista utilizadas durante la implementación— se presenta en la
+Tabla \ref{5:table_grafo}.
+
+\begin{table}[h!]
+    \caption[Diccionario de datos del grafo de conocimiento electoral]{Diccionario de datos del grafo de conocimiento electoral implementado en Neo4j Community.}
+    \label{5:table_grafo}
+    \centering
+    \small
+    \begin{tabular}{ m{3.6cm}m{8.4cm}m{2.5cm} }
+        \specialrule{.1em}{.05em}{.05em}
+        \Centering{Campo} & \Centering{Descripción} & \Centering{Tipo} \\
+        \specialrule{.1em}{.05em}{.05em}
+        \multicolumn{3}{c}{Nodo: \texttt{Candidato}} \\
+        \hline
+        id                  & \textit{Slug} estable del candidato (ej. \texttt{keiko\_fujimori}). & string  \\
+        nombre              & Nombre completo del candidato presidencial.            & string  \\
+        partido             & Partido político al que pertenece.                     & string  \\
+        espectro\_politico  & Espectro político del candidato.                       & string  \\
+        embedding           & Vector \textit{embedding} (768D, \textit{cosine}).     & vector  \\
+        \hline
+        \multicolumn{3}{c}{Nodo: \texttt{Tema}} \\
+        \hline
+        id                  & Identificador único del tema en \texttt{temas\_conocidos}. & string  \\
+        nombre              & Etiqueta canónica del tema (ej. \texttt{seguridad\_lima\_2026-03-22}). & string  \\
+        categoria           & Categoría temática (17 valores cerrados).              & string  \\
+        embedding           & Vector \textit{embedding} (768D, \textit{cosine}).     & vector  \\
+        \hline
+        \multicolumn{3}{c}{Nodo: \texttt{Fragmento}} \\
+        \hline
+        id                  & Identificador único del fragmento.                     & string  \\
+        texto               & Fragmento textual representativo del documento.        & string  \\
+        embedding           & Vector \textit{embedding} (768D).                      & vector  \\
+        fecha               & Fecha de publicación.                                  & datetime\\
+        \hline
+        \multicolumn{3}{c}{Arista: \texttt{MENCIONA} (Fragmento $\to$ Candidato)} \\
+        \hline
+        sentimiento        & Sentimiento del fragmento hacia el candidato (escala $[-1,1]$). & float   \\
+        rol                & Rol del candidato en el fragmento (\textit{protagonista}, \textit{atacado}, etc.). & string  \\
+        \hline
+        \multicolumn{3}{c}{Arista: \texttt{SOBRE\_TEMA} (Fragmento $\to$ Tema)} \\
+        \hline
+        sentimiento        & Sentimiento del fragmento hacia el tema.               & float   \\
+        confianza          & Nivel de confianza del LLM en la asignación del tema.  & float   \\
+        \hline
+        \multicolumn{3}{c}{Arista: \texttt{TIENE\_SENTIMIENTO\_EN} (Candidato $\to$ SentimientoDiario)} \\
+        \hline
+        fecha              & Fecha del agregado diario.                             & date    \\
+        sentimiento\_avg   & ISN diario promedio del candidato.                     & float   \\
+        n\_menciones       & Total de menciones del candidato en ese día.           & integer \\
+        \specialrule{.1em}{.05em}{.05em}
+    \end{tabular}
+    \begin{flushleft}
+        \small Fuente: Elaboración propia.
+    \end{flushleft}
+\end{table}
+
+Los antecedentes citados para cada componente principal del grafo se mencionan a
+continuación:
+
+\begin{itemize}
+    \item \textbf{Nodos \texttt{Candidato} y \texttt{Fragmento}, arista \texttt{MENCIONA}}: \cite{pr_alvarez2023llm_political},
+    \cite{pr_gujral2024llm_elections}, \cite{pr_alvi2023twitter_election_review}.
+    \item \textbf{Nodo \texttt{Tema} y arista \texttt{SOBRE\_TEMA}}: \cite{pr_mendonca2025bertopic_political},
+    \cite{pr_janssens2025bertopic_llm}, \cite{pr_islam2025latent_topic}.
+    \item \textbf{Cobertura por medio (vista \texttt{gold\_cobertura\_medios})}: metodología del HTML
+    adjunto, \cite{pr_alvarez2023llm_political}.
+    \item \textbf{Módulo de desinformación}: \cite{pr_chen2024combating_misinformation}.
+\end{itemize}
+
 \textbf{Actividad 4: Implementar sistema GraphRAG para consultas}
 \\
 El módulo GraphRAG se implementó como un \textbf{servidor MCP}
