@@ -1,40 +1,43 @@
 \chapter{Conclusiones y Recomendaciones}
 \section{Conclusiones}
-Luego de identificar y formular el problema general, plantear los objetivos y las
-hipótesis, desarrollar el sistema de inteligencia electoral denominado PeruVox e
-implementar la metodología CRISP-DM sobre un corpus multicanal del ecosistema
-digital electoral peruano 2026, se presentan a continuación las conclusiones
-derivadas de cada objetivo de la investigación.
+Una vez planteado el problema general, definidos los objetivos e hipótesis
+correspondientes, construido el sistema de inteligencia electoral PeruVox y
+aplicada la metodología CRISP-DM sobre un corpus multicanal del ecosistema
+digital electoral peruano del año 2026, se exponen a continuación las
+conclusiones que se desprenden de cada objetivo del estudio.
 \subsection*{Respecto al Objetivo General}
-Se logró diseñar e implementar un sistema de inteligencia electoral basado en
-Modelos de Lenguaje de Gran Escala (LLMs), minería de sentimientos y detección
-dinámica de temas en un ecosistema digital multi-fuente para el caso peruano. El
-sistema PeruVox integra cuatro fuentes de datos digitales —noticias de portales
-de prensa, publicaciones de X/Twitter, transcripciones de YouTube y posts de
-TikTok—, procesa el corpus diario completo (655 documentos válidos del 22 de
-marzo de 2026) en aproximadamente 57 minutos secuenciales con un costo de
-US\$0{,}13 y un \textit{cache hit rate} de 85{,}5\% sobre el \textit{prompt} de
-extracción, y genera indicadores de percepción proyectada por los medios
-(sentimiento por candidato, temas dominantes, distribución de cobertura por
-medio) consultables en lenguaje natural
-español a través de un servidor MCP de 13 herramientas tipadas. El sistema queda
-construido y operativo; la validación cuantitativa de los indicadores frente a
-encuestas convencionales (correlación de Pearson sobre el ISN semanal vs. las 9
-encuestas Datum cargadas) y la evaluación de calidad de salida con corpus
-etiquetado quedan como trabajo futuro.
+El estudio cumplió el objetivo general al haber diseñado y puesto en marcha un
+sistema de inteligencia electoral apoyado en Modelos de Lenguaje de Gran Escala
+(LLMs), minería de sentimientos y detección dinámica de temas, aplicado a un
+ecosistema digital multi-fuente del caso peruano. La plataforma PeruVox articula
+cuatro canales de información —portales de noticias, publicaciones en X/Twitter,
+transcripciones de YouTube y publicaciones en TikTok— y procesa el corpus diario
+íntegro (655 documentos válidos correspondientes al 22 de marzo de 2026) en
+torno a 57 minutos de ejecución secuencial, con un costo aproximado de
+US\$0{,}13 y un \textit{cache hit rate} del 85{,}5\,\% sobre el \textit{prompt}
+de extracción. A partir de ese procesamiento, el sistema produce indicadores de
+la percepción proyectada por los medios —sentimiento por candidato, temas
+dominantes y distribución de cobertura por medio— accesibles en lenguaje natural
+español mediante un servidor MCP que expone 13 herramientas tipadas. La solución
+queda construida y en estado operativo; la validación cuantitativa frente a
+encuestas convencionales (correlación de Pearson entre el ISN semanal y las 9
+encuestas Datum cargadas) y la evaluación de la calidad de salida sobre un
+corpus etiquetado quedan delimitadas como trabajo futuro.
 \subsection*{Respecto al Primer Objetivo Específico (OE1)}
-Se analizaron y sistematizaron los enfoques existentes en la literatura mediante
-la revisión de siete antecedentes internacionales publicados entre 2023 y 2025,
-cubriendo análisis de sentimientos con LLMs en contextos políticos
-\parencite{pr_alvarez2023llm_political, pr_gujral2024llm_elections},
+La sistematización de los enfoques disponibles en la literatura se concretó a
+través del estudio de siete antecedentes internacionales aparecidos entre 2023 y
+2025, que abordan análisis de sentimientos mediante LLMs aplicados a contextos
+políticos \parencite{pr_alvarez2023llm_political, pr_gujral2024llm_elections},
 detección dinámica de temas con BERTopic
 \parencite{pr_mendonca2025bertopic_political, pr_janssens2025bertopic_llm,
 pr_islam2025latent_topic}, detección de desinformación electoral
-\parencite{pr_chen2024combating_misinformation} y predicción electoral en redes
-sociales \parencite{pr_alvi2023twitter_election_review}. Esta revisión permitió
-seleccionar fundamentadamente la metodología CRISP-DM, los modelos LLM en modalidad
-few-shot, el framework BERTopic con HDBSCAN y la arquitectura GraphRAG como los
-componentes más adecuados para el contexto electoral peruano en español.
+\parencite{pr_chen2024combating_misinformation} y predicción electoral a partir
+de redes sociales \parencite{pr_alvi2023twitter_election_review}. Este recorrido
+permitió justificar la elección de CRISP-DM como metodología, de los LLMs en
+modalidad few-shot como núcleo del análisis, del framework BERTopic combinado
+con HDBSCAN para la modelización de temas y de la arquitectura GraphRAG como
+columna vertebral del sistema, configurando así el conjunto de componentes más
+apropiado para el contexto electoral peruano en lengua española.
 \subsection*{Respecto al Segundo Objetivo Específico (OE2)}
 Se diseñó e implementó exitosamente la arquitectura multi-fuente del sistema,
 organizada bajo el patrón Medallion en tres capas de procesamiento (Bronze, Silver

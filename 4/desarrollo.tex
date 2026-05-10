@@ -1,8 +1,8 @@
 \chapter{Desarrollo de la Solución}
 
-En este capítulo se detalla el proceso explicado en el capítulo anterior para cada
-actividad de la metodología CRISP-DM aplicada, así como los entregables comprometidos
-en cada fase.
+Este capítulo presenta, fase por fase, la ejecución concreta de la metodología
+CRISP-DM descrita previamente, especificando las actividades realizadas y los
+entregables producidos en cada una de ellas.
 
 % ──────────────────────────────────────────────────────────────
 \section{Comprensión del negocio}
@@ -10,47 +10,49 @@ en cada fase.
 
 \textbf{Actividad 1: Definir problema, objetivos e hipótesis}
 \\
-El inicio de la implementación de la primera fase de la metodología CRISP-DM fue la
-identificación del problema general a partir del estudio de la realidad problemática
-abordada en los primeros capítulos de la investigación. En el contexto electoral peruano,
-la ausencia de un sistema automatizado capaz de medir en tiempo real la percepción
-proyectada por los medios de comunicación hacia los candidatos presidenciales a
-través del ecosistema digital constituye el problema central de la investigación. El objetivo, por lo tanto, busca resolver este
-problema y se encuentra alineado con el título del trabajo. La hipótesis resulta la
-proposición planteada para explicar el logro del objetivo: que un sistema basado en LLMs
-es capaz de analizar el sentimiento y detectar dinámicamente los temas relevantes en
-el ecosistema digital electoral con una exactitud estadísticamente superior a los enfoques
-clásicos de NLP. Los objetivos específicos del trabajo, que responden a cada problema
-específico, se definieron a partir de una lluvia de ideas basada en la asociación de
-los objetivos de los antecedentes revisados con la presente investigación.
+La fase inicial de CRISP-DM partió del diagnóstico de la realidad problemática
+expuesta en los capítulos previos, lo que permitió formular el problema general que
+orienta el estudio. En el escenario electoral peruano, no existe una herramienta
+automatizada que mida —en tiempo real— cómo los medios de comunicación retratan a
+los candidatos presidenciales dentro del ecosistema digital, y esa ausencia configura
+el eje principal del trabajo. El objetivo general fue trazado en correspondencia
+directa con el título de la tesis y apunta precisamente a resolver dicha brecha. La
+hipótesis general, por su parte, propone que un sistema apoyado en LLMs puede
+clasificar sentimientos y descubrir temas emergentes con una precisión
+estadísticamente mayor a la obtenida por los métodos tradicionales de NLP. Los
+objetivos específicos se derivaron de cada problema específico mediante una sesión
+de generación de ideas que cruzó los hallazgos de los antecedentes revisados con
+las preguntas particulares de esta investigación.
 
 \textbf{Actividad 2: Desarrollar la literatura de la investigación}
 \\
-Se buscaron desde libros, artículos académicos y recursos en línea para la comprensión
-teórica del análisis de sentimientos, los LLMs y la detección de temas, hasta papers
-publicados en conferencias, revistas internacionales y científicas, preprints de arXiv
-y reportes técnicos acerca de propuestas para resolver el problema estudiado en la
-investigación.
+La revisión bibliográfica abarcó un espectro amplio de fuentes: por un lado, libros
+y artículos académicos que sustentan los fundamentos teóricos del análisis de
+sentimientos, los LLMs y la detección de temas; por otro, ponencias en congresos,
+publicaciones en revistas científicas internacionales, preprints de arXiv y reportes
+técnicos que documentan soluciones afines al problema planteado.
 
-Para ello, como se describió en la sección 4.2, a través de la búsqueda de palabras
-clave como \textit{LLM}, \textit{sentiment analysis}, \textit{electoral intelligence},
-\textit{topic modeling}, \textit{BERTopic}, \textit{political discourse},
-\textit{misinformation detection} y \textit{social media}, y el uso de buscadores como
-Google Académico, Semantic Scholar y el repositorio arXiv, se identificaron los
-antecedentes publicados entre los años 2022 y 2025.
+Conforme al procedimiento descrito en la sección 4.2, la búsqueda se ejecutó
+combinando términos clave —entre ellos \textit{LLM}, \textit{sentiment analysis},
+\textit{electoral intelligence}, \textit{topic modeling}, \textit{BERTopic},
+\textit{political discourse}, \textit{misinformation detection} y
+\textit{social media}— sobre los buscadores Google Académico, Semantic Scholar y el
+repositorio arXiv, lo que permitió delimitar los antecedentes publicados entre 2022
+y 2025.
 
-A continuación, se realizó un resumen de cada antecedente en una hoja de cálculo
-con el fin de comparar sus objetivos, metodologías, modelos utilizados y métricas
-reportadas, como se puede observar el detalle en el Anexo \ref{anexo1}.
+Posteriormente, cada antecedente se sintetizó en una hoja de cálculo donde se
+contrastaron sus objetivos, metodologías, modelos empleados y métricas reportadas;
+el detalle de esta comparación se consigna en el Anexo \ref{anexo1}.
 
 \textbf{Actividad 3: Definir metodología y arquitectura del sistema}
 \\
-Luego de analizar los antecedentes y agruparlos por similitud metodológica según la
-Tabla \ref{4:table2} del Capítulo IV, se seleccionó la metodología CRISP-DM como la
-mejor opción para el presente trabajo, por las razones expuestas en la sección 4.3.1.
-Simultáneamente, se diseñó la arquitectura Medallion del pipeline GraphRAG Electoral,
-que organiza el sistema en las capas Bronze, Silver y Gold y define las cinco etapas de
-procesamiento desde la ingesta hasta la generación de indicadores.
+Tras agrupar los antecedentes por afinidad metodológica —según la clasificación
+recogida en la Tabla \ref{4:table2} del Capítulo IV—, se optó por adoptar CRISP-DM
+como marco de trabajo, sustentado en los argumentos detallados en la sección 4.3.1.
+En paralelo, se diseñó la arquitectura Medallion sobre la que opera el pipeline
+GraphRAG Electoral: ésta estructura el sistema en tres capas (Bronze, Silver y
+Gold) y articula las cinco etapas de procesamiento que van desde la ingesta de
+datos hasta la producción de los indicadores.
 
 % ──────────────────────────────────────────────────────────────
 \section{Comprensión de los datos}
@@ -58,15 +60,17 @@ procesamiento desde la ingesta hasta la generación de indicadores.
 
 \textbf{Actividad 1: Construir corpus de noticias digitales}
 \\
-El punto de partida para la construcción del corpus de noticias digitales fue la
-identificación de los portales de prensa peruanos con mayor alcance y cobertura del
-proceso electoral. Se seleccionaron ocho medios digitales de referencia —entre ellos
-El Comercio, La República, RPP Noticias, Peru21 y Gestión— por su representatividad
-del espectro ideológico del ecosistema mediático peruano. Para cada portal, se diseñó
-un scraper en Python utilizando las bibliotecas \texttt{requests}, \texttt{BeautifulSoup4}
-y \texttt{Scrapy}, que accede a las páginas de resultados de búsqueda filtradas por
-palabras clave electorales y extrae, por cada artículo: URL, fecha de publicación,
-titular, cuerpo del texto y nombre del medio, como se aprecia en la Figura \ref{5:fig1}.
+La construcción del corpus de noticias digitales comenzó con la selección de los
+medios de prensa peruanos de mayor alcance durante la cobertura electoral. En
+total, se eligieron ocho portales de referencia —El Comercio, La República, RPP
+Noticias, Peru21 y Gestión, entre otros— con el criterio de cubrir
+representativamente el espectro ideológico del ecosistema mediático del país. Para
+cada uno de ellos se programó un scraper en Python apoyado en las librerías
+\texttt{requests}, \texttt{BeautifulSoup4} y \texttt{Scrapy}, que recorre las
+páginas de resultados filtradas por términos electorales y extrae, artículo por
+artículo, los siguientes campos: URL, fecha de publicación, titular, cuerpo del
+texto y nombre del medio. La Figura \ref{5:fig1} muestra el detalle de la
+implementación.
 
 \begin{figure}[!ht]
     \begin{center}
@@ -76,23 +80,25 @@ titular, cuerpo del texto y nombre del medio, como se aprecia en la Figura \ref{
     \end{center}
 \end{figure}
 
-Para garantizar la robustez del scraper ante cambios en la estructura HTML de los
-portales, se implementó un sistema de reintentos con \textit{backoff} exponencial y
-un agente de usuario (\textit{user-agent}) rotativo para evitar bloqueos. Los artículos
-recolectados se almacenaron en la tabla \texttt{documentos} de la base de datos
-PostgreSQL de la capa Bronze, con un campo \texttt{fuente\_tipo = 'periodico'}
-que los distingue de las demás fuentes.
+Con el fin de blindar al scraper frente a cambios en la estructura HTML de los
+portales, se incorporó una lógica de reintentos con \textit{backoff} exponencial y
+la rotación del agente de usuario (\textit{user-agent}) para mitigar bloqueos. Los
+artículos extraídos quedaron registrados en la tabla \texttt{documentos} —dentro
+de PostgreSQL en la capa Bronze— marcados con el campo
+\texttt{fuente\_tipo = 'periodico'} para diferenciarlos del resto de fuentes.
+
 \textbf{Actividad 2: Construir corpus de X/Twitter}
 \\
-La recolección de tweets se realizó mediante TwitterAPI.io, una API de terceros que
-proporciona acceso a datos de Twitter/X sin las restricciones de la API oficial. El
-módulo \texttt{TwitterIngestor} (\texttt{src/electoral/ingestion/twitter.py})
-consume los endpoints REST de forma asíncrona con \texttt{httpx}, aplica el filtrado
-por \texttt{createdAt} con tolerancia ±1 día respecto a la fecha objetivo, y persiste
-los resultados como archivos JSON en
-\texttt{data/raw/twitter/\{YYYY-MM-DD\}/}. El schema raw de validación
-(\codepath{src/electoral/schemas/raw/twitter.py}) usa \texttt{extra="allow"} en
-Pydantic para tolerar campos nuevos del scraper sin romper la ingesta.
+La extracción de tweets se apoyó en TwitterAPI.io, un proveedor de terceros que
+expone los datos de Twitter/X sin los topes de la API oficial. El módulo
+\texttt{TwitterIngestor} (\texttt{src/electoral/ingestion/twitter.py}) invoca los
+endpoints REST de forma asíncrona con \texttt{httpx}, depura los resultados por el
+campo \texttt{createdAt} con un margen de ±1 día respecto a la fecha objetivo y
+vuelca cada lote en archivos JSON ubicados en
+\texttt{data/raw/twitter/\{YYYY-MM-DD\}/}. La validación de la entrada se realiza
+mediante el schema raw definido en \codepath{src/electoral/schemas/raw/twitter.py},
+que utiliza la opción \texttt{extra="allow"} de Pydantic para incorporar campos
+emergentes del scraper sin interrumpir la ingesta.
 
 \begin{figure}[!ht]
     \begin{center}
@@ -102,11 +108,10 @@ Pydantic para tolerar campos nuevos del scraper sin romper la ingesta.
     \end{center}
 \end{figure}
 
-Para optimizar la recolección durante las horas de mayor actividad del ecosistema
-digital electoral —especialmente durante debates y eventos de campaña—, el proceso
-de ingesta fue ejecutado de manera distribuida mediante tareas programadas y
-procesamiento concurrente, garantizando la captura continua de publicaciones sin
-interrupciones.
+Con el objetivo de cubrir las ventanas de mayor tráfico —en particular debates y
+eventos de campaña electoral—, la ingesta se desplegó de forma distribuida
+combinando tareas programadas con procesamiento concurrente, lo que asegura una
+recolección sostenida y sin pérdidas de continuidad.
 
 \textbf{Actividad 3: Construir corpus de YouTube}
 \\
@@ -863,16 +868,17 @@ muestra en la Figura \ref{5:fig24}.
 
 \textbf{Actividad 2: Ejecutar prototipo con datos electorales en vivo}
 \\
-En esta actividad se ejecutaron las acciones de la arquitectura del prototipo
-descritas en la figura anterior. La prueba piloto consistió en operar el sistema
-durante una semana de campaña electoral activa, incluyendo un debate presidencial.
-El pipeline diario (\texttt{run-day}/\texttt{run-range}) procesó las cuatro
-fuentes de datos día por día con concurrencia intra-batch
-(\texttt{BATCH\_SIZE=5}), generando los indicadores ISN, IRT e IVE para los
-candidatos en liza y poblando las vistas Gold materializadas
-(\texttt{gold\_sentimiento\_diario}, \texttt{gold\_temas\_diarios},
-\texttt{gold\_cobertura\_medios}) que alimentan al servidor MCP. Los principales
-hallazgos de la prueba piloto se presentan en la Figura \ref{5:fig25}.
+Durante esta actividad se materializaron los flujos de la arquitectura del
+prototipo presentados en la figura previa. La prueba piloto se llevó a cabo
+poniendo el sistema en operación durante una semana de campaña electoral en pleno
+desarrollo —que incluyó un debate presidencial—. El orquestador diario
+(\texttt{run-day}/\texttt{run-range}) procesó día tras día las cuatro fuentes de
+datos con concurrencia intra-batch (\texttt{BATCH\_SIZE=5}), produciendo los
+indicadores ISN, IRT e IVE de los candidatos en contienda y refrescando las
+vistas Gold materializadas (\texttt{gold\_sentimiento\_diario},
+\texttt{gold\_temas\_diarios}, \texttt{gold\_cobertura\_medios}) que sirven de
+fuente al servidor MCP. Los principales hallazgos de la prueba piloto se exponen
+en la Figura \ref{5:fig25}.
 
 \begin{figure}[!ht]
     \begin{center}

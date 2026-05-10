@@ -6,12 +6,12 @@ En esta sección se describe el diseño, el tipo y el enfoque del trabajo de inv
  
 \subsection{Tipo de la investigación}
  
-Para establecer el tipo de investigación, fue necesario definir el presente estudio como de \textbf{Diseño Experimental}, dado que, según \cite{bk_hernandez2014metodologia} en su obra \citetitle{bk_hernandez2014metodologia}, este enfoque busca identificar el posible efecto de una causa que es manipulada. Dentro de esta categoría, se clasifica como un \textbf{Diseño Experimental Puro}, debido a que se intervinieron deliberadamente una o más variables independientes —en este caso, la configuración de la arquitectura computacional, que integra un enfoque \textbf{GraphRAG Híbrido} (bases de datos vectoriales con \textit{pgvector} y de grafos con \textit{Neo4j}), la orquestación de múltiples Modelos Fundacionales como  DeepSeek y la exposición de herramientas analíticas vía el \textbf{Model Context Protocol (MCP)}— con el propósito de evaluar su impacto sobre la variable dependiente. Dicho impacto se mide a través de la precisión en la clasificación del sentimiento, la coherencia semántica en la detección de temas, y la eficiencia y relevancia en la recuperación de información del ecosistema digital electoral peruano.
+Se define el presente estudio como \textbf{Diseño Experimental}, dado que este enfoque busca identificar el posible efecto de una causa que es manipulada,este enfoque es principalmente utilizado por la obra \citetitle{bk_hernandez2014metodologia} creada por \cite{bk_hernandez2014metodologia}. Asimismo, en esta categoría, se categoriza como un \textbf{Diseño Experimental Puro}, debido a que se intervinieron deliberadamente una o más variables independientes —en este caso, la configuración de la arquitectura computacional, que integra un enfoque \textbf{GraphRAG Híbrido} (bases de datos vectoriales con \textit{pgvector} y de grafos con \textit{Neo4j}), la orquestación de múltiples Modelos Fundacionales como  DeepSeek y la exposición de herramientas analíticas vía el \textbf{Model Context Protocol (MCP)}— con el propósito de evaluar su impacto sobre la variable dependiente. Dicho impacto se mide a través de la precisión en la clasificación del sentimiento, la coherencia semántica en la detección de temas, y la eficiencia y relevancia en la recuperación de información del ecosistema digital electoral peruano.
 
 
 \subsection{Enfoque de la investigación}
  
-El presente estudio adoptó un \textbf{enfoque cuantitativo}, ya que, de acuerdo con \cite{bk_hernandez2014metodologia} en su obra \citetitle{bk_hernandez2014metodologia}, este enfoque se basa en la recolección de datos para contrastar hipótesis mediante la medición numérica y el análisis estadístico, con el propósito de identificar patrones de comportamiento y validar teorías. Esto se evidencia en la aplicación de los 10 pasos del proceso cuantitativo propuestos por el autor, desde la formulación de la idea hasta la elaboración del informe de resultados. En este trabajo, indicadores como la exactitud, la coherencia temática y la latencia de procesamiento permiten evaluar de manera objetiva el desempeño del sistema de inteligencia electoral planteado.
+El estudio propuesto adopta un \textbf{enfoque cuantitativo}, esto porque de acuerdo con \cite{bk_hernandez2014metodologia} en su obra \citetitle{bk_hernandez2014metodologia}, el enfoque  propuesto se basa en la recuperación de datos para contrastar la hipótesis mediante el uso de mediciones numéricas y el uso de análisis estadístico, con el propósito de identificar patrones de conducta y validar las hipótesis presentadas previamente. Esta se evidencia en la aplicación propuesta de 10 pasos del proceso cuantitativo utilizado por el autor, la cual parte desde la formulación de la creación de la idea y concluye con la elaboración del informe de resultados. En este trabajo, indicadores como la exactitud, la coherencia temática y la latencia de procesamiento permiten evaluar de manera objetiva el desempeño del sistema de inteligencia electoral planteado.
  
 \subsection{Población}
  
@@ -23,7 +23,7 @@ La muestra estuvo conformada por publicaciones recolectadas de cuatro fuentes de
 
 \subsection{Operacionalización de variables}
  
-En la Tabla \ref{4:table1} se muestra la operacionalización de las variables correspondientes a la investigación.
+En la Tabla \ref{4:table1} se muestra la operación de las variables correspondientes al estudio propuesto.
 \begingroup
 \begin{longtable}{M{3cm}M{4.2cm}M{3.6cm}M{4.8cm}}
     \caption[Matriz de operacionalización de variables]{Matriz de operacionalización de variables.}
@@ -78,9 +78,9 @@ En la Tabla \ref{4:table1} se muestra la operacionalización de las variables co
     \small Fuente: Elaboración propia.
 \end{flushleft}
  
-El estudio tiene como objetivo abordar el problema del análisis de la percepción actual proyectada por los medios de comunicación en ecosistemas digitales de carácter electoral, implementando un pipeline automatizado de inteligencia electoral que integra análisis de sentimientos con LLMs y detección dinámica de temas mediante un enfoque híbrido LLM con catálogo incremental sobre un corpus multicanal de publicaciones en español.
+El presente estudio busca abordar la problemática del análisis de la percepción actual proyectada por parte de los distintos canales de comunicación en ecosistemas digitales de carácter electoral, implementando un pipeline automatizado de inteligencia electoral que integra análisis de sentimientos con LLMs y detección dinámica de temas mediante un enfoque híbrido LLM con catálogo incremental sobre un corpus multicanal de publicaciones en español.
 
-La variable dependiente —la percepción actual proyectada por los medios de comunicación en ecosistemas digitales— se operacionaliza a través del
+La variable dependiente —la percepción actual proyectada por los canales de comunicación en ecosistemas digitales— se operacionaliza a través del
 sentimiento expresado en publicaciones digitales hacia cada candidato presidencial,
 desagregado por fuente de información, período temporal y tema relevante asociado.
 Siguiendo la metodología GraphRAG descrita en la arquitectura del sistema, un mismo
@@ -90,12 +90,12 @@ permite capturar la complejidad real del discurso político ciudadano a nivel de
  
 \section{Técnicas de recolección de datos}
  
-Los conjuntos de datos recopilados para la investigación están conformados por variables de carácter cuantitativo —como el volumen de publicaciones por período y el \textit{score} continuo de sentimiento $[-1, 1]$— y variables cualitativas —como el texto de las publicaciones, las transcripciones de videos, los fragmentos clave que justifican el sentimiento y las entidades extraídas por el LLM—. Para obtener el corpus multicanal, se diseñaron e implementaron cuatro módulos extractores independientes dentro del componente de recolección (\texttt{scrap-information}), abarcando: (1) portales de noticias digitales, (2) la plataforma X/Twitter, (3) la red de videos YouTube y (4) la red social de videos cortos TikTok. El flujo de estas operaciones de extracción alimenta la capa de datos crudos (\textit{Raw}) de la arquitectura del sistema, tal como se ilustra en el esquema general de la Figura \ref{4:fig1}.
+La información recopilada para el estudio propuesto están conformado por variables de carácter cuantitativo —como el volumen de publicaciones por período y el \textit{score} continuo de sentimiento $[-1, 1]$— y variables cualitativas —como el texto de las publicaciones, las transcripciones de videos, los fragmentos clave que justifican el sentimiento y las entidades extraídas por el LLM—. Para obtener el corpus multicanal, se diseñaron e implementaron cuatro módulos extractores independientes dentro del componente de recolección (\texttt{scrap-information}), abarcando: (1) portales de noticias digitales, (2) la plataforma X/Twitter, (3) la red de videos YouTube y (4) la red social de videos cortos TikTok. El flujo de estas operaciones de extracción alimenta la capa de datos crudos (\textit{Raw}) de la arquitectura del sistema, tal como se ilustra en el esquema general de la Figura \ref{4:fig1}.
  
 \begin{figure}[!ht]
     \begin{center}
         \resizebox{0.95\textwidth}{!}{\input{3/figures/flujo_recoleccion.tex}}
-        \caption[Flujograma de recolección de los conjuntos de datos del corpus electoral]{Flujograma de recolección de los conjuntos de datos del corpus electoral: noticias digitales, transcripciones de videos de YouTube y tweets de X/Twitter, con sus respectivos procesos de filtrado y almacenamiento en la capa Bronze de la arquitectura Medallion.\\
+        \caption[Flujograma de recolección de los conjuntos de datos del corpus electoral]{Flujograma de recuperación de la información del corpus electoral: noticias digitales, transcripciones de videos de YouTube y tweets de X/Twitter, con sus respectivos procesos de filtrado y almacenamiento en la capa Bronze de la arquitectura Medallion.\\
             Fuente: Elaboración propia.}
         \label{4:fig1}
     \end{center}
@@ -123,10 +123,10 @@ educación, salud, corrupción y gobernabilidad.
  
 \subsection{Metodología de implementación de la solución}
  
-Como se explicó en el Capítulo II del presente trabajo, dentro de los sistemas de
-analítica de negocio, Big Data y Minería de Datos, las tres metodologías más usadas son
-CRISP-DM, SEMMA y KDD \parencite{tec_braulio2015metodologiasdm}. Para elegir la
-metodología de implementación, creamos la Tabla \ref{4:table2} con el propósito de comparar las variables empleadas por los autores en los antecedentes de esta investigación.
+Según lo explicado en el Capítulo II del presente trabajo, internamente en los sistemas de
+analítica de negocio, la Minería de Datos y Big Data, las tres principales metodologías más usadas son
+SEMMA, CRISP-DM y KDD \parencite{tec_braulio2015metodologiasdm}. Para elegir la
+metodología de implementación, se creó la Tabla \ref{4:table2} con el propósito de  realizar una comparativa de las variables empleadas por los distintos antecedentes presentados para el estudio propuesto.
  
 \vspace{2ex}
 \begingroup
@@ -151,9 +151,9 @@ CRISP-DM
 & 2
 & 6
 & \begin{itemize}[label={--},nosep,leftmargin=*]
-\item Entendimiento del negocio.
-\item Análisis de los datos.
-\item Preparación de la información.
+\item Comprensión de la idea de negocio.
+\item Análisis de la información recuperada.
+\item Procesamiento de la información.
 \item Construcción del modelo.
 \item Validación.
 \item Implementación.
@@ -163,11 +163,11 @@ Grupo A
 & 2
 & 6
 & \begin{itemize}[label={--},nosep,leftmargin=*]
-\item Planteamiento del problema.
-\item Obtención de datos multicanal.
+\item Planteamiento de la problemática encontrada.
+\item Obtención la información multicanal.
 \item Preprocesamiento de texto.
 \item Análisis con LLM.
-\item Evaluación.
+\item Validación de resultados.
 \item Despliegue.
 \end{itemize} \\ 
 \hline
@@ -186,10 +186,10 @@ Grupo C
 & 2
 & 5
 & \begin{itemize}[label={--},nosep,leftmargin=*]
-\item Planteamiento del problema.
-\item Obtención de datos.
-\item Preprocesamiento de datos.
-\item Modelado y análisis.
+\item Planteamiento de la problemática encontrada.
+\item Obtención de la información.
+\item Preprocesamiento de la información recuperada.
+\item Creación del modelo y análisis.
 \item Evaluación.
 \end{itemize} \\ 
 \hline
@@ -209,7 +209,7 @@ Grupo D
     \small Fuente: Elaboración propia.
 \end{flushleft}
  
-De las tres metodologías señaladas por \citeauthor{tec_braulio2015metodologiasdm}, la mayor parte de los antecedentes analizados siguen secuencias de actividades enmarcadas en CRISP-DM, abarcando etapas como la comprensión del negocio, la recolección y preparación de datos, el modelado y la evaluación. Asimismo, las siguientes características identificadas en la literatura influyeron en la selección de la metodología CRISP-DM para el presente estudio:
+De las tres metodologías señaladas por \citeauthor{tec_braulio2015metodologiasdm}, la mayor parte de los antecedentes analizados siguen secuencias de actividades enmarcadas en CRISP-DM, abarcando etapas como en entendimiento del negocio, la recuperación de la información y el procesamiento los datos, la creación del modelo y la evaluación de los resultados. Asimismo, las siguientes características identificadas en los antecedentes influyeron en la selección de la metodología CRISP-DM para el presente estudio:
 
  
 \begin{itemize}
@@ -255,7 +255,7 @@ se analizaron las siguientes posibles fuentes de datos a incorporar:
  
 De las anteriores fuentes, los datos de encuestas electorales no fueron incluidos en el
 pipeline principal de procesamiento ya que se utilizan exclusivamente como conjunto de
-validación para calibrar los indicadores del sistema, y no como datos de entrada para el
+validación para calibrar los indicadores del sistema, y no como información entrante para el
 análisis de sentimientos. Finalmente, fueron seleccionadas las cuatro fuentes principales
 —noticias digitales, X/Twitter, transcripciones de videos de YouTube y posts de TikTok—
 cuya arquitectura de recolección, procesamiento y análisis se detalla en las subsecciones
@@ -330,7 +330,7 @@ Definir la metodología y la arquitectura del sistema.
  
 \textbf{Actividad 1: Plantear el problema, los objetivos e hipótesis}
  
-Aquí vemos la manera en que identificamos la brecha existente en el análisis automatizado de la percepción pública electoral digital en el Perú, se formularon los objetivos de la investigación y se plantearon las hipótesis que guían el trabajo experimental.
+Aquí vemos la manera en que identificamos la brecha existente en el análisis automatizado de la percepción pública electoral digital en el Perú, se expresan los objetivos de la investigación a la par que se plantean las hipótesis que guiarán el trabajo experimental.
  
 \textbf{Entregable}: Problema, objetivos e hipótesis definidos.
  
@@ -348,7 +348,7 @@ Luego de revisar los antecedentes y comparar las metodologías utilizadas por ca
  
 \subsubsection{Análisis de los datos}
  
-En la segunda fase se llevó a cabo la recolección de datos y el análisis estadístico exploratorio del corpus electoral multicanal. La información empleada incluye publicaciones provenientes de las cuatro fuentes principales (noticias digitales, X/Twitter, YouTube y TikTok), recopiladas durante el período de campaña presidencial. Las actividades y tareas correspondientes se detallan en la Tabla \ref{4:table4}.
+Durante la segunda fase se llevaron a cabo la recolección de datos y el análisis estadístico exploratorio del corpus electoral multicanal. La información empleada incluye publicaciones provenientes de las cuatro fuentes principales (noticias digitales, X/Twitter, YouTube y TikTok), recopiladas durante el período de campaña presidencial. Las actividades y las tareas correspondientes se detallan en la Tabla \ref{4:table4}.
  
 \vspace{2ex}
 \begingroup
@@ -447,7 +447,7 @@ La recolección de tweets se realizó mediante TwitterAPI.io, un proveedor de ac
  
 \textbf{Actividad 3: Construir corpus de YouTube}
  
-La recolección de contenido de YouTube se realizó mediante \texttt{yt-dlp}, una herramienta de scraping de video de código abierto que extrae metadata y transcripciones de videos de YouTube sin depender de cuotas de la API oficial. El ingestor (src/electoral/ingestion/youtube.py) implementa un patrón productor-consumidor con hilos paralelos: un hilo extrae los IDs de videos en lotes (\textit{extract\_flat}), y múltiples hilos trabajadores obtienen la metadata completa, descargan la transcripción y filtran por fecha de publicación. Las transcripciones se marcan con el flag \texttt{is\_auto\_generated} para distinguir subtítulos automáticos de los manuales. El pool de cookies Netscape del directorio \texttt{cookies/} es distribuido entre los workers por round-robin para reducir bloqueos.
+La recolección de contenido de YouTube se realizó mediante \texttt{yt-dlp}, la cual es una librería de Python que sirve para el scraping de video de código libre que extrae metadata y transcripciones de videos de YouTube sin depender de cuotas de la API oficial. El ingestor (src/electoral/ingestion/youtube.py) implementa un patrón productor-consumidor con hilos paralelos: un hilo extrae los IDs de videos en lotes (\textit{extract\_flat}), y múltiples hilos trabajadores obtienen la metadata completa, descargan la transcripción y filtran por fecha de publicación. Las transcripciones se marcan con el flag \texttt{is\_auto\_generated} para distinguir subtítulos automáticos de los manuales. El pool de cookies Netscape del directorio \texttt{cookies/} es distribuido entre los workers por round-robin para reducir bloqueos.
 
 \begin{figure}[!ht]
     \begin{center}
@@ -477,7 +477,7 @@ La recolección de contenido de TikTok se realizó mediante un scraper independi
 
 \textbf{Actividad 5: Realizar análisis exploratorio del corpus}
 
-En esta actividad se realizó el análisis estadístico descriptivo de los cuatro corpus recolectados: distribución temporal de publicaciones, longitud promedio de textos, distribución de menciones por candidato y por fuente, y análisis del vocabulario electoral dominante mediante nubes de palabras.
+Durante esta actividad se realizó el análisis estadístico de carácter descriptivo con los cuatro corpus recolectados: distribución temporal de publicaciones, longitud promedio de textos, distribución de menciones por candidato y por fuente, y análisis del vocabulario electoral dominante mediante nubes de palabras.
 
 \textbf{Entregable}: Gráficos estadísticos y descriptivos del corpus por fuente de datos.
  
@@ -539,7 +539,7 @@ En esta actividad se aplicó un pipeline de preprocesamiento textual sobre los c
  
 \textbf{Actividad 2: Segmentar el corpus para análisis}
  
-Dado que los artículos de noticias superan en longitud la ventana de contexto del LLM utilizado, se implementó un proceso de segmentación con superposición que divide cada documento en segmentos de máximo 512 tokens con una superposición de 50 tokens entre segmentos consecutivos, preservando el contexto necesario para el análisis de sentimientos a nivel de aspecto.
+Dado que los artículos de noticias superan en longitud la ventana de contexto del LLM utilizado, se implementó un proceso de segmentación con superposición que divide cada documento en segmentos de máximo 512 tokens con una superposición de 50 tokens entre segmentos consecutivos, preservando el contexto requerido para el análisis de sentimientos a nivel de aspecto.
  
 \textbf{Entregable}: Tabla de segmentos con relación uno-a-muchos hacia la tabla de documentos originales (capa Silver).
  
@@ -552,7 +552,7 @@ Se construyó el diccionario de aliases que alimenta el autómata Aho-Corasick d
 \subsubsection{Construcción del modelo}
  
 Al concluir la preparación de los datos, los segmentos del corpus enriquecido fueron
-procesados por el pipeline de análisis con LLMs. Las actividades de esta fase se detallan
+procesados por el pipeline de análisis con LLMs. Las actividades de esta fase se muestran
 en la Tabla \ref{4:table6}.
  \vspace{2ex}
 \begingroup
@@ -612,7 +612,7 @@ Implementar sistema GraphRAG para consultas.
 \end{flushleft}
 
 \textbf{Actividad 1 y 2: Extracción y Orquestación con LLM Juez}
-En lugar de depender de un solo modelo, el sistema implementa un patrón de \textbf{Orquestación de LLMs}. Se diseñó un \textit{prompt} estructurado donde modelos veloces realizan la extracción de entidades y el análisis de sentimiento a escala. Posteriormente, dado que el lenguaje electoral es altamente dinámico, se diseñó un flujo de \textbf{Deduplicación Semántica} (\textit{intra-batch dedup}). En este paso, un modelo con mayores capacidades de razonamiento lógico como DeepSeek-V4 actúa como "LLM Juez", comparando entidades emergentes con los catálogos estables (\textit{YAML}) y fusionando \textit{aliases} no triviales, garantizando la consistencia ontológica antes de escribir en la base de datos.
+En lugar de depender de un solo modelo, el sistema implementa un patrón de \textbf{Orquestación de LLMs}. Se diseñó un \textit{prompt} estructurado donde modelos veloces realizan la recuperación de entidades y el análisis de sensibilidad a escala. Posteriormente, debido a que el lenguaje electoral es altamente dinámico, se diseñó un flujo de \textbf{Deduplicación Semántica} (\textit{intra-batch dedup}). En este paso, un modelo con mayores capacidades de razonamiento lógico como DeepSeek-V4 actúa como "LLM Juez", comparando entidades emergentes con los catálogos estables (\textit{YAML}) y fusionando \textit{aliases} no triviales, garantizando la consistencia ontológica antes de escribir en la base de datos.
 
 \textbf{Actividad 3 y 4: Capa Gold y Servidor MCP}
 Para la estructura de recuperación de información, se construyó el grafo en \textbf{Neo4j}. En lugar de forzar al usuario a escribir consultas complejas, se implementó el módulo \texttt{electoral-mcp}. Este servidor, basado en el estándar \textit{Model Context Protocol}, encapsula consultas SQL (\textit{pgvector}) y Cypher (Neo4j) en "herramientas" (ej. \texttt{panorama\_diario}, \texttt{comparar\_sentimiento}). Esto permite que sistemas de IA conversacionales se conecten al servidor de manera nativa y recuperen evidencia electoral altamente precisa, implementando el paradigma RAG en su máxima expresión.
@@ -626,8 +626,8 @@ cinco componentes (rol, contexto, instrucción, formato y ejemplos few-shot) des
 marco conceptual, y extrae en una sola llamada por segmento: candidatos detectados,
 método de detección, nivel de confianza, score de sentimiento en escala $[-1, 1]$,
 fragmento clave que justifica el sentimiento, temas identificados y relaciones entre temas.
-Para la selección del LLM, se realizó un benchmarking sobre las propuestas de los
-autores de los antecedentes:
+Para la selección del LLM, se ejecutó una compartiva de las diversas propuestas de 
+autores presentados en los antecedentes:
  
 \begin{itemize}
     \item \textbf{Gemini (Google)}: \cite{pr_alvarez2023llm_political}, arquitectura del HTML de metodología adjunto.
@@ -686,7 +686,7 @@ Cada herramienta valida sus entradas y salidas mediante esquemas Pydantic v2, mi
  
 \subsubsection{Validación}
  
-Esta fase incluye la evaluación del sistema de inteligencia electoral mediante las métricas seleccionadas de clasificación y calidad de temas. Las actividades y tareas desarrolladas se presentan en la Tabla \ref{4:table7}.
+Esta fase incluye la evaluación del sistema de inteligencia electoral mediante las métricas seleccionadas de clasificación y calidad de temas. Las actividades y tareas desarrolladas se muestran en la Tabla \ref{4:table7}.
 
  
 \begingroup
@@ -783,11 +783,11 @@ En la fase final de la metodología, el sistema de inteligencia electoral se imp
     \small Fuente: Elaboración propia.
 \end{flushleft}
  
-Tras evaluar el desempeño de cada módulo del sistema, se procedió a comparar los resultados con los antecedentes analizados y se llevó a cabo una prueba piloto, en la cual el sistema completo operó en tiempo real durante una semana de campaña electoral. Los detalles de esta prueba y sus resultados se presentan en el Capítulo V.
+Tras evaluar el desempeño de cada módulo del sistema, se procedió a tomar los resultados y realizar una comparativa respecto a los antecedentes analizados, llevando a cabo una prueba de demostración, en la cual el sistema completo operó en tiempo real durante una semana de campaña electoral. Los especificaciones de esta prueba y sus resultados se presentan en el Capítulo V.
  
 \subsection{Metodología para la medición de resultados}
  
-Para evaluar el desempeño de los módulos del sistema, correspondiente a la quinta fase de la metodología CRISP-DM, se emplearon diversas métricas como instrumentos para medir su rendimiento. A continuación, se describen su definición y fórmulas de cálculo.
+Con el fin de evaluar el desempeño de los módulos del sistema, correspondiente a la quinta fase de la metodología CRISP-DM, se emplearon varias medidas de medición como instrumentos para medir su rendimiento. A continuación, se describen su definición y fórmulas de cálculo.
  
 \begin{itemize}
     \item \textbf{Matriz de confusión}: Es una tabla de $N \times N$ que resume el nivel de
@@ -817,7 +817,7 @@ Para evaluar el desempeño de los módulos del sistema, correspondiente a la qui
     \myequations{Fórmula para calcular la precisión del módulo de sentimientos}
  
     \item \textbf{Sensibilidad} (\textit{recall}): Proporción de publicaciones realmente
-    positivas que el sistema identifica correctamente. Se calcula mediante la Ecuación
+    positivas donde el sistema predice correctamente. Esta calcula con la siguiente Ecuación
     \ref{eq:recall_llm}:
  
     \begin{equation}\label{eq:recall_llm}
@@ -826,7 +826,7 @@ Para evaluar el desempeño de los módulos del sistema, correspondiente a la qui
     \end{equation}
     \myequations{Fórmula para calcular la sensibilidad del módulo de sentimientos}
  
-    \item \textbf{Puntaje F1}: Se define como la media armónica entre la precisión y la sensibilidad. Se emplea especialmente cuando las clases de sentimiento se encuentran desbalanceadas —situación común en corpus electorales, donde el sentimiento negativo suele predominar sobre el positivo— y no es adecuado basar las conclusiones únicamente en la exactitud. Su cálculo se realiza mediante la Ecuación \ref{eq:f1_llm}:
+    \item \textbf{Puntaje F1}: Se define como la media armónica entre la sensibilidad y la precisión. Esta se emplea especialmente cuando las clases de sentimiento se encuentran desbalanceadas —situación común en corpus electorales, donde el sentimiento negativo suele predominar sobre el positivo— y no es adecuado basar las conclusiones únicamente en la exactitud. Su cálculo se realiza mediante la Ecuación \ref{eq:f1_llm}:
  
     \begin{equation}\label{eq:f1_llm}
     \phantomsection
@@ -836,7 +836,7 @@ Para evaluar el desempeño de los módulos del sistema, correspondiente a la qui
  
     \item \textbf{Precisión de Recuperación (Hit Rate / Recall@k)}: Propia de las arquitecturas \textit{Retrieval-Augmented Generation} (RAG). Mide la capacidad del sistema de búsqueda híbrida (\textit{pgvector} + Neo4j) para devolver los fragmentos documentales más relevantes (evidencia) en el top $K$ de los resultados frente a una consulta electoral en lenguaje natural.
 
-    \item \textbf{Coherencia semántica $C_v$}: Métrica estándar para evaluar la calidad de
+    \item \textbf{Coherencia semántica $C_v$}: Métrica estándar utilizada para la evaluación de la calidad de
     los temas generados por modelos de topic modeling. Mide la co-ocurrencia normalizada
     de los términos más representativos de cada tema en el corpus. Un valor de $C_v$
     cercano a 1 indica temas semánticamente coherentes. Se calcula mediante la Ecuación
@@ -852,14 +852,14 @@ Para evaluar el desempeño de los módulos del sistema, correspondiente a la qui
     es la probabilidad de co-ocurrencia de los términos $w_i$ y $w_j$ en el corpus, y
     $\epsilon$ es un suavizador para evitar logaritmos de cero.
  
-    \item \textbf{Correlación de Pearson con encuestas}: Mide el grado de correlación
-    lineal entre el Índice de Sentimiento Neto (ISN) calculado por el sistema para cada
-    candidato y los resultados de las encuestas de intención de voto disponibles para el
+    \item \textbf{Correlación de Pearson con encuestas}: Permite medir el grado de correlación
+    lineal  existente entre el Índice de Sentimiento Neto (ISN) calculado por el sistema para cada
+    candidato y los distintos resultados obtenidos por parte de las encuestas sobre la intención de voto disponibles durante el
     mismo período. Un coeficiente de Pearson alto ($r > 0.7$) indicaría que el sistema
     captura adecuadamente la percepción electoral real.
 \end{itemize}
  
-La selección de las métricas mencionadas para evaluar cada módulo del sistema se llevó a cabo tras comparar aquellas empleadas por los autores en los antecedentes de la investigación:
+La selección de las métricas mencionadas para evaluar cada módulo del sistema se llevó a cabo tras comparar aquellas empleadas por parte de los los autores en presentación de los antecedentes del estudio propuesto:
  
 \begin{itemize}
     \item \textbf{Exactitud}: \cite{pr_alvi2023twitter_election_review}, \cite{pr_gujral2024llm_elections}.

@@ -1,5 +1,5 @@
 % ══════════════════════════════════════════════════════════════
-% CAPÍTULO — ENTORNO EMPRESARIAL
+% CAPÍTULO III — ENTORNO EMPRESARIAL
 % Título de tesis: INTELIGENCIA ELECTORAL CON LLM: MINERÍA DE
 % SENTIMIENTOS Y DETECCIÓN DINÁMICA DE TEMAS RELEVANTES PARA
 % ANALIZAR LA PERCEPCIÓN ACTUAL PROYECTADA POR LOS MEDIOS DE
@@ -11,21 +11,27 @@
 
 \chapter{Entorno Empresarial}
 
-\section{Descripción del contexto de aplicación}
+% ─────────────────────────────────────────────────────────────
+\section{Descripción de la empresa}
+% ─────────────────────────────────────────────────────────────
 
-\subsection{Reseña histórica y actividad}
+\subsection{Reseña histórica y actividad económica}
 
 El Jurado Nacional de Elecciones (JNE) es el organismo constitucional autónomo del Estado peruano encargado de administrar justicia en materia electoral, fiscalizar la legalidad del ejercicio del sufragio y de la realización de los procesos electorales, de referéndum y de otras consultas populares \parencite{ent_jne2023institucional}. Fue creado mediante la Constitución Política de 1933 y reafirmado como organismo autónomo por la Constitución vigente de 1993, siendo hoy uno de los tres organismos electorales del sistema democrático peruano, junto a la Oficina Nacional de Procesos Electorales (ONPE) y el Registro Nacional de Identificación y Estado Civil (RENIEC).
 
+Desde su fundación, el JNE ha consolidado un rol central en la garantía del ejercicio democrático del sufragio en el Perú. Su actividad económica es de naturaleza pública y no lucrativa: opera con presupuesto asignado por el Estado peruano, destinado íntegramente a la administración de justicia electoral, la educación ciudadana y el fortalecimiento de la democracia participativa \parencite{ent_jne2023institucional}. En el contexto de los procesos electorales de 2026, el JNE viene impulsando iniciativas de modernización institucional, entre las que se inscribe la evaluación de herramientas tecnológicas para el monitoreo automatizado del ecosistema mediático digital.
+
 En el marco de los procesos electorales, la percepción que los medios de comunicación proyectan sobre los candidatos, partidos políticos y propuestas programáticas se construye y transforma principalmente a través del ecosistema digital. Las plataformas de noticias digitales, X (antes Twitter), YouTube y TikTok se han consolidado como los principales canales de difusión de contenido mediático durante las campañas electorales peruanas. Sin embargo, el análisis sistemático y automatizado de esta cobertura —en términos de su tono, encuadre y temática— ha sido hasta la fecha un reto técnico sin resolver a escala institucional.
 
-La presente investigación se desarrolla como un proyecto académico aplicado orientado al análisis automatizado de la percepción proyectada por los medios de comunicación en ecosistemas digitales peruanos durante el proceso electoral. Para ello, se trabaja con un equipo multidisciplinario conformado por analistas políticos, especialistas en NLP e ingenieros de datos, cuyo interés es evaluar la viabilidad de un sistema automatizado de inteligencia electoral basado en Modelos de Lenguaje de Gran Escala (LLMs) sobre un corpus recolectado entre enero y mayo de 2026.
+La presente investigación se desarrolla como un proyecto académico aplicado orientado al análisis automatizado de la percepción proyectada por los medios de comunicación en ecosistemas digitales peruanos durante el proceso electoral 2026. Para ello, se trabaja con un equipo multidisciplinario conformado por analistas políticos, especialistas en NLP e ingenieros de datos, cuyo interés es evaluar la viabilidad de un sistema automatizado de inteligencia electoral basado en Modelos de Lenguaje de Gran Escala (LLMs) sobre un corpus recolectado entre enero y mayo de 2026.
 
+% ─────────────────────────────────────────────────────────────
 \subsection{Descripción de la organización}
+% ─────────────────────────────────────────────────────────────
 
-\subsubsection{Organigrama del equipo de investigación aplicada}
+\subsubsection{Organigrama}
 
-El equipo de trabajo vinculado al desarrollo e implementación del sistema de inteligencia electoral propuesto en esta tesis está conformado por los siguientes roles, cuya estructura jerárquica se representa en la Figura \ref{fig:organigrama_equipo}.
+El equipo de trabajo vinculado al desarrollo e implementación del sistema de inteligencia electoral propuesto en esta tesis está conformado por los siguientes roles, cuya estructura jerárquica se representa en la Figura~\ref{fig:organigrama_equipo}.
 
 \begin{itemize}
     \item \textbf{Director del Proyecto}: Responsable de la visión estratégica, la definición de los objetivos del sistema y la validación de los resultados desde una perspectiva de ciencia política y comunicación mediática. Coordina con los organismos electorales y los medios de comunicación interesados en el producto final.
@@ -50,9 +56,30 @@ El equipo de trabajo vinculado al desarrollo e implementación del sistema de in
     \end{center}
 \end{figure}
 
-\subsubsection{Ecosistema de datos y fuentes de información}
+% ─────────────────────────────────────────────────────────────
+\subsubsection{Cadena de suministros}
+% ─────────────────────────────────────────────────────────────
 
-El sistema de inteligencia electoral opera sobre un ecosistema de datos compuesto por cuatro fuentes digitales primarias y dos fuentes de validación, cuya interacción y flujo se describen en la Tabla \ref{tab:fuentes_datos}.
+La cadena de suministros del sistema de inteligencia electoral describe el flujo completo de datos e información desde los proveedores de contenido digital hasta los usuarios finales del sistema. A diferencia de una cadena de suministros industrial convencional, en este contexto los «insumos» son contenidos digitales (artículos, tweets, videos, transcripciones) y los «productos finales» son indicadores de percepción mediática y reportes de inteligencia electoral accionables.
+
+La cadena se estructura en tres eslabones principales, tal como se ilustra en la Figura~\ref{fig:cadena_suministros}:
+
+\textbf{Eslabón 1 — Proveedores de datos}: Las fuentes primarias de datos son cuatro plataformas digitales que cubren el ecosistema mediático peruano: ocho portales de noticias digitales (accedidos mediante scrapers aiohttp + BeautifulSoup), la red social X/Twitter (accedida mediante la API de terceros TwitterAPI.io), YouTube y TikTok (ambos accedidos mediante yt-dlp con transcripción automática por reconocimiento de voz). Adicionalmente, se incorporan fuentes de validación externa —encuestas de intención de voto de Datum y datos macroeconómicos del BCRP— como insumos de calibración y contexto.
+
+\textbf{Eslabón 2 — Sistema de procesamiento}: El núcleo del sistema transforma los datos crudos en inteligencia estructurada mediante tres etapas secuenciales: (i) ingesta y preprocesamiento en la arquitectura Medallion (capas Bronze y Silver), con limpieza, deduplicación y normalización; (ii) análisis LLM para clasificación de sentimientos, detección dinámica de temas y análisis de framing mediático; y (iii) generación de la capa Gold con los indicadores consolidados (ISN, IRT, IVE, ICMC) y el sistema de alertas automáticas.
+
+\textbf{Eslabón 3 — Clientes y usuarios finales}: Los productos del sistema —reportes, dashboards interactivos y alertas en tiempo real— están dirigidos a cuatro segmentos de usuarios: organismos electorales (JNE, ONPE), medios de comunicación y periodistas especializados en política, investigadores académicos en ciencia política y NLP, y equipos de campaña o consultoras de comunicación estratégica.
+
+\begin{figure}[!ht]
+    \begin{center}
+        \includegraphics[width=0.95\textwidth]{2.5/figures/cadena_suministros_sistema_electoral.png}
+        \caption[Cadena de suministros del sistema de inteligencia electoral]{Cadena de suministros del sistema de inteligencia electoral: proveedores de datos digitales, sistema de procesamiento LLM y usuarios finales de los indicadores de percepción mediática.\\
+            Fuente: Elaboración propia.}
+        \label{fig:cadena_suministros}
+    \end{center}
+\end{figure}
+
+El ecosistema de datos y fuentes de información que alimenta esta cadena se detalla en la Tabla~\ref{tab:fuentes_datos}, donde se especifica el tipo de dato, el método de acceso y el rol de cada fuente dentro del pipeline analítico.
 
 \begin{table}[htbp]
     \renewcommand\arraystretch{1.3}
@@ -113,19 +140,21 @@ El sistema de inteligencia electoral opera sobre un ecosistema de datos compuest
     \end{flushleft}
 \end{table}
 
-\section{Datos generales estratégicos}
+% ─────────────────────────────────────────────────────────────
+\section{Datos generales estratégicos de la empresa}
+% ─────────────────────────────────────────────────────────────
 
-\subsection{Visión, misión y objetivos del sistema}
+\subsection{Visión, misión y valores o principios}
 
-\subsubsection{Visión del sistema}
+\subsubsection*{Visión del sistema}
 
 «Ser el sistema de referencia en inteligencia electoral para el Perú, reconocido por la precisión, transparencia y utilidad de sus análisis de la percepción proyectada por los medios de comunicación en ecosistemas digitales durante procesos electorales.»
 
-\subsubsection{Misión del sistema}
+\subsubsection*{Misión del sistema}
 
 «Proveer a analistas políticos, periodistas, organismos electorales e investigadores académicos una plataforma automatizada de minería de sentimientos y detección dinámica de temas, basada en Modelos de Lenguaje de Gran Escala, que permita comprender en tiempo real la percepción que los medios de comunicación proyectan sobre los actores del proceso electoral peruano a través de sus contenidos en ecosistemas digitales.»
 
-\subsubsection{Valores y principios de diseño}
+\subsubsection*{Valores y principios de diseño}
 
 El sistema se rige por los siguientes principios fundamentales:
 
@@ -134,14 +163,16 @@ El sistema se rige por los siguientes principios fundamentales:
 
     \item \textbf{Neutralidad política}: El sistema no está diseñado para favorecer ni perjudicar a ningún candidato o partido político. Sus resultados reflejan la distribución real del encuadre mediático en el ecosistema digital analizado.
 
-    \item \textbf{Privacidad y anonimización}: Los datos individuales de los usuarios no son almacenados ni utilizados para fines distintos al análisis agregado. Se cumple con la Ley N.° 29733 de Protección de Datos Personales del Perú.
+    \item \textbf{Privacidad y anonimización}: Los datos individuales de los usuarios no son almacenados ni utilizados para fines distintos al análisis agregado. Se cumple con la Ley N.°~29733 de Protección de Datos Personales del Perú.
 
     \item \textbf{Rigor científico}: Todos los resultados del sistema son sometidos a procesos de validación cuantitativa y cualitativa antes de su presentación pública.
 
     \item \textbf{Accesibilidad}: Los reportes e indicadores generados están diseñados para ser comprensibles tanto por especialistas técnicos como por periodistas, comunicadores y ciudadanos sin formación en ciencia de datos.
 \end{itemize}
 
-\subsection{Objetivos estratégicos del sistema}
+% ─────────────────────────────────────────────────────────────
+\subsection{Objetivos estratégicos}
+% ─────────────────────────────────────────────────────────────
 
 El sistema de inteligencia electoral propuesto tiene como objetivos estratégicos los siguientes:
 
@@ -151,11 +182,87 @@ En segundo lugar, \textbf{implementar un sistema de detección dinámica de tema
 
 En tercer lugar, \textbf{construir un módulo de análisis de framing mediático comparado} que permita identificar y cuantificar las diferencias en la percepción proyectada sobre los actores políticos por parte de distintos medios y plataformas digitales, habilitando el análisis de sesgos editoriales y divergencias de cobertura.
 
-Finalmente, \textbf{diseñar y desplegar un dashboard de visualización en tiempo real} que permita a los usuarios explorar los indicadores de percepción mediática —Índice de Sentimiento Neto por fuente, Índice de Relevancia Temática, Índice de Velocidad de Emergencia e Índice de Cobertura Mediática Comparada— de manera interactiva y actualizada.
+Finalmente, \textbf{diseñar y desplegar un dashboard de visualización en tiempo real} que permita a los usuarios explorar los indicadores de percepción mediática —Índice de Sentimiento Neto (ISN) por fuente, Índice de Relevancia Temática (IRT), Índice de Velocidad de Emergencia (IVE) e Índice de Cobertura Mediática Comparada (ICMC)— de manera interactiva y actualizada.
 
-\subsection{Evaluación interna y externa. FODA}
+% ─────────────────────────────────────────────────────────────
+\subsection{Evaluación interna y externa: FODA cuantitativo}
+% ─────────────────────────────────────────────────────────────
 
-Con el apoyo del equipo analista y la revisión del ecosistema de herramientas de inteligencia electoral existentes, se elaboró el análisis FODA del sistema propuesto, presentado en la Tabla \ref{tab:foda_cruzado}.
+Con el apoyo del equipo analista y la revisión del ecosistema de herramientas de inteligencia electoral existentes, se elaboró el análisis FODA del sistema propuesto. Para dotarlo de mayor rigor metodológico, se aplicó una ponderación cuantitativa a cada factor, siguiendo la metodología de la Matriz de Evaluación de Factores Internos (EFI) y la Matriz de Evaluación de Factores Externos (EFE) propuesta por \textcite{david2013strategic}.
+
+Cada factor recibe un peso relativo (entre 0.0 y 1.0, con suma total igual a 1.0 por dimensión) y una calificación de 1 a 4 que refleja su impacto real sobre el sistema (1~=~menor impacto, 4~=~impacto crítico). La puntuación ponderada resulta del producto de ambos valores.
+
+\textbf{Matriz EFI — Evaluación de factores internos} (Tabla~\ref{tab:efi}):
+
+\begin{table}[htbp]
+    \renewcommand\arraystretch{1.3}
+    \caption[Matriz EFI del sistema de inteligencia electoral]{Matriz de Evaluación de Factores Internos (EFI) del sistema de inteligencia electoral basado en LLMs. Calificación: 4 = fortaleza mayor, 3 = fortaleza menor, 2 = debilidad menor, 1 = debilidad mayor.}
+    \label{tab:efi}
+    \centering
+    \small
+    \begin{tabular}{p{7.5cm} c c c}
+        \specialrule{.1em}{.05em}{.05em}
+        \textbf{Factor} & \textbf{Peso} & \textbf{Calif.} & \textbf{Pond.} \\
+        \specialrule{.1em}{.05em}{.05em}
+        \multicolumn{4}{l}{\textit{Fortalezas}} \\
+        \hline
+        F1: Uso de LLMs de última generación (DeepSeek, BERT multilingüe) & 0.15 & 4 & 0.60 \\
+        F2: Pipeline multimodal completamente automatizado (4 fuentes) & 0.18 & 4 & 0.72 \\
+        F3: Análisis en tiempo real con bajo costo operativo (\$4–8/mes) & 0.14 & 4 & 0.56 \\
+        F4: Cobertura del español político regional peruano & 0.10 & 3 & 0.30 \\
+        \hline
+        \multicolumn{4}{l}{\textit{Debilidades}} \\
+        \hline
+        D1: Alta demanda computacional para procesamiento de video & 0.13 & 2 & 0.26 \\
+        D2: Dependencia de APIs y scrapers de terceros & 0.15 & 1 & 0.15 \\
+        D3: Sesgo potencial en datos de plataformas individuales & 0.08 & 2 & 0.16 \\
+        D4: Escasez de datos etiquetados en español electoral & 0.07 & 1 & 0.07 \\
+        \hline
+        \textbf{Total} & \textbf{1.00} & & \textbf{2.82} \\
+        \specialrule{.1em}{.05em}{.05em}
+    \end{tabular}
+    \begin{flushleft}
+        \small Nota: Puntuación total EFI de 2.82 (superior al promedio de 2.50), lo que indica que el sistema aprovecha sus fortalezas internas de manera efectiva.\\
+        Fuente: Elaboración propia, adaptado de \textcite{david2013strategic}.
+    \end{flushleft}
+\end{table}
+\newpage
+\textbf{Matriz EFE — Evaluación de factores externos} (Tabla~\ref{tab:efe}):
+
+\begin{table}[htbp]
+    \renewcommand\arraystretch{1.3}
+    \caption[Matriz EFE del sistema de inteligencia electoral]{Matriz de Evaluación de Factores Externos (EFE) del sistema de inteligencia electoral basado en LLMs. Calificación: 4 = respuesta excelente, 3 = respuesta superior al promedio, 2 = respuesta promedio, 1 = respuesta deficiente.}
+    \label{tab:efe}
+    \centering
+    \small
+    \begin{tabular}{p{7.5cm} c c c}
+        \specialrule{.1em}{.05em}{.05em}
+        \textbf{Factor} & \textbf{Peso} & \textbf{Calif.} & \textbf{Pond.} \\
+        \specialrule{.1em}{.05em}{.05em}
+        \multicolumn{4}{l}{\textit{Oportunidades}} \\
+        \hline
+        O1: Digitalización creciente del debate mediático político peruano & 0.18 & 4 & 0.72 \\
+        O2: Apertura de APIs electorales (ONPE/JNE) para validación & 0.14 & 3 & 0.42 \\
+        O3: Crecimiento del uso de YouTube y TikTok en política & 0.13 & 4 & 0.52 \\
+        \hline
+        \multicolumn{4}{l}{\textit{Amenazas}} \\
+        \hline
+        A1: Restricciones de acceso a APIs de plataformas digitales & 0.20 & 3 & 0.60 \\
+        A2: Riesgo de uso malicioso para manipulación política & 0.15 & 2 & 0.30 \\
+        A3: Evolución rápida del lenguaje político y jerga digital & 0.20 & 3 & 0.60 \\
+        \hline
+        \textbf{Total} & \textbf{1.00} & & \textbf{3.16} \\
+        \specialrule{.1em}{.05em}{.05em}
+    \end{tabular}
+    \begin{flushleft}
+        \small Nota: Puntuación total EFE de 3.16 (superior al promedio de 2.50), lo que indica que el sistema responde de manera sólida a las oportunidades del entorno y mitiga eficazmente sus amenazas.\\
+        Fuente: Elaboración propia, adaptado de \textcite{david2013strategic}.
+    \end{flushleft}
+\end{table}
+
+Las puntuaciones obtenidas (EFI~=~2.82; EFE~=~3.16) ubican al sistema en el cuadrante de \textit{Crecer y desarrollar} de la Matriz IE (Interna-Externa), lo que indica que el sistema está bien posicionado para aprovechar oportunidades del entorno apoyándose en sus fortalezas internas \parencite{david2013strategic}.
+
+El análisis cruzado de factores se presenta a continuación en la Tabla~\ref{tab:foda_cruzado}, detallando las estrategias FO, DO, FA y DA derivadas de la evaluación cuantitativa.
 
 \begin{table}[htbp]
     \caption[FODA cruzado del sistema de inteligencia electoral basado en LLMs]{FODA cruzado del sistema de inteligencia electoral basado en LLMs para análisis de percepción mediática.}
@@ -221,9 +328,11 @@ Con el apoyo del equipo analista y la revisión del ecosistema de herramientas d
 
 En resumen, el sistema de inteligencia electoral propuesto se encuentra bien posicionado para abordar una necesidad real e insatisfecha en el contexto electoral peruano: el análisis automatizado y comparado de la percepción proyectada por los medios de comunicación en el ecosistema digital. Sus principales fortalezas —el pipeline multimodal que integra cuatro fuentes simultáneas, el uso de LLMs de última generación y la capacidad de análisis en tiempo real— lo diferencian de los enfoques convencionales de monitoreo mediático.
 
+% ─────────────────────────────────────────────────────────────
 \section{Modelo de negocio actual (CANVAS)}
+% ─────────────────────────────────────────────────────────────
 
-El modelo de negocio del sistema de inteligencia electoral se estructura bajo el marco Canvas, cuyos componentes clave se describen a continuación y se ilustran en la Figura \ref{fig:canvas_sistema}.
+El modelo de negocio del sistema de inteligencia electoral se estructura bajo el marco Canvas, cuyos componentes clave se describen a continuación y se ilustran en la Figura~\ref{fig:canvas_sistema}.
 
 \textbf{Propuesta de Valor}: Análisis automatizado de la percepción proyectada por los medios de comunicación en ecosistemas digitales (noticias, X/Twitter, YouTube, TikTok) en tiempo real; detección dinámica de temas emergentes en la agenda mediática; análisis comparado de framing editorial entre distintos medios y plataformas; monitoreo de desinformación electoral; reportes de inteligencia mediática accionables para la toma de decisiones.
 
@@ -241,35 +350,28 @@ El modelo de negocio del sistema de inteligencia electoral se estructura bajo el
 
 \textbf{Socios Clave}: Plataformas de redes sociales y video (proveedoras de datos); organismos electorales (JNE, ONPE) para datos de validación; universidades e instituciones académicas para investigación colaborativa; medios de comunicación interesados en el análisis de su propia cobertura.
 
-\textbf{Estructura de Costos}: Los costos operacionales del sistema son significativamente menores a los proyectados inicialmente. La infraestructura corre completamente en local mediante Docker Compose, eliminando los costos de servicios cloud dedicados.
-
-El único costo variable principal corresponde al uso de la API de DeepSeek para el etiquetado LLM, que a una tasa aproximada de \$0.13 por día procesado (\$0.0008/documento con 85.5\% de \textit{cache hit}) resulta en aproximadamente \$4--8 USD por mes completo de campaña electoral. El acceso a datos de Twitter se realiza mediante TwitterAPI.io en lugar de la API oficial de X/Twitter, y las transcripciones de YouTube y TikTok se obtienen mediante yt-dlp sin costo adicional. El uso de Neo4j Community Edition, PostgreSQL con pgvector y procesamiento local elimina la necesidad de servicios cloud especializados de alto costo.
+\textbf{Estructura de Costos}: Los costos operacionales del sistema son significativamente menores a los proyectados inicialmente. La infraestructura corre completamente en local mediante Docker Compose, eliminando los costos de servicios cloud dedicados. El único costo variable principal corresponde al uso de la API de DeepSeek para el etiquetado LLM, que a una tasa aproximada de \$0.13 por día procesado (\$0.0008/documento con 85.5\% de \textit{cache hit}) resulta en aproximadamente \$4--8 USD por mes completo de campaña electoral. El acceso a datos de Twitter se realiza mediante TwitterAPI.io en lugar de la API oficial de X/Twitter, y las transcripciones de YouTube y TikTok se obtienen mediante yt-dlp sin costo adicional. El uso de Neo4j Community Edition, PostgreSQL con pgvector y procesamiento local elimina la necesidad de servicios cloud especializados de alto costo.
 
 \begin{figure}[!ht]
     \begin{center}
-        \includegraphics[width=0.92\textwidth]{2.5/figures/canvas_sistema.png}
-        % ► NOTA PARA EL AUTOR: actualiza esta figura para reflejar
-        %   la propuesta de valor centrada en "percepción proyectada por
-        %   los medios" y las 4 fuentes en Recursos Clave. Ver notas_figuras.tex.
+        \includegraphics[width=0.92\textwidth]{2.5/figures/canvas_sistema_electoral.png}
         \caption[Modelo CANVAS del sistema de inteligencia electoral basado en LLMs]{Modelo de negocio CANVAS del sistema de inteligencia electoral, mostrando la propuesta de valor centrada en el análisis de percepción mediática, segmentos de clientes, canales, recursos clave (4 fuentes multimodales), actividades clave y estructura de costos.\\
             Fuente: Elaboración propia.}
         \label{fig:canvas_sistema}
     \end{center}
 \end{figure}
 
+% ─────────────────────────────────────────────────────────────
 \section{Mapa de procesos actual}
+% ─────────────────────────────────────────────────────────────
 
 \subsection{Descripción de los procesos}
 
-El mapa de procesos del sistema de inteligencia electoral se estructura en tres niveles: procesos estratégicos, procesos operativos y procesos de soporte, cuya interacción se ilustra en la Figura \ref{fig:mapa_procesos}. Esta arquitectura de procesos garantiza que el flujo de datos —desde la recolección multimodal hasta la presentación de los indicadores de percepción mediática— sea continuo, trazable y de alta calidad.
+El mapa de procesos del sistema de inteligencia electoral se estructura en tres niveles: procesos estratégicos, procesos operativos y procesos de soporte, cuya interacción se ilustra en la Figura~\ref{fig:mapa_procesos}. Esta arquitectura de procesos garantiza que el flujo de datos —desde la recolección multimodal hasta la presentación de los indicadores de percepción mediática— sea continuo, trazable y de alta calidad.
 
 \begin{figure}[!ht]
     \begin{center}
-        \includegraphics[width=0.95\textwidth]{2.5/figures/mapa_procesos.png}
-        % ► NOTA PARA EL AUTOR: actualiza esta figura para incluir
-        %   la transcripción audiovisual (YouTube/TikTok) como proceso
-        %   operativo y el análisis de framing comparado como salida.
-        %   Ver notas_figuras.tex.
+        \includegraphics[width=0.95\textwidth]{2.5/figures/mapa_procesos_electoral.png}
         \caption[Mapa de procesos del sistema de inteligencia electoral multimodal]{Mapa de procesos del sistema de inteligencia electoral: procesos estratégicos de planificación y gestión de calidad, procesos operativos del pipeline multimodal (recolección, transcripción, análisis LLM, detección de temas, framing comparado) y procesos de soporte tecnológico y ético.\\
             Fuente: Elaboración propia.}
         \label{fig:mapa_procesos}
@@ -289,7 +391,7 @@ Los \textbf{procesos operativos} constituyen el núcleo del sistema y comprenden
 
     \item \textbf{Análisis de sentimientos y framing con LLM}: Clasificación de la polaridad (positivo / negativo / neutral), la emoción y el encuadre mediático de cada documento hacia las entidades políticas mencionadas, mediante prompts diseñados para el contexto de cobertura mediática electoral peruana en modalidad zero-shot y few-shot. La salida se almacena en capa Silver en formato JSON estructurado con campos para: fuente mediática, tipo de plataforma, candidato protagonista, actores secundarios, tema emergente, categoría, sentimiento por candidato y nivel de confianza.
 
-    \item \textbf{Detección dinámica de temas}: Generación de embeddings semánticos con Sentence-BERT multilingüe, construcción de un menú de temas candidatos mediante retrieval multinivel (trending, semántico, léxico, por actor y por evento) y clasificación con LLM en categorías \textit{exact}, \textit{alias} o \textit{new} dentro de un catálogo incremental, con consolidación y deduplicación semántica diaria. La deduplicación entre fuentes heterogéneas se realiza mediante el pipeline de tres etapas descrito en el marco teórico.
+    \item \textbf{Detección dinámica de temas}: Generación de embeddings semánticos con Sentence-BERT multilingüe, construcción de un menú de temas candidatos mediante retrieval multinivel (trending, semántico, léxico, por actor y por evento) y clasificación con LLM en categorías \textit{exact}, \textit{alias} o \textit{new} dentro de un catálogo incremental, con consolidación y deduplicación semántica diaria.
 
     \item \textbf{Análisis de cobertura mediática comparada}: Cálculo del Índice de Sentimiento Neto (ISN) desagregado por fuente mediática y plataforma, identificación de divergencias de framing entre medios y construcción de los perfiles de cobertura por candidato y período.
 
