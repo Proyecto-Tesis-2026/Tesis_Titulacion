@@ -1,4 +1,4 @@
-\chapter{Desarrollo del Experimento}
+\chapter{Desarrollo de la Solución}
 
 En este capítulo se detalla el proceso explicado en el capítulo anterior para cada
 actividad de la metodología CRISP-DM aplicada, así como los entregables comprometidos
@@ -489,6 +489,76 @@ y categorías para un día de campaña seleccionado.
     \end{center}
 \end{figure}
 
+El diccionario de datos del grafo —con las propiedades principales de cada nodo
+y arista utilizadas durante la implementación— se presenta en la
+Tabla \ref{5:table_grafo}.
+
+\begin{table}[h!]
+    \caption[Diccionario de datos del grafo de conocimiento electoral]{Diccionario de datos del grafo de conocimiento electoral implementado en Neo4j Community.}
+    \label{5:table_grafo}
+    \centering
+    \small
+    \begin{tabular}{ m{3.6cm}m{8.4cm}m{2.5cm} }
+        \specialrule{.1em}{.05em}{.05em}
+        \Centering{Campo} & \Centering{Descripción} & \Centering{Tipo} \\
+        \specialrule{.1em}{.05em}{.05em}
+        \multicolumn{3}{c}{Nodo: \texttt{Candidato}} \\
+        \hline
+        id                  & \textit{Slug} estable del candidato (ej. \texttt{keiko\_fujimori}). & string  \\
+        nombre              & Nombre completo del candidato presidencial.            & string  \\
+        partido             & Partido político al que pertenece.                     & string  \\
+        espectro\_politico  & Espectro político del candidato.                       & string  \\
+        embedding           & Vector \textit{embedding} (768D, \textit{cosine}).     & vector  \\
+        \hline
+        \multicolumn{3}{c}{Nodo: \texttt{Tema}} \\
+        \hline
+        id                  & Identificador único del tema en \texttt{temas\_conocidos}. & string  \\
+        nombre              & Etiqueta canónica del tema (ej. \texttt{seguridad\_lima\_2026-03-22}). & string  \\
+        categoria           & Categoría temática (17 valores cerrados).              & string  \\
+        embedding           & Vector \textit{embedding} (768D, \textit{cosine}).     & vector  \\
+        \hline
+        \multicolumn{3}{c}{Nodo: \texttt{Fragmento}} \\
+        \hline
+        id                  & Identificador único del fragmento.                     & string  \\
+        texto               & Fragmento textual representativo del documento.        & string  \\
+        embedding           & Vector \textit{embedding} (768D).                      & vector  \\
+        fecha               & Fecha de publicación.                                  & datetime\\
+        \hline
+        \multicolumn{3}{c}{Arista: \texttt{MENCIONA} (Fragmento $\to$ Candidato)} \\
+        \hline
+        sentimiento        & Sentimiento del fragmento hacia el candidato (escala $[-1,1]$). & float   \\
+        rol                & Rol del candidato en el fragmento (\textit{protagonista}, \textit{atacado}, etc.). & string  \\
+        \hline
+        \multicolumn{3}{c}{Arista: \texttt{SOBRE\_TEMA} (Fragmento $\to$ Tema)} \\
+        \hline
+        sentimiento        & Sentimiento del fragmento hacia el tema.               & float   \\
+        confianza          & Nivel de confianza del LLM en la asignación del tema.  & float   \\
+        \hline
+        \multicolumn{3}{c}{Arista: \texttt{TIENE\_SENTIMIENTO\_EN} (Candidato $\to$ SentimientoDiario)} \\
+        \hline
+        fecha              & Fecha del agregado diario.                             & date    \\
+        sentimiento\_avg   & ISN diario promedio del candidato.                     & float   \\
+        n\_menciones       & Total de menciones del candidato en ese día.           & integer \\
+        \specialrule{.1em}{.05em}{.05em}
+    \end{tabular}
+    \begin{flushleft}
+        \small Fuente: Elaboración propia.
+    \end{flushleft}
+\end{table}
+
+Los antecedentes citados para cada componente principal del grafo se mencionan a
+continuación:
+
+\begin{itemize}
+    \item \textbf{Nodos \texttt{Candidato} y \texttt{Fragmento}, arista \texttt{MENCIONA}}: \cite{pr_alvarez2023llm_political},
+    \cite{pr_gujral2024llm_elections}, \cite{pr_alvi2023twitter_election_review}.
+    \item \textbf{Nodo \texttt{Tema} y arista \texttt{SOBRE\_TEMA}}: \cite{pr_mendonca2025bertopic_political},
+    \cite{pr_janssens2025bertopic_llm}, \cite{pr_islam2025latent_topic}.
+    \item \textbf{Cobertura por medio (vista \texttt{gold\_cobertura\_medios})}: metodología del HTML
+    adjunto, \cite{pr_alvarez2023llm_political}.
+    \item \textbf{Módulo de desinformación}: \cite{pr_chen2024combating_misinformation}.
+\end{itemize}
+
 \textbf{Actividad 4: Implementar sistema GraphRAG para consultas}
 \\
 El módulo GraphRAG se implementó como un \textbf{servidor MCP}
@@ -821,3 +891,39 @@ cobertura positiva de un candidato en los medios digitales y el sentimiento
 negativo expresado hacia ese mismo candidato en X/Twitter durante la misma
 semana, constituyendo un hallazgo de inteligencia electoral relevante para los
 analistas usuarios del sistema.
+
+Como caso de uso real del sistema, se realizó la siguiente consulta al servidor
+MCP desde un cliente LLM en lenguaje natural:
+
+\begin{quote}
+\textit{``Muéstrame qué candidato presidencial Perú 2026 tuvo la mayor caída de
+sentimiento mediático entre el 10 y 12 de marzo. Dame: 1) cuánto bajó, 2) la razón
+principal según las noticias, 3) las 2 noticias más negativas con titular, medio
+y URL. Visualiza la evolución día a día.''}
+\end{quote}
+
+A partir de esta consulta, el LLM cliente seleccionó automáticamente las
+herramientas \texttt{comparar\_candidatos\_sentimiento},
+\texttt{noticias\_por\_actor} y \texttt{citar\_evidencia} con sus parámetros
+tipados, ejecutó las consultas SQL/Cypher subyacentes contra Postgres y Neo4j, y
+construyó la respuesta fundamentada en evidencia textual del corpus. El resultado
+se muestra en la Figura \ref{5:fig26}.
+
+\begin{figure}[!ht]
+    \centering
+    \begin{subfigure}{0.85\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{4/figures/fig12a_evolucion_sentimiento.png}
+        \caption{Evolución del sentimiento mediático día a día del candidato con la mayor caída entre el 10 y 12 de marzo de 2026.}
+        \label{5:fig26a}
+    \end{subfigure}
+    \\[0.5cm]
+    \begin{subfigure}{0.85\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{4/figures/fig12b_noticias_razones.png}
+        \caption{Las dos noticias más negativas que el sistema cita como razones de la caída, con titular, medio y URL.}
+        \label{5:fig26b}
+    \end{subfigure}
+    \caption[Consulta GraphRAG en lenguaje natural sobre la mayor caída de sentimiento mediático entre el 10 y 12 de marzo de 2026]{Respuesta del sistema GraphRAG a la consulta en lenguaje natural sobre la mayor caída de sentimiento mediático de un candidato presidencial entre el 10 y 12 de marzo de 2026: (a) evolución del ISN día a día con la magnitud y dirección de la caída, y (b) las dos noticias más negativas del corpus original que el sistema cita como razones de la caída, con su medio de origen y URL.\\Fuente: Elaboración propia.}
+    \label{5:fig26}
+\end{figure}

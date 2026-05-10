@@ -110,6 +110,68 @@ por parte del LLM cliente para una batería diseñada de preguntas en lenguaje
 natural —que sería la métrica directa de cumplimiento de HE4— requiere un
 conjunto de preguntas anotadas con su \textit{ground truth} de tool esperada y se
 queda como trabajo futuro.
+
+\subsection*{Verificación de Hipótesis}
+
+A partir de los resultados operacionales medidos sobre el corpus electoral
+peruano de marzo de 2026, se contrasta a continuación cada hipótesis específica
+con la evidencia obtenida:
+
+\textbf{Hipótesis General (HG)} —\textit{El uso de LLMs, grafos de conocimiento
+y enfoque multi-fuente permite analizar con mayor precisión y contextualización
+la percepción actual proyectada por los medios de comunicación hacia los
+candidatos presidenciales en ecosistemas digitales electorales}—
+\textbf{se valida operacionalmente}. El sistema integrado PeruVox combina los
+tres componentes (LLMs para ABSA y detección de temas, grafo Neo4j con 723
+fragmentos y 27 temas, e integración de cuatro fuentes digitales) y produce
+indicadores de percepción mediática (ISN, IRT, IVE) consultables en lenguaje
+natural con evidencia trazable al corpus original. La validación cuantitativa
+contra encuestas convencionales y \textit{ground truth} etiquetado queda
+dimensionada como trabajo futuro.
+
+\textbf{HE1} —\textit{Los LLMs mejoran significativamente la precisión del
+análisis de sentimientos respecto a modelos tradicionales}—
+\textbf{se valida parcialmente}. DeepSeek-Chat en modalidad \textit{few-shot}
+con 4 ejemplos calibrados produjo validez del schema del 100\% (655/655
+documentos parseables al primer intento) y cobertura del 100\% sobre el
+catálogo cerrado de 17 categorías. La comparación cuantitativa contra
+\textit{baselines} tradicionales (XLM-RoBERTa zero-shot, SVM con TF-IDF al
+estilo de \cite{pr_alvi2023twitter_election_review}) requiere un corpus
+etiquetado por anotadores expertos y se documenta como trabajo futuro.
+
+\textbf{HE2} —\textit{La integración multi-fuente incrementa la cobertura y
+diversidad temática del análisis de la percepción proyectada por los medios de
+comunicación en ecosistemas digitales}— \textbf{se valida}. El pipeline integró
+exitosamente las cuatro fuentes (noticias digitales, X/Twitter, transcripciones
+de YouTube y TikTok), cada una aportando una perspectiva complementaria del
+discurso mediático: agenda de prensa, conversación en redes, contenido
+audiovisual extendido y narrativa breve audiovisual respectivamente. La cascada
+de filtros pre-LLM redujo el costo computacional en aproximadamente un 40\% al
+descartar publicaciones sin menciones a candidatos sin perder cobertura
+relevante.
+
+\textbf{HE3} —\textit{Los grafos de conocimiento permiten identificar relaciones
+complejas no detectables mediante métodos tradicionales}— \textbf{se valida
+operacionalmente}. El grafo Neo4j Community con sus diez tipos de nodos y siete
+tipos de relaciones permitió consultas que articulan candidatos, temas, medios,
+fragmentos y períodos en una sola \textit{query} Cypher, expresividad que las
+estructuras tabulares planas no ofrecen. Los conteos del subgrafo del día
+(723 documentos, 723 fragmentos, 27 temas, 13 categorías) confirman la correcta
+construcción y la idempotencia de las cargas verificada en tres corridas
+consecutivas con \textit{counts} constantes en Postgres y Neo4j.
+
+\textbf{HE4} —\textit{GraphRAG mejora la relevancia, coherencia y
+contextualización de los insights generados}— \textbf{se valida
+operacionalmente}. El sistema GraphRAG implementado como servidor MCP con 13
+herramientas tipadas retornó \texttt{structuredContent} válido contra esquemas
+Pydantic v2 en el 100\% de las llamadas \textit{end-to-end}, con latencia
+mediana entre 5 y 60\,ms para consultas no vectoriales (frente a los
+1--2\,segundos típicos de un sistema GraphRAG basado en generación dinámica de
+\textit{queries}). La medición de la \textbf{tasa de selección correcta} de
+herramienta por parte del LLM cliente sobre una batería diseñada de preguntas
+en lenguaje natural —métrica directa de relevancia y coherencia— requiere un
+conjunto anotado y se documenta como trabajo futuro.
+
 \subsection*{Consideraciones y limitaciones}
 Sin perjuicio de los resultados obtenidos, el sistema PeruVox presenta limitaciones
 metodológicas que deben ser reconocidas. En primer lugar, la representatividad del
