@@ -9,6 +9,7 @@
 *.lof
 *.lot
 *.synctex.gz
+*.synctex(busy)
 *.fdb_latexmk
 *.fls
 
@@ -16,8 +17,10 @@
 *.bbl
 *.bbl-SAVE-ERROR
 *.bcf
+*.bcf-SAVE-ERROR
 *.blg
 *.run.xml
+*-blx.bib
 
 # Listas custom de la tesis (paquetes cool/mathtools/pythontex)
 *.eqflts
@@ -32,3 +35,14 @@
 
 # macOS
 .DS_Store
+__MACOSX/
+
+# Windows
+Thumbs.db
+desktop.ini
+
+# Linux
+*~
+
+# Directorio de salida de latexmk (PDF + aux files generados)
+output/

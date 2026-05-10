@@ -1,0 +1,54 @@
+# Compilacion de la tesis con TeX Live oficial.
+# Funciona en macOS (Apple Silicon y Intel), Linux y Windows.
+# Imagen base: texlive/texlive:latest (multi-arch, ~5 GB primera vez).
+#
+# El PDF y todos los archivos auxiliares se generan en ./output/
+# para mantener limpia la raiz del repo.
+#
+# Uso:
+#   docker compose run --rm build    # compila una vez -> output/tesis.pdf
+#   docker compose run --rm watch    # recompila automaticamente al guardar
+#   docker compose run --rm shell    # bash interactivo dentro del contenedor
+#   docker compose run --rm clean    # borra el directorio output/ entero
+
+services:
+  build:
+    image: texlive/texlive:latest
+    working_dir: /work
+    # Mapea uid/gid del host para que el PDF y aux files no queden como root.
+    # En Linux/Mac: docker compose lee UID/GID del entorno (export UID=$(id -u) GID=$(id -g)).
+    # En Windows: ignorado, sin efecto pernicioso.
+    user: "${UID:-1000}:${GID:-1000}"
+    volumes:
+      - .:/work:z
+    # -outdir=output: PDF + .aux + .bbl + .toc + ... -> ./output/
+    command: sh -c "mkdir -p output && latexmk -pdf -outdir=output -interaction=nonstopmode tesis.tex"
+
+  watch:
+    image: texlive/texlive:latest
+    working_dir: /work
+    user: "${UID:-1000}:${GID:-1000}"
+    volumes:
+      - .:/work:z
+    # -pvc = preview continuous. Detecta cambios y recompila.
+    command: sh -c "mkdir -p output && latexmk -pdf -pvc -outdir=output -interaction=nonstopmode tesis.tex"
+
+  shell:
+    image: texlive/texlive:latest
+    working_dir: /work
+    user: "${UID:-1000}:${GID:-1000}"
+    volumes:
+      - .:/work:z
+    command: bash
+    stdin_open: true
+    tty: true
+
+  clean:
+    image: texlive/texlive:latest
+    working_dir: /work
+    user: "${UID:-1000}:${GID:-1000}"
+    volumes:
+      - .:/work:z
+    # -outdir=output asegura que latexmk -C borre los aux files que esten alla.
+    # Tambien removemos manualmente el directorio entero para empezar de cero.
+    command: sh -c "latexmk -C -outdir=output && rm -rf output"
