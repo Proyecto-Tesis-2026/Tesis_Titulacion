@@ -44,7 +44,7 @@ el corpus electoral fue de 85.5\%.
 
 \begin{figure}[!ht]
     \begin{center}
-        \resizebox{\textwidth}{!}{\input{5/figures/fig1_prompt_absa}}
+        \resizebox{0.85\textwidth}{!}{\input{5/figures/fig1_prompt_absa}}
         \caption[Arquitectura del prompt ABSA para análisis de sentimientos electorales]{Arquitectura del prompt de análisis de sentimientos a nivel de aspecto (ABSA) para el contexto electoral peruano, con sus cinco componentes: rol, contexto, instrucción, formato JSON y ejemplos few-shot.\\Fuente: Elaboración propia.}
         \label{6:fig1}
     \end{center}
@@ -87,11 +87,11 @@ arquitectura del módulo se muestra en la Figura \ref{6:fig2}.
 
 \begin{figure}[!ht]
     \begin{center}
-        \resizebox{\textwidth}{!}{\input{5/figures/fig2_arquitectura_temas}}
-        \caption[Arquitectura del módulo de detección dinámica de temas con LLM y retrieval multinivel]{Arquitectura del módulo de detección dinámica de temas electorales: \textit{embeddings\\Fuente: Elaboración propia.}
+        \resizebox{0.85\textwidth}{!}{\input{5/figures/fig2_arquitectura_temas}}
+        \caption[Arquitectura del módulo de detección dinámica de temas con LLM y retrieval multinivel]{Arquitectura del módulo de detección dinámica de temas electorales: \textit{embeddings} multilingües, menú de cinco \textit{tiers} (\textit{trending}, semántico, léxico, actor, evento), llamada concurrente al LLM con \textit{prompt} de extracción, \textit{override} semántico post-LLM y \textit{dedup} intra-\textit{batch} previo al \textit{upsert} en \texttt{temas\_conocidos}.\\Fuente: Elaboración propia.}
         \label{6:fig2}
     \end{center}
-\end{figure} multilingües, menú de cinco \textit{tiers} (\textit{trending}, semántico, léxico, actor, evento), llamada concurrente al LLM con \textit{prompt} de extracción, \textit{override} semántico post-LLM y \textit{dedup} intra-\textit{batch} previo al \textit{upsert} en \texttt{temas\_conocidos}.}
+\end{figure}
 
 El módulo comienza con la generación de \textit{embeddings} mediante el modelo
 \texttt{paraphrase-multilingual-mpnet-base-v2} de Sentence-BERT, seleccionado por
@@ -136,11 +136,11 @@ siete tipos de relaciones.
 
 \begin{figure}[!ht]
     \begin{center}
-        \resizebox{\textwidth}{!}{\input{5/figures/fig3_grafo_neo4j_schema}}
-        \caption[Esquema final del grafo de conocimiento electoral implementado en Neo4j]{Esquema final del grafo de conocimiento electoral en Neo4j Community, con sus diez tipos de nodos (\texttt{Documento\\Fuente: Elaboración propia.}
+        \resizebox{0.85\textwidth}{!}{\input{5/figures/fig3_grafo_neo4j_schema}}
+        \caption[Esquema final del grafo de conocimiento electoral implementado en Neo4j]{Esquema final del grafo de conocimiento electoral en Neo4j Community, con sus diez tipos de nodos (\texttt{Documento}, \texttt{Fragmento}, \texttt{Tema}, \texttt{Actor}, \texttt{Candidato}, \texttt{Categoria}, \texttt{Encuesta}, \texttt{TipoCambio}, \texttt{IndicadorMacro}, \texttt{SentimientoDiario}) y siete tipos de relaciones (\texttt{CONTIENE}, \texttt{SOBRE\_TEMA}, \texttt{MENCIONA}, \texttt{MENCIONA\_ACTOR}, \texttt{DE\_CATEGORIA}, \texttt{MIDE}, \texttt{TIENE\_SENTIMIENTO\_EN}) con su respectiva metadata de aristas.\\Fuente: Elaboración propia.}
         \label{6:fig3}
     \end{center}
-\end{figure}, \texttt{Fragmento}, \texttt{Tema}, \texttt{Actor}, \texttt{Candidato}, \texttt{Categoria}, \texttt{Encuesta}, \texttt{TipoCambio}, \texttt{IndicadorMacro}, \texttt{SentimientoDiario}) y siete tipos de relaciones (\texttt{CONTIENE}, \texttt{SOBRE\_TEMA}, \texttt{MENCIONA}, \texttt{MENCIONA\_ACTOR}, \texttt{DE\_CATEGORIA}, \texttt{MIDE}, \texttt{TIENE\_SENTIMIENTO\_EN}) con su respectiva metadata de aristas.}
+\end{figure}
 
 Antes de continuar con la implementación del sistema GraphRAG, en la Tabla
 \ref{6:table1} se presentan las variables del grafo que fueron utilizadas para
@@ -222,7 +222,7 @@ continuación:
 
 \begin{figure}[!ht]
     \begin{center}
-        \resizebox{\textwidth}{!}{\input{5/figures/fig4_arquitectura_completa}}
+        \resizebox{0.85\textwidth}{!}{\input{5/figures/fig4_arquitectura_completa}}
         \caption[Arquitectura completa del sistema GraphRAG Electoral]{Arquitectura completa del sistema GraphRAG Electoral, mostrando el flujo desde la ingesta de datos en tiempo real hasta la generación de indicadores de percepción pública y el módulo de consultas en lenguaje natural sobre el grafo de conocimiento.\\Fuente: Elaboración propia.}
         \label{6:fig4}
     \end{center}
@@ -281,8 +281,7 @@ coherencia semántica $C_v$ con la metodología de
 correlación de Pearson con encuestas siguiendo a \cite{pr_gujral2024llm_elections})
 requiere un corpus de validación etiquetado por anotadores expertos que excede el
 alcance temporal del presente trabajo y se documenta como trabajo futuro en el
-archivo \texttt{docs/pendientes-evaluacion.md} del repositorio
-\texttt{electoral-intelligence}.
+una etapa posterior.
 
 \vspace{0.5cm}
 \textbf{Actividad 1: Evaluar desempeño del módulo de análisis de sentimientos}
@@ -338,8 +337,7 @@ La evaluación rigurosa contra un corpus etiquetado de 500 publicaciones por
 anotadores expertos —con cálculo de exactitud, F1 macro por clase y comparación
 contra \textit{baselines} (XLM-RoBERTa zero-shot, SVM con TF-IDF al estilo
 \cite{pr_alvi2023twitter_election_review}, GPT-4o como techo de referencia)—
-queda como trabajo futuro y se dimensiona en
-\texttt{docs/pendientes-evaluacion.md}, sección 1.
+queda como trabajo futuro y se dimensiona.
 
 \vspace{0.5cm}
 \textbf{Actividad 2: Evaluar desempeño del módulo de detección de temas}
@@ -414,8 +412,7 @@ electoral peruano descrito en los antecedentes
 La evaluación rigurosa de la coherencia semántica $C_v$ con la metodología
 estándar y la comparación contra \textit{baselines} (LDA y BERTopic puro)
 requieren la implementación de scripts de cálculo y un periodo extenso de
-procesamiento, y se documentan como trabajo futuro en
-\texttt{docs/pendientes-evaluacion.md}, sección 2.
+procesamiento, y se documentan como trabajo futuro.
 
 \vspace{0.5cm}
 \textbf{Actividad 3: Evaluar sistema GraphRAG}
@@ -466,7 +463,7 @@ lenguaje natural se muestra en la Figura \ref{6:fig9}.
 
 \begin{figure}[!ht]
     \begin{center}
-        \resizebox{\textwidth}{!}{\input{5/figures/fig9_ejemplos_mcp}}
+        \resizebox{0.85\textwidth}{!}{\input{5/figures/fig9_ejemplos_mcp}}
         \caption[Ejemplos de preguntas en lenguaje natural y herramientas MCP invocadas]{Ejemplos representativos de preguntas en español y las herramientas MCP que el cliente LLM invoca automáticamente a partir de las descripciones semánticas y los esquemas Pydantic publicados por el servidor \texttt{electoral\_mcp}.\\Fuente: Elaboración propia.}
         \label{6:fig9}
     \end{center}
@@ -474,8 +471,7 @@ lenguaje natural se muestra en la Figura \ref{6:fig9}.
 
 La medición de la \textbf{tasa de selección correcta} de la herramienta adecuada
 por parte del LLM cliente requiere un conjunto de preguntas anotadas con su
-\textit{ground truth} de tool esperada, lo cual queda como trabajo futuro
-(\texttt{docs/pendientes-evaluacion.md}, sección 3).
+\textit{ground truth} de tool esperada, lo cual queda como trabajo futuro.
 
 \vspace{0.5cm}
 \textbf{Actividad 4: Evaluar el sistema integrado}
@@ -542,8 +538,7 @@ calidad ni romper la idempotencia.
 La validación cuantitativa de los \textbf{indicadores ISN frente a las encuestas
 Datum disponibles} (9 encuestas Ene-Abr 2026 ya cargadas en el sistema) requiere
 un cálculo de correlación de Pearson sobre series alineadas candidato-fecha que
-excede el alcance temporal del presente trabajo y queda como trabajo futuro
-(ver \texttt{docs/pendientes-evaluacion.md}, sección 4).
+excede el alcance temporal del presente trabajo y queda como trabajo futuro.
 
 % ──────────────────────────────────────────────────────────────
 \section{Despliegue}
@@ -599,10 +594,6 @@ en X/Twitter.
 La información extraída de cada fuente es procesada por el módulo de análisis LLM,
 integrada en el grafo de conocimiento y consultable en tiempo real desde un cliente
 MCP a través de las 13 herramientas tipadas del servidor.
-Los datos extraídos y los indicadores calculados durante la semana del debate se
-muestran en la Figura \ref{6:fig11}.
-
-\figpendiente{6:fig11}{Indicadores del sistema PeruVox durante la semana del segundo debate presidencial}{Indicadores del sistema PeruVox durante la semana del segundo debate presidencial: evolución del ISN (arriba), temas emergentes detectados (abajo izquierda) y brecha medios-ciudadanía (abajo derecha).}
 
 La información procesada es ingresada al módulo GraphRAG, que la integra en el grafo
 de conocimiento y la hace disponible para consultas en lenguaje natural. Si el ISN

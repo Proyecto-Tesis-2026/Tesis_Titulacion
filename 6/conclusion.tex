@@ -20,8 +20,7 @@ español a través de un servidor MCP de 13 herramientas tipadas. El sistema que
 construido y operativo; la validación cuantitativa de los indicadores frente a
 encuestas convencionales (correlación de Pearson sobre el ISN semanal vs. las 9
 encuestas Datum cargadas) y la evaluación de calidad de salida con corpus
-etiquetado quedan documentadas como trabajo futuro en el archivo
-\texttt{docs/pendientes-evaluacion.md}.
+etiquetado quedan como trabajo futuro.
 \subsection*{Respecto al Primer Objetivo Específico (OE1)}
 Se analizaron y sistematizaron los enfoques existentes en la literatura mediante
 la revisión de siete antecedentes internacionales publicados entre 2023 y 2025,
@@ -66,8 +65,7 @@ por \textit{prefix-match} con el caché del proveedor. Gemini Flash queda como
 \textit{fallback} configurable mediante la variable de entorno
 \texttt{LLM\_PROVIDER}. La evaluación cuantitativa de la calidad de salida
 (F1 macro, exactitud, sensibilidad) contra etiquetas humanas requiere un corpus
-de validación de 500 publicaciones que se documenta como trabajo futuro en
-\texttt{docs/pendientes-evaluacion.md}, sección 1.
+de validación de 500 publicaciones que se documenta como trabajo futuro.
 
 Para el módulo de detección dinámica de temas, el enfoque híbrido LLM +
 \textit{retrieval} multinivel con la configuración \textit{cosine} $\geq 0.85$
@@ -82,7 +80,7 @@ en el día (accidente policial, tensión Irán-EE.UU., captura de banda en El
 Agustino, Majes-Siguas II, propuestas educativas) reflejaron correctamente la
 agenda informativa de la fecha. La medición de coherencia semántica $C_v$ con
 metodología estándar y comparación contra \textit{baselines} LDA y BERTopic
-queda como trabajo futuro (\texttt{docs/pendientes-evaluacion.md}, sección 2).
+queda como trabajo futuro.
 \subsection*{Respecto al Cuarto Objetivo Específico (OE4)}
 Se implementó el sistema GraphRAG Electoral sobre el grafo de conocimiento
 construido en Neo4j Community, denominado \textbf{PeruVox}, bajo una arquitectura
@@ -110,8 +108,7 @@ La medición de la \textbf{tasa de selección correcta} de la herramienta adecua
 por parte del LLM cliente para una batería diseñada de preguntas en lenguaje
 natural —que sería la métrica directa de cumplimiento de HE4— requiere un
 conjunto de preguntas anotadas con su \textit{ground truth} de tool esperada y se
-documenta como trabajo futuro en \texttt{docs/pendientes-evaluacion.md},
-sección 3.
+queda como trabajo futuro.
 \subsection*{Consideraciones y limitaciones}
 Sin perjuicio de los resultados obtenidos, el sistema PeruVox presenta limitaciones
 metodológicas que deben ser reconocidas. En primer lugar, la representatividad del
@@ -131,8 +128,7 @@ la evaluación de calidad de salida contra \textit{ground truth} (F1 macro,
 exactitud frente a etiquetas humanas, coherencia semántica $C_v$, correlación de
 Pearson con encuestas Datum) requiere un corpus de validación etiquetado por
 anotadores expertos que excede el alcance temporal del trabajo y se dimensiona
-detalladamente en \texttt{docs/pendientes-evaluacion.md}, donde se estiman
-aproximadamente tres semanas de trabajo adicional para completarla.
+a futuro.
 \section{Recomendaciones}
 A partir de los resultados obtenidos y las limitaciones identificadas, se formulan
 las siguientes recomendaciones para trabajos de investigación futuros:
