@@ -55,43 +55,37 @@ En la Tabla \ref{4:table1} se muestra la operacionalización de las variables co
 
     \hline
 
-    % Variable dependiente
-    \multirow{10}{3cm}[-7ex]{\centering Dependiente: Percepción pública nacional en el ecosistema digital}
-    & \multirow{3}{4.2cm}[-2ex]{\centering Sentimiento ciudadano por Actor y Evento}
-    & \multirow{2}{3.6cm}[0ex]{\centering Polaridad y Contexto}
-    & $Positivo: S(d,e) > 0$ \\
-    \cline{4-4}
-    & & & $Negativo: S(d,e) < 0$ \\
-    \cline{3-4}
-    & & Intensidad y Comparación & Índice de Sentimiento Neto (ISN) y Evolución de sentimiento $[-1, 1]$ \\
-    \cline{2-4}
-    & \multirow{5}{4.2cm}[-2ex]{\centering Conversación y Panorama Digital}
-    & \multirow{2}{3.6cm}[0ex]{\centering Volumen y Fuentes}
-    & Cantidad de publicaciones por actor/período \\
-    \cline{4-4}
-    & & & Distribución (Noticias, X, TikTok, YouTube) \\
-    \cline{3-4}
-    & & Panorama temático & Índice de Relevancia Temática (IRT) y Top Temas por período \\
-    \cline{3-4}
-    & & \multirow{2}{3.6cm}[0ex]{\centering Evidencia Causal}
-    & Densidad de enlaces CITA/REACCIONA\_A en el grafo \\
-
-    \specialrule{.1em}{.05em}{.05em}
+% Variable dependiente
+\multirow{10}{=}{Dependiente: Percepción actual proyectada por los medios de comunicación en ecosistemas digitales}
+& \multirow{4}{=}{Sentimiento ciudadano}
+& \multirow{2}{=}{Polaridad de sentimiento}
+& Positivo: $S(d,e) > 0$ \\* \cline{4-4}
+& & & Negativo: $S(d,e) < 0$ \\* \cline{3-4}
+& & Intensidad del sentimiento & Score continuo $[-1, 1]$ \\* \cline{2-4}
+& \multirow{6}{=}{Conversación digital electoral}
+& \multirow{2}{=}{Metainformación del corpus}
+& Volumen de publicaciones por período \\* \cline{4-4}
+& & & Distribución por fuente de datos \\* \cline{3-4}
+& & Temas relevantes & Número y coherencia de temas detectados \\* \cline{3-4}
+& & \multirow{2}{=}{Evolución temporal}
+& Velocidad de emergencia de temas \\* \cline{4-4}
+& & & Cambios de sentimiento por evento electoral \\
+\specialrule{.1em}{.05em}{.05em}
 \end{longtable}
 \endgroup
 \begin{flushleft}
     \small Fuente: Elaboración propia.
 \end{flushleft}
  
+El estudio tiene como objetivo abordar el problema del análisis de la percepción actual proyectada por los medios de comunicación en ecosistemas digitales de carácter electoral, implementando un pipeline automatizado de inteligencia electoral que integra análisis de sentimientos con LLMs y detección dinámica de temas mediante un enfoque híbrido LLM con catálogo incremental sobre un corpus multicanal de publicaciones en español.
 
-
-El estudio tiene como objetivo abordar el problema del análisis de la percepción pública a nivel nacional en ecosistemas digitales de carácter electoral. Para ello, implementa un pipeline automatizado de inteligencia electoral que integra análisis de sentimientos, deduplicación de entidades y extracción semántica utilizando Modelos Fundacionales (LLMs), almacenando los hallazgos en una arquitectura de base de datos dual: vectorial (\textit{pgvector}) para similitud semántica y de grafos (\textit{Neo4j}) para la interrelación de actores, temas y eventos.
-
-La variable dependiente —la percepción pública nacional— se operacionaliza a través del sentimiento expresado en las publicaciones digitales hacia cada candidato o actor político, desagregado por fuente de información, período temporal y tema asociado. Siguiendo un enfoque \textit{Aspect-Based Sentiment Analysis} enriquecido por la topología del grafo, el sistema permite que herramientas expuestas vía el Model Context Protocol (MCP) construyan de manera dinámica panoramas diarios, comparen sentimientos entre candidatos y tracen la evolución de la percepción pública con una alta trazabilidad documental (Evidencia RAG).
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+La variable dependiente —la percepción pública nacional— se operacionaliza a través del
+sentimiento expresado en publicaciones digitales hacia cada candidato presidencial,
+desagregado por fuente de información, período temporal y tema relevante asociado.
+Siguiendo la metodología GraphRAG descrita en la arquitectura del sistema, un mismo
+segmento de texto puede expresar sentimientos distintos hacia distintos candidatos, lo que
+permite capturar la complejidad real del discurso político ciudadano a nivel de aspecto
+(\textit{Aspect-Based Sentiment Analysis}).
  
 \section{Técnicas de recolección de datos}
  
@@ -245,7 +239,10 @@ inteligencia electoral con LLMs, lo describimos en la Figura \ref{4:fig2}.
     \end{center}
 \end{figure}
  
-Durante la ejecución de la metodología, se definió construir un \textit{pipeline} analítico avanzado que integra análisis de sentimientos basado en aspectos (ABSA) orquestado por múltiples Modelos Fundacionales (LLMs), generación de \textit{embeddings} semánticos, almacenamiento vectorial y un grafo de conocimiento. A esta arquitectura dual se le denomina \textbf{GraphRAG Híbrido Electoral}. De acuerdo a la literatura de los antecedentes revisados,
+Durante la ejecución de la metodología, se definió construir un pipeline
+de análisis multicanal que integra análisis de sentimientos con LLMs, detección dinámica
+de temas mediante un enfoque híbrido LLM con catálogo incremental y un grafo de conocimiento con Neo4j, arquitectura denominada
+\textbf{Pipeline de Inteligencia Electoral Basado en LLMs y Grafo de Conocimiento}. De acuerdo a la literatura de los antecedentes revisados,
 se analizaron las siguientes posibles fuentes de datos a incorporar:
  
 \begin{itemize}
@@ -337,7 +334,7 @@ Aquí vemos la manera en que identificamos la brecha existente en el análisis a
  
 \textbf{Actividad 2: Desarrollar el marco teórico de la investigación}
  
-Ya con los objetivos definidos, realizamos la investigación de antecedentes académicos relacionados con el uso de LLMs en contextos electorales, minería de sentimientos político en español, detección dinámica de temas con BERTopic y sistemas GraphRAG. Se elaboró el marco teórico y conceptual descritos en el Capítulo II del presente trabajo.
+Ya con los objetivos definidos, realizamos la investigación de antecedentes académicos relacionados con el uso de LLMs en contextos electorales, minería de sentimientos político en español, detección dinámica de temas y sistemas GraphRAG. Se elaboró el marco teórico y conceptual descritos en el Capítulo II del presente trabajo.
  
 \textbf{Entregable}: Marco teórico, antecedentes y conceptos operacionales de la investigación.
  
@@ -534,51 +531,55 @@ procesados por el pipeline de análisis con LLMs. Las actividades de esta fase s
 en la Tabla \ref{4:table6}.
  \vspace{2ex}
 \begingroup
-\renewcommand\arraystretch{0.3}
-\begin{longtable}{m{4.6cm}m{4.9cm}M{5.5cm}}
-    \caption[Plan de Ejecución de la fase Construcción del modelo]{Plan de Ejecución de la fase Construcción del modelo (GraphRAG Híbrido).}
-    \label{4:table6}
-    \footnotesize
-    \small
-    \tabularnewline \specialrule{.1em}{.05em}{.05em}
-    \centering Plan de Ejecución & \centering Alcance & Acciones \\
-    \specialrule{.1em}{.05em}{.05em}
-    Extracción Estructurada con LLM Orquestado.
-    & Análisis de sentimiento a nivel de aspecto (ABSA) y extracción de entidades mediante Modelos Fundacionales.
-    & \setlist{nolistsep}
-    \begin{itemize}[label={--},nosep,noitemsep,leftmargin=*,topsep=0pt,partopsep=0pt]
-        \item Utilizar DeepSeek-V4 para \textit{parsing} rápido y estructuración JSON.
-        \item Extraer actores, temas, eventos, polaridad y fragmentos de evidencia textual.
-    \end{itemize}
-    \\
-    \hline
-    Deduplicación y Resolución Semántica (LLM Juez).
-    & Consolidación ontológica de entidades emergentes (actores y temas) para evitar la fragmentación del grafo.
-    & \setlist{nolistsep}
-    \begin{itemize}[label={--},nosep,noitemsep,leftmargin=*,topsep=0pt,partopsep=0pt]
-        \item Ejecutar proceso de deduplicación intra-lote y cruce con catálogos YAML.
-        \item Utilizar modelos de alto razonamiento (ej. DeepSeek) como "LLM Juez" para fusionar entidades similares.
-    \end{itemize}
-    \\
-    \hline
-    Construcción del Grafo de Conocimiento (Capa Gold).
-    & Implementación topológica en Neo4j interconectando el ecosistema digital.
-    & \setlist{nolistsep}
-    \begin{itemize}[label={--},nosep,noitemsep,leftmargin=*,topsep=0pt,partopsep=0pt]
-        \item Ingestar nodos (Actor, Tema, Evento, Fuente, Encuesta).
-        \item Trazar relaciones temporales y causales (\texttt{MENCIONA}, \texttt{ASOCIADO\_A}, \texttt{EVOLUCIONA}).
-    \end{itemize}
-    \\
-    \hline
-    Desarrollo del Servidor Model Context Protocol (MCP).
-    & Creación de una capa de intermediación estándar para permitir a agentes IA interactuar con la base de datos dual.
-    & \setlist{nolistsep}
-    \begin{itemize}[label={--},nosep,noitemsep,leftmargin=*,topsep=0pt,partopsep=0pt]
-        \item Desarrollar \textit{endpoints} de búsqueda, panorama diario y evidencia en Python.
-        \item Integrar rutinas SQL y Cypher abstraídas como "herramientas" (\textit{tools}).
-    \end{itemize}
-    \\
-    \specialrule{.1em}{.05em}{.05em}
+\renewcommand\arraystretch{1.2}
+\small
+\begin{longtable}{p{4.6cm}p{4.9cm}p{5.5cm}}
+\caption[Plan de Ejecución de la fase Construcción del modelo]{Plan de Ejecución de la fase Construcción del modelo.}
+\label{4:table6} \\
+\specialrule{.1em}{.05em}{.05em}
+\centering\textbf{Plan de Ejecución} & \centering\textbf{Alcance} & \centering\arraybackslash\textbf{Acciones} \\
+\specialrule{.1em}{.05em}{.05em}
+\endfirsthead
+
+\caption[]{Plan de Ejecución de la fase Construcción del modelo (continuación).} \\
+\specialrule{.1em}{.05em}{.05em}
+\centering\textbf{Plan de Ejecución} & \centering\textbf{Alcance} & \centering\arraybackslash\textbf{Acciones} \\
+\specialrule{.1em}{.05em}{.05em}
+\endhead
+
+Construir módulo de análisis de sentimientos con LLM.
+& Implementación del análisis de sentimientos a nivel de aspecto mediante prompts diseñados para el contexto electoral peruano.
+& \begin{itemize}[label={--},nosep,leftmargin=*]
+\item Diseñar prompt de análisis con estructura role-context-task-format.
+\item Implementar llamadas a la API del LLM con respuesta JSON estructurada.
+\item Validar outputs y gestionar errores de parsing.
+\end{itemize} \\
+\hline
+Desarrollar módulo de detección dinámica de temas.
+& Implementación del módulo híbrido LLM con catálogo incremental para detección dinámica de temas electorales.
+& \begin{itemize}[label={--},nosep,leftmargin=*]
+\item Generar embeddings con Sentence-BERT multilingüe.
+\item Construir menú de temas candidatos mediante retrieval multinivel.
+\item Clasificar con LLM: exact, alias o new.
+\item Consolidar y deduplicar temas diariamente.
+\end{itemize} \\
+\hline
+Construir grafo de conocimiento electoral.
+& Implementación del grafo Neo4j con nodos y relaciones del ecosistema electoral digital.
+& \begin{itemize}[label={--},nosep,leftmargin=*]
+\item Definir esquema de nodos (Candidato, Tema, Fuente, Periodo, Evento).
+\item Implementar jobs de agregación semanal con MERGE idempotente.
+\item Calcular relaciones MENCIONA, CO\_OCURRE, CUBRE y REACCIONA\_A.
+\end{itemize} \\
+\hline
+Implementar sistema GraphRAG para consultas.
+& Desarrollo del módulo de consulta en lenguaje natural sobre el grafo de conocimiento electoral.
+& \begin{itemize}[label={--},nosep,leftmargin=*]
+\item Inyectar schema del grafo al contexto del LLM.
+\item Implementar traducción de preguntas en español a consultas Cypher.
+\item Validar respuestas con evidencia textual de los documentos originales.
+\end{itemize} \\
+\specialrule{.1em}{.05em}{.05em}
 \end{longtable}
 \endgroup
 \begin{flushleft}
@@ -624,7 +625,7 @@ Los temas se consolidan posteriormente mediante dos procesos: \texttt{consolidat
 
 Asimismo, la regla número cinco del prompt maneja automáticamente publicaciones no políticas —como deportes, entretenimiento, farándula o humor/sátira— asignándoles es\_relevante=false y clasificándolas dentro de categorías fijas del tipo \texttt{otros\_<categoria>}, evitando inflar el catálogo de temas con ruido semántico.
  
-\textbf{Entregable}: Pipeline BERTopic configurado y taxonomía de temas electorales generada.
+\textbf{Entregable}: Módulo de detección dinámica de temas configurado y catálogo incremental de temas electorales generado.
  
 \textbf{Actividad 3: Construir grafo de conocimiento electoral}
  
@@ -690,7 +691,7 @@ Evaluar módulo de análisis de sentimientos.
 \end{itemize} \\ 
 \hline
 Evaluar módulo de detección de temas.
-& Evaluación de la coherencia semántica y diversidad de los temas detectados por BERTopic.
+& Evaluación de la coherencia semántica y diversidad de los temas detectados por el módulo híbrido LLM con catálogo incremental.
 & \begin{itemize}[label={--},nosep,leftmargin=*]
 \item Calcular coherencia C\textsubscript{v} de los temas.
 \item Evaluar diversidad temática del corpus.
