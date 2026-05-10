@@ -80,7 +80,7 @@ En la Tabla \ref{4:table1} se muestra la operacionalización de las variables co
  
 El estudio tiene como objetivo abordar el problema del análisis de la percepción actual proyectada por los medios de comunicación en ecosistemas digitales de carácter electoral, implementando un pipeline automatizado de inteligencia electoral que integra análisis de sentimientos con LLMs y detección dinámica de temas mediante un enfoque híbrido LLM con catálogo incremental sobre un corpus multicanal de publicaciones en español.
 
-La variable dependiente —la percepción pública nacional— se operacionaliza a través del
+La variable dependiente —la percepción actual proyectada por los medios de comunicación en ecosistemas digitales— se operacionaliza a través del
 sentimiento expresado en publicaciones digitales hacia cada candidato presidencial,
 desagregado por fuente de información, período temporal y tema relevante asociado.
 Siguiendo la metodología GraphRAG descrita en la arquitectura del sistema, un mismo
@@ -256,9 +256,10 @@ se analizaron las siguientes posibles fuentes de datos a incorporar:
 De las anteriores fuentes, los datos de encuestas electorales no fueron incluidos en el
 pipeline principal de procesamiento ya que se utilizan exclusivamente como conjunto de
 validación para calibrar los indicadores del sistema, y no como datos de entrada para el
-análisis de sentimientos. Finalmente, fueron seleccionadas las tres fuentes principales
-—noticias digitales, X/Twitter y transcripciones de videos de YouTube— cuya arquitectura de
-recolección, procesamiento y análisis se detalla en las subsecciones siguientes.
+análisis de sentimientos. Finalmente, fueron seleccionadas las cuatro fuentes principales
+—noticias digitales, X/Twitter, transcripciones de videos de YouTube y posts de TikTok—
+cuya arquitectura de recolección, procesamiento y análisis se detalla en las subsecciones
+siguientes.
  
 El marco de trabajo del sistema propuesto, denominado \textbf{Pipeline GraphRAG
 Electoral}, se estructura según la arquitectura Medallion en tres capas de datos
@@ -347,7 +348,7 @@ Luego de revisar los antecedentes y comparar las metodologías utilizadas por ca
  
 \subsubsection{Análisis de los datos}
  
-En la segunda fase se llevó a cabo la recolección de datos y el análisis estadístico exploratorio del corpus electoral multicanal. La información empleada incluye publicaciones provenientes de tres fuentes principales, recopiladas durante el período de campaña presidencial. Las actividades y tareas correspondientes se detallan en la Tabla \ref{4:table4}.
+En la segunda fase se llevó a cabo la recolección de datos y el análisis estadístico exploratorio del corpus electoral multicanal. La información empleada incluye publicaciones provenientes de las cuatro fuentes principales (noticias digitales, X/Twitter, YouTube y TikTok), recopiladas durante el período de campaña presidencial. Las actividades y tareas correspondientes se detallan en la Tabla \ref{4:table4}.
  
 \vspace{2ex}
 \begingroup
@@ -390,6 +391,14 @@ Construir corpus de YouTube.
 \item Identificar videos electorales mediante búsqueda y canales de interés.
 \item Extraer transcripción y metadatos del video con \texttt{yt-dlp}.
 \item Almacenar transcripciones crudas en capa Bronze.
+\end{itemize} \\
+\hline
+Construir corpus de TikTok.
+& Construcción del corpus de posts electorales de TikTok mediante scraper independiente.
+& \begin{itemize}[label={--},nosep,leftmargin=*]
+\item Identificar cuentas y rangos de fechas objetivo de cobertura electoral.
+\item Recolectar posts con descripción, hashtags y metadatos vía Playwright.
+\item Almacenar posts crudos en capa Bronze.
 \end{itemize} \\
 \hline
 Realizar análisis exploratorio del corpus.
@@ -450,11 +459,26 @@ La recolección de contenido de YouTube se realizó mediante \texttt{yt-dlp}, un
 \end{figure}
  
 \textbf{Entregable}: Corpus de transcripciones de videos de YouTube con ID de video, texto transcrito, fecha de publicación, canal, duración y flag de autogeneración.
- 
-\textbf{Actividad 4: Realizar análisis exploratorio del corpus}
- 
-En esta actividad se realizó el análisis estadístico descriptivo de los tres corpus recolectados: distribución temporal de publicaciones, longitud promedio de textos, distribución de menciones por candidato y por fuente, y análisis del vocabulario electoral dominante mediante nubes de palabras.
- 
+
+\textbf{Actividad 4: Construir corpus de TikTok}
+
+La recolección de contenido de TikTok se realizó mediante un scraper independiente (repositorio \texttt{scraper-tiktok}) implementado con \texttt{Playwright} sobre Chromium, bajo una arquitectura hexagonal de puertos y adaptadores. El scraper opera por cuenta y rango de fechas (\texttt{DATE\_FROM}/\texttt{DATE\_TO}), aprovechando que las playlists de TikTok están ordenadas de más reciente a más antiguo para aplicar dos capas de filtrado: una parada temprana basada en \texttt{match\_filter} y un post-filtro estricto sobre el rango de fechas que garantiza que solo posts dentro del período objetivo lleguen al almacenamiento. El módulo \texttt{TiktokIngestor} (\texttt{src/electoral/ingestion/tiktok.py}) consume los archivos JSON producidos por el scraper y los persiste como documentos en la capa Bronze del pipeline en \texttt{data/raw/tiktok/\{YYYY-MM-DD\}/}, con el mismo schema canónico que las demás fuentes.
+
+\begin{figure}[!ht]
+    \begin{center}
+        \resizebox{0.85\textwidth}{!}{\input{3/figures/flujo_tiktok_posts.tex}}
+        \caption[Proceso de recolección del corpus de TikTok mediante scraper Playwright]{Proceso de extracción de posts electorales de TikTok mediante \texttt{Playwright} y arquitectura hexagonal, desde la configuración de cuentas y rango de fechas hasta el almacenamiento en capa Bronze.\\
+            Fuente: Elaboración propia.}
+        \label{4:fig6b}
+    \end{center}
+\end{figure}
+
+\textbf{Entregable}: Corpus de posts de TikTok con ID, descripción, hashtags, fecha de publicación, cuenta de origen y métricas de interacción.
+
+\textbf{Actividad 5: Realizar análisis exploratorio del corpus}
+
+En esta actividad se realizó el análisis estadístico descriptivo de los cuatro corpus recolectados: distribución temporal de publicaciones, longitud promedio de textos, distribución de menciones por candidato y por fuente, y análisis del vocabulario electoral dominante mediante nubes de palabras.
+
 \textbf{Entregable}: Gráficos estadísticos y descriptivos del corpus por fuente de datos.
  
 \subsubsection{Preparación de la información}
@@ -509,7 +533,7 @@ actividades de esta etapa se detallan en la Tabla \ref{4:table5}.
  
 \textbf{Actividad 1: Limpiar y normalizar el corpus}
  
-En esta actividad se aplicó un pipeline de preprocesamiento textual sobre los tres corpus de la capa Bronze. El proceso incluyó la eliminación de spam y cuentas de bots identificadas mediante patrones de comportamiento, la normalización de emojis (convertidos a texto descriptivo), la eliminación de URLs y menciones de usuario, y la detección automática de idioma mediante la librería \texttt{langdetect} para conservar únicamente publicaciones en español.
+En esta actividad se aplicó un pipeline de preprocesamiento textual sobre los cuatro corpus de la capa Bronze. El proceso incluyó la eliminación de spam y cuentas de bots identificadas mediante patrones de comportamiento, la normalización de emojis (convertidos a texto descriptivo), la eliminación de URLs y menciones de usuario, y la detección automática de idioma mediante la librería \texttt{langdetect} para conservar únicamente publicaciones en español.
  
 \textbf{Entregable}: Corpus limpio y normalizado, listo para análisis con LLM.
  
@@ -568,9 +592,9 @@ Desarrollar módulo de detección dinámica de temas.
 Construir grafo de conocimiento electoral.
 & Implementación del grafo Neo4j con nodos y relaciones del ecosistema electoral digital.
 & \begin{itemize}[label={--},nosep,leftmargin=*]
-\item Definir esquema de nodos (Candidato, Tema, Fuente, Periodo, Evento).
-\item Implementar jobs de agregación semanal con MERGE idempotente.
-\item Calcular relaciones MENCIONA, CO\_OCURRE, CUBRE y REACCIONA\_A.
+\item Definir esquema de nodos canónicos (Documento, Fragmento, Tema, Actor, Candidato, Categoria) y de fuentes externas (Encuesta, SentimientoDiario, TipoCambio, IndicadorMacro).
+\item Implementar la sincronización Postgres $\rightarrow$ Neo4j con MERGE idempotente sobre las claves UNIQUE de cada nodo.
+\item Calcular las relaciones CONTIENE, SOBRE\_TEMA, MENCIONA, MENCIONA\_ACTOR, DE\_CATEGORIA, MIDE y TIENE\_SENTIMIENTO\_EN.
 \end{itemize} \\
 \hline
 Implementar sistema GraphRAG para consultas.
@@ -618,7 +642,7 @@ Para la selección del modelo LLM, se evaluaron las alternativas propuestas en l
  
 \textbf{Actividad 2: Desarrollar módulo de detección dinámica de temas}
  
-A diferencia del enfoque BERTopic propuesto inicialmente, el sistema implementado utiliza una estrategia de detección de temas emergentes dirigida por LLM con catálogo incremental. En cada llamada de análisis, el LLM recibe un menú de hasta 20 temas candidatos construido mediante cinco tiers de retrieval sobre el catálogo existente en PostgreSQL: (1) temas trending por volumen, (2) búsqueda semántica por cosine sobre pgvector, (3) coincidencia léxica con el título y cuerpo del documento, (4) temas asociados al actor protagonista detectado, y (5) temas del catálogo de eventos conocidos.
+A diferencia del enfoque BERTopic propuesto inicialmente, el sistema implementado utiliza una estrategia de detección de temas emergentes dirigida por LLM con catálogo incremental. En cada llamada de análisis, el LLM recibe un menú de hasta 20 temas candidatos construido mediante cinco tiers de retrieval sobre el catálogo existente en PostgreSQL: (1) temas trending por volumen, (2) búsqueda semántica por cosine sobre pgvector, (3) coincidencia léxica con el título y cuerpo del documento, (4) temas asociados al actor protagonista detectado, y (5) temas asociados a eventos puntuales detectados, los cuales en la versión final del sistema viven como temas con sufijo \texttt{\_YYYY-MM-DD} en el catálogo \texttt{temas\_conocidos} (la entidad \texttt{Evento} fue eliminada del modelo en la migración 020 tras evidencia de baja tasa de reuso, decisión documentada en \texttt{docs/notas-tecnicas.md} del repositorio).
 
 El LLM indica si el documento corresponde a un tema existente (\texttt{exact}), a un alias de uno existente (\texttt{alias}), o a un tema nuevo (\texttt{new}). Esta arquitectura permite la detección dinámica de temas emergentes sin reentrenamiento de modelos y con un costo marginal aproximado de 50 tokens adicionales por documento.
 

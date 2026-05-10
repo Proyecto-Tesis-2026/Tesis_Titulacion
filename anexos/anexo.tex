@@ -13,7 +13,7 @@
 \begin{figure}[h]
 	\begin{center}
 		\includegraphics[width=1.05\textwidth]{anexos/arbol_problemas.png}
-		\caption[Árbol de problemas de la investigación]{Árbol de problemas identificados en la investigación sobre análisis de percepción nacional en contextos electorales mediante inteligencia electoral.\\
+		\caption[Árbol de problemas de la investigación]{Árbol de problemas identificados en la investigación sobre análisis de la percepción actual proyectada por los medios de comunicación en contextos electorales mediante inteligencia electoral.\\
 		Fuente: Elaboración propia.}
 		\label{fig:arbol_problemas}
 	\end{center}
@@ -63,46 +63,46 @@
         \endhead
         
         % Variable Independiente - Usamos {=} para que respete el ancho y no se sobreescriba
-        \multirow{8}{=}{Inteligencia Electoral con LLM: Minería de Sentimientos y Detección Dinámica de Temas Relevantes para analizar la Percepción Nacional en Ecosistemas Digitales Electorales}
-        & \multirow{5}{=}{PG: ¿Es posible analizar la percepción nacional mediante un sistema de Inteligencia Electoral basado en LLMs y ecosistemas multi-fuente?}
-        & \multirow{5}{=}{OG: Analizar la percepción nacional mediante un sistema basado en LLMs, minería de sentimientos y detección de temas.}
-        & \multirow{5}{=}{HG: El uso de LLMs permite analizar con mayor precisión la percepción nacional en entornos multi-fuente.}
+        \multirow{8}{=}{Inteligencia Electoral con LLM: Minería de Sentimientos y Detección Dinámica de Temas Relevantes para analizar la Percepción Actual Proyectada por los Medios de Comunicación en Ecosistemas Digitales}
+        & \multirow{5}{=}{PG: ¿De qué manera un sistema de inteligencia electoral basado en LLMs, grafos de conocimiento y enfoque multi-fuente permite analizar la percepción actual proyectada por los medios de comunicación hacia los candidatos presidenciales en ecosistemas digitales electorales?}
+        & \multirow{5}{=}{OG: Desarrollar un sistema de inteligencia electoral basado en LLMs, grafos de conocimiento y enfoque multi-fuente que permita analizar la percepción actual proyectada por los medios de comunicación hacia los candidatos presidenciales en ecosistemas digitales electorales.}
+        & \multirow{5}{=}{HG: El uso de LLMs, grafos de conocimiento y enfoque multi-fuente permite analizar con mayor precisión y contextualización la percepción actual proyectada por los medios de comunicación hacia los candidatos presidenciales en ecosistemas digitales electorales.}
         & \multirow{5}{=}{Independiente: Sistema de Inteligencia Electoral con LLM}
         & \multirow{5}{=}{Arquitectura del pipeline}
-        & \multirow{5}{=}{Integración de módulos ABSA, BERTopic, Neo4j y GraphRAG} \\
+        & \multirow{5}{=}{Integración de módulos ABSA, detección híbrida LLM, Neo4j y GraphRAG} \\
         & & & & & & \\
         & & & & & & \\
         & & & & & & \\
         \hline
         
         % Variable Dependiente
-        & PE1: ¿Qué enfoques existen para el análisis de opinión pública mediante IA?
-        & OE1: Analizar enfoques existentes en la literatura.
-        & HE1: La revisión de literatura permite identificar metodologías aplicables.
-        & \multirow{10}{=}{Dependiente: Percepción pública nacional}
-        & Sentimiento ciudadano
+        & PE1: ¿El uso de LLMs mejora la precisión del análisis de sentimientos en comparación con modelos tradicionales?
+        & OE1: Evaluar la precisión del análisis de sentimientos utilizando LLMs frente a modelos tradicionales de procesamiento de lenguaje natural.
+        & HE1: Los LLMs mejoran significativamente la precisión del análisis de sentimientos respecto a modelos tradicionales.
+        & \multirow{10}{=}{Dependiente: Percepción actual proyectada por los medios de comunicación en ecosistemas digitales}
+        & Sentimiento mediático por candidato
         & Score continuo $[-1, 1]$ por candidato \\
         \cline{2-4} \cline{6-7}
-        
-        & PE2: ¿Cómo integrar múltiples fuentes de datos para representar la percepción?
-        & OE2: Diseñar una arquitectura multi-fuente.
-        & HE1: La integración de múltiples fuentes mejora representatividad.
+
+        & PE2: ¿El enfoque multi-fuente mejora la cobertura y representatividad del análisis de la percepción proyectada por los medios de comunicación en ecosistemas digitales?
+        & OE2: Analizar el impacto de integrar múltiples fuentes digitales en la cobertura del análisis de la percepción proyectada por los medios de comunicación.
+        & HE2: La integración multi-fuente incrementa la cobertura y diversidad temática del análisis de la percepción proyectada por los medios de comunicación en ecosistemas digitales.
         &
         & Metainformación del corpus
         & Volumen por fuente y período \\
         \cline{2-4} \cline{6-7}
-        
-        & PE3: ¿Cuál es el impacto de LLMs en análisis de sentimientos y detección de temas?
-        & OE3: Evaluar desempeño de LLMs en análisis.
-        & HE2: Los LLMs mejoran precisión del análisis.
+
+        & PE3: ¿El uso de grafos de conocimiento permite modelar mejor las relaciones entre actores, temas y medios?
+        & OE3: Construir un grafo de conocimiento para representar las relaciones entre actores, medios y temas dentro del ecosistema electoral digital.
+        & HE3: Los grafos de conocimiento permiten identificar relaciones complejas no detectables mediante métodos tradicionales.
         &
         & Temas relevantes
         & Coherencia semántica $C_v$ y cobertura \\
         \cline{2-4} \cline{6-7}
-        
-        & PE4: ¿Cómo modelar relaciones discurso mediático-percepción ciudadana?
-        & OE4: Implementar sistema basado en grafos de conocimiento.
-        & HE3: GraphRAG captura relaciones complejas.
+
+        & PE4: ¿El uso de GraphRAG mejora la generación de insights frente a sistemas RAG tradicionales?
+        & OE4: Evaluar la calidad de los insights generados mediante GraphRAG frente a sistemas RAG tradicionales.
+        & HE4: GraphRAG mejora la relevancia, coherencia y contextualización de los insights generados.
         &
         & Evolución temporal
         & Indicadores de evolución temporal \\
@@ -128,7 +128,7 @@
 		\textbf{Parámetro} & \textbf{Valor/Configuración} & \textbf{Justificación} \\
 		\specialrule{.1em}{.05em}{.05em}
 		
-		Modelo LLM & Gemini Flash 1.5 & Balance entre velocidad de inferencia y calidad de embeddings contextuales \\
+		Modelo LLM & DeepSeek-Chat (principal) / Gemini Flash (fallback) & DeepSeek ofrece caché de prefijo (ahorro \textasciitilde 75\% en tokens de entrada) y soporte nativo de \texttt{response\_format: JSON}; Gemini Flash queda como fallback configurable vía \texttt{LLM\_PROVIDER} \\
 		\hline
 		
 		Rol del Prompt & Analista político experto & Orienta el modelo hacia el dominio electoral latinoamericano \\
@@ -153,14 +153,14 @@
 		
 		\specialrule{.1em}{.05em}{.05em}
 	\end{tabular}
-	\caption[Configuración de parámetros del módulo ABSA]{Parámetros finales configurados para el módulo de análisis de sentimientos a nivel de aspecto (ABSA) usando Gemini Flash 1.5.}
+	\caption[Configuración de parámetros del módulo ABSA]{Parámetros finales configurados para el módulo de análisis de sentimientos a nivel de aspecto (ABSA) usando DeepSeek-Chat como proveedor principal y Gemini Flash como fallback.}
 	\label{tbl:config_absa}
 \end{table}
 
 \clearpage
 
 % ──────────────────────────────────────────────────────────────
-\section{Configuración de Parámetros del Módulo BERTopic}
+\section{Configuración del Módulo Híbrido LLM con Catálogo Incremental}
 % ──────────────────────────────────────────────────────────────
 
 \label{anexo5}
@@ -172,37 +172,40 @@
 		\specialrule{.1em}{.05em}{.05em}
 		\textbf{Parámetro} & \textbf{Valor} & \textbf{Justificación} \\
 		\specialrule{.1em}{.05em}{.05em}
-		
-		Modelo Embedding & \texttt{paraphrase-multilingual-MiniLM-L12-v2} & Mejor balance entre calidad semántica y velocidad para español \cite{mc_reimers2019sbert} \\
+
+		Modelo Embedding & \texttt{paraphrase-multilingual-mpnet-base-v2} & Mejor balance entre calidad semántica y velocidad para español \cite{mc_reimers2019sbert} \\
 		\hline
-		
-		Dimensión Embedding & 384 & Dimensión estándar del modelo multilingüe seleccionado \\
+
+		Dimensión Embedding & 768 & Dimensión estándar del modelo multilingüe seleccionado \\
 		\hline
-		
-		Reducción Dimensionalidad & UMAP a 5 dimensiones & Mejora visualización y clustering sin perder información semántica \\
+
+		Almacén Vectorial & PostgreSQL + pgvector & Búsqueda por similitud cosine sobre el catálogo incremental de temas \\
 		\hline
-		
-		Algoritmo Clustering & HDBSCAN inductivo & No requiere especificar $k$ a priori; excluye automáticamente ruido \\
+
+		Tamaño del Menú & Hasta 20 candidatos & Tope superior del retrieval multinivel inyectado al \textit{prompt} del LLM \\
 		\hline
-		
-		min\_cluster\_size & 5 & Previene fragmentación extrema en clusters políticos \\
+
+		Tiers de Retrieval & 5 (trending, semántico, léxico, actor, evento) & Maximiza la cobertura del menú combinando señales heterogéneas \\
 		\hline
-		
-		min\_samples & 5 & Densidad mínima para considerar punto como núcleo \\
+
+		Clasificación LLM & \texttt{exact} / \texttt{alias} / \texttt{new} & El LLM decide reusar tema existente, marcarlo como alias o crear uno nuevo \\
 		\hline
-		
-		Etiquetado de Temas & Gemini + c-TF-IDF & LLM genera etiquetas semánticamente ricas de 15 términos top \\
+
+		Override Semántico & Cosine $\geq 0.85$ post-LLM & Captura duplicados que escapan al menú de retrieval \\
 		\hline
-		
-		Coherencia Semántica & $C_v$ & Métrica de validación para evaluar calidad temática \\
+
+		Consolidación Diaria & Threshold cosine $\geq 0.78$ & Fusiona temas semánticamente equivalentes generados en el día \\
 		\hline
-		
-		\textit{Early Stopping} & Sin mejora $C_v$ & Detiene optimización de HDBSCAN al platear coherencia \\
-		
+
+		\texttt{llm\_dedup\_day} & Máx. 200 pares/día & Deduplicación con LLM Juez sobre pares sospechosos, acotada por costo \\
+		\hline
+
+		Coherencia Semántica & $C_v$ & Métrica de validación de la calidad temática del catálogo \\
+
 		\specialrule{.1em}{.05em}{.05em}
 	\end{tabular}
-	\caption[Configuración de parámetros de BERTopic]{Parámetros de configuración del módulo BERTopic para detección dinámica de temas electorales basado en publicaciones en redes sociales.}
-	\label{tbl:config_bertopic}
+	\caption[Configuración del módulo híbrido LLM con catálogo incremental]{Parámetros de configuración del módulo híbrido LLM con catálogo incremental para la detección dinámica de temas electorales sobre el corpus multicanal.}
+	\label{tbl:config_temas_hibrido}
 \end{table}
 
 \clearpage
@@ -218,9 +221,9 @@
 \small
 \setlength{\LTpost}{0pt}
 
-\begin{longtable}{p{2.5cm} p{3.5cm} p{6.5cm}}
-    \caption[Esquema del grafo de conocimiento electoral]{Especificación completa de nodos, propiedades y relaciones implementadas en el grafo de conocimiento electoral en Neo4j AuraDB.} \label{tbl:esquema_grafo} \\
-    
+\begin{longtable}{p{2.6cm} p{4.2cm} p{5.5cm}}
+    \caption[Esquema del grafo de conocimiento electoral]{Especificación completa de nodos, propiedades y relaciones implementadas en el grafo de conocimiento electoral en Neo4j 5.20 Community Edition (con plugins GDS y APOC).} \label{tbl:esquema_grafo} \\
+
     \specialrule{.1em}{.05em}{.05em}
     \centering\textbf{TIPO NODO} & \centering\textbf{PROPIEDADES} & \centering\arraybackslash\textbf{DESCRIPCIÓN} \\
     \specialrule{.1em}{.05em}{.05em}
@@ -230,25 +233,29 @@
     \centering\textbf{TIPO NODO} & \centering\textbf{PROPIEDADES} & \centering\arraybackslash\textbf{DESCRIPCIÓN} \\
     \specialrule{.1em}{.05em}{.05em}
     \endhead
-    
-    Candidato & id, nombre, partido, color\_hexa, estatus & Candidatos presidenciales en el proceso electoral \\ \hline
-    Tema & id, nombre, etiqueta\_llm, coherencia\_cv, palabras\_clave, frecuencia & Temas emergentes detectados por BERTopic \\ \hline
-    Fuente & id, tipo, nombre, url, alcance & Portales de noticias, redes sociales, canales de video \\ \hline
-    Evento & id, fecha, tipo, descripción, impacto & Debates, mítines, declaraciones críticas \\ \hline
-    Período & id, fecha\_inicio, fecha\_fin, nombre & Ventanas temporales de análisis (semanal, mensual) \\ \hline
-    
+
+    Documento & id, uid, fuente, tipo, titulo, url, publicado\_en & Publicaciones del corpus multifuente (noticia, twitter, youtube, tiktok) \\ \hline
+    Fragmento & id, texto, embedding (768D), fecha & Segmento textual extraído del documento, indexado vectorialmente \\ \hline
+    Tema & id, nombre, categoria, embedding (768D) & Temas emergentes detectados por el módulo híbrido LLM con catálogo incremental \\ \hline
+    Actor & id (slug), nombre, tipo, embedding (768D) & Actores institucionales o ad-hoc detectados en el corpus \\ \hline
+    Candidato & id (slug), nombre, partido, espectro\_politico, embedding (768D) & Candidatos presidenciales del proceso electoral \\ \hline
+    Categoria & nombre & Categoría temática del catálogo cerrado de 17 valores \\ \hline
+    Encuesta & id, encuestadora, fecha\_publicacion, n\_muestra, margen\_error & Encuestas electorales con metadatos completos \\ \hline
+    SentimientoDiario & id, fecha, actor\_id, sentimiento\_avg, n\_menciones & Agregado diario del sentimiento mediático por candidato \\ \hline
+    TipoCambio & fecha, moneda, compra, venta, promedio & Tipo de cambio diario (BCRP) \\ \hline
+    IndicadorMacro & fecha, indicador, valor, unidad & Indicadores macroeconómicos (IGBVL var \%, EMBI Perú) \\ \hline
+
     \specialrule{.1em}{.05em}{.05em}
     \textbf{TIPO RELACIÓN} & \multicolumn{2}{p{10cm}}{\centering\textbf{METADATOS Y DESCRIPCIÓN}} \\
     \specialrule{.1em}{.05em}{.05em}
-    
-    MENCIONA & timestamp, frecuencia, sentimiento\_promedio & Documento menciona a candidato \\ \hline
-    EXPRESA\_SENTIMIENTO & score\_continuo, fecha, fuente\_tipo & Candidato-Tema con polaridad \\ \hline
-    ASOCIADO\_A & confianza, coocurrencia & Tema asociado a evento electoral \\ \hline
-    PUBLICADO\_EN & fecha, alcance, interacciones & Documento publicado en fuente específica \\ \hline
-    PERTENECE\_A & período & Evento/documento asignado a período temporal \\ \hline
-    RELACIONADO\_CON & similitud\_temática & Temas relacionados \\ \hline
-    REACCIONA\_A & timestamp, sentimiento & Ciudadano reacciona a evento \\ \hline
-    INFLUYE & intensidad & Evento influye en percepción de candidato \\ 
+
+    CONTIENE & (sin propiedades) & Documento contiene Fragmento \\ \hline
+    SOBRE\_TEMA & sentimiento, confianza & Fragmento trata sobre un Tema \\ \hline
+    MENCIONA & sentimiento, rol & Fragmento menciona a un Candidato con un sentimiento dado \\ \hline
+    MENCIONA\_ACTOR & rol & Fragmento menciona a un Actor (institucional o ad-hoc) \\ \hline
+    DE\_CATEGORIA & (sin propiedades) & Tema pertenece a una Categoria del catálogo cerrado \\ \hline
+    MIDE & intencion\_voto, posicion\_ranking & Encuesta mide la intención de voto de un Candidato \\ \hline
+    TIENE\_SENTIMIENTO\_EN & (sin propiedades) & Candidato tiene un agregado SentimientoDiario en una fecha \\
     \specialrule{.1em}{.05em}{.05em}
 \end{longtable}
 \endgroup
@@ -283,7 +290,7 @@
 		Temas de Campaña & economía, seguridad, educación, salud, corrupción, gobernabilidad, infraestructura & 7 \\
 		\hline
 		
-		Hashtags Electorales & \#ElecciónesPerú2024, \#Voto2024, \#DebatePresidencial, \#CuéntaTuVoto & 4+ \\
+		Hashtags Electorales & \#EleccionesPerú2026, \#Voto2026, \#DebatePresidencial, \#CuéntaTuVoto & 4+ \\
 		\hline
 		
 		Candidatos & Nombres completos, apodos, siglas de partidos & Dinámico según proceso \\
@@ -325,9 +332,9 @@ Para la evaluación del módulo de análisis de sentimientos a nivel de aspecto,
 
 Donde TP (Verdaderos Positivos), TN (Verdaderos Negativos), FP (Falsos Positivos), FN (Falsos Negativos) representan los conteos de clasificación por clase.
 
-\subsection{Métricas de Coherencia Temática para BERTopic}
+\subsection{Métricas de Coherencia Temática del Catálogo Incremental}
 
-Para la validación de la detección dinámica de temas, se utilizó la métrica $C_v$ de coherencia semántica:
+Para la validación de la detección dinámica de temas mediante el enfoque híbrido LLM con catálogo incremental, se utilizó la métrica $C_v$ de coherencia semántica:
 
 \begin{equation}
 C_v = \frac{1}{|\text{Temas}|}\sum_{t}\text{cohere}_V(W_t)
@@ -359,13 +366,13 @@ Donde $W_t$ es el conjunto de palabras clave del tema $t$, y $\text{cohere}_V$ e
 		1. Comprensión del Negocio & Definición de problema, objetivos e hipótesis; Revisión de literatura & 2 semanas & Documento de especificaciones \\
 		\hline
 		
-		2. Comprensión de Datos & Construcción de corpus (noticias, X, YouTube); Análisis exploratorio & 3 semanas & Datasets en capas Bronze y Silver \\
+		2. Comprensión de Datos & Construcción de corpus (noticias digitales, X/Twitter, YouTube, TikTok); Análisis exploratorio & 3 semanas & Datasets en capas Bronze y Silver \\
 		\hline
 		
 		3. Preparación de Datos & Limpieza, normalización, tokenización; Segmentación por período & 2 semanas & Corpus preprocesado validado \\
 		\hline
 		
-		4. Modelamiento & Config. ABSA, BERTopic, Neo4j, GraphRAG; Calibración de parámetros & 4 semanas & Modelos entrenados y validados \\
+		4. Modelamiento & Config. ABSA, módulo híbrido LLM, Neo4j, GraphRAG; Calibración de parámetros & 4 semanas & Modelos entrenados y validados \\
 		\hline
 		
 		5. Evaluación & Métricas de desempeño, análisis comparativo, validación cualitativa & 2 semanas & Reporte de resultados \\

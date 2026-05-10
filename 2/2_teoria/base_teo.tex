@@ -211,17 +211,17 @@ El análisis de sentimientos aplicado a la cobertura mediática electoral en eco
 \subsection{Detección Dinámica de Temas}
 % ──────────────────────────────────────────────────────────────
 
-La detección de temas (\textit{topic modeling} o \textit{topic detection}) es una familia de técnicas de NLP no supervisadas cuyo objetivo es descubrir automáticamente los temas o asuntos latentes que subyacen en un corpus de documentos, sin necesidad de etiquetas previas \parencite{bk_blei2012lda}. En el contexto de la inteligencia electoral, permite identificar qué temas están siendo abordados por los medios de comunicación en el ecosistema digital político, con qué intensidad y cómo evolucionan a lo largo del tiempo.
+La detección de temas (\textit{topic modeling} o \textit{topic detection}) es una familia de técnicas de NLP no supervisadas cuyo objetivo es descubrir automáticamente los temas o asuntos latentes que subyacen en un corpus de documentos, sin necesidad de etiquetas previas \parencite{mc_blei2012lda}. En el contexto de la inteligencia electoral, permite identificar qué temas están siendo abordados por los medios de comunicación en el ecosistema digital político, con qué intensidad y cómo evolucionan a lo largo del tiempo.
 
 \subsubsection{Modelos Probabilísticos: LDA}
 
-La \textbf{Asignación Latente de Dirichlet} (\textit{Latent Dirichlet Allocation}, LDA), propuesta por \cite{bk_blei2012lda}, es el modelo de detección de temas más influyente de la era pre-transformers. LDA asume que cada documento es una mezcla de temas, y que cada tema es una distribución de probabilidad sobre palabras. El proceso generativo de LDA se representa en la Figura \ref{fig:lda_plate}.
+La \textbf{Asignación Latente de Dirichlet} (\textit{Latent Dirichlet Allocation}, LDA), propuesta por \cite{mc_blei2012lda}, es el modelo de detección de temas más influyente de la era pre-transformers. LDA asume que cada documento es una mezcla de temas, y que cada tema es una distribución de probabilidad sobre palabras. El proceso generativo de LDA se representa en la Figura \ref{fig:lda_plate}.
 
 \begin{figure}[!ht]
     \begin{center}
         \includegraphics[width=0.70\textwidth]{2/figures/lda_plate.jpg}
         \caption[Notación de plato del modelo LDA]{Notación de plato del modelo de Asignación Latente de Dirichlet (LDA), mostrando las distribuciones de temas por documento ($\theta$) y de palabras por tema ($\phi$), controladas por los hiperparámetros Dirichlet $\alpha$ y $\beta$.\\
-            Fuente: \cite{bk_blei2012lda}. \textit{Probabilistic Topic Models}. (p. 79)}
+            Fuente: \cite{mc_blei2012lda}. \textit{Probabilistic Topic Models}. (p. 79)}
         \label{fig:lda_plate}
     \end{center}
 \end{figure}
@@ -310,7 +310,7 @@ En el sistema desarrollado, cada documento —independientemente de su fuente (n
 \subsection{Ecosistemas Digitales y Medios de Comunicación como Fuente de Datos}
 % ──────────────────────────────────────────────────────────────
 
-Los \textbf{ecosistemas digitales} son entornos mediáticos complejos conformados por la interacción de múltiples plataformas digitales —redes sociales, sitios de noticias, foros, plataformas de video— a través de las cuales los medios de comunicación y los ciudadanos producen, consumen y difunden información política \parencite{tec_chadwick2013hybrid}. En el contexto electoral, estos ecosistemas constituyen la principal arena de debate político contemporáneo, superando en muchos aspectos a los medios tradicionales en velocidad, alcance e interactividad.
+Los \textbf{ecosistemas digitales} son entornos mediáticos complejos conformados por la interacción de múltiples plataformas digitales —redes sociales, sitios de noticias, foros, plataformas de video— a través de las cuales los medios de comunicación y los ciudadanos producen, consumen y difunden información política \parencite{mc_chadwick2013hybrid}. En el contexto electoral, estos ecosistemas constituyen la principal arena de debate político contemporáneo, superando en muchos aspectos a los medios tradicionales en velocidad, alcance e interactividad.
 
 Para la presente investigación se recolectaron datos de cuatro fuentes digitales durante el período enero–mayo de 2026:
 
@@ -350,7 +350,7 @@ Un desafío crítico en el análisis de cobertura mediática en ecosistemas digi
 \subsection{Inteligencia Electoral}
 % ──────────────────────────────────────────────────────────────
 
-La \textbf{inteligencia electoral} es un campo emergente que integra técnicas de ciencia de datos, NLP e inteligencia artificial para analizar, interpretar y anticipar dinámicas del comportamiento político ciudadano a partir de múltiples fuentes de información \parencite{tec_ceron2017social}. Va más allá del simple monitoreo de redes sociales al incorporar capacidades de análisis semántico profundo, detección de patrones, seguimiento de narrativas en el tiempo y correlación con indicadores externos como encuestas de opinión y resultados electorales históricos.
+La \textbf{inteligencia electoral} es un campo emergente que integra técnicas de ciencia de datos, NLP e inteligencia artificial para analizar, interpretar y anticipar dinámicas del comportamiento político ciudadano a partir de múltiples fuentes de información \parencite{mc_ceron2017social}. Va más allá del simple monitoreo de redes sociales al incorporar capacidades de análisis semántico profundo, detección de patrones, seguimiento de narrativas en el tiempo y correlación con indicadores externos como encuestas de opinión y resultados electorales históricos.
 
 Un sistema de inteligencia electoral integrado, como el propuesto en la presente investigación, articula los siguientes componentes, cuya interacción se ilustra en la Figura \ref{fig:electoral_intelligence_system}:
 
