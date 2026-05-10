@@ -5,8 +5,10 @@ CRISP-DM descrita previamente, especificando las actividades realizadas y los
 entregables producidos en cada una de ellas.
 
 % ──────────────────────────────────────────────────────────────
-\section{Comprensión del negocio}
+\section{Propuesta solución}
 % ──────────────────────────────────────────────────────────────
+
+\subsection{Planeamiento y descripción de Actividades}
 
 \textbf{Actividad 1: Definir problema, objetivos e hipótesis}
 \\
@@ -54,8 +56,17 @@ GraphRAG Electoral: ésta estructura el sistema en tres capas (Bronze, Silver y
 Gold) y articula las cinco etapas de procesamiento que van desde la ingesta de
 datos hasta la producción de los indicadores.
 
+\subsection{Desarrollo de actividades. Aplicación de herramientas de solución}
+
+A continuación se documenta la implementación de la solución, organizada en
+tres bloques de actividades: la construcción del corpus multi-fuente, la
+preparación y enriquecimiento de los datos, y el modelamiento de los módulos
+analíticos del sistema. Cada bloque presenta los cálculos, fragmentos de código
+y diagramas que materializan la propuesta sobre la arquitectura Medallion del
+pipeline GraphRAG Electoral.
+
 % ──────────────────────────────────────────────────────────────
-\section{Comprensión de los datos}
+\subsubsection{Construcción del corpus multi-fuente}
 % ──────────────────────────────────────────────────────────────
 
 \textbf{Actividad 1: Construir corpus de noticias digitales}
@@ -203,7 +214,7 @@ la transcripción de YouTube más extensa alcanzó 1,847 palabras. A nivel del c
 el vocabulario electoral fue de aproximadamente 89,400 palabras únicas en español.
 
 % ──────────────────────────────────────────────────────────────
-\section{Preparación de los datos}
+\subsubsection{Preparación y normalización del corpus}
 % ──────────────────────────────────────────────────────────────
 
 \textbf{Actividad 1: Limpiar y normalizar el corpus}
@@ -313,7 +324,7 @@ como se define en \texttt{SECCIONES\_NO\_POLITICAS\_DEFAULT}
 (\texttt{src/electoral/filters/pre\_llm.py}).
 
 % ──────────────────────────────────────────────────────────────
-\section{Modelamiento}
+\subsubsection{Modelamiento de los módulos analíticos}
 % ──────────────────────────────────────────────────────────────
 
 \textbf{Actividad 1: Desarrollar módulo de análisis de sentimientos con LLM}
@@ -607,8 +618,10 @@ generación local de \textit{embedding} sobre CPU), frente a los 1--2 segundos
 típicos de un sistema GraphRAG basado en generación de \textit{queries}.
 
 % ──────────────────────────────────────────────────────────────
-\section{Evaluación}
+\section{Medición de la solución}
 % ──────────────────────────────────────────────────────────────
+
+\subsection{Análisis de Indicadores cuantitativo y/o cualitativo}
 
 La evaluación de esta investigación se enfoca en las \textbf{métricas
 operacionales} medidas durante las corridas reales del pipeline (validez de
@@ -836,9 +849,7 @@ sistema) requiere un cálculo de correlación de Pearson sobre series alineadas
 candidato-fecha que excede el alcance temporal de esta tesis y queda como
 trabajo futuro.
 
-% ──────────────────────────────────────────────────────────────
-\section{Despliegue}
-% ──────────────────────────────────────────────────────────────
+\subsection{Simulación de solución. Aplicación de Software}
 
 \textbf{Actividad 1: Desplegar el servidor MCP de inteligencia electoral}
 \\
