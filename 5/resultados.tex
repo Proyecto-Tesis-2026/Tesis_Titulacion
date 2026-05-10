@@ -598,4 +598,21 @@ incluye un indicador verde; si cae por debajo de $-0.20$, un indicador rojo. Los
 valores en el rango $[-0.20, 0.20]$ se clasifican como neutros. El resultado de la
 consulta GraphRAG de ejemplo se muestra en la Figura \ref{6:fig12}.
 
-\figpendiente{6:fig12}{Consulta GraphRAG en lenguaje natural sobre los resultados del debate presidencial}{Resultado de una consulta GraphRAG en lenguaje natural sobre el impacto del debate presidencial en la percepción proyectada por los medios, con la respuesta fundamentada en fragmentos textuales del corpus original.}
+\begin{figure}[!ht]
+    \centering
+    \begin{subfigure}{0.85\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{5/figures/fig12a_evolucion_sentimiento.png}
+        \caption{Evolución del sentimiento mediático del candidato en los días consultados.}
+        \label{6:fig12a}
+    \end{subfigure}
+    \\[0.5cm]
+    \begin{subfigure}{0.85\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{5/figures/fig12b_noticias_razones.png}
+        \caption{Noticias del corpus que el sistema cita como razones del cambio.}
+        \label{6:fig12b}
+    \end{subfigure}
+    \caption[Consulta GraphRAG en lenguaje natural sobre el cambio de sentimiento mediático del candidato]{Consulta GraphRAG en lenguaje natural sobre el cambio de sentimiento mediático del candidato entre el 12 y 13 de marzo de 2026: (a) evolución del ISN diario que evidencia la magnitud y dirección del cambio, y (b) noticias del corpus original que el sistema cita como razones del cambio, con su medio de origen y URL.\\Fuente: Elaboración propia.}
+    \label{6:fig12}
+\end{figure}

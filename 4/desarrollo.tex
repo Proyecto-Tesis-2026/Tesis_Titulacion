@@ -481,7 +481,13 @@ En la Figura \ref{5:fig21} se visualiza un fragmento del grafo de conocimiento
 electoral generado, mostrando las relaciones entre fragmentos, candidatos, temas
 y categorías para un día de campaña seleccionado.
 
-\figpendiente{5:fig21}{Visualización de un fragmento del grafo de conocimiento electoral en Neo4j}{Visualización de un fragmento del grafo de conocimiento electoral en Neo4j Browser, mostrando las relaciones entre nodos \texttt{Fragmento}, \texttt{Candidato}, \texttt{Tema} y \texttt{Categoria} para un día de campaña, con el sentimiento por candidato codificado en propiedades de las aristas \texttt{MENCIONA}.}
+\begin{figure}[!ht]
+    \begin{center}
+        \includegraphics[width=0.85\textwidth]{4/figures/fig21_grafo_neo4j.png}
+        \caption[Visualización de un fragmento del grafo de conocimiento electoral en Neo4j]{Visualización de un fragmento del grafo de conocimiento electoral en Neo4j Browser, mostrando las relaciones entre nodos \texttt{Fragmento}, \texttt{Candidato}, \texttt{Tema} y \texttt{Categoria} para un día de campaña, con el sentimiento por candidato codificado en propiedades de las aristas \texttt{MENCIONA}.\\Fuente: Elaboración propia.}
+        \label{5:fig21}
+    \end{center}
+\end{figure}
 
 \textbf{Actividad 4: Implementar sistema GraphRAG para consultas}
 \\
@@ -798,7 +804,13 @@ candidatos en liza y poblando las vistas Gold materializadas
 \texttt{gold\_cobertura\_medios}) que alimentan al servidor MCP. Los principales
 hallazgos de la prueba piloto se presentan en la Figura \ref{5:fig25}.
 
-\figpendiente{5:fig25}{Resultados del prototipo de inteligencia electoral durante la prueba piloto del 12 y 13 de marzo de 2026}{Resultados del prototipo de inteligencia electoral durante la prueba piloto de los días 12 y 13 de marzo de 2026, mostrando la evolución del ISN por candidato y los temas emergentes identificados en la cobertura mediática, todos consultados desde un cliente MCP mediante las herramientas \texttt{evolucion\_sentimiento\_candidato}, \texttt{temas\_top\_periodo} y \texttt{panorama\_diario}.}
+\begin{figure}[!ht]
+    \begin{center}
+        \includegraphics[width=0.85\textwidth]{4/figures/fig25_piloto.png}
+        \caption[Resultados del prototipo durante la prueba piloto del 12 y 13 de marzo de 2026]{Resultados del prototipo de inteligencia electoral durante la prueba piloto de los días 12 y 13 de marzo de 2026, mostrando la evolución del ISN por candidato y los temas emergentes identificados en la cobertura mediática, todos consultados desde un cliente MCP mediante las herramientas \texttt{evolucion\_sentimiento\_candidato}, \texttt{temas\_top\_periodo} y \texttt{panorama\_diario}.\\Fuente: Elaboración propia.}
+        \label{5:fig25}
+    \end{center}
+\end{figure}
 
 La prueba piloto confirmó la viabilidad del sistema para detectar cambios
 relevantes en la percepción proyectada por los medios —como el pico de sentimiento negativo
