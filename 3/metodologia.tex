@@ -393,6 +393,14 @@ Construir corpus de YouTube.
 \item Almacenar transcripciones crudas en capa Bronze.
 \end{itemize} \\
 \hline
+Construir corpus de TikTok.
+& Construcción del corpus de posts electorales de TikTok mediante scraper independiente.
+& \begin{itemize}[label={--},nosep,leftmargin=*]
+\item Identificar cuentas y rangos de fechas objetivo de cobertura electoral.
+\item Recolectar posts con descripción, hashtags y metadatos vía Playwright.
+\item Almacenar posts crudos en capa Bronze.
+\end{itemize} \\
+\hline
 Realizar análisis exploratorio del corpus.
 & Análisis estadístico y exploratorio de las variables del corpus para cada fuente de datos.
 & \begin{itemize}[label={--},nosep,leftmargin=*]
@@ -451,11 +459,26 @@ La recolección de contenido de YouTube se realizó mediante \texttt{yt-dlp}, un
 \end{figure}
  
 \textbf{Entregable}: Corpus de transcripciones de videos de YouTube con ID de video, texto transcrito, fecha de publicación, canal, duración y flag de autogeneración.
- 
-\textbf{Actividad 4: Realizar análisis exploratorio del corpus}
- 
-En esta actividad se realizó el análisis estadístico descriptivo de los tres corpus recolectados: distribución temporal de publicaciones, longitud promedio de textos, distribución de menciones por candidato y por fuente, y análisis del vocabulario electoral dominante mediante nubes de palabras.
- 
+
+\textbf{Actividad 4: Construir corpus de TikTok}
+
+La recolección de contenido de TikTok se realizó mediante un scraper independiente (repositorio \texttt{scraper-tiktok}) implementado con \texttt{Playwright} sobre Chromium, bajo una arquitectura hexagonal de puertos y adaptadores. El scraper opera por cuenta y rango de fechas (\texttt{DATE\_FROM}/\texttt{DATE\_TO}), aprovechando que las playlists de TikTok están ordenadas de más reciente a más antiguo para aplicar dos capas de filtrado: una parada temprana basada en \texttt{match\_filter} y un post-filtro estricto sobre el rango de fechas que garantiza que solo posts dentro del período objetivo lleguen al almacenamiento. El módulo \texttt{TiktokIngestor} (\texttt{src/electoral/ingestion/tiktok.py}) consume los archivos JSON producidos por el scraper y los persiste como documentos en la capa Bronze del pipeline en \texttt{data/raw/tiktok/\{YYYY-MM-DD\}/}, con el mismo schema canónico que las demás fuentes.
+
+\begin{figure}[!ht]
+    \begin{center}
+        \resizebox{0.85\textwidth}{!}{\input{3/figures/flujo_tiktok_posts.tex}}
+        \caption[Proceso de recolección del corpus de TikTok mediante scraper Playwright]{Proceso de extracción de posts electorales de TikTok mediante \texttt{Playwright} y arquitectura hexagonal, desde la configuración de cuentas y rango de fechas hasta el almacenamiento en capa Bronze.\\
+            Fuente: Elaboración propia.}
+        \label{4:fig6b}
+    \end{center}
+\end{figure}
+
+\textbf{Entregable}: Corpus de posts de TikTok con ID, descripción, hashtags, fecha de publicación, cuenta de origen y métricas de interacción.
+
+\textbf{Actividad 5: Realizar análisis exploratorio del corpus}
+
+En esta actividad se realizó el análisis estadístico descriptivo de los cuatro corpus recolectados: distribución temporal de publicaciones, longitud promedio de textos, distribución de menciones por candidato y por fuente, y análisis del vocabulario electoral dominante mediante nubes de palabras.
+
 \textbf{Entregable}: Gráficos estadísticos y descriptivos del corpus por fuente de datos.
  
 \subsubsection{Preparación de la información}
@@ -510,7 +533,7 @@ actividades de esta etapa se detallan en la Tabla \ref{4:table5}.
  
 \textbf{Actividad 1: Limpiar y normalizar el corpus}
  
-En esta actividad se aplicó un pipeline de preprocesamiento textual sobre los tres corpus de la capa Bronze. El proceso incluyó la eliminación de spam y cuentas de bots identificadas mediante patrones de comportamiento, la normalización de emojis (convertidos a texto descriptivo), la eliminación de URLs y menciones de usuario, y la detección automática de idioma mediante la librería \texttt{langdetect} para conservar únicamente publicaciones en español.
+En esta actividad se aplicó un pipeline de preprocesamiento textual sobre los cuatro corpus de la capa Bronze. El proceso incluyó la eliminación de spam y cuentas de bots identificadas mediante patrones de comportamiento, la normalización de emojis (convertidos a texto descriptivo), la eliminación de URLs y menciones de usuario, y la detección automática de idioma mediante la librería \texttt{langdetect} para conservar únicamente publicaciones en español.
  
 \textbf{Entregable}: Corpus limpio y normalizado, listo para análisis con LLM.
  
