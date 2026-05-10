@@ -595,24 +595,39 @@ La información procesada es ingresada al módulo GraphRAG, que la integra en el
 de conocimiento y la hace disponible para consultas en lenguaje natural. Si el ISN
 supera el umbral positivo de $+0.20$ para un candidato, la respuesta del cliente MCP
 incluye un indicador verde; si cae por debajo de $-0.20$, un indicador rojo. Los
-valores en el rango $[-0.20, 0.20]$ se clasifican como neutros. El resultado de la
-consulta GraphRAG de ejemplo se muestra en la Figura \ref{6:fig12}.
+valores en el rango $[-0.20, 0.20]$ se clasifican como neutros. Como ejemplo de
+caso de uso real del sistema, se realizó la siguiente consulta al servidor MCP
+desde un cliente LLM en lenguaje natural:
+
+\begin{quote}
+\textit{``Muéstrame qué candidato presidencial Perú 2026 tuvo la mayor caída de
+sentimiento mediático entre el 10 y 12 de marzo. Dame: 1) cuánto bajó, 2) la razón
+principal según las noticias, 3) las 2 noticias más negativas con titular, medio
+y URL. Visualiza la evolución día a día.''}
+\end{quote}
+
+A partir de esta consulta, el LLM cliente seleccionó automáticamente las
+herramientas \texttt{comparar\_candidatos\_sentimiento},
+\texttt{noticias\_por\_actor} y \texttt{citar\_evidencia} con sus parámetros
+tipados, ejecutó las consultas SQL/Cypher subyacentes contra Postgres y Neo4j, y
+construyó la respuesta fundamentada en evidencia textual del corpus. El resultado
+se muestra en la Figura \ref{6:fig12}.
 
 \begin{figure}[!ht]
     \centering
     \begin{subfigure}{0.85\textwidth}
         \centering
         \includegraphics[width=\linewidth]{5/figures/fig12a_evolucion_sentimiento.png}
-        \caption{Evolución del sentimiento mediático del candidato en los días consultados.}
+        \caption{Evolución del sentimiento mediático día a día del candidato con la mayor caída entre el 10 y 12 de marzo de 2026.}
         \label{6:fig12a}
     \end{subfigure}
     \\[0.5cm]
     \begin{subfigure}{0.85\textwidth}
         \centering
         \includegraphics[width=\linewidth]{5/figures/fig12b_noticias_razones.png}
-        \caption{Noticias del corpus que el sistema cita como razones del cambio.}
+        \caption{Las dos noticias más negativas que el sistema cita como razones de la caída, con titular, medio y URL.}
         \label{6:fig12b}
     \end{subfigure}
-    \caption[Consulta GraphRAG en lenguaje natural sobre el cambio de sentimiento mediático del candidato]{Consulta GraphRAG en lenguaje natural sobre el cambio de sentimiento mediático del candidato entre el 12 y 13 de marzo de 2026: (a) evolución del ISN diario que evidencia la magnitud y dirección del cambio, y (b) noticias del corpus original que el sistema cita como razones del cambio, con su medio de origen y URL.\\Fuente: Elaboración propia.}
+    \caption[Consulta GraphRAG en lenguaje natural sobre la mayor caída de sentimiento mediático entre el 10 y 12 de marzo de 2026]{Respuesta del sistema GraphRAG a la consulta en lenguaje natural sobre la mayor caída de sentimiento mediático de un candidato presidencial entre el 10 y 12 de marzo de 2026: (a) evolución del ISN día a día con la magnitud y dirección de la caída, y (b) las dos noticias más negativas del corpus original que el sistema cita como razones de la caída, con su medio de origen y URL.\\Fuente: Elaboración propia.}
     \label{6:fig12}
 \end{figure}
